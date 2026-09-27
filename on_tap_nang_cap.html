@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn Tập Lập Trình Cho Xử Lý Dữ Liệu (3 Bài Đầu)</title>
+    <style>
+        :root {
+            --primary-color: #2b580c;
+            --secondary-color: #639a67;
+            --accent-color: #d8ebb5;
+            --bg-color: #f7f9f5;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --correct-color: #2e7d32;
+            --wrong-color: #c62828;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--secondary-color);
+            margin-bottom: 30px;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        code {
+            background-color: #f0f4f0;
+            color: #d32f2f;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+        }
+
+        pre {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: background 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        .btn-shuffle {
+            background-color: #e67e22;
+        }
+        .btn-shuffle:hover {
+            background-color: #d35400;
+        }
+
+        .question-box {
+            border-left: 4px solid var(--secondary-color);
+            padding-left: 15px;
+            margin-bottom: 25px;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .options-list li {
+            margin-bottom: 10px;
+        }
+
+        .options-list label {
+            display: block;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .options-list label:hover {
+            background: var(--accent-color);
+        }
+
+        .explanation {
+            display: none;
+            margin-top: 10px;
+            padding: 12px;
+            background-color: #eef7ee;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            color: #155724;
+        }
+
+        .essay-answer {
+            display: none;
+            margin-top: 10px;
+            padding: 12px;
+            background-color: #e8f4f8;
+            border: 1px solid #b8daff;
+            border-radius: 5px;
+            color: #004085;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: #ddd;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Ôn Tập Lập Trình Cho Xử Lý Dữ Liệu</h1>
+        <p>Tóm tắt kiến thức cốt lõi & Bộ câu hỏi luyện tập (Môn học: Programming for Data Processing)</p>
+    </div>
+
+    <!-- TAB NAVIGATION -->
+    <div class="tab-buttons">
+        <div class="tab-btn active" onclick="switchTab('theory')">1. Lý Thuyết & Dạng Bài Mẫu</div>
+        <div class="tab-btn" onclick="switchTab('mcq')">2. Trắc Nghiệm (20 Câu)</div>
+        <div class="tab-btn" onclick="switchTab('essay')">3. Tự Luận (20 Câu)</div>
+    </div>
+
+    <!-- TAB 1: LÝ THUYẾT VÀ DẠNG BÀI MẪU -->
+    <div id="theory" class="tab-content active">
+        <div class="section-card">
+            <h2>Tóm Tắt Kiến Thức Cốt Lõi & Các Dạng Đặc Trưng</h2>
+            
+            <h3>Dạng 1: Tập hợp (Set Operations)[cite: 1]</h3>
+            <ul>
+                <li><code>set_A - set_B</code>: Phần tử chỉ có trong A mà không có trong B (Difference)[cite: 1].</li>
+                <li><code>set_A | set_B</code>: Hợp của A và B (Union)[cite: 1].</li>
+                <li><code>set_A & set_B</code>: Giao của A và B (Intersection)[cite: 1].</li>
+                <li><code>set_A ^ set_B</code>: Phần tử thuộc A hoặc B nhưng không thuộc cả hai (Symmetric Difference).</li>
+            </ul>
+
+            <h3>Dạng 2: Mảng NumPy, Slicing & Views[cite: 1]</h3>
+            <ul>
+                <li>Lát cắt cơ bản (Basic Slicing) như <code>M[0]</code>, <code>M[0:1]</code>, <code>M[0, :]</code> tạo ra một <b>View</b> (dùng chung vùng nhớ với ma trận gốc)[cite: 1]. Thao tác trên view sẽ làm thay đổi ma trận gốc.</li>
+                <li>Để tạo bản sao độc lập, bắt buộc phải dùng lệnh <code>.copy()</code> (ví dụ: <code>h = M[0].copy()</code>)[cite: 1].</li>
+            </ul>
+
+            <h3>Dạng 3: NumPy Axis, Argmax, và Lọc Dữ Liệu[cite: 1]</h3>
+            <ul>
+                <li><code>axis=0</code>: Thao tác theo chiều dọc (tính toán/thu gọn các hàng theo từng cột)[cite: 1].</li>
+                <li><code>axis=1</code>: Thao tác theo chiều ngang (tính toán/thu gọn các cột theo từng hàng)[cite: 1].</li>
+                <li><code>argmax(axis=1)</code>: Trả về vị trí chỉ số (index) của giá trị lớn nhất trên từng hàng[cite: 1].</li>
+                <li>Phép so sánh mặt nạ Boolean (<code>d >= 5 & d < 8</code>): Phải bọc ngoặc đơn từng vế <code>((d >= 5) & (d < 8))</code> do ưu tiên toán tử của <code>&</code> cao hơn so sánh[cite: 1]. Dùng toán tử <code>&</code> thay vì <code>and</code> khi thao tác trên mảng NumPy[cite: 1].</li>
+            </ul>
+
+            <h3>Dạng 4: Broadcasting trong NumPy[cite: 1]</h3>
+            <ul>
+                <li>Quy tắc tương thích Shape (từ phải sang trái): Các chiều tương ứng phải bằng nhau hoặc một trong hai bằng 1[cite: 1].</li>
+                <li>Để cộng ma trận <code>(3, 4)</code> với vectơ phụ phí cho từng hàng (chiều 3), vectơ cần có shape <code>(3, 1)</code>[cite: 1]. Thao tác: <code>v.reshape(3, 1)</code>[cite: 1].</li>
+            </ul>
+
+            <h3>Dạng 5: Định dạng Chuỗi (f-string Formatting)[cite: 1]</h3>
+            <ul>
+                <li><code>{p:.1%}</code>: Tự động nhân <code>p</code> với 100, giữ 1 chữ số thập phân và thêm ký hiệu <code>%</code>[cite: 1].</li>
+                <li><code>{n:,}</code>: Thêm dấu phẩy phân cách hàng nghìn cho số nguyên[cite: 1].</li>
+            </ul>
+
+            <h3>Dạng 6: Xử lý ngoại lệ (Exception Handling) & Đọc File CSV/JSON[cite: 1]</h3>
+            <ul>
+                <li><code>csv.DictReader</code> đọc mọi dữ liệu dưới dạng chuỗi (string)[cite: 1]. Phép cộng chuỗi với số nguyên sẽ gây <code>TypeError</code>[cite: 1]. Cần ép kiểu <code>int()</code> hoặc <code>float()</code>[cite: 1].</li>
+                <li>Xử lý ngoại lệ chuẩn: Chỉ nên bắt đúng các lỗi dự kiến (như <code>ValueError</code>, <code>TypeError</code>)[cite: 1]. Không nên bắt lỗi quá rộng (<code>Exception</code>) vì sẽ nuốt mất các lỗi lập trình nghiêm trọng khác (như <code>NameError</code>, <code>AttributeError</code>)[cite: 1].</li>
+                <li>Lỗi <code>AttributeError: 'NoneType' object has no attribute 'replace'</code> xảy ra khi biến nhận giá trị <code>None</code> (ví dụ: ô <code>null</code> từ JSON được chuyển thành <code>None</code>) trước khi gọi phương thức của chuỗi[cite: 1].</li>
+            </ul>
+
+            <h3>Dạng 7: Quản lý Môi trường Venv & Quy định AI[cite: 1]</h3>
+            <ul>
+                <li>Tạo và dựng lại venv đúng quy trình: <code>python -m venv .venv</code> &rarr; <code>source .venv/bin/activate</code> &rarr; <code>pip install -r requirements.txt</code>[cite: 1].</li>
+                <li>Quy định sử dụng AI trong bài Lab: Phải khai báo ngay trong notebook câu prompt chính đã hỏi và cách thức kiểm chứng kết quả do AI tạo ra[cite: 1].</li>
+            </ul>
+
+            <h3>Dạng 8: Thứ tự thực thi trong Jupyter Notebook (In[n])[cite: 1]</h3>
+            <ul>
+                <li>Thứ tự cập nhật biến phụ thuộc vào số thứ tự chạy thực tế trong <code>In [n]</code>, không phụ thuộc vào thứ tự vị trí ô code từ trên xuống dưới trên giao diện[cite: 1].</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- TAB 2: CÂU HỎI TRẮC NGHIỆM -->
+    <div id="mcq" class="tab-content">
+        <div class="section-card">
+            <h2>Luyện Tập Trắc Nghiệm (20 Câu)</h2>
+            <button class="btn btn-shuffle" onclick="shuffleMCQ()">&#128256; Xáo Trộn Câu Hỏi</button>
+            <div id="mcq-container"></div>
+        </div>
+    </div>
+
+    <!-- TAB 3: CÂU HỎI TỰ LUẬN -->
+    <div id="essay" class="tab-content">
+        <div class="section-card">
+            <h2>Luyện Tập Tự Luận (20 Câu)</h2>
+            <button class="btn btn-shuffle" onclick="shuffleEssay()">&#128256; Xáo Trộn Câu Hỏi</button>
+            <div id="essay-container"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// DỮ LIỆU CÂU HỎI TRẮC NGHIỆM
+const mcqData = [
+    {
+        q: "Cho hai tập hợp chứa mã môn học đăng ký: <br><code>A = {'Math', 'Physics', 'Python'}</code><br><code>B = {'Python', 'Database', 'Math'}</code><br>Biểu thức nào trả về các môn CHỈ đăng ký ở tập A?",
+        options: ["A & B", "A - B", "B - A", "A | B"],
+        correct: 1,
+        exp: "Phép hiệu A - B trả về các phần tử chỉ có trong A mà không có trong B ('Physics')."
+    },
+    {
+        q: "Cho mảng điểm <code>d = np.array([4.0, 6.5, 7.0, 9.0, 8.5])</code>. Công thức nào tính tỷ lệ phần trăm bài có điểm từ 6.0 trở lên?",
+        options: [
+            "((d >= 6.0) and (d <= 10.0)).mean() * 100",
+            "(d >= 6.0).mean() * 100",
+            "d[d >= 6.0].sum()",
+            "(d >= 6.0 & d <= 10.0).mean() * 100"
+        ],
+        correct: 1,
+        exp: "(d >= 6.0) tạo mảng boolean. Hàm .mean() lấy trung bình mảng boolean để tính tỷ lệ bài đạt, nhân 100 ra phần trăm."
+    },
+    {
+        q: "Để tái lập môi trường ảo từ một kho chứa (repo) đã có file <code>requirements.txt</code>, thứ tự lệnh đúng trên Linux/macOS là gì?",
+        options: [
+            "pip install -r requirements.txt -> python -m venv .venv -> source .venv/bin/activate",
+            "python -m venv .venv -> pip freeze > requirements.txt",
+            "python -m venv .venv -> source .venv/bin/activate -> pip install -r requirements.txt",
+            "source .venv/bin/activate -> pip install -r requirements.txt"
+        ],
+        correct: 2,
+        exp: "Cần tạo venv trước, kích hoạt venv để pip trỏ đúng môi trường ảo, sau đó mới cài thư viện từ requirements.txt."
+    },
+    {
+        q: "Đoạn code sau đây dùng để chuyển chuỗi thành số nguyên: <br><code>try: return int(s)</code><br><code>except ____: return None</code><br>Nếu muốn bắt đúng các lỗi khi <code>s = 'abc'</code> hoặc <code>s = None</code> mà không giấu lỗi khác, cần điền gì?",
+        options: [
+            "Exception",
+            "(ValueError, TypeError)",
+            "(ValueError, KeyError)",
+            "(TypeError, IndexError)"
+        ],
+        correct: 1,
+        exp: "int('abc') phát sinh ValueError; int(None) phát sinh TypeError. Cần bắt đúng cặp (ValueError, TypeError)."
+    },
+    {
+        q: "Cho ma trận <code>M</code> kích thước (4, 5) đại diện cho doanh thu 4 chi nhánh trong 5 tháng. Muốn tìm chỉ số tháng có doanh thu cao nhất của TỪNG chi nhánh, dùng lệnh nào?",
+        options: ["M.argmax(axis=0)", "M.argmax(axis=1)", "M.max(axis=1)", "M.sum(axis=1).argmax()"],
+        correct: 1,
+        exp: "Để giữ lại chỉ số theo từng hàng (chi nhánh) và tìm giá trị lớn nhất trên các cột (tháng), dùng axis=1."
+    },
+    {
+        q: "Quy định về việc sử dụng Chatbot AI hỗ trợ làm bài tự làm trong vở bài tập (Lab) là gì?",
+        options: [
+            "Không cần ghi nhận vì bài tự làm không chấm điểm.",
+            "Chỉ khai báo trong file AI_USAGE.md của bài tập lớn.",
+            "Ghi lại ngay trong notebook prompt chính đã dùng và cách kiểm chứng kết quả.",
+            "Chỉ cần ghi tên công cụ AI đã dùng ở đầu notebook."
+        ],
+        correct: 2,
+        exp: "Trong bài lab, sinh viên phải ghi rõ prompt chính và cách kiểm chứng kết quả do AI tạo ra ngay tại notebook."
+    },
+    {
+        q: "Cho ma trận NumPy <code>A</code>. Thao tác <code>sub_A = A[1:3, :]</code> tạo ra đối tượng gì?",
+        options: [
+            "Một bản sao độc lập (Copy).",
+            "Một View dùng chung bộ nhớ với A.",
+            "Một mảng mới hoàn toàn không liên quan A.",
+            "Một danh sách Python tiêu chuẩn (list)."
+        ],
+        correct: 1,
+        exp: "Lát cắt cơ bản (slicing) trên NumPy array luôn tạo ra một View. Thay đổi trên sub_A sẽ làm thay đổi A."
+    },
+    {
+        q: "Cho <code>val = 0.8541</code> và <code>count = 1200</code>. Biểu thức f-string nào cho ra kết quả <code>'Tỷ lệ: 85.4% | Số lượng: 1,200'</code>?",
+        options: [
+            "f'Tỷ lệ: {val:.1%} | Số lượng: {count:,}'",
+            "f'Tỷ lệ: {val:.1f}% | Số lượng: {count:d}'",
+            "f'Tỷ lệ: {val*100:.1%}| Số lượng: {count:,}'",
+            "f'Tỷ lệ: {val:.1} | Số lượng: {count}'"
+        ],
+        correct: 0,
+        exp: ":.1% tự nhân 100, định dạng 1 chữ số thập phân và thêm ký hiệu %. :, thêm dấu phẩy phân cách hàng nghìn."
+    },
+    {
+        q: "Khi dùng <code>csv.DictReader</code> để đọc dữ liệu số từ file CSV, điều nào sau đây đúng?",
+        options: [
+            "Các cột chứa số tự động chuyển thành kiểu int/float.",
+            "Tất cả giá trị đều được đọc dưới dạng chuỗi (string).",
+            "Các ô trống tự động được chuyển thành None.",
+            "Giá trị số được chuyển thành kiểu bool."
+        ],
+        correct: 1,
+        exp: "CSV không lưu trữ thông tin kiểu dữ liệu; DictReader đọc mọi ô dưới dạng chuỗi (string)."
+    },
+    {
+        q: "Ma trận <code>X</code> có shape <code>(5, 3)</code> và vectơ <code>y</code> có shape <code>(5,)</code>. Muốn cộng <code>y</code> vào từng cột của <code>X</code> bằng Broadcasting, ta cần viết:",
+        options: ["X + y", "X + y.reshape(1, 5)", "X + y.reshape(5, 1)", "X.T + y"],
+        correct: 2,
+        exp: "Để cộng theo từng hàng (chiều 5), y phải được biến đổi shape thành (5, 1) để khớp với (5, 3) khi dóng hàng từ phải sang trái."
+    },
+    {
+        q: "Cho <code>s1 = {'a', 'b'}</code> và <code>s2 = {'b', 'c'}</code>. Kết quả của <code>s1 ^ s2</code> là gì?",
+        options: ["{'b'}", "{'a', 'c'}", "{'a', 'b', 'c'}", "set()"],
+        correct: 1,
+        exp: "^ là phép hiệu đối xứng (Symmetric Difference), trả về các phần tử chỉ thuộc s1 hoặc s2 nhưng không thuộc cả hai."
+    },
+    {
+        q: "Trong NumPy, giá trị NaN có kiểu dữ liệu (type) là gì?",
+        options: ["int", "NoneType", "float", "string"],
+        correct: 2,
+        exp: "np.nan thuộc kiểu dữ liệu số thực (float)."
+    },
+    {
+        q: "Khi tính toán trung bình mảng NumPy chứa giá trị NaN mà muốn bỏ qua NaN, ta nên dùng hàm nào?",
+        options: ["np.mean()", "np.nanmean()", "np.clean_mean()", "np.sum().mean()"],
+        correct: 1,
+        exp: "np.nanmean() tự động bỏ qua các giá trị NaN khi tính toán giá trị trung bình."
+    },
+    {
+        q: "Sự khác biệt chính giữa <code>and</code> và <code>&</code> trong Python/NumPy là gì?",
+        options: [
+            "Không có sự khác biệt.",
+            "<code>and</code> kiểm tra giá trị chân lý toàn mảng (gây lỗi ValueError trên mảng), <code>&</code> thực hiện phép toán element-wise.",
+            "<code>&</code> dùng cho chuỗi, <code>and</code> dùng cho số.",
+            "<code>and</code> ưu tiên thấp hơn phép so sánh, <code>&</code> ưu tiên thấp hơn phép cộng."
+        ],
+        correct: 1,
+        exp: "and đánh giá chân lý của cả đối tượng mảng (gây ValueError: truth value of an array is ambiguous). & là toán tử bitwise làm việc trên từng phần tử."
+    },
+    {
+        q: "Giả sử file Jupyter Notebook thực thi các ô theo thứ tự: In[1], In[3], In[2]. Biến sẽ mang giá trị dựa trên:",
+        options: [
+            "Vị trí ô từ trên xuống dưới.",
+            "Thứ tự dòng thời gian thực thi (1 -> 2 -> 3 theo chỉ số In[n]).",
+            "Mặc định ô cuối cùng.",
+            "Trạng thái ngẫu nhiên."
+        ],
+        correct: 1,
+        exp: "Môi trường Kernel của Notebook lưu trạng thái biến theo đúng thứ tự thời gian các ô code được thực thi (In[n])."
+    },
+    {
+        q: "Biểu thức <code>np.array([1, 2, 3]) + np.array([10])</code> cho ra kết quả gì?",
+        options: [
+            "Lỗi ValueError do không cùng shape.",
+            "array([11, 12, 13])",
+            "array([11, 2, 3])",
+            "array([10, 20, 30])"
+        ],
+        correct: 1,
+        exp: "NumPy tự động broadcast mảng [10] (shape (1,)) thành [10, 10, 10] để cộng với [1, 2, 3]."
+    },
+    {
+        q: "Lỗi <code>TypeError: unsupported operand type(s) for +: 'int' and 'str'</code> thường xuất hiện khi nào?",
+        options: [
+            "Cộng hai số nguyên.",
+            "Dùng hàm sum() trên một danh sách các chuỗi số nguyên chưa ép kiểu.",
+            "Chia một số cho 0.",
+            "Gọi hàm không tồn tại."
+        ],
+        correct: 1,
+        exp: "Hàm sum() bắt đầu tích lũy từ giá trị ban đầu là số nguyên 0. Khi cộng với phần tử đầu tiên là 'str', nó sẽ báo lỗi TypeError."
+    },
+    {
+        q: "Nếu muốn sao chép mảng <code>arr</code> ra một vùng nhớ độc lập hoàn toàn, cách làm nào đúng?",
+        options: ["new_arr = arr", "new_arr = arr[:]", "new_arr = arr.view()", "new_arr = arr.copy()"],
+        correct: 3,
+        exp: "Chỉ có phương thức .copy() tạo ra Deep Copy / mảng độc lập dữ liệu hoàn toàn với mảng ban đầu."
+    },
+    {
+        q: "Phương thức nào dùng để tạo danh sách dictionary từ file CSV đã mở <code>f</code>?",
+        options: ["csv.reader(f)", "csv.DictReader(f)", "csv.parse_dict(f)", "json.load(f)"],
+        correct: 1,
+        exp: "csv.DictReader(f) ánh xạ từng dòng trong file CSV thành một Dictionary với key là tên cột."
+    },
+    {
+        q: "Cách viết nào sau đây giúp bắt nhiều ngoại lệ trong một mệnh đề <code>except</code>?",
+        options: [
+            "except ValueError, TypeError:",
+            "except (ValueError, TypeError):",
+            "except [ValueError, TypeError]:",
+            "except ValueError and TypeError:"
+        ],
+        correct: 1,
+        exp: "Nhiều loại ngoại lệ cần được đặt trong một Tuple bọc bởi dấu ngoặc đơn <code>(Lỗi1, Lỗi2)</code>."
+    }
+];
+
+// DỮ LIỆU CÂU HỎI TỰ LUẬN
+const essayData = [
+    {
+        q: "Cho mảng điểm: <code>d = np.array([3.5, np.nan, 7.0, np.nan, 5.5, 8.0])</code>.<br>Viết đoạn code ngắn tính số lượng bài kiểm tra có điểm cao hơn điểm trung bình của các bài ĐÃ CÓ ĐIỂM (in ra kết quả là 1 số nguyên).",
+        ans: "Code mẫu:<br><code>nguong = np.nanmean(d)</code><br><code>print((d > nguong).sum())</code><br><b>Giải thích:</b> np.nanmean(d) = (3.5 + 7.0 + 5.5 + 8.0)/4 = 6.0. Các điểm > 6.0 là 7.0 và 8.0 (2 bài). Kết quả in ra: 2."
+    },
+    {
+        q: "Cho hàm:<br><pre>def to_float(s):\n    x = s.replace(',', '')\n    try:\n        return float(x)\n    except (ValueError, TypeError):\n        return None</pre>Khi đọc file JSON có ô giá trị <code>null</code> (Python nhận là <code>None</code>), hàm dừng với lỗi <code>AttributeError: 'NoneType' object has no attribute 'replace'</code>. Giải thích nguyên nhân và nêu cách sửa.",
+        ans: "<b>Nguyên nhân:</b> Biến <code>s</code> nhận giá trị <code>None</code>, lệnh <code>s.replace()</code> được thực hiện TRƯỚC khối <code>try</code> nên phát sinh <code>AttributeError</code> nằm ngoài khối xử lý ngoại lệ.<br><b>Cách sửa:</b> Chuyển lệnh <code>replace</code> vào trong khối <code>try</code> hoặc kiểm tra <code>if s is None: return None</code> trước."
+    },
+    {
+        q: "Cho các ô Jupyter Notebook chạy theo thứ tự chỉ số <code>In[n]</code> như sau:<br><code>In [3]: tong = sum(ds)</code><br><code>In [1]: ds = [4, 6]</code><br><code>In [4]: ds.append(10)</code><br><code>In [2]: ds = ds + [5]</code><br>Sau đó chạy ô mới <code>print(tong)</code>. Giá trị in ra là bao nhiêu?",
+        ans: "<b>Kết quả:</b> 15.<br><b>Giải thích:</b> Thứ tự chạy thực tế: (1) ds=[4,6] -> (2) ds=[4,6,5] -> (3) tong=sum([4,6,5])=15 -> (4) ds.append(10) (không ảnh hưởng tới biến 'tong' đã tính ở bước 3)."
+    },
+    {
+        q: "Điểm của 7 bài kiểm tra là: 2, 4, 6, 8, 10, 12, 14. Tính điểm z-score của bài 14 điểm (dùng độ lệch chuẩn tổng thể như <code>np.std()</code> mặc định). Chỉ trả lời bằng 1 con số.",
+        ans: "<b>Kết quả:</b> 1.5 (hoặc 1.5).<br><b>Giải thích:</b> <br>- Trung bình Mean (&mu;) = (2+4+6+8+10+12+14)/7 = 8.<br>- Phương sai Var = [(6^2 + 4^2 + 2^2 + 0^2 + 2^2 + 4^2 + 6^2)] / 7 = 112 / 7 = 16.<br>- Độ lệch chuẩn (&sigma;) = &radic;16 = 4.<br>- z-score = (14 - 8) / 4 = 6 / 4 = 1.5."
+    },
+    {
+        q: "Đoạn code sau tính điểm trung bình của sinh viên 'có điểm', nhưng điều kiện lọc dùng <code>if v</code>:<br><pre>diem = {'An': 8, 'Bình': 0, 'Chi': None, 'Dũng': 6, 'Em': 0}\nco_diem = {k: v for k, v in diem.items() if v}\nprint(sum(co_diem.values()) / len(co_diem))</pre>Giá trị in ra là bao nhiêu? Giải thích tại sao sai so với thực tế.",
+        ans: "<b>Kết quả:</b> 7.0.<br><b>Giải thích:</b> Trong Python, <code>0</code> và <code>None</code> đều bị đánh giá là <code>False</code> trong điều kiện <code>if v</code>. Do đó, điểm 0 của 'Bình' và 'Em' bị lọc mất! Mảng <code>co_diem</code> chỉ còn {'An': 8, 'Dũng': 6}. Trung bình = (8 + 6) / 2 = 7.0 (Sai vì bỏ sót sinh viên bị điểm 0)."
+    },
+    {
+        q: "Cho 2 tập hợp: <code>A = {1, 2, 3, 4}</code> và <code>B = {3, 4, 5, 6}</code>. Viết biểu thức tạo tập hợp <code>{1, 2, 5, 6}</code>.",
+        ans: "<b>Đáp án:</b> <code>A ^ B</code> hoặc <code>(A - B) | (B - A)</code>"
+    },
+    {
+        q: "Giải thích sự khác biệt giữa <code>M[0]</code> và <code>M[0].copy()</code> khi gán cho một biến mới <code>h</code> trong NumPy.",
+        ans: "<b>Đáp án:</b> <code>M[0]</code> tạo một View (dùng chung bộ nhớ với M, chỉnh sửa h sẽ đổi M). <code>M[0].copy()</code> tạo một mảng sao chép độc lập hoàn toàn bộ nhớ."
+    },
+    {
+        q: "Cho ma trận <code>A</code> shape (3, 4) và <code>B</code> shape (4,). Phép toán <code>A + B</code> có thực hiện được không? Shape của kết quả là gì?",
+        ans: "<b>Đáp án:</b> Thực hiện được nhờ Broadcasting. Shape kết quả là (3, 4) (vectơ B được mở rộng cộng vào từng hàng của A)."
+    },
+    {
+        q: "Cho <code>p = 0.12345</code>. Hãy viết biểu thức f-string để hiển thị chuỗi <code>'Tỷ lệ: 12.3%'</code>.",
+        ans: "<b>Đáp án:</b> <code>f'Tỷ lệ: {p:.1%}'</code>"
+    },
+    {
+        q: "Tại sao không nên dùng <code>except Exception:</code> để bắt tất cả các lỗi trong một hàm xử lý dữ liệu?",
+        ans: "<b>Đáp án:</b> Vì nó sẽ bắt và che giấu ('nuốt') luôn cả các lỗi lập trình nghiêm trọng (như gõ sai tên biến <code>NameError</code>, lỗi cú pháp, v.v.), khiến việc truy vết và sửa lỗi chương trình cực kỳ khó khăn."
+    },
+    {
+        q: "Cho mảng <code>arr = np.array([10, 20, 30, 40, 50])</code>. Viết câu lệnh lọc ra các phần tử lớn hơn 15 và nhỏ hơn 45.",
+        ans: "<b>Đáp án:</b> <code>arr[(arr > 15) & (arr < 45)]</code>"
+    },
+    {
+        q: "Nếu muốn tính tổng theo từng CỘT của ma trận 2D NumPy <code>M</code>, ta truyền tham số axis như thế nào?",
+        ans: "<b>Đáp án:</b> <code>M.sum(axis=0)</code>"
+    },
+    {
+        q: "File CSV chứa dữ liệu cột <code>'gia'</code>. Khi đọc bằng <code>DictReader</code>, làm thế nào để tính tổng tiền của tất cả các dòng?",
+        ans: "<b>Đáp án:</b> Dùng ép kiểu <code>int</code> hoặc <code>float</code> khi duyệt qua từng dòng: <code>sum(float(row['gia']) for row in rows)</code>"
+    },
+    {
+        q: "Nêu 3 bước cơ bản bằng dòng lệnh để thiết lập môi trường ảo Python và cài đặt thư viện từ file <code>requirements.txt</code>.",
+        ans: "<b>Đáp án:</b><br>1. <code>python -m venv .venv</code><br>2. <code>source .venv/bin/activate</code> (hoặc <code>.venv\\Scripts\\activate</code> trên Windows)<br>3. <code>pip install -r requirements.txt</code>"
+    },
+    {
+        q: "Khi làm bài tập Lab ở chế độ mở, sinh viên cần trình bày thông tin sử dụng AI như thế nào trong Notebook?",
+        ans: "<b>Đáp án:</b> Khai báo trực tiếp trong notebook câu prompt chính đã sử dụng và mô tả cách thức đã kiểm chứng lại kết quả do AI tạo ra."
+    },
+    {
+        q: "Cho mảng <code>d = np.array([1, 2, np.nan, 4])</code>. Kết quả của <code>d.sum()</code> là bao nhiêu?",
+        ans: "<b>Đáp án:</b> <code>nan</code> (hoặc <code>np.nan</code>) do phép cộng thông thường chứa NaN sẽ trả về NaN."
+    },
+    {
+        q: "Cho ma trận <code>M = np.array([[1, 5], [3, 2]])</code>. Kết quả của <code>M.argmax(axis=1)</code> là mảng nào?",
+        ans: "<b>Đáp án:</b> <code>array([1, 0])</code> (Hàng 0 giá trị max ở vị trí index 1; Hàng 1 giá trị max ở vị trí index 0)."
+    },
+    {
+        q: "Sự khác biệt giữa <code>csv.reader</code> và <code>csv.DictReader</code> là gì?",
+        ans: "<b>Đáp án:</b> <code>csv.reader</code> trả về danh sách các dòng dạng List (truy cập qua chỉ số 0, 1, 2...). <code>csv.DictReader</code> trả về Dictionary (truy cập qua tên cột)."
+    },
+    {
+        q: "Viết biểu thức f-string hiển thị biến <code>money = 1000000</code> thành chuỗi <code>'1,000,000 VND'</code>.",
+        ans: "<b>Đáp án:</b> <code>f'{money:,} VND'</code>"
+    },
+    {
+        q: "Biến <code>x = np.array([1, 2, 3])</code>. Đoạn code <code>y = x; y[0] = 99</code> có làm thay đổi <code>x[0]</code> không? Tại sao?",
+        ans: "<b>Đáp án:</b> Có. Vì phép gán <code>y = x</code> chỉ gán lại tham chiếu cùng trỏ đến 1 vùng nhớ, không tạo mảng mới."
+    }
+];
+
+// HIỂN THỊ CÂU HỎI TRẮC NGHIỆM
+function renderMCQ() {
+    const container = document.getElementById('mcq-container');
+    container.innerHTML = '';
+    mcqData.forEach((item, index) => {
+        let qHtml = `
+            <div class="question-box">
+                <p><strong>Câu ${index + 1}:</strong> ${item.q}</p>
+                <ul class="options-list">
+        `;
+        item.options.forEach((opt, optIndex) => {
+            qHtml += `
+                <li>
+                    <label>
+                        <input type="radio" name="mcq_${index}" value="${optIndex}" onchange="checkMCQ(${index}, ${optIndex})">
+                        ${opt}
+                    </label>
+                </li>
+            `;
+        });
+        qHtml += `
+                </ul>
+                <div id="exp_${index}" class="explanation">
+                    <strong>Giải thích:</strong> ${item.exp}
+                </div>
+            </div>
+        `;
+        container.innerHTML += qHtml;
+    });
+}
+
+function checkMCQ(qIndex, selectedOpt) {
+    const expDiv = document.getElementById(`exp_${qIndex}`);
+    const correctOpt = mcqData[qIndex].correct;
+    if (selectedOpt === correctOpt) {
+        expDiv.style.backgroundColor = '#d4edda';
+        expDiv.style.borderColor = '#c3e6cb';
+        expDiv.style.color = '#155724';
+        expDiv.innerHTML = `<strong>&#10004; Chính xác!</strong><br>${mcqData[qIndex].exp}`;
+    } else {
+        expDiv.style.backgroundColor = '#f8d7da';
+        expDiv.style.borderColor = '#f5c6cb';
+        expDiv.style.color = '#721c24';
+        expDiv.innerHTML = `<strong>&#10008; Chưa đúng!</strong> Đáp án đúng là phương án thứ ${correctOpt + 1}.<br><strong>Giải thích:</strong> ${mcqData[qIndex].exp}`;
+    }
+    expDiv.style.display = 'block';
+}
+
+function shuffleMCQ() {
+    mcqData.sort(() => Math.random() - 0.5);
+    renderMCQ();
+}
+
+// HIỂN THỊ CÂU HỎI TỰ LUẬN
+function renderEssay() {
+    const container = document.getElementById('essay-container');
+    container.innerHTML = '';
+    essayData.forEach((item, index) => {
+        let qHtml = `
+            <div class="question-box">
+                <p><strong>Câu ${index + 1}:</strong> ${item.q}</p>
+                <textarea rows="3" placeholder="Nhập câu trả lời hoặc nháp của bạn tại đây..."></textarea>
+                <button class="btn" style="margin-top:10px;" onclick="toggleEssayAns(${index})">&#128065; Hiện/Ẩn Đáp Án & Giải Thích</button>
+                <div id="essay_ans_${index}" class="essay-answer">
+                    ${item.ans}
+                </div>
+            </div>
+        `;
+        container.innerHTML += qHtml;
+    });
+}
+
+function toggleEssayAns(index) {
+    const ansDiv = document.getElementById(`essay_ans_${index}`);
+    if (ansDiv.style.display === 'block') {
+        ansDiv.style.display = 'none';
+    } else {
+        ansDiv.style.display = 'block';
+    }
+}
+
+function shuffleEssay() {
+    essayData.sort(() => Math.random() - 0.5);
+    renderEssay();
+}
+
+// CHUYỂN TAB
+function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    
+    event.target.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+}
+
+// INITAL RENDER
+window.onload = function() {
+    renderMCQ();
+    renderEssay();
+};
+</script>
+
+</body>
+</html>
