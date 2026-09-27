@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lời giải Bài tập trọng tâm Chương 1 — Điện tích &amp; Điện trường | VLĐC2</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+  :root{
+    --bg:#0a0e14; --bg2:#121924; --bg3:#1a2330;
+    --fg:#e7eef5; --muted:#93a5b8; --accent:#4fd1c5; --accent2:#f2c14e;
+    --danger:#ff7b7b; --border:#243141; --link:#7dd3fc;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.65;
+  }
+  header.hero{
+    padding:36px 20px 24px; text-align:center;
+    background:linear-gradient(180deg,var(--bg3),var(--bg));
+    border-bottom:1px solid var(--border);
+  }
+  header.hero h1{margin:0 0 6px; color:var(--accent); font-size:1.7rem;}
+  header.hero p{margin:4px 0; color:var(--muted); font-size:0.98rem;}
+  nav.stickynav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,14,20,0.97); backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--border);
+    padding:8px 10px; display:flex; flex-wrap:wrap; gap:6px;
+    justify-content:center;
+  }
+  nav.stickynav a{
+    color:var(--fg); text-decoration:none; background:var(--bg3);
+    border:1px solid var(--border); padding:5px 11px; border-radius:20px;
+    font-size:0.83rem; white-space:nowrap; transition:.15s;
+  }
+  nav.stickynav a:hover{background:var(--accent); color:#04211f; border-color:var(--accent);}
+  main{max-width:900px; margin:0 auto; padding:10px 16px 60px;}
+  section.problem{
+    background:var(--bg2); border:1px solid var(--border); border-radius:14px;
+    padding:22px 24px; margin:26px 0; scroll-margin-top:64px;
+  }
+  section.theory{
+    background:var(--bg2); border:1px solid var(--border); border-radius:14px;
+    padding:22px 24px; margin:26px 0; scroll-margin-top:64px;
+  }
+  h2.ptitle{color:var(--accent2); margin-top:0; font-size:1.18rem; border-bottom:1px dashed var(--border); padding-bottom:8px;}
+  h3{color:var(--accent); font-size:1.02rem; margin-bottom:6px;}
+  .statement{
+    background:rgba(255,255,255,0.035); border-left:4px solid var(--accent2);
+    border-radius:6px; padding:12px 16px; margin-bottom:14px; font-size:0.97rem;
+  }
+  details{margin-top:12px; border-top:1px solid var(--border); padding-top:6px;}
+  summary{cursor:pointer; color:var(--accent); font-weight:600; padding:8px 4px; list-style:revert;}
+  summary:hover{color:var(--accent2);}
+  .part{margin:14px 0 20px; padding-left:2px;}
+  .part > b.plabel{color:var(--accent2);}
+  .answer-box{
+    background:rgba(79,209,197,0.09); border:1px solid var(--accent);
+    border-radius:8px; padding:10px 14px; margin-top:8px; font-weight:600;
+  }
+  .note{color:var(--muted); font-size:0.88rem;}
+  .svg-wrap{display:flex; justify-content:center; margin:14px 0;}
+  svg{max-width:100%; height:auto;}
+  svg text{fill:var(--fg); font-size:13px; font-family:inherit;}
+  .formula-table{width:100%; border-collapse:collapse; margin:10px 0;}
+  .formula-table td{padding:8px 10px; border-bottom:1px solid var(--border); vertical-align:top;}
+  .formula-table td:first-child{color:var(--muted); width:36%;}
+  code{background:var(--bg3); padding:1px 5px; border-radius:4px;}
+  hr.sep{border:none; border-top:1px dashed var(--border); margin:22px 0;}
+  footer{text-align:center; color:var(--muted); padding:30px 10px; font-size:0.85rem;}
+  a.top{color:var(--link);}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>ĐIỆN TÍCH VÀ ĐIỆN TRƯỜNG — CHƯƠNG 1</h1>
+  <p>Lời giải chi tiết Bài tập trọng tâm Chương 1 — Vật lý Đại cương 2</p>
+  <p class="note">Biên soạn theo phong cách giảng dạy bài tập trên lớp — trình bày đầy đủ các bước, có tóm tắt công thức và sơ đồ minh họa.</p>
+</header>
+
+<nav class="stickynav" id="topnav">
+  <a href="#top">↑ Đầu trang</a>
+  <a href="#lythuyet">Lý thuyết</a>
+  <a href="#bai1">Bài 1</a>
+  <a href="#bai2">Bài 2</a>
+  <a href="#bai3">Bài 3</a>
+  <a href="#bai4">Bài 4</a>
+  <a href="#bai5">Bài 5</a>
+  <a href="#bai6">Bài 6</a>
+  <a href="#bai7">Bài 7</a>
+  <a href="#bai8">Bài 8</a>
+  <a href="#bai9">Bài 9</a>
+  <a href="#bai10">Bài 10</a>
+  <a href="#bai11">Bài 11</a>
+  <a href="#bai12">Bài 12</a>
+  <a href="#bai13">Bài 13</a>
+  <a href="#bai14">Bài 14</a>
+  <a href="#bai15">Bài 15</a>
+</nav>
+
+<main id="top">
+
+<section class="theory" id="lythuyet">
+<h2 class="ptitle">📘 Tóm tắt công thức Chương 1 cần dùng</h2>
+<table class="formula-table">
+<tr><td>Định luật Coulomb</td><td>$$F=k\dfrac{|q_1q_2|}{r^2},\qquad k=\dfrac{1}{4\pi\varepsilon_0}=8{,}988\times10^{9}\ \text{N·m}^2/\text{C}^2,\quad \varepsilon_0=8{,}854\times10^{-12}\ \text{C}^2/(\text{N·m}^2)$$</td></tr>
+<tr><td>Nguyên lý chồng chất</td><td>Lực (hoặc điện trường) tổng hợp = tổng vectơ các lực (điện trường) thành phần do từng điện tích gây ra.</td></tr>
+<tr><td>Định nghĩa điện trường</td><td>$$\vec E=\dfrac{\vec F}{q_0}\ \ (q_0\to 0),\qquad \vec F=q\vec E$$</td></tr>
+<tr><td>Điện trường của điện tích điểm</td><td>$$E=k\dfrac{|q|}{r^2}\ \text{(hướng ra xa nếu }q>0\text{, hướng vào nếu }q<0\text{)}$$</td></tr>
+<tr><td>Điện trường trên trục vòng dây bán kính $a$, điện tích $Q$</td><td>$$E=\dfrac{kQx}{(x^2+a^2)^{3/2}}$$</td></tr>
+<tr><td>Điện trường trên trục đĩa tích điện đều bán kính $R$, mật độ mặt $\sigma$</td><td>$$E=\dfrac{\sigma}{2\varepsilon_0}\left[1-\dfrac{x}{\sqrt{x^2+R^2}}\right]$$</td></tr>
+<tr><td>Điện trường của dây thẳng dài vô hạn, mật độ dài $\lambda$</td><td>$$E=\dfrac{\lambda}{2\pi\varepsilon_0 r}=\dfrac{2k\lambda}{r}$$</td></tr>
+<tr><td>Điện trường tại trung trực của đoạn dây hữu hạn chiều dài $L$, cách $d$</td><td>$$E=\dfrac{k\lambda L}{d\sqrt{d^2+(L/2)^2}}=\dfrac{kQ}{d\sqrt{d^2+(L/2)^2}}$$</td></tr>
+<tr><td>Lưỡng cực điện</td><td>Mô-men lưỡng cực $\vec p=q\vec d$ (hướng từ điện tích âm sang dương); mô-men xoắn trong điện trường đều $\tau=pE\sin\theta$; thế năng $U=-\vec p\cdot\vec E$</td></tr>
+<tr><td>Điện trường của lưỡng cực trên trục xa ($x\gg d$)</td><td>$$E=\dfrac{2kp}{x^3}\ \text{(cùng hướng }\vec p\text{)}$$</td></tr>
+</table>
+<p class="note">Hằng số dùng xuyên suốt: $e=1{,}602\times10^{-19}$ C; $m_e=9{,}109\times10^{-31}$ kg; $m_p=1{,}673\times10^{-27}$ kg; $N_A=6{,}022\times10^{23}$ mol⁻¹; $g=9{,}8$ m/s².</p>
+</section>
+
+<!-- ================= BÀI 1 ================= -->
+<section class="problem" id="bai1">
+<h2 class="ptitle">Bài 1 (21.8**)</h2>
+<div class="statement">Hai quả cầu nhỏ bằng nhôm, mỗi quả có khối lượng 0,025 kg, đặt cách nhau 80 cm.<br>
+a) Mỗi quả cầu chứa bao nhiêu electron? (Khối lượng nguyên tử Al = 26,982 g/mol; Z = 13)<br>
+b) Cần loại bỏ bao nhiêu electron khỏi một quả cầu và thêm vào quả cầu kia để tạo ra lực hút $10^4$ N giữa hai quả cầu?</div>
+
+<details open><summary>Xem lời giải chi tiết</summary>
+
+<div class="part"><b class="plabel">a) Số electron trong mỗi quả cầu:</b><br>
+Số mol nhôm trong mỗi quả cầu:
+$$n=\dfrac{m}{M}=\dfrac{0{,}025\ \text{kg}}{26{,}982\times10^{-3}\ \text{kg/mol}}=0{,}9265\ \text{mol}$$
+Số nguyên tử Al:
+$$N_{\text{ntử}}=n\cdot N_A=0{,}9265\times6{,}022\times10^{23}=5{,}580\times10^{23}\ \text{nguyên tử}$$
+Vì nguyên tử trung hòa nên số electron = $Z\times$ số nguyên tử ($Z=13$):
+$$N_e=13\times5{,}580\times10^{23}=7{,}25\times10^{24}\ \text{electron}$$
+<div class="answer-box">Mỗi quả cầu chứa khoảng $7{,}25\times10^{24}$ electron.</div>
+</div>
+
+<div class="part"><b class="plabel">b) Số electron cần chuyển để tạo lực hút $10^4$ N:</b><br>
+Muốn có lực <i>hút</i>, hai quả cầu phải mang điện tích trái dấu, độ lớn bằng nhau $q$ (loại bớt electron ở quả này → tích điện dương $+q$; thêm electron vào quả kia → tích điện âm $-q$).
+Áp dụng định luật Coulomb:
+$$F=\dfrac{kq^2}{r^2}\ \Rightarrow\ q=r\sqrt{\dfrac{F}{k}}=0{,}80\sqrt{\dfrac{10^4}{8{,}988\times10^{9}}}$$
+$$q=8{,}44\times10^{-4}\ \text{C}$$
+Số electron tương ứng:
+$$N=\dfrac{q}{e}=\dfrac{8{,}44\times10^{-4}}{1{,}602\times10^{-19}}=5{,}27\times10^{15}\ \text{electron}$$
+<div class="answer-box">Cần chuyển khoảng $5{,}27\times10^{15}$ electron từ quả cầu này sang quả cầu kia (chỉ chiếm một phần rất nhỏ, khoảng $7\times10^{-10}$, trong tổng số $7{,}25\times10^{24}$ electron sẵn có).</div>
+</div>
+</details>
+</section>
+
+<!-- ================= BÀI 2 ================= -->
+<section class="problem" id="bai2">
+<h2 class="ptitle">Bài 2 (21.9**)</h2>
+<div class="statement">Hai quả cầu nhỏ bằng nhựa tích điện dương, cách nhau 15 cm, lực đẩy giữa chúng là 0,22 N.<br>
+a) Điện tích trên mỗi quả cầu nếu chúng bằng nhau?<br>
+b) Điện tích trên mỗi quả cầu nếu một quả có điện tích gấp 4 lần quả kia?</div>
+
+<details open><summary>Xem lời giải chi tiết</summary>
+
+<div class="part"><b class="plabel">a) Hai điện tích bằng nhau $q_1=q_2=q$:</b>
+$$F=\dfrac{kq^2}{r^2}\ \Rightarrow\ q=r\sqrt{\dfrac{F}{k}}=0{,}15\sqrt{\dfrac{0{,}22}{8{,}988\times10^{9}}}$$
+<div class="answer-box">$q=7{,}42\times10^{-7}\ \text{C}=0{,}742\ \mu\text{C}$ trên mỗi quả cầu.</div>
+</div>
+
+<div class="part"><b class="plabel">b) $q_2=4q_1$:</b>
+$$F=\dfrac{k(q_1)(4q_1)}{r^2}=\dfrac{4kq_1^2}{r^2}\ \Rightarrow\ q_1=r\sqrt{\dfrac{F}{4k}}=0{,}15\sqrt{\dfrac{0{,}22}{4\times8{,}988\times10^9}}$$
+$$q_1=3{,}71\times10^{-7}\ \text{C},\qquad q_2=4q_1=1{,}48\times10^{-6}\ \text{C}$$
+<div class="answer-box">$q_1=0{,}371\ \mu\text{C}$ và $q_2=1{,}48\ \mu\text{C}$.</div>
+</div>
+</details>
+</section>
+
+<!-- ================= BÀI 3 ================= -->
+<section class="problem" id="bai3">
+<h2 class="ptitle">Bài 3 (21.12*)</h2>
+<div class="statement">Điện tích $q_1=-0{,}55$ mC tác dụng lực 0,6 N hướng lên trên vào điện tích chưa biết $q_2$ nằm ngay bên dưới nó, cách 0,3 m.<br>
+a) Độ lớn và dấu của $q_2$?<br>
+b) Lực mà $q_2$ tác dụng lên $q_1$?</div>
+
+<div class="svg-wrap">
+<svg viewBox="0 0 260 200">
+  <line x1="130" y1="30" x2="130" y2="160" stroke="currentColor" stroke-dasharray="4 4" opacity="0.4"/>
+  <circle cx="130" cy="50" r="14" fill="none" stroke="#ff7b7b" stroke-width="2"/>
+  <text x="130" y="55" text-anchor="middle">−</text>
+  <text x="170" y="50" fill="#ff7b7b">q₁ = −0,55 mC</text>
+  <circle cx="130" cy="150" r="14" fill="none" stroke="#4fd1c5" stroke-width="2"/>
+  <text x="130" y="155" text-anchor="middle">?</text>
+  <text x="170" y="150" fill="#4fd1c5">q₂ = ?</text>
+  <line x1="130" y1="140" x2="130" y2="95" stroke="#f2c14e" stroke-width="2" marker-end="url(#arrow3)"/>
+  <text x="110" y="115" fill="#f2c14e" text-anchor="end">F = 0,6 N</text>
+  <text x="150" y="105" fill="#93a5b8" font-size="11">r = 0,3 m</text>
+  <defs><marker id="arrow3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#f2c14e"/></marker></defs>
+</svg>
+</div>
+
+<details open><summary>Xem lời giải chi tiết</summary>
+
+<div class="part"><b class="plabel">a) Dấu và độ lớn của $q_2$:</b><br>
+Lực do $q_1$ tác dụng lên $q_2$ hướng <i>lên trên</i>, tức là hướng <i>về phía $q_1$</i> (vì $q_2$ nằm dưới $q_1$) → đây là lực <b>hút</b>. Hai điện tích hút nhau nên phải <b>trái dấu</b>. Vì $q_1<0$ nên $q_2>0$.<br>
+Áp dụng định luật Coulomb để tìm độ lớn:
+$$F=\dfrac{k|q_1||q_2|}{r^2}\ \Rightarrow\ |q_2|=\dfrac{Fr^2}{k|q_1|}=\dfrac{0{,}6\times0{,}3^2}{8{,}988\times10^9\times0{,}55\times10^{-3}}$$
+$$|q_2|=1{,}09\times10^{-8}\ \text{C}=10{,}9\ \text{nC}$$
+<div class="answer-box">$q_2=+10{,}9\ \text{nC}$ (dương).</div>
+</div>
+
+<div class="part"><b class="plabel">b) Lực do $q_2$ tác dụng lên $q_1$:</b><br>
+Theo định luật III Newton, lực mà $q_2$ tác dụng lên $q_1$ có <b>độ lớn bằng</b> lực mà $q_1$ tác dụng lên $q_2$ (0,6 N) nhưng <b>ngược hướng</b>.
+<div class="answer-box">$F=0{,}6$ N, hướng <b>xuống dưới</b> (về phía $q_2$) — hợp lý vì đây là cặp lực hút.</div>
+</div>
+</details>
+</section>
+
+<!-- ================= BÀI 4 ================= -->
+<section class="problem" id="bai4">
+<h2 class="ptitle">Bài 4 (21.20**)</h2>
+<div class="statement">$q_1=4\,$nC tại $x=0{,}2$ m, $q_2=5\,$nC tại $x=-0{,}3$ m. Tìm lực tổng hợp lên $q_3=-6\,$nC đặt tại gốc tọa độ.</div>
+
+<div class="svg-wrap">
+<svg viewBox="0 0 420 140">
+  <line x1="20" y1="70" x2="400" y2="70" stroke="currentColor" marker-end="url(#ax4)"/>
+  <defs><marker id="ax4" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="currentColor"/></marker>
+  <marker id="af1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#4fd1c5"/></marker>
+  <marker id="af2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#ff7b7b"/></marker></defs>
+  <circle cx="120" cy="70" r="4" fill="currentColor"/><text x="120" y="95" text-anchor="middle">O</text>
+  <circle cx="280" cy="70" r="10" fill="none" stroke="#f2c14e" stroke-width="2"/>
+  <text x="280" y="50" text-anchor="middle" fill="#f2c14e">q₁=+4nC (x=0,2m)</text>
+  <circle cx="30" cy="70" r="10" fill="none" stroke="#f2c14e" stroke-width="2"/>
+  <text x="30" y="50" text-anchor="middle" fill="#f2c14e">q₂=+5nC (x=−0,3m)</text>
+  <circle cx="120" cy="70" r="8" fill="none" stroke="#ff7b7b" stroke-width="2"/>
+  <text x="120" y="112" text-anchor="middle" fill="#ff7b7b">q₃=−6nC</text>
+  <line x1="120" y1="70" x2="170" y2="70" stroke="#4fd1c5" stroke-width="3" marker-end="url(#af1)"/>
+  <text x="170" y="30" fill="#4fd1c5">F₁ (hút về q₁, +x)</text>
+  <line x1="120" y1="70" x2="80" y2="70" stroke="#ff7b7b" stroke-width="3" marker-end="url(#af2)"/>
+  <text x="20" y="130" fill="#ff7b7b">F₂ (hút về q₂, −x)</text>
+</svg>
+</div>
+
+<details open><summary>Xem lời giải chi tiết</summary>
+$q_3$ mang điện âm; $q_1,q_2$ mang điện dương → cả hai lực đều là lực <b>hút</b>, hướng từ $q_3$ về phía điện tích tương ứng.<br>
+Khoảng cách: $r_1=0{,}2$ m (đến $q_1$), $r_2=0{,}3$ m (đến $q_2$).
+$$F_1=\dfrac{k|q_1q_3|}{r_1^2}=\dfrac{8{,}988\times10^9\times4\times10^{-9}\times6\times10^{-9}}{0{,}2^2}=5{,}39\times10^{-6}\ \text{N (hướng } +x\text{, về phía }q_1)$$
+$$F_2=\dfrac{k|q_2q_3|}{r_2^2}=\dfrac{8{,}988\times10^9\times5\times10^{-9}\times6\times10^{-9}}{0{,}3^2}=3{,}00\times10^{-6}\ \text{N (hướng } -x\text{, về phía }q_2)$$
+Hai lực ngược chiều nhau trên trục $Ox$, hợp lực:
+$$F=F_1-F_2=5{,}39\times10^{-6}-3{,}00\times10^{-6}=2{,}40\times10^{-6}\ \text{N}$$
+<div class="answer-box">$F_{\text{tổng hợp}}=2{,}40\ \mu\text{N}$, hướng theo chiều <b>dương trục Ox</b> (về phía $q_1$).</div>
+</details>
+</section>
+
+<!-- ================= BÀI 5 ================= -->
+<section class="problem" id="bai5">
+<h2 class="ptitle">Bài 5 (21.25**)</h2>
+<div class="statement">Proton chuyển động theo phương ngang sang phải với $v_0=4{,}5\times10^6$ m/s.<br>
+a) Điện trường nhỏ nhất để proton chuyển động chậm dần đều, dừng lại sau 3,2 cm?<br>
+b) Thời gian để proton dừng lại?<br>
+c) Điện trường tối thiểu để dừng một electron trong cùng điều kiện ở câu a?</div>
+
+<details open><summary>Xem lời giải chi tiết</summary>
+
+<div class="part"><b class="plabel">a) Điện trường nhỏ nhất (proton):</b><br>
+Dùng công thức chuyển động chậm dần đều: $v^2=v_0^2-2ad$ với $v=0$:
+$$a=\dfrac{v_0^2}{2d}=\dfrac{(4{,}5\times10^6)^2}{2\times0{,}032}=3{,}16\times10^{14}\ \text{m/s}^2$$
+Lực cản cần thiết: $F=m_pa=eE\Rightarrow E=\dfrac{m_pa}{e}$
+$$E=\dfrac{1{,}673\times10^{-27}\times3{,}16\times10^{14}}{1{,}602\times10^{-19}}=3{,}30\times10^{6}\ \text{N/C}$$
+Vì proton mang điện dương và cần lực <i>ngược chiều chuyển động</i> ($v_0$ hướng $+x$) nên $\vec F$ hướng $-x$; do $\vec F=q\vec E$ với $q>0$ nên $\vec E$ cùng hướng với $\vec F$.
+<div class="answer-box">$E_{\min}=3{,}30\times10^{6}$ N/C, hướng <b>ngược chiều chuyển động</b> của proton (chiều $-x$).</div>
+</div>
+
+<div class="part"><b class="plabel">b) Thời gian dừng lại:</b>
+$$t=\dfrac{v_0}{a}=\dfrac{4{,}5\times10^6}{3{,}16\times10^{14}}=1{,}42\times10^{-8}\ \text{s}\approx14{,}2\ \text{ns}$$
+<div class="answer-box">$t\approx1{,}42\times10^{-8}$ s.</div>
+</div>
+
+<div class="part"><b class="plabel">c) Điện trường tối thiểu để dừng electron (cùng $v_0$, cùng quãng đường $d$):</b><br>
+Gia tốc cần thiết $a$ giống hệt câu a) (vì $v_0,d$ không đổi). Chỉ khác khối lượng:
+$$E=\dfrac{m_ea}{e}=\dfrac{9{,}109\times10^{-31}\times3{,}16\times10^{14}}{1{,}602\times10^{-19}}=1{,}80\times10^{3}\ \text{N/C}$$
+Vì electron mang điện âm, để lực ngược chiều $v_0$ (chiều $-x$) thì $\vec E$ phải <b>cùng chiều</b> với $v_0$ (chiều $+x$) — ngược lại với chiều điện trường ở câu a).
+<div class="answer-box">$E_{\min}=1{,}80\times10^{3}$ N/C (nhỏ hơn nhiều so với proton, do khối lượng electron rất nhỏ), hướng <b>cùng chiều chuyển động ban đầu</b>.</div>
+</div>
+</details>
+</section>
+
+<!-- ================= BÀI 6 ================= -->
+<section class="problem" id="bai6">
+<h2 class="ptitle">Bài 6 (21.29**)</h2>
+<div class="statement">Electron phóng ra với $v_0=1{,}6\times10^6$ m/s vào giữa hai tấm phẳng song song, chiều dài tấm $L=2{,}00$ cm, khoảng cách từ đường giữa đến mỗi tấm là 1,00 cm.<br>
+a) Điện trường nếu electron thoát ra theo quỹ đạo lệch chạm mép một tấm?<br>
+b) Thay bằng proton cùng $v_0$: có va vào tấm không? Vị trí và hướng khi thoát ra?<br>
+c) So sánh hai quỹ đạo.<br>
+d) Có thể bỏ qua trọng lực không?</div>
+
+<div class="svg-wrap">
+<svg viewBox="0 0 420 180">
+  <rect x="40" y="30" width="340" height="6" fill="#7dd3fc" opacity="0.6"/>
+  <rect x="40" y="144" width="340" height="6" fill="#7dd3fc" opacity="0.6"/>
+  <line x1="40" y1="87" x2="380" y2="87" stroke="currentColor" stroke-dasharray="3 3" opacity="0.35"/>
+  <line x1="40" y1="87" x2="90" y2="87" stroke="#4fd1c5" stroke-width="2" marker-end="url(#a6)"/>
+  <defs><marker id="a6" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#4fd1c5"/></marker></defs>
+  <text x="65" y="80" fill="#4fd1c5" font-size="12">v₀</text>
+  <path d="M40,87 C 200,90 320,110 380,144" fill="none" stroke="#ff7b7b" stroke-width="2" stroke-dasharray="5 3"/>
+  <text x="300" y="130" fill="#ff7b7b" font-size="11">quỹ đạo electron</text>
+  <text x="200" y="20" text-anchor="middle" font-size="12">L = 2,00 cm</text>
+  <line x1="15" y1="30" x2="15" y2="87" stroke="currentColor"/><line x1="12" y1="30" x2="18" y2="30" stroke="currentColor"/><line x1="12" y1="87" x2="18" y2="87" stroke="currentColor"/>
+  <text x="0" y="60" font-size="11">1,00 cm</text>
+</svg>
+</div>
+
+<details open><summary>Xem lời giải chi tiết</summary>
+
+<div class="part"><b class="plabel">a) Điện trường E:</b><br>
+Thời gian electron đi hết chiều dài tấm:
+$$t=\dfrac{L}{v_0}=\dfrac{0{,}02}{1{,}6\times10^6}=1{,}25\times10^{-8}\ \text{s}$$
+Electron lệch $y=1{,}00$ cm $=0{,}01$ m theo phương vuông góc trong thời gian đó (chuyển động biến đổi đều theo phương ngang trục):
+$$y=\tfrac12 at^2\ \Rightarrow\ a=\dfrac{2y}{t^2}=\dfrac{2\times0{,}01}{(1{,}25\times10^{-8})^2}=1{,}28\times10^{14}\ \text{m/s}^2$$
+$$E=\dfrac{m_ea}{e}=\dfrac{9{,}109\times10^{-31}\times1{,}28\times10^{14}}{1{,}602\times10^{-19}}=727{,}8\ \text{N/C}\approx728\ \text{N/C}$$
+Vì electron lệch xuống dưới, lực điện tác dụng lên nó hướng xuống; do điện tích electron âm ($\vec F=-e\vec E$) nên $\vec E$ phải hướng <b>ngược</b> lại — tức hướng từ tấm dưới lên tấm trên.
+<div class="answer-box">$E\approx728$ N/C, hướng từ tấm dưới lên tấm trên.</div>
+</div>
+
+<div class="part"><b class="plabel">b) Thay bằng proton (cùng $v_0$, cùng $E$ vừa tìm):</b><br>
+Gia tốc của proton (điện tích cùng độ lớn, khối lượng lớn hơn nhiều):
+$$a_p=\dfrac{eE}{m_p}=\dfrac{1{,}602\times10^{-19}\times727{,}8}{1{,}673\times10^{-27}}=6{,}97\times10^{10}\ \text{m/s}^2$$
+Độ lệch khi đi hết chiều dài tấm (cùng thời gian $t=1{,}25\times10^{-8}$ s vì $v_0$ không đổi theo phương ngang):
+$$y_p=\tfrac12a_pt^2=5{,}44\times10^{-6}\ \text{m}\approx5{,}44\ \mu\text{m}$$
+Vì $y_p\ll1{,}00$ cm nên <b>proton KHÔNG va vào tấm nào</b>, nó thoát ra ở cuối tấm.<br>
+Vận tốc lệch lúc thoát ra: $v_y=a_pt=871$ m/s, trong khi $v_x=v_0=1{,}6\times10^6$ m/s không đổi → góc lệch:
+$$\theta=\arctan\dfrac{v_y}{v_x}=\arctan\dfrac{871}{1{,}6\times10^6}\approx0{,}031^\circ$$
+<div class="answer-box">Proton thoát ra ở cuối tấm (cách điểm vào 2,00 cm theo phương ngang), lệch chỉ khoảng $5{,}44\ \mu\text{m}$ theo phương vuông góc — <b>ngược hướng với electron</b> (proton lệch lên trên vì mang điện dương). Sau khi ra khỏi vùng điện trường, nó tiếp tục chuyển động thẳng theo hướng lệch góc $\approx0{,}03^\circ$ so với phương ngang ban đầu.</div>
+</div>
+
+<div class="part"><b class="plabel">c) So sánh quỹ đạo:</b><br>
+Electron bị lệch rất mạnh (đến mức chạm tấm) vì khối lượng rất nhỏ nên gia tốc rất lớn ($a\propto1/m$, tỉ lệ khối lượng $m_p/m_e\approx1836$ lần). Proton, với cùng độ lớn điện tích nhưng khối lượng lớn hơn ~1836 lần, chịu gia tốc nhỏ hơn ~1836 lần nên gần như đi thẳng. Ngoài ra, do điện tích trái dấu, hai hạt lệch về <b>hai phía ngược nhau</b>.
+</div>
+
+<div class="part"><b class="plabel">d) Có thể bỏ qua trọng lực?</b><br>
+So sánh gia tốc điện với $g=9{,}8$ m/s²:
+$$\dfrac{a_e}{g}=\dfrac{1{,}28\times10^{14}}{9{,}8}\approx1{,}3\times10^{13}\ \text{lần},\qquad \dfrac{a_p}{g}=\dfrac{6{,}97\times10^{10}}{9{,}8}\approx7{,}1\times10^{9}\ \text{lần}$$
+<div class="answer-box">Cả hai tỉ số đều cực lớn → trọng lực hoàn toàn không đáng kể so với lực điện trong cả hai trường hợp, việc bỏ qua trọng lực là hợp lý.</div>
+</div>
+</details>
+</section>
+
+<!-- ================= BÀI 7 ================= -->
+<section class="problem" id="bai7">
+<h2 class="ptitle">Bài 7 (21.49**)</h2>
+<div class="statement">Điện tích $Q=-6{,}5$ nC phân bố đều trên đĩa phẳng không dẫn điện bán kính $R=1{,}25$ cm.<br>
+a) Điện trường tại P trên trục đĩa, cách đĩa $x=2$ cm.<br>
+b) Nếu toàn bộ điện tích dồn ra vành ngoài (bán kính $R$) → điện trường tại P?<br>
+c) Nếu toàn bộ điện tích dồn về tâm → điện trường tại P?<br>
+d) Giải thích các kết quả trên.</div>
+
+<details open><summary>Xem lời giải chi tiết</summary>
+
+<div class="part"><b class="plabel">a) Đĩa tích điện đều:</b><br>
+Mật độ điện mặt: $\sigma=\dfrac{Q}{\pi R^2}=\dfrac{-6{,}5\times10^{-9}}{\pi(0{,}0125)^2}=-1{,}324\times10^{-5}\ \text{C/m}^2$.
+$$E=\dfrac{\sigma}{2\varepsilon_0}\left[1-\dfrac{x}{\sqrt{x^2+R^2}}\right]=\dfrac{-1{,}324\times10^{-5}}{2\times8{,}854\times10^{-12}}\left[1-\dfrac{0{,}02}{\sqrt{0{,}02^2+0{,}0125^2}}\right]$$
+$$|E_a|=1{,}14\times10^{5}\ \text{N/C}$$
+<div class="answer-box">$E_a\approx1{,}14\times10^5$ N/C, hướng <b>vào đĩa</b> dọc theo trục (vì điện tích âm).</div>
+</div>
+
+<div class="part"><b class="plabel">b) Toàn bộ điện tích dồn thành vành tròn bán kính $R$:</b>
+$$E=\dfrac{k|Q|x}{(x^2+R^2)^{3/2}}=\dfrac{8{,}988\times10^9\times6{,}5\times10^{-9}\times0{,}02}{(0{,}02^2+0{,}0125^2)^{3/2}}$$
+<div class="answer-box">$E_b\approx8{,}91\times10^4$ N/C, hướng vào vành dây (cùng chiều với câu a).</div>
+</div>
+
+<div class="part"><b class="plabel">c) Toàn bộ điện tích dồn về tâm (điện tích điểm):</b>
+$$E=\dfrac{k|Q|}{x^2}=\dfrac{8{,}988\times10^9\times6{,}5\times10^{-9}}{0{,}02^2}$$
+<div class="answer-box">$E_c\approx1{,}46\times10^5$ N/C, hướng vào tâm.</div>
+</div>
+
+<div class="part"><b class="plabel">d) Giải thích:</b><br>
+Xét một phần tử điện tích $dq$ nằm ở bán kính $r'$ tính từ trục. Đóng góp của nó vào điện trường dọc trục tại P tỉ lệ với hệ số:
+$$f(r')=\dfrac{x}{(x^2+r'^2)^{3/2}}$$
+Hàm $f(r')$ <b>giảm dần</b> khi $r'$ tăng (điện tích càng xa trục thì đóng góp vào thành phần dọc trục càng yếu, do khoảng cách tới P lớn hơn và có "hao hụt" theo phương vuông góc trục). 
+<ul>
+<li>Ở đĩa (câu a), điện tích trải đều từ $r'=0$ đến $r'=R$ → giá trị trung bình của $f$ lớn hơn so với khi toàn bộ điện tích dồn hết ra $r'=R$ (câu b, vành dây) — vì vậy $E_a>E_b$: <b>điện trường ở câu a) mạnh hơn câu b)</b>.</li>
+<li>Ở câu c), toàn bộ điện tích được đặt tại $r'=0$ — vị trí có $f(r')$ đạt <b>giá trị lớn nhất</b> ($f(0)=1/x^2$, đúng bằng công thức điện tích điểm) → đây là cấu hình cho điện trường <b>mạnh nhất</b> trong ba trường hợp.</li>
+</ul>
+</div>
+</details>
+</section>
+
+<!-- ================= BÀI 8 ================= -->
+<section class="problem" id="bai8">
+<h2 class="ptitle">Bài 8 (21.50**)</h2>
+<div class="statement">Dây dẫn thẳng dài, mật độ điện tích dài $\lambda=3{,}2\times10^{-10}$ C/m. Tìm khoảng cách để $E=2{,}5$ N/C.</div>
+<details open><summary>Xem lời giải chi tiết</summary>
+$$E=\dfrac{2k\lambda}{r}\ \Rightarrow\ r=\dfrac{2k\lambda}{E}=\dfrac{2\times8{,}988\times10^9\times3{,}2\times10^{-10}}{2{,}5}$$
+<div class="answer-box">$r\approx2{,}30$ m.</div>
+</details>
+</section>
+
+<!-- ================= BÀI 9 ================= -->
+<section class="problem" id="bai9">
+<h2 class="ptitle">Bài 9 (21.51*)</h2>
+<div class="statement">Dây dẫn hình tròn bán kính $a=2{,}5$ cm, điện tích $Q=+0{,}125$ nC phân bố đều, tâm tại gốc O.<br>
+a) Điện trường tại P trên trục Ox, $x=40$ cm.<br>
+b) Lực do vòng dây tác dụng lên điện tích $q=-2{,}5$ mC đặt tại P?</div>
+
+<div class="svg-wrap">
+<svg viewBox="0 0 320 140">
+  <ellipse cx="70" cy="70" rx="18" ry="45" fill="none" stroke="#f2c14e" stroke-width="3"/>
+  <line x1="70" y1="70" x2="270" y2="70" stroke="currentColor" stroke-dasharray="3 3" marker-end="url(#a9)"/>
+  <defs><marker id="a9" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="currentColor"/></marker></defs>
+  <circle cx="250" cy="70" r="6" fill="#4fd1c5"/>
+  <text x="250" y="55" text-anchor="middle" fill="#4fd1c5">P (x=40cm)</text>
+  <text x="60" y="30" fill="#f2c14e">Q=+0,125nC</text>
+  <text x="160" y="90" font-size="11">x</text>
+</svg>
+</div>
+
+<details open><summary>Xem lời giải chi tiết</summary>
+<div class="part"><b class="plabel">a) Điện trường tại P:</b>
+$$E=\dfrac{kQx}{(x^2+a^2)^{3/2}}=\dfrac{8{,}988\times10^9\times0{,}125\times10^{-9}\times0{,}40}{(0{,}40^2+0{,}025^2)^{3/2}}$$
+<div class="answer-box">$E\approx6{,}98$ N/C, hướng ra xa vòng dây theo chiều dương trục Ox (vì $Q>0$).</div>
+</div>
+<div class="part"><b class="plabel">b) Lực tác dụng lên $q=-2{,}5$ mC tại P:</b>
+$$F=|q|\cdot E=2{,}5\times10^{-3}\times6{,}98=1{,}75\times10^{-2}\ \text{N}$$
+<div class="answer-box">$F\approx17{,}5$ mN, hướng <b>vào vòng dây</b> (vì $q$ âm bị hút ngược chiều $\vec E$).</div>
+</div>
+</details>
+</section>
+
+<!-- ================= BÀI 10 ================= -->
+<section class="problem" id="bai10">
+<h2 class="ptitle">Bài 10 (21.53*)</h2>
+<div class="statement">$q_1=-4{,}5$ nC và $q_2=4{,}5$ nC cách nhau 3,1 nm, tạo lưỡng cực điện.<br>
+a) Mô-men lưỡng cực (độ lớn và hướng)?<br>
+b) Đặt trong điện trường đều, hướng của $\vec E$ hợp với đường nối hai điện tích một góc $36{,}9^\circ$. Tìm $E$ nếu mô-men xoắn là $7{,}2\times10^{-9}$ N·m.</div>
+<details open><summary>Xem lời giải chi tiết</summary>
+<div class="part"><b class="plabel">a) Mô-men lưỡng cực:</b>
+$$p=qd=4{,}5\times10^{-9}\times3{,}1\times10^{-9}=1{,}395\times10^{-17}\ \text{C·m}$$
+<div class="answer-box">$p\approx1{,}40\times10^{-17}$ C·m, hướng từ $q_1$ (âm) sang $q_2$ (dương).</div>
+</div>
+<div class="part"><b class="plabel">b) Cường độ điện trường:</b>
+$$\tau=pE\sin\theta\ \Rightarrow\ E=\dfrac{\tau}{p\sin\theta}=\dfrac{7{,}2\times10^{-9}}{1{,}395\times10^{-17}\times\sin36{,}9^\circ}$$
+<div class="answer-box">$E\approx8{,}60\times10^{8}$ N/C.</div>
+</div>
+</details>
+</section>
+
+<!-- ================= BÀI 11 ================= -->
+<section class="problem" id="bai11">
+<h2 class="ptitle">Bài 11 (21.56*)</h2>
+<div class="statement">Mô-men lưỡng cực phân tử nước $p=6{,}17\times10^{-30}$ C·m, hướng theo Ox, đặt tại gốc tọa độ. Ion Cl⁻ ($q=-1{,}6\times10^{-19}$C) tại $x=3\times10^{-9}$ m ($x\gg d$). Tìm lực điện tác dụng lên ion Cl⁻.</div>
+<details open><summary>Xem lời giải chi tiết</summary>
+Vì $x\gg d$, dùng công thức gần đúng của điện trường trên trục lưỡng cực ở xa:
+$$E=\dfrac{2kp}{x^3}=\dfrac{2\times8{,}988\times10^9\times6{,}17\times10^{-30}}{(3\times10^{-9})^3}=4{,}11\times10^{6}\ \text{N/C (cùng hướng }\vec p\text{, tức }+x)$$
+Lực tác dụng lên Cl⁻:
+$$F=|q|\cdot E=1{,}6\times10^{-19}\times4{,}11\times10^{6}=6{,}57\times10^{-13}\ \text{N}$$
+<div class="answer-box">$F\approx6{,}57\times10^{-13}$ N, hướng <b>về phía phân tử nước</b> (chiều $-x$) — vì Cl⁻ mang điện âm bị hút bởi đầu dương (phía H) của lưỡng cực đang hướng ra phía nó.</div>
+</details>
+</section>
+
+<!-- ================= BÀI 12 ================= -->
+<section class="problem" id="bai12">
+<h2 class="ptitle">Bài 12 (21.63***)</h2>
+<div class="statement">Hai quả cầu $m=15$ g treo bằng hai dây dài $L=1{,}2$ m. Tích điện âm bằng nhau $q_1=q_2=q$, mỗi dây hợp với phương thẳng đứng góc $\theta=25^\circ$.<br>
+a) Vẽ sơ đồ lực.<br>
+b) Tìm $q$.<br>
+c) Nếu rút dây còn $L=0{,}6$ m (giữ nguyên $q$), góc mới là bao nhiêu?</div>
+
+<div class="svg-wrap">
+<svg viewBox="0 0 300 220">
+  <line x1="150" y1="10" x2="150" y2="20" stroke="currentColor"/>
+  <line x1="150" y1="15" x2="110" y2="140" stroke="currentColor" stroke-width="2"/>
+  <line x1="150" y1="15" x2="190" y2="140" stroke="currentColor" stroke-width="2"/>
+  <circle cx="110" cy="150" r="10" fill="none" stroke="#ff7b7b" stroke-width="2"/>
+  <circle cx="190" cy="150" r="10" fill="none" stroke="#ff7b7b" stroke-width="2"/>
+  <text x="110" y="180" text-anchor="middle" fill="#ff7b7b">m, q</text>
+  <text x="190" y="180" text-anchor="middle" fill="#ff7b7b">m, q</text>
+  <!-- forces on left ball -->
+  <line x1="110" y1="150" x2="110" y2="195" stroke="#f2c14e" stroke-width="2" marker-end="url(#af12-mg)"/>
+  <text x="115" y="205" fill="#f2c14e" font-size="11">mg</text>
+  <line x1="110" y1="150" x2="70" y2="150" stroke="#4fd1c5" stroke-width="2" marker-end="url(#af12-fe)"/>
+  <text x="45" y="145" fill="#4fd1c5" font-size="11">Fe</text>
+  <line x1="110" y1="150" x2="140" y2="40" stroke="#7dd3fc" stroke-width="2" marker-end="url(#af12-t)"/>
+  <text x="130" y="70" fill="#7dd3fc" font-size="11">T</text>
+  <defs>
+    <marker id="af12-mg" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#f2c14e"/></marker>
+    <marker id="af12-fe" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#4fd1c5"/></marker>
+    <marker id="af12-t" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#7dd3fc"/></marker>
+  </defs>
+  <path d="M150,35 A20,20 0 0,0 138,50" fill="none" stroke="currentColor" opacity="0.5"/>
+  <text x="152" y="45" font-size="11">θ</text>
+</svg>
+</div>
+
+<details open><summary>Xem lời giải chi tiết</summary>
+
+<div class="part"><b class="plabel">a) Sơ đồ lực (mỗi quả cầu):</b><br>
+Mỗi quả cầu chịu 3 lực: trọng lực $\vec{mg}$ (thẳng đứng, hướng xuống), lực căng dây $\vec T$ (dọc theo dây, hướng lên phía điểm treo), và lực đẩy Coulomb $\vec F_e$ (nằm ngang, đẩy ra xa quả cầu còn lại vì hai điện tích cùng dấu). Xem hình minh họa ở trên.
+</div>
+
+<div class="part"><b class="plabel">b) Tìm $q$:</b><br>
+Cân bằng lực theo phương ngang và thẳng đứng cho mỗi quả cầu:
+$$T\sin\theta=F_e,\qquad T\cos\theta=mg\ \Rightarrow\ F_e=mg\tan\theta$$
+$$F_e=0{,}015\times9{,}8\times\tan25^\circ=0{,}0685\ \text{N}$$
+Khoảng cách giữa hai điện tích (hình học tam giác cân):
+$$r=2L\sin\theta=2\times1{,}2\times\sin25^\circ=1{,}014\ \text{m}$$
+Áp dụng định luật Coulomb:
+$$F_e=\dfrac{kq^2}{r^2}\ \Rightarrow\ q=r\sqrt{\dfrac{F_e}{k}}=1{,}014\sqrt{\dfrac{0{,}0685}{8{,}988\times10^9}}$$
+<div class="answer-box">$q\approx2{,}80\times10^{-6}$ C $=2{,}80\ \mu$C (điện tích âm trên mỗi quả cầu).</div>
+</div>
+
+<div class="part"><b class="plabel">c) Khi rút dây còn $L=0{,}6$ m (giữ nguyên $q$):</b><br>
+Phương trình cân bằng lúc này (góc mới $\theta'$, $r'=2L'\sin\theta'$):
+$$mg\tan\theta'=\dfrac{kq^2}{(2L'\sin\theta')^2}$$
+Đây là phương trình siêu việt theo $\theta'$, giải bằng phương pháp số (hoặc thử–sai) với $L'=0{,}6$ m, $q=2{,}80\ \mu$C:
+<div class="answer-box">$\theta'\approx39{,}5^\circ$ (góc tăng lên so với $25^\circ$ ban đầu — hợp lý vì dây ngắn hơn thì hai điện tích buộc phải "xòe" ra một góc lớn hơn mới đạt cân bằng với cùng độ lớn điện tích).</div>
+</div>
+</details>
+</section>
+
+<!-- ================= BÀI 13 ================= -->
+<section class="problem" id="bai13">
+<h2 class="ptitle">Bài 13 (21.69***)</h2>
+<div class="statement">Điện tích $+Q$ tại gốc tọa độ, điện tích $+4Q$ tại $x=d$. Tìm độ lớn và vị trí điện tích thứ ba để cả ba điện tích ở trạng thái cân bằng.</div>
+
+<div class="svg-wrap">
+<svg viewBox="0 0 360 120">
+  <line x1="20" y1="60" x2="340" y2="60" stroke="currentColor" marker-end="url(#a13)"/>
+  <defs><marker id="a13" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="currentColor"/></marker></defs>
+  <circle cx="60" cy="60" r="10" fill="none" stroke="#f2c14e" stroke-width="2"/><text x="60" y="40" text-anchor="middle" fill="#f2c14e">+Q</text>
+  <circle cx="300" cy="60" r="14" fill="none" stroke="#f2c14e" stroke-width="2"/><text x="300" y="40" text-anchor="middle" fill="#f2c14e">+4Q</text>
+  <circle cx="140" cy="60" r="8" fill="none" stroke="#4fd1c5" stroke-width="2"/><text x="140" y="90" text-anchor="middle" fill="#4fd1c5">q₃ = −4Q/9</text>
+  <text x="200" y="45" text-anchor="middle" fill="#93a5b8" font-size="11">d/3</text>
+  <text x="300" y="95" text-anchor="middle" font-size="11">x = d</text>
+</svg>
+</div>
+
+<details open><summary>Xem lời giải chi tiết</summary>
+Gọi $q_3$ đặt tại vị trí $x$ ($0<x<d$), giữa $Q$ và $4Q$. Để hệ ba điện tích cân bằng, $q_3$ phải tạo lực <b>hút</b> lên cả hai điện tích dương → $q_3$ phải <b>mang điện âm</b>.<br>
+<b>Cân bằng của $Q$ (tại $x=0$):</b> lực đẩy từ $4Q$ (hướng $-x$) cân bằng với lực hút từ $q_3$ (hướng $+x$):
+$$\dfrac{k\cdot Q\cdot4Q}{d^2}=\dfrac{k\cdot Q\cdot|q_3|}{x^2}\ \Rightarrow\ |q_3|=\dfrac{4Qx^2}{d^2}\quad(1)$$
+<b>Cân bằng của $4Q$ (tại $x=d$):</b> lực đẩy từ $Q$ (hướng $+x$) cân bằng với lực hút từ $q_3$ (hướng $-x$), khoảng cách $(d-x)$:
+$$\dfrac{k\cdot Q\cdot4Q}{d^2}=\dfrac{k\cdot4Q\cdot|q_3|}{(d-x)^2}\ \Rightarrow\ |q_3|=\dfrac{Q(d-x)^2}{d^2}\quad(2)$$
+Từ (1) và (2):
+$$4x^2=(d-x)^2\ \Rightarrow\ 2x=d-x\ \Rightarrow\ x=\dfrac{d}{3}$$
+Thay vào (1):
+$$|q_3|=\dfrac{4Q}{d^2}\left(\dfrac{d}{3}\right)^2=\dfrac{4Q}{9}$$
+<div class="answer-box">$q_3=-\dfrac{4Q}{9}$, đặt tại vị trí $x=\dfrac{d}{3}$ tính từ điện tích $+Q$ (gần điện tích nhỏ hơn hơn, nằm giữa hai điện tích $+Q$ và $+4Q$). Có thể kiểm chứng $q_3$ cũng tự cân bằng với phương trình trên (cân bằng dọc trục, dù cân bằng này là <b>không bền</b> theo phương vuông góc).</div>
+</details>
+</section>
+
+<!-- ================= BÀI 14 ================= -->
+<section class="problem" id="bai14">
+<h2 class="ptitle">Bài 14 (21.79**)</h2>
+<div class="statement">Điện tích dương $Q$ phân bố đều dọc trục Ox từ $x=0$ đến $x=a$. Điện tích dương $q$ nằm trên Ox tại $x=a+r$.<br>
+a) Thành phần $E_x, E_y$ tại điểm trên Ox có $x>a$.<br>
+b) Lực mà $Q$ tác dụng lên $q$.<br>
+c) Chứng minh khi $r\gg a$: $F\approx\dfrac{kQq}{4\pi\varepsilon_0 r^2}$ (tức $F\approx\dfrac{kQq}{r^2}$).</div>
+<details open><summary>Xem lời giải chi tiết</summary>
+
+<div class="part"><b class="plabel">a) Điện trường tại điểm $x>a$ trên trục Ox:</b><br>
+Mật độ dài: $\lambda=Q/a$. Xét phần tử $dq=\lambda\,dx'$ tại vị trí $x'\in[0,a]$, gây ra tại điểm $x$ (với $x>a>x'$) điện trường theo chiều $+x$ (vì $Q,q>0$, cùng nằm trên trục nên không có thành phần $y$):
+$$dE_x=\dfrac{k\lambda\,dx'}{(x-x')^2}$$
+$$E_x=\int_0^a\dfrac{k\lambda\,dx'}{(x-x')^2}=k\lambda\left[\dfrac{1}{x-x'}\right]_0^a=k\lambda\left(\dfrac{1}{x-a}-\dfrac{1}{x}\right)=k\lambda\cdot\dfrac{a}{x(x-a)}$$
+Thay $\lambda=Q/a$:
+<div class="answer-box">$$E_x=\dfrac{kQ}{x(x-a)},\qquad E_y=0\ \text{(do đối xứng, toàn bộ điện tích nguồn nằm trên trục)}$$</div>
+</div>
+
+<div class="part"><b class="plabel">b) Lực tác dụng lên $q$ tại $x=a+r$:</b><br>
+Thay $x=a+r\ \Rightarrow\ x-a=r$:
+$$E_x(a+r)=\dfrac{kQ}{(a+r)\,r}$$
+$$F=qE_x=\dfrac{kQq}{r(a+r)}$$
+<div class="answer-box">$F=\dfrac{kQq}{r(a+r)}$, hướng theo chiều dương Ox — tức đẩy $q$ ra xa (lực đẩy, vì $Q$ và $q$ cùng dấu).</div>
+</div>
+
+<div class="part"><b class="plabel">c) Khi $r\gg a$:</b><br>
+$$a+r\approx r\ \Rightarrow\ F=\dfrac{kQq}{r(a+r)}\approx\dfrac{kQq}{r\cdot r}=\dfrac{kQq}{r^2}=\dfrac{Qq}{4\pi\varepsilon_0r^2}$$
+<div class="answer-box">Khi ở rất xa, đoạn điện tích $Q$ có thể coi như điện tích điểm đặt tại một điểm, và công thức trở về đúng định luật Coulomb cho hai điện tích điểm — điều hợp lý về mặt vật lý.</div>
+</div>
+</details>
+</section>
+
+<!-- ================= BÀI 15 ================= -->
+<section class="problem" id="bai15">
+<h2 class="ptitle">Bài 15 (21.87**)</h2>
+<div class="statement">Hai thanh dẫn điện dài $L=1{,}2$ m tích điện đều, đặt vuông góc nhau (một thanh mang $+2{,}5$ mC, thanh kia mang $-2{,}5$ mC). Điểm P cách mỗi thanh 60 cm (nằm trên đường trung trực của cả hai thanh).<br>
+a) Điện trường tổng hợp tại P.<br>
+b) Lực tác dụng lên electron đặt tại P.</div>
+
+<div class="svg-wrap">
+<svg viewBox="0 0 300 260">
+  <line x1="50" y1="20" x2="50" y2="200" stroke="#ff7b7b" stroke-width="5"/>
+  <text x="20" y="110" fill="#ff7b7b">−2,5 mC</text>
+  <line x1="50" y1="20" x2="230" y2="20" stroke="#4fd1c5" stroke-width="5"/>
+  <text x="150" y="12" fill="#4fd1c5" text-anchor="middle">+2,5 mC</text>
+  <circle cx="140" cy="110" r="6" fill="#f2c14e"/>
+  <text x="150" y="105" fill="#f2c14e">P</text>
+  <line x1="50" y1="110" x2="140" y2="110" stroke="currentColor" stroke-dasharray="3 3" opacity="0.5"/>
+  <text x="90" y="105" font-size="11">0,6 m</text>
+  <line x1="140" y1="20" x2="140" y2="110" stroke="currentColor" stroke-dasharray="3 3" opacity="0.5"/>
+  <text x="145" y="65" font-size="11">0,6 m</text>
+  <line x1="140" y1="110" x2="95" y2="155" stroke="#ff7b7b" stroke-width="2" marker-end="url(#a15)"/>
+  <text x="80" y="175" fill="#ff7b7b" font-size="11">E₁ (về thanh −)</text>
+  <line x1="140" y1="110" x2="140" y2="155" stroke="#4fd1c5" stroke-width="2" marker-end="url(#a15)"/>
+  <text x="145" y="165" fill="#4fd1c5" font-size="11">E₂ (ra xa thanh +)</text>
+  <defs><marker id="a15" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="currentColor"/></marker></defs>
+</svg>
+</div>
+
+<details open><summary>Xem lời giải chi tiết</summary>
+
+Chọn hệ trục: thanh dọc (điện tích $-2{,}5$ mC) đặt tại $x=0$ từ $y=0$ đến $y=1{,}2$; thanh ngang (điện tích $+2{,}5$ mC) đặt tại $y=1{,}2$ từ $x=0$ đến $x=1{,}2$. Điểm $P=(0{,}6;\,0{,}6)$ — nằm đúng trên đường trung trực của <i>cả hai</i> thanh (vì hình chiếu của P lên mỗi thanh đều rơi vào trung điểm thanh đó).
+
+<div class="part"><b class="plabel">Công thức điện trường tại trung trực của một đoạn dây dài $L$, cách $d$:</b>
+$$E=\dfrac{k\lambda L}{d\sqrt{d^2+(L/2)^2}}=\dfrac{kQ}{d\sqrt{d^2+(L/2)^2}}\quad(\text{vì }\lambda L=Q)$$
+Với $Q=2{,}5\times10^{-3}$ C, $L=1{,}2$ m, $d=0{,}6$ m — giống nhau cho cả hai thanh (cùng $|Q|,L,d$):
+$$E_0=\dfrac{8{,}988\times10^9\times2{,}5\times10^{-3}}{0{,}6\sqrt{0{,}6^2+0{,}6^2}}=4{,}41\times10^{7}\ \text{N/C}$$
+</div>
+
+<div class="part"><b class="plabel">a) Điện trường tổng hợp tại P:</b><br>
+- Thanh dọc mang điện <b>âm</b> → điện trường $\vec E_1$ tại P hướng <b>về phía thanh</b> (chiều $-x$), độ lớn $E_0$.<br>
+- Thanh ngang mang điện <b>dương</b> → điện trường $\vec E_2$ tại P hướng <b>ra xa thanh</b> (chiều $-y$, vì P nằm dưới thanh ngang), độ lớn $E_0$.<br>
+Hai vectơ $\vec E_1$ và $\vec E_2$ vuông góc nhau và bằng nhau về độ lớn → hợp lực:
+$$E=E_0\sqrt2=4{,}41\times10^7\times\sqrt2=6{,}24\times10^{7}\ \text{N/C}$$
+<div class="answer-box">$E\approx6{,}24\times10^7$ N/C, hướng chéo theo hướng $(-x,-y)$ — hợp với mỗi trục một góc $45^\circ$ (chếch xuống-trái, ra xa thanh dương và về phía thanh âm).</div>
+</div>
+
+<div class="part"><b class="plabel">b) Lực tác dụng lên electron tại P:</b><br>
+Electron mang điện âm nên lực $\vec F=-e\vec E$ <b>ngược hướng</b> với $\vec E_{\text{tổng}}$, tức theo hướng $(+x,+y)$ (bị đẩy ra xa thanh âm, đồng thời bị hút về phía thanh dương).
+$$F=e\cdot E=1{,}602\times10^{-19}\times6{,}24\times10^7=1{,}00\times10^{-11}\ \text{N}$$
+<div class="answer-box">$F\approx1{,}00\times10^{-11}$ N, hướng chéo $45^\circ$ theo chiều $(+x,+y)$ — ngược với hướng của $\vec E_{\text{tổng}}$ ở câu a).</div>
+</div>
+</details>
+</section>
+
+</main>
+
+<footer>
+Lời giải biên soạn phục vụ ôn tập Chương 1 — Vật lý Đại cương 2 · Điện tích, Điện trường, Định luật Coulomb, Định luật Gauss.<br>
+<a class="top" href="#top">↑ Về đầu trang</a>
+</footer>
+
+</body>
+</html>
