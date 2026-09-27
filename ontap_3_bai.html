@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tổng hợp Kiến thức Bài 1, 2, 3 - Lập trình Xử lý Dữ liệu (IAI/UET)</title>
+    <!-- Highlight.js for Code Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-purple: #c084fc;
+            --accent-amber: #fbbf24;
+            --border-color: #334155;
+            --code-bg: #182232;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        #sidebar {
+            width: 320px;
+            background-color: #0b1120;
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        #sidebar h2 {
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: white;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .search-box:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .nav-group {
+            margin-bottom: 20px;
+        }
+
+        .nav-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--accent-amber);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding-left: 10px;
+        }
+
+        .nav-links li {
+            margin-bottom: 6px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: all 0.2s;
+            display: block;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+            transform: translateX(4px);
+        }
+
+        /* Main Content */
+        #content {
+            margin-left: 320px;
+            flex: 1;
+            padding: 40px 60px;
+            max-width: 1100px;
+        }
+
+        header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-blue);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            color: var(--accent-blue);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            color: var(--accent-green);
+            margin: 25px 0 12px 0;
+        }
+
+        h4 {
+            font-size: 1.05rem;
+            color: var(--accent-purple);
+            margin: 18px 0 8px 0;
+        }
+
+        p, li {
+            color: #cbd5e1;
+            font-size: 0.98rem;
+            margin-bottom: 10px;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        strong {
+            color: white;
+        }
+
+        /* Callout Box */
+        .callout {
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid var(--accent-amber);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            color: var(--accent-amber);
+            margin-bottom: 5px;
+        }
+
+        .callout-info {
+            background: rgba(56, 189, 248, 0.1);
+            border-left: 4px solid var(--accent-blue);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        /* Code Blocks */
+        pre {
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+
+        :not(pre) > code {
+            background: var(--code-bg);
+            color: var(--accent-green);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.92rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #0f172a;
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            #sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+            #content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar">
+        <h2>📑 MỤC LỤC KIẾN THỨC</h2>
+        <input type="text" id="searchInput" class="search-box" placeholder="🔍 Tìm kiếm chủ đề..." onkeyup="filterNav()">
+        
+        <div class="nav-group">
+            <span class="nav-title">Bài 1: Overview & AI Policy</span>
+            <ul class="nav-links">
+                <li><a href="#b1-tong-quan">1.1 Tổng quan môn học & Môi trường</a></li>
+                <li><a href="#b1-chinh-sach-ai">1.2 Chính sách AI (AI Policy)</a></li>
+                <li><a href="#b1-quy-trinh-pipeline">1.3 Data Science Pipeline</a></li>
+            </ul>
+        </div>
+
+        <div class="nav-group">
+            <span class="nav-title">Bài 2: Python Cơ Bản cho Data</span>
+            <ul class="nav-links">
+                <li><a href="#b2-kieu-du-lieu">2.1 Cấu trúc dữ liệu Python cốt lõi</a></li>
+                <li><a href="#b2-list-comp">2.2 List Comprehension & Lambda</a></li>
+                <li><a href="#b2-string">2.3 Thao tác Chuỗi & File I/O</a></li>
+                <li><a href="#b2-memory">2.4 Quản lý Bộ nhớ (Shallow vs Deep)</a></li>
+            </ul>
+        </div>
+
+        <div class="nav-group">
+            <span class="nav-title">Bài 3: NumPy & Vectorization</span>
+            <ul class="nav-links">
+                <li><a href="#b3-ndarray">3.1 Cấu trúc ndarray & Memory Layout</a></li>
+                <li><a href="#b3-indexing">3.2 Indexing, Slicing & Fancy Indexing</a></li>
+                <li><a href="#b3-broadcasting">3.3 Quy tắc Broadcasting</a></li>
+                <li><a href="#b3-vectorization">3.4 Tư duy Vector hoá & Performance</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="content">
+        <header>
+            <h1>Lập Trình Xử Lý Dữ Liệu</h1>
+            <p>Tổng hợp lý thuyết & code mẫu chi tiết 3 bài đầu tiên | Viện Trí tuệ nhân tạo (IAI - UET)</p>
+            <span class="badge">Học kỳ I / 2026-2027</span>
+        </header>
+
+        <!-- ==================== BÀI 1 ==================== -->
+        <section id="bai1">
+            <h2>Bài 1: Tổng Quan Môn Học, Công Cụ & Chính Sách AI</h2>
+            
+            <h3 id="b1-tong-quan">1.1 Tổng Quan Môn Học & Môi Trường Làm Việc</h3>
+            <p>Môn học tập trung vào việc làm chủ các công cụ lập trình cốt lõi để thu thập, làm sạch, chuyển đổi, phân tích và trực quan hoá dữ liệu quy mô vừa và lớn.</p>
+            <ul>
+                <li><strong>Môi trường chính:</strong> Google Colab / Jupyter Notebook (định dạng <code>.ipynb</code>).</li>
+                <li><strong>Cấu trúc bài học:</strong> Bao gồm phần Lý thuyết (Lecture) kết hợp Bài thực hành ngay tại lớp (Lab).</li>
+                <li><strong>Môi trường mã nguồn:</strong> Cài đặt thư viện Python thông qua <code>pip</code> hoặc <code>conda</code>.</li>
+            </ul>
+
+            <h3 id="b1-chinh-sach-ai">1.2 Chính Sách Sử Dụng AI (AI Policy)</h3>
+            <div class="callout">
+                <div class="callout-title">⚠️ Quy Định Sử Dụng Công Cụ AI (ChatGPT, Claude, Copilot):</div>
+                <p>Môn học cho phép và khuyến khích sinh viên sử dụng công cụ AI hỗ trợ, nhưng phải tuân thủ nghiêm ngặt các nguyên tắc:</p>
+            </div>
+            <ul>
+                <li><strong>Tự chủ tư duy:</strong> AI chỉ được dùng làm công cụ trợ giúp (Copilot), không làm thay hoàn toàn (Autopilot). Sinh viên phải hiểu rõ từng dòng code do AI tạo ra.</li>
+                <li><strong>Minh bạch (Disclosure):</strong> Khai báo rõ ràng các prompts chính hoặc đoạn code được hỗ trợ bởi AI trong báo cáo / Notebook.</li>
+                <li><strong>Thẩm định (Verification):</strong> AI thường xuyên gặp phải hiện tượng <em>Hallucination</em> (sinh code sai hoặc thư viện không tồn tại). Sinh viên chịu trách nhiệm hoàn toàn về tính chính xác của kết quả.</li>
+            </ul>
+
+            <h3 id="b1-quy-trinh-pipeline">1.3 Quy Trình Xử Lý Dữ Liệu (Data Processing Pipeline)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bước</th>
+                        <th>Tên Giai Đoạn</th>
+                        <th>Nhiệm Vụ Chính</th>
+                        <th>Thư Viện / Công Cụ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Data Ingestion</td>
+                        <td>Đọc dữ liệu từ File (CSV, JSON, Excel), DB (SQL), API hoặc Web Scraping.</td>
+                        <td><code>pandas</code>, <code>requests</code>, <code>DuckDB</code></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Data Cleaning</td>
+                        <td>Xử lý giá trị thiếu (Missing values), trùng lặp (Duplicates), ép kiểu.</td>
+                        <td><code>pandas</code>, <code>NumPy</code></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Transformation</td>
+                        <td>Filtering, Grouping, Aggregation, Feature Engineering, Vectorization.</td>
+                        <td><code>NumPy</code>, <code>pandas</code></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Exploration & Viz</td>
+                        <td>Trực quan hoá xu hướng, phân phối dữ liệu, phát hiện Outliers.</td>
+                        <td><code>matplotlib</code>, <code>seaborn</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ==================== BÀI 2 ==================== -->
+        <section id="bai2">
+            <h2>Bài 2: Python Cơ Bản Cho Xử Lý Dữ Liệu</h2>
+
+            <h3 id="b2-kieu-du-lieu">2.1 Cấu Trúc Dữ Liệu Python Cốt Lõi</h3>
+            <p>Python cung cấp 4 cấu trúc dữ liệu cơ bản quan trọng cần nắm vững:</p>
+            <ul>
+                <li><code>list</code>: Danh sách có thứ tự, cho phép thay đổi (mutable), chứa các phần tử khác kiểu.</li>
+                <li><code>tuple</code>: Danh sách có thứ tự, <strong>không cho phép thay đổi (immutable)</strong>, tốc độ truy xuất nhanh hơn List.</li>
+                <li><code>dict</code>: Tập hợp cặp Key-Value, truy xuất theo Key với độ phức tạp $O(1)$.</li>
+                <li><code>set</code>: Tập hợp các phần tử duy nhất (no duplicates), hỗ trợ phép toán tập hợp (union, intersection).</li>
+            </ul>
+
+            <h3 id="b2-list-comp">2.2 List Comprehension, Lambda & Functional Programming</h3>
+            <p>Giúp viết code xử lý danh sách ngắn gọn, tối ưu tốc độ thực thi so với vòng lặp <code>for</code> truyền thống.</p>
+            <pre><code class="language-python"># 1. List Comprehension cơ bản & có điều kiện
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+squares_even = [x**2 for x in numbers if x % 2 == 0]
+# Output: [4, 16, 36, 64, 100]
+
+# 2. Dict Comprehension
+prices_usd = {'apple': 1.5, 'banana': 0.8, 'cherry': 2.5}
+prices_vnd = {item: price * 25000 for item, price in prices_usd.items()}
+
+# 3. Hàm Lambda kết hợp map() và filter()
+data = [10, 25, 30, 45, 50]
+filtered_data = list(filter(lambda x: x > 25, data))  # [30, 45, 50]
+mapped_data = list(map(lambda x: x * 2, filtered_data))  # [60, 90, 100]</code></pre>
+
+            <h3 id="b2-string">2.3 Thao Tác Chuỗi & File I/O</h3>
+            <pre><code class="language-python"># Format chuỗi hiện đại với f-string
+name = "Dataset_A"
+samples = 1500
+accuracy = 0.9456
+print(f"Model on {name} ({samples} samples) -> Acc: {accuracy:.2%}")
+# Output: Model on Dataset_A (1500 samples) -> Acc: 94.56%
+
+# Thao tác đọc/ghi File an toàn với context manager 'with'
+file_path = "data.csv"
+with open(file_path, "w", encoding="utf-8") as f:
+    f.write("id,value\n1,100\n2,200\n")
+
+with open(file_path, "r", encoding="utf-8") as f:
+    lines = [line.strip().split(",") for line in f.readlines()]
+print(lines) # [['id', 'value'], ['1', '100'], ['2', '200']]</code></pre>
+
+            <h3 id="b2-memory">2.4 Quản Lý Bộ Nhớ: Shallow Copy vs Deep Copy</h3>
+            <div class="callout-info">
+                <p>Khi xử lý dữ liệu lớn, việc gán biến đơn thuần <code>b = a</code> chỉ copy tham chiếu (reference). Cần phân biệt rõ Shallow Copy và Deep Copy để tránh sai lệch dữ liệu gốc.</p>
+            </div>
+            <pre><code class="language-python">import copy
+
+original = [[1, 2, 3], [4, 5, 6]]
+
+# Shallow copy: Chỉ copy lớp ngoài, các list con vẫn dùng chung vùng nhớ
+shallow = copy.copy(original)
+shallow[0][0] = 999
+print(original[0][0])  # Output: 999 (Bị thay đổi theo!)
+
+# Deep copy: Copy hoàn toàn độc lập toàn bộ các cấp bộ nhớ
+deep = copy.deepcopy(original)
+deep[0][1] = 888
+print(original[0][1])  # Output: 2 (Dữ liệu gốc giữ nguyên)</code></pre>
+        </section>
+
+        <!-- ==================== BÀI 3 ==================== -->
+        <section id="bai3">
+            <h2>Bài 3: NumPy Và Tư Duy Vector Hoá</h2>
+
+            <h3 id="b3-ndarray">3.1 Cấu Trúc Mảng <code>ndarray</code> & Memory Layout</h3>
+            <p>NumPy là nền tảng của tính toán khoa học trong Python. Khác với <code>list</code> của Python lưu trữ tham chiếu con trỏ rải rác, <code>ndarray</code> lưu dữ liệu liên tục trong bộ nhớ (contiguous memory layout) với các thuộc tính quan trọng:</p>
+            <ul>
+                <li><code>shape</code>: Kích thước các chiều của mảng (ví dụ: <code>(3, 4)</code>).</li>
+                <li><code>dtype</code>: Kiểu dữ liệu đồng nhất của phần tử (<code>int32</code>, <code>float64</code>,...).</li>
+                <li><code>ndim</code>: Số chiều (rank) của mảng.</li>
+                <li><code>strides</code>: Số bytes cần nhảy trong bộ nhớ để di chuyển sang phần tử tiếp theo ở mỗi chiều.</li>
+            </ul>
+
+            <pre><code class="language-python">import numpy as np
+
+# Tạo mảng NumPy
+a = np.array([[1, 2, 3], [4, 5, 6]], dtype=np.float32)
+print("Shape:", a.shape)   # (2, 3)
+print("Dtype:", a.dtype)   # float32
+print("Ndim:", a.ndim)     # 2
+print("Strides:", a.strides) # (12, 4) -> 4 bytes/float32, row dài 3 elem = 12 bytes</code></pre>
+
+            <h3 id="b3-indexing">3.2 Indexing, Slicing & Fancy Indexing</h3>
+            <p>Cần phân biệt <strong>View</strong> (không tốn bộ nhớ tạo mảng mới) và <strong>Copy</strong>.</p>
+            <pre><code class="language-python">arr = np.array([10, 20, 30, 40, 50, 60])
+
+# 1. Slicing cơ bản -> Tạo VIEW (sửa slice làm thay đổi arr gốc)
+slice_arr = arr[1:4]  # [20, 30, 40]
+slice_arr[0] = 999
+print(arr)  # [10, 999, 30, 40, 50, 60]
+
+# 2. Boolean Indexing (Lọc dữ liệu điều kiện) -> Tạo COPY
+data = np.array([12, -5, 18, 0, -3, 25])
+positive = data[data > 0]  # [12, 18, 25]
+
+# 3. Fancy Indexing (Truy xuất bằng mảng chỉ số) -> Tạo COPY
+indices = [0, 2, 4]
+selected = data[indices]   # [12, 18, -3]</code></pre>
+
+            <h3 id="b3-broadcasting">3.3 Quy Tắc Broadcasting</h3>
+            <p>Broadcasting cho phép NumPy thực hiện các phép toán giữa các mảng có kích thước (shape) khác nhau mà không cần tốn bộ nhớ lặp lại dữ liệu.</p>
+
+            <div class="callout">
+                <div class="callout-title">📐 2 Quy Tắc Broadcasting Cốt Lõi:</div>
+                <p>So sánh kích thước các chiều của 2 mảng từ <strong>phải sang trái</strong>. Hai chiều được coi là tương thích khi:</p>
+                <ol>
+                    <li>Kích thước chiều đó bằng nhau.</li>
+                    <li>HOẶC một trong hai mảng có kích thước chiều đó bằng 1.</li>
+                </ol>
+            </div>
+
+            <pre><code class="language-python"># Ví dụ Broadcasting: Chuẩn hoá dữ liệu (Minus Mean)
+X = np.array([[1, 2, 3], 
+              [4, 5, 6]])  # Shape: (2, 3)
+
+mean = np.array([2.5, 3.5, 4.5])  # Shape: (3,)
+
+# Mean tự động broadcast thành Shape (1, 3) -> (2, 3)
+X_centered = X - mean
+print(X_centered)
+# [[-1.5 -1.5 -1.5]
+#  [ 1.5  1.5  1.5]]</code></pre>
+
+            <h3 id="b3-vectorization">3.4 Tư Duy Vector Hoá (Vectorization) & Hiệu Năng</h3>
+            <p>Vector hoá là việc thay thế các vòng lặp <code>for</code> bằng các phép toán trên toàn bộ mảng được thực thi trực tiếp ở tầng mã C của NumPy.</p>
+
+            <pre><code class="language-python">import time
+
+# So sánh tốc độ: Tính tổng bình phương 1,000,000 phần tử
+size = 1000000
+py_list = list(range(size))
+np_arr = np.arange(size)
+
+# Cách 1: Vòng lặp Python truyền thống
+start = time.time()
+py_res = sum([x**2 for x in py_list])
+py_time = time.time() - start
+
+# Cách 2: Vectorization với NumPy
+start = time.time()
+np_res = np.sum(np_arr ** 2)
+np_time = time.time() - start
+
+print(f"Python Loop Time: {py_time:.4f}s")
+print(f"NumPy Vectorized Time: {np_time:.4f}s")
+print(f"-> NumPy nhanh hơn x{py_time/np_time:.1f} lần!")</code></pre>
+
+            <h4>Các Hàm Thống Kê & Đại Số Tuyến Tính Cơ Bản:</h4>
+            <pre><code class="language-python">matrix = np.array([[1, 2, 3], [4, 5, 6]])
+
+# Thống kê theo chiều (axis = 0: theo cột, axis = 1: theo hàng)
+print("Sum by col:", np.sum(matrix, axis=0)) # [5, 7, 9]
+print("Mean by row:", np.mean(matrix, axis=1)) # [2., 5.]
+
+# Nhân ma trận (Dot Product / Matrix Multiplication)
+A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+C = A @ B  # Hoặc np.matmul(A, B)
+print("Matrix Product A @ B:\n", C)</code></pre>
+        </section>
+    </main>
+
+    <!-- JS Search Script -->
+    <script>
+        function filterNav() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let links = document.querySelectorAll('.nav-links li');
+            
+            links.forEach(li => {
+                let text = li.textContent.toLowerCase();
+                if (text.includes(input)) {
+                    li.style.display = "";
+                } else {
+                    li.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
