@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Toán Tìm X - Tiểu Học</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Nunito & Be Vietnam Pro Hỗ trợ tiếng Việt 100% -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Khắc phục triệt để lỗi font Tiếng Việt bằng cách thiết lập chuẩn Font Family */
+        body {
+            font-family: 'Nunito', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .gradient-header {
+            background: linear-gradient(135deg, #4338ca 0%, #6d28d9 50%, #2563eb 100%);
+        }
+
+        .card-shadow {
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .card-hover {
+            transition: all 0.25s ease-in-out;
+        }
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -5px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <header class="gradient-header text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white text-indigo-700 p-2.5 rounded-2xl shadow-inner text-2xl font-black flex items-center justify-center w-12 h-12">
+                    🧮
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-black tracking-tight leading-none">Bí Kíp Tìm X - Toán Tiểu Học</h1>
+                    <p class="text-xs md:text-sm text-indigo-100 font-semibold mt-1">Học vui vẻ - Giỏi toán ngay!</p>
+                </div>
+            </div>
+            
+            <nav class="mt-3 sm:mt-0 flex gap-2">
+                <button onclick="switchTab('theory')" id="btn-theory" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white text-indigo-800 shadow-sm transition flex items-center gap-2">
+                    <i class="fa-solid fa-book-open"></i> Lý Thuyết
+                </button>
+                <button onclick="switchTab('practice')" id="btn-practice" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-indigo-900/40 hover:bg-indigo-800/60 text-white transition flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square"></i> Luyện Tập (30 Bài)
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- ==================== TAB 1: LÝ THUYẾT ==================== -->
+        <section id="theory-tab" class="space-y-8">
+            
+            <!-- Banner Hướng Dẫn -->
+            <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 flex items-start gap-4 shadow-sm">
+                <div class="text-3xl text-amber-500 shrink-0">💡</div>
+                <div>
+                    <h2 class="text-base sm:text-lg font-extrabold text-amber-900">Em muốn giải bài toán tìm X thật nhanh và chuẩn?</h2>
+                    <p class="text-xs sm:text-sm text-amber-800 font-semibold mt-1 leading-relaxed">
+                        Hãy nhớ kĩ tên gọi của các thành phần trong từng phép tính và thuộc lòng 6 "Công thức vàng" bên dưới trước khi bắt đầu thử sức với 30 bài tập nhé!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Bảng Thành Phần Phép Tính -->
+            <div class="bg-white rounded-2xl p-6 card-shadow border border-slate-100">
+                <h3 class="text-lg sm:text-xl font-extrabold text-indigo-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-cubes text-indigo-500"></i> Thành Phần Trong Các Phép Tính
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-blue-50/80 border border-blue-200 rounded-xl p-4">
+                        <div class="text-xs font-black text-blue-600 uppercase tracking-wider mb-1">1. Phép Cộng</div>
+                        <div class="text-lg font-black text-blue-950 mb-1">Số hạng + Số hạng = Tổng</div>
+                        <p class="text-xs text-blue-800 font-medium">Ví dụ: Trong phép tính <span class="font-bold">5 + 3 = 8</span>, thì 5 và 3 gọi là các <b class="text-blue-900">Số hạng</b>, 8 gọi là <b class="text-blue-900">Tổng</b>.</p>
+                    </div>
+
+                    <div class="bg-rose-50/80 border border-rose-200 rounded-xl p-4">
+                        <div class="text-xs font-black text-rose-600 uppercase tracking-wider mb-1">2. Phép Trừ</div>
+                        <div class="text-lg font-black text-rose-950 mb-1">Số bị trừ - Số trừ = Hiệu</div>
+                        <p class="text-xs text-rose-800 font-medium">Ví dụ: Trong phép tính <span class="font-bold">9 - 4 = 5</span>, thì 9 gọi là <b class="text-rose-900">Số bị trừ</b>, 4 là <b class="text-rose-900">Số trừ</b>, 5 là <b class="text-rose-900">Hiệu</b>.</p>
+                    </div>
+
+                    <div class="bg-emerald-50/80 border border-emerald-200 rounded-xl p-4">
+                        <div class="text-xs font-black text-emerald-600 uppercase tracking-wider mb-1">3. Phép Nhân</div>
+                        <div class="text-lg font-black text-emerald-950 mb-1">Thừa số × Thừa số = Tích</div>
+                        <p class="text-xs text-emerald-800 font-medium">Ví dụ: Trong phép tính <span class="font-bold">4 × 6 = 24</span>, thì 4 và 6 gọi là các <b class="text-emerald-900">Thừa số</b>, 24 gọi là <b class="text-emerald-900">Tích</b>.</p>
+                    </div>
+
+                    <div class="bg-purple-50/80 border border-purple-200 rounded-xl p-4">
+                        <div class="text-xs font-black text-purple-600 uppercase tracking-wider mb-1">4. Phép Chia</div>
+                        <div class="text-lg font-black text-purple-950 mb-1">Số bị chia : Số chia = Thương</div>
+                        <p class="text-xs text-purple-800 font-medium">Ví dụ: Trong phép tính <span class="font-bold">20 : 5 = 4</span>, thì 20 là <b class="text-purple-900">Số bị chia</b>, 5 là <b class="text-purple-900">Số chia</b>, 4 là <b class="text-purple-900">Thương</b>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-star text-amber-500"></i> 6 Quy Tắc Vàng Tìm X
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    
+                    <!-- Quy tắc 1 -->
+                    <div class="card-hover bg-white rounded-2xl p-5 border-2 border-blue-200 card-shadow flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full">Phép Cộng</span>
+                                <span class="text-xl">➕</span>
+                            </div>
+                            <h4 class="font-extrabold text-blue-950 mb-1">1. Tìm Số Hạng Chưa Biết</h4>
+                            <p class="text-xs sm:text-sm text-slate-600 font-medium mb-3">Muốn tìm một số hạng chưa biết, ta lấy <b class="text-slate-800">Tổng trừ đi số hạng đã biết</b>.</p>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-xl border border-blue-100 text-xs sm:text-sm font-bold text-blue-900">
+                            <div>x + a = b  ➔  x = b - a</div>
+                            <div>a + x = b  ➔  x = b - a</div>
+                        </div>
+                    </div>
+
+                    <!-- Quy tắc 2 -->
+                    <div class="card-hover bg-white rounded-2xl p-5 border-2 border-rose-200 card-shadow flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="bg-rose-100 text-rose-700 text-xs font-bold px-3 py-1 rounded-full">Phép Trừ</span>
+                                <span class="text-xl">➖</span>
+                            </div>
+                            <h4 class="font-extrabold text-rose-950 mb-1">2. Tìm Số Bị Trừ</h4>
+                            <p class="text-xs sm:text-sm text-slate-600 font-medium mb-3">Muốn tìm số bị trừ, ta lấy <b class="text-slate-800">Hiệu cộng với số trừ</b>.</p>
+                        </div>
+                        <div class="bg-rose-50 p-3 rounded-xl border border-rose-100 text-xs sm:text-sm font-bold text-rose-900">
+                            <div>x - a = b  ➔  x = b + a</div>
+                        </div>
+                    </div>
+
+                    <!-- Quy tắc 3 -->
+                    <div class="card-hover bg-white rounded-2xl p-5 border-2 border-amber-200 card-shadow flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full">Phép Trừ</span>
+                                <span class="text-xl">➖</span>
+                            </div>
+                            <h4 class="font-extrabold text-amber-950 mb-1">3. Tìm Số Trừ</h4>
+                            <p class="text-xs sm:text-sm text-slate-600 font-medium mb-3">Muốn tìm số trừ, ta lấy <b class="text-slate-800">Số bị trừ trừ đi hiệu</b>.</p>
+                        </div>
+                        <div class="bg-amber-50 p-3 rounded-xl border border-amber-100 text-xs sm:text-sm font-bold text-amber-900">
+                            <div>a - x = b  ➔  x = a - b</div>
+                        </div>
+                    </div>
+
+                    <!-- Quy tắc 4 -->
+                    <div class="card-hover bg-white rounded-2xl p-5 border-2 border-emerald-200 card-shadow flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full">Phép Nhân</span>
+                                <span class="text-xl">✖️</span>
+                            </div>
+                            <h4 class="font-extrabold text-emerald-950 mb-1">4. Tìm Thừa Số Chưa Biết</h4>
+                            <p class="text-xs sm:text-sm text-slate-600 font-medium mb-3">Muốn tìm thừa số chưa biết, ta lấy <b class="text-slate-800">Tích chia cho thừa số đã biết</b>.</p>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100 text-xs sm:text-sm font-bold text-emerald-900">
+                            <div>x × a = b  ➔  x = b : a</div>
+                            <div>a × x = b  ➔  x = b : a</div>
+                        </div>
+                    </div>
+
+                    <!-- Quy tắc 5 -->
+                    <div class="card-hover bg-white rounded-2xl p-5 border-2 border-purple-200 card-shadow flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full">Phép Chia</span>
+                                <span class="text-xl">➗</span>
+                            </div>
+                            <h4 class="font-extrabold text-purple-950 mb-1">5. Tìm Số Bị Chia</h4>
+                            <p class="text-xs sm:text-sm text-slate-600 font-medium mb-3">Muốn tìm số bị chia, ta lấy <b class="text-slate-800">Thương nhân với số chia</b>.</p>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded-xl border border-purple-100 text-xs sm:text-sm font-bold text-purple-900">
+                            <div>x : a = b  ➔  x = b × a</div>
+                        </div>
+                    </div>
+
+                    <!-- Quy tắc 6 -->
+                    <div class="card-hover bg-white rounded-2xl p-5 border-2 border-teal-200 card-shadow flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="bg-teal-100 text-teal-700 text-xs font-bold px-3 py-1 rounded-full">Phép Chia</span>
+                                <span class="text-xl">➗</span>
+                            </div>
+                            <h4 class="font-extrabold text-teal-950 mb-1">6. Tìm Số Chia</h4>
+                            <p class="text-xs sm:text-sm text-slate-600 font-medium mb-3">Muốn tìm số chia, ta lấy <b class="text-slate-800">Số bị chia chia cho thương</b>.</p>
+                        </div>
+                        <div class="bg-teal-50 p-3 rounded-xl border border-teal-100 text-xs sm:text-sm font-bold text-teal-900">
+                            <div>a : x = b  ➔  x = a : b</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Button Chuyển Sang Luyện Tập -->
+            <div class="text-center py-4">
+                <button onclick="switchTab('practice')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-base sm:text-lg px-8 py-3.5 rounded-2xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5">
+                    🚀 Em Đã Thuộc Bài - Sẵn Sàng Luyện Tập!
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: LUYỆN TẬP 30 BÀI ==================== -->
+        <section id="practice-tab" class="hidden space-y-6">
+            
+            <!-- Dashboard điểm & Tiến trình -->
+            <div class="bg-white rounded-2xl p-4 sm:p-5 card-shadow border border-slate-100 flex flex-wrap justify-between items-center gap-4">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-amber-100 text-amber-600 w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-black">
+                        🏆
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">Số Câu Đúng</div>
+                        <div class="text-xl sm:text-2xl font-black text-slate-800" id="score-text">0 / 30</div>
+                    </div>
+                </div>
+
+                <!-- Thanh tiến trình -->
+                <div class="flex-1 min-w-[200px] max-w-md">
+                    <div class="flex justify-between text-xs font-bold text-slate-500 mb-1">
+                        <span>Tiến trình làm bài</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="bg-indigo-600 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <button onclick="resetAll()" class="px-3.5 py-2 text-xs font-bold text-slate-500 hover:text-rose-600 bg-slate-100 hover:bg-rose-50 rounded-xl transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate-right"></i> Làm lại từ đầu
+                </button>
+            </div>
+
+            <!-- Container Chứa 30 Bài Tập -->
+            <div id="questions-container" class="space-y-5">
+                <!-- Javascript sẽ tự động thêm 30 bài tập vào đây -->
+            </div>
+
+            <!-- Nút Nộp Bài / Chấm Điểm Tổng -->
+            <div class="text-center py-6">
+                <button onclick="calculateFinalResult()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-base sm:text-lg px-8 py-3.5 rounded-2xl shadow-xl transition transform hover:scale-105">
+                    💯 Chấm Điểm Toàn Bộ 30 Bài Tập
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="result-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl transform transition-all scale-95" id="modal-content">
+            <div class="text-6xl mb-2" id="modal-icon">🎉</div>
+            <h3 class="text-2xl font-black text-slate-900 mb-1" id="modal-title">Xuất Sắc!</h3>
+            <p class="text-xs sm:text-sm text-slate-600 font-medium mb-4" id="modal-desc">Em đã hoàn thành bài tập tìm X!</p>
+            
+            <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 mb-5">
+                <div class="text-xs text-indigo-500 font-bold uppercase tracking-wider">Tổng Số Điểm Đạt Được</div>
+                <div class="text-3xl sm:text-4xl font-black text-indigo-700 my-1" id="modal-score">0 / 30</div>
+                <div class="text-xs font-bold text-indigo-800" id="modal-eval">Rất tốt, hãy tiếp tục phát huy!</div>
+            </div>
+
+            <button onclick="closeModal()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold py-3 rounded-xl shadow-md transition">
+                Đóng & Xem Chi Tiết
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 font-medium">
+        <p>© 2026 Ứng dụng Học Toán Tìm X - Thiết kế tối ưu hiển thị Tiếng Việt cho học sinh Tiểu Học.</p>
+    </footer>
+
+    <script>
+        // Dữ liệu 30 bài tập chuẩn tiểu học
+        const questionsData = [
+            { id: 1, expr: "x + 15 = 40", targetNum: "15", targetNumRole: "Số hạng đã biết", xRole: "Số hạng chưa biết", calc: "40 - 15", xVal: 25 },
+            { id: 2, expr: "28 + x = 60", targetNum: "28", targetNumRole: "Số hạng đã biết", xRole: "Số hạng chưa biết", calc: "60 - 28", xVal: 32 },
+            { id: 3, expr: "x - 12 = 35", targetNum: "12", targetNumRole: "Số trừ", xRole: "Số bị trừ", calc: "35 + 12", xVal: 47 },
+            { id: 4, expr: "50 - x = 18", targetNum: "50", targetNumRole: "Số bị trừ", xRole: "Số trừ", calc: "50 - 18", xVal: 32 },
+            { id: 5, expr: "x × 6 = 42", targetNum: "6", targetNumRole: "Thừa số đã biết", xRole: "Thừa số chưa biết", calc: "42 : 6", xVal: 7 },
+            { id: 6, expr: "8 × x = 72", targetNum: "8", targetNumRole: "Thừa số đã biết", xRole: "Thừa số chưa biết", calc: "72 : 8", xVal: 9 },
+            { id: 7, expr: "x : 5 = 9", targetNum: "5", targetNumRole: "Số chia", xRole: "Số bị chia", calc: "9 × 5", xVal: 45 },
+            { id: 8, expr: "36 : x = 4", targetNum: "36", targetNumRole: "Số bị chia", xRole: "Số chia", calc: "36 : 4", xVal: 9 },
+            { id: 9, expr: "x + 124 = 350", targetNum: "124", targetNumRole: "Số hạng đã biết", xRole: "Số hạng chưa biết", calc: "350 - 124", xVal: 226 },
+            { id: 10, expr: "x - 85 = 115", targetNum: "85", targetNumRole: "Số trừ", xRole: "Số bị trừ", calc: "115 + 85", xVal: 200 },
+            { id: 11, expr: "200 - x = 75", targetNum: "200", targetNumRole: "Số bị trừ", xRole: "Số trừ", calc: "200 - 75", xVal: 125 },
+            { id: 12, expr: "x × 7 = 63", targetNum: "7", targetNumRole: "Thừa số đã biết", xRole: "Thừa số chưa biết", calc: "63 : 7", xVal: 9 },
+            { id: 13, expr: "x : 9 = 8", targetNum: "9", targetNumRole: "Số chia", xRole: "Số bị chia", calc: "8 × 9", xVal: 72 },
+            { id: 14, expr: "56 : x = 7", targetNum: "56", targetNumRole: "Số bị chia", xRole: "Số chia", calc: "56 : 7", xVal: 8 },
+            { id: 15, expr: "x + 45 = 100", targetNum: "45", targetNumRole: "Số hạng đã biết", xRole: "Số hạng chưa biết", calc: "100 - 45", xVal: 55 },
+            { id: 16, expr: "93 - x = 27", targetNum: "93", targetNumRole: "Số bị trừ", xRole: "Số trừ", calc: "93 - 27", xVal: 66 },
+            { id: 17, expr: "x × 9 = 81", targetNum: "9", targetNumRole: "Thừa số đã biết", xRole: "Thừa số chưa biết", calc: "81 : 9", xVal: 9 },
+            { id: 18, expr: "64 : x = 8", targetNum: "64", targetNumRole: "Số bị chia", xRole: "Số chia", calc: "64 : 8", xVal: 8 },
+            { id: 19, expr: "x - 48 = 52", targetNum: "48", targetNumRole: "Số trừ", xRole: "Số bị trừ", calc: "52 + 48", xVal: 100 },
+            { id: 20, expr: "x : 4 = 12", targetNum: "4", targetNumRole: "Số chia", xRole: "Số bị chia", calc: "12 × 4", xVal: 48 },
+            { id: 21, expr: "150 + x = 320", targetNum: "150", targetNumRole: "Số hạng đã biết", xRole: "Số hạng chưa biết", calc: "320 - 150", xVal: 170 },
+            { id: 22, expr: "x × 5 = 125", targetNum: "5", targetNumRole: "Thừa số đã biết", xRole: "Thừa số chưa biết", calc: "125 : 5", xVal: 25 },
+            { id: 23, expr: "x : 6 = 15", targetNum: "6", targetNumRole: "Số chia", xRole: "Số bị chia", calc: "15 × 6", xVal: 90 },
+            { id: 24, expr: "90 : x = 5", targetNum: "90", targetNumRole: "Số bị chia", xRole: "Số chia", calc: "90 : 5", xVal: 18 },
+            { id: 25, expr: "x + 235 = 500", targetNum: "235", targetNumRole: "Số hạng đã biết", xRole: "Số hạng chưa biết", calc: "500 - 235", xVal: 265 },
+            { id: 26, expr: "x - 120 = 280", targetNum: "120", targetNumRole: "Số trừ", xRole: "Số bị trừ", calc: "280 + 120", xVal: 400 },
+            { id: 27, expr: "450 - x = 180", targetNum: "450", targetNumRole: "Số bị trừ", xRole: "Số trừ", calc: "450 - 180", xVal: 270 },
+            { id: 28, expr: "x × 4 = 160", targetNum: "4", targetNumRole: "Thừa số đã biết", xRole: "Thừa số chưa biết", calc: "160 : 4", xVal: 40 },
+            { id: 29, expr: "x : 7 = 14", targetNum: "7", targetNumRole: "Số chia", xRole: "Số bị chia", calc: "14 × 7", xVal: 98 },
+            { id: 30, expr: "144 : x = 12", targetNum: "144", targetNumRole: "Số bị chia", xRole: "Số chia", calc: "144 : 12", xVal: 12 }
+        ];
+
+        const roleOptions = [
+            "Số hạng chưa biết",
+            "Số hạng đã biết",
+            "Số bị trừ",
+            "Số trừ",
+            "Thừa số chưa biết",
+            "Thừa số đã biết",
+            "Số bị chia",
+            "Số chia"
+        ];
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            questionsData.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl p-5 card-shadow border border-slate-200 transition relative overflow-hidden";
+                card.id = `q-card-${q.id}`;
+
+                let optionsNumHtml = roleOptions.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+                let optionsXHtml = roleOptions.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                        <span class="bg-indigo-100 text-indigo-700 text-xs font-black px-3 py-1 rounded-full">Bài ${index + 1} / 30</span>
+                        <span class="text-xl font-black text-indigo-950 font-mono tracking-wide">${q.expr}</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Bước 1 -->
+                        <div class="bg-slate-50/80 p-3.5 rounded-xl border border-slate-200">
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">1. Trong phép tính, số <span class="text-indigo-600 font-extrabold">${q.targetNum}</span> gọi là gì?</label>
+                            <select id="step1-${q.id}" class="w-full text-xs font-semibold p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 bg-white">
+                                <option value="">-- Chọn thành phần --</option>
+                                ${optionsNumHtml}
+                            </select>
+                        </div>
+
+                        <!-- Bước 2 -->
+                        <div class="bg-slate-50/80 p-3.5 rounded-xl border border-slate-200">
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">2. Thành phần <span class="text-indigo-600 font-extrabold">X</span> gọi là gì?</label>
+                            <select id="step2-${q.id}" class="w-full text-xs font-semibold p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 bg-white">
+                                <option value="">-- Chọn vai trò X --</option>
+                                ${optionsXHtml}
+                            </select>
+                        </div>
+
+                        <!-- Bước 3 -->
+                        <div class="bg-slate-50/80 p-3.5 rounded-xl border border-slate-200">
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">3. Tìm X (Nhập kết quả):</label>
+                            <div class="flex items-center gap-2">
+                                <span class="font-extrabold text-sm text-slate-700">x =</span>
+                                <input type="number" id="step3-${q.id}" placeholder="?" class="w-full text-xs font-bold p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 bg-white">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Action trong từng câu -->
+                    <div class="mt-4 flex flex-wrap items-center justify-between gap-3 pt-2">
+                        <button onclick="checkSingleQuestion(${q.id})" class="px-3.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-extrabold rounded-xl transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-check"></i> Kiểm tra bài này
+                        </button>
+                        
+                        <div id="feedback-${q.id}" class="text-xs font-bold hidden flex items-center gap-2"></div>
+                    </div>
+
+                    <!-- Lời giải chi tiết -->
+                    <div id="solution-${q.id}" class="hidden mt-3 p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-950 space-y-1">
+                        <div class="font-extrabold text-emerald-900">📘 Lời giải chi tiết:</div>
+                        <div>• Số <b>${q.targetNum}</b> trong đề bài gọi là: <i>${q.targetNumRole}</i>.</div>
+                        <div>• Thành phần <b>X</b> đóng vai trò là: <i>${q.xRole}</i>.</div>
+                        <div>• Phép tính tìm X: <span class="font-mono font-bold">x = ${q.calc}</span>  ➔  <span class="font-mono font-bold">x = ${q.xVal}</span>.</div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function playSound(type) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if (type === 'success') {
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.25);
+                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.25);
+                } else if (type === 'error') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.25);
+                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.25);
+                }
+            } catch (e) {
+                // Ignore audio errors
+            }
+        }
+
+        function checkSingleQuestion(id) {
+            const q = questionsData.find(item => item.id === id);
+            const val1 = document.getElementById(`step1-${id}`).value;
+            const val2 = document.getElementById(`step2-${id}`).value;
+            const val3 = parseInt(document.getElementById(`step3-${id}`).value, 10);
+
+            const feedback = document.getElementById(`feedback-${id}`);
+            const solution = document.getElementById(`solution-${id}`);
+            const card = document.getElementById(`q-card-${id}`);
+
+            const isStep1Correct = val1 === q.targetNumRole;
+            const isStep2Correct = val2 === q.xRole;
+            const isStep3Correct = val3 === q.xVal;
+
+            solution.classList.remove('hidden');
+
+            if (isStep1Correct && isStep2Correct && isStep3Correct) {
+                feedback.className = "text-xs font-extrabold text-emerald-600 flex items-center gap-1";
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check"></i> Hoàn hảo! Em đã làm đúng cả 3 bước.`;
+                card.className = "bg-emerald-50/30 rounded-2xl p-5 card-shadow border-2 border-emerald-400 transition relative overflow-hidden";
+                playSound('success');
+            } else {
+                feedback.className = "text-xs font-extrabold text-rose-600 flex items-center gap-1";
+                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Chưa đúng. Xem kĩ lời giải chi tiết bên dưới nhé!`;
+                card.className = "bg-rose-50/30 rounded-2xl p-5 card-shadow border-2 border-rose-300 transition relative overflow-hidden";
+                playSound('error');
+            }
+            feedback.classList.remove('hidden');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let totalCorrect = 0;
+            let answeredCount = 0;
+
+            questionsData.forEach(q => {
+                const val1 = document.getElementById(`step1-${q.id}`).value;
+                const val2 = document.getElementById(`step2-${q.id}`).value;
+                const val3 = document.getElementById(`step3-${q.id}`).value;
+
+                if (val1 || val2 || val3) {
+                    answeredCount++;
+                }
+
+                if (val1 === q.targetNumRole && val2 === q.xRole && parseInt(val3, 10) === q.xVal) {
+                    totalCorrect++;
+                }
+            });
+
+            document.getElementById('score-text').innerText = `${totalCorrect} / 30`;
+            const pct = Math.round((answeredCount / 30) * 100);
+            document.getElementById('progress-percent').innerText = `${pct}%`;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+
+            return totalCorrect;
+        }
+
+        function calculateFinalResult() {
+            questionsData.forEach(q => {
+                checkSingleQuestion(q.id);
+            });
+
+            const score = updateProgress();
+            const modal = document.getElementById('result-modal');
+            const modalScore = document.getElementById('modal-score');
+            const modalTitle = document.getElementById('modal-title');
+            const modalEval = document.getElementById('modal-eval');
+            const modalIcon = document.getElementById('modal-icon');
+
+            modalScore.innerText = `${score} / 30`;
+
+            if (score === 30) {
+                modalTitle.innerText = "Tuyệt Đỉnh Toán Học! 🌟";
+                modalEval.innerText = "Em đạt điểm tuyệt đối 30/30! Thật tuyệt vời!";
+                modalIcon.innerText = "🏆";
+            } else if (score >= 20) {
+                modalTitle.innerText = "Kết Quả Rất Tốt! 👏";
+                modalEval.innerText = "Em đã làm đúng phần lớn bài tập! Tiếp tục phát huy nhé!";
+                modalIcon.innerText = "🎉";
+            } else if (score >= 10) {
+                modalTitle.innerText = "Cố Gắng Lên Em! 💪";
+                modalEval.innerText = "Em đã hiểu bài, hãy xem lại các câu chưa đúng để hoàn thiện nhé!";
+                modalIcon.innerText = "👍";
+            } else {
+                modalTitle.innerText = "Hãy Ôn Lại Lý Thuyết! 📚";
+                modalEval.innerText = "Đừng nản lòng! Đọc kĩ lại 6 Quy Tắc Vàng và thử lại nhé!";
+                modalIcon.innerText = "😃";
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('result-modal').classList.add('hidden');
+        }
+
+        function resetAll() {
+            if (confirm("Em có muốn xóa bài làm để thực hành lại từ đầu không?")) {
+                questionsData.forEach(q => {
+                    document.getElementById(`step1-${q.id}`).value = "";
+                    document.getElementById(`step2-${q.id}`).value = "";
+                    document.getElementById(`step3-${q.id}`).value = "";
+                    
+                    document.getElementById(`feedback-${q.id}`).classList.add('hidden');
+                    document.getElementById(`solution-${q.id}`).classList.add('hidden');
+                    document.getElementById(`q-card-${q.id}`).className = "bg-white rounded-2xl p-5 card-shadow border border-slate-200 transition relative overflow-hidden";
+                });
+                updateProgress();
+            }
+        }
+
+        // Chuyển Tab Lý Thuyết & Luyện Tập
+        function switchTab(tab) {
+            const theoryTab = document.getElementById('theory-tab');
+            const practiceTab = document.getElementById('practice-tab');
+            const btnTheory = document.getElementById('btn-theory');
+            const btnPractice = document.getElementById('btn-practice');
+
+            if (tab === 'theory') {
+                theoryTab.classList.remove('hidden');
+                practiceTab.classList.add('hidden');
+                btnTheory.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white text-indigo-800 shadow-sm transition flex items-center gap-2";
+                btnPractice.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-indigo-900/40 hover:bg-indigo-800/60 text-white transition flex items-center gap-2";
+            } else {
+                theoryTab.classList.add('hidden');
+                practiceTab.classList.remove('hidden');
+                btnPractice.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white text-indigo-800 shadow-sm transition flex items-center gap-2";
+                btnTheory.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-indigo-900/40 hover:bg-indigo-800/60 text-white transition flex items-center gap-2";
+            }
+        }
+
+        // Khởi chạy khi trang tải xong
+        window.onload = function() {
+            renderQuestions();
+        };
+    </script>
+</body>
+</html>
