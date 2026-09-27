@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luyện Thi Toán Tìm X - 20 Phút 30 Câu</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Nunito Chuẩn Tiếng Việt -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Canvas Confetti cho hiệu ứng pháo hoa -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+        }
+
+        .timer-warning {
+            animation: pulse-red 1s infinite alternate;
+        }
+
+        @keyframes pulse-red {
+            0% { background-color: #ef4444; color: #ffffff; transform: scale(1); }
+            100% { background-color: #dc2626; color: #ffffff; transform: scale(1.03); }
+        }
+
+        .question-btn {
+            transition: all 0.2s ease;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Header & Dashboard -->
+    <header class="gradient-bg text-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-amber-400 text-indigo-950 p-2.5 rounded-2xl font-black text-xl shadow-md">
+                    ⏱️
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-extrabold tracking-tight">Đề Thi Toán Tìm X (30 Câu / 20 Phút)</h1>
+                    <p class="text-xs text-indigo-200 font-semibold">Tự động chấm điểm & Nhận lời giải chi tiết</p>
+                </div>
+            </div>
+
+            <!-- Timer & Actions -->
+            <div class="flex items-center gap-3 ml-auto">
+                <div id="timer-box" class="bg-indigo-950/80 border border-indigo-400/40 px-4 py-1.5 rounded-2xl flex items-center gap-2 shadow-inner">
+                    <i class="fa-regular fa-clock text-amber-300 text-sm"></i>
+                    <span id="timer-text" class="font-mono font-black text-lg md:text-xl tracking-wider text-amber-300">20:00</span>
+                </div>
+
+                <button onclick="confirmSubmit()" id="btn-submit-head" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold px-4 py-2 rounded-xl shadow-md transition text-xs sm:text-sm flex items-center gap-1.5">
+                    <i class="fa-solid fa-paper-plane"></i> <span class="hidden sm:inline">Nộp Bài</span>
+                </button>
+
+                <button onclick="renewExam()" class="bg-amber-500 hover:bg-amber-600 text-indigo-950 font-extrabold px-3.5 py-2 rounded-xl shadow-md transition text-xs sm:text-sm flex items-center gap-1.5" title="Đổi đề mới / Làm lại">
+                    <i class="fa-solid fa-rotate-right"></i> <span class="hidden md:inline">Renew / Đề Mới</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left Column: Questions List (8 cols) -->
+        <section class="lg:col-span-8 space-y-4">
+            
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex items-center justify-between">
+                <div class="text-xs sm:text-sm font-bold text-slate-600">
+                    Trạng thái: <span id="answered-count-text" class="text-indigo-600 font-extrabold">0 / 30</span> câu đã điền
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="scrollToQuestion(currentQuestionIndex - 1)" class="p-2 text-slate-500 hover:text-indigo-600 font-bold text-xs bg-slate-100 rounded-lg">
+                        <i class="fa-solid fa-chevron-left"></i> Câu trước
+                    </button>
+                    <button onclick="scrollToQuestion(currentQuestionIndex + 1)" class="p-2 text-slate-500 hover:text-indigo-600 font-bold text-xs bg-slate-100 rounded-lg">
+                        Câu sau <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- List of 30 questions -->
+            <div id="questions-wrapper" class="space-y-4">
+                <!-- Javascript renders questions dynamically -->
+            </div>
+
+            <!-- Bottom Submit Bar -->
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 text-center space-y-3">
+                <p class="text-xs text-slate-500 font-semibold">Hãy kiểm tra kỹ toàn bộ các đáp án trước khi bấm Nộp Bài!</p>
+                <div class="flex justify-center gap-3">
+                    <button onclick="confirmSubmit()" id="btn-submit-main" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-8 py-3 rounded-xl shadow-lg transition text-base">
+                        🚀 Nộp Bài Thi Ngay
+                    </button>
+                    <button onclick="renewExam()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold px-5 py-3 rounded-xl transition text-sm">
+                        🔄 Đổi Đề Mới (Renew)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Column: Question Palette & Overview (4 cols) -->
+        <aside class="lg:col-span-4 space-y-4">
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 sticky top-20">
+                <h2 class="text-sm font-black text-slate-800 uppercase tracking-wider mb-3 flex items-center justify-between">
+                    <span>Danh Sách 30 Câu Hỏi</span>
+                    <i class="fa-solid fa-list-check text-indigo-500"></i>
+                </h2>
+
+                <!-- Question Grid Buttons -->
+                <div id="palette-grid" class="grid grid-cols-5 gap-2">
+                    <!-- 30 buttons rendered by JS -->
+                </div>
+
+                <!-- Legend -->
+                <div class="mt-5 pt-4 border-t border-slate-100 text-xs font-bold text-slate-500 space-y-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded bg-slate-100 border border-slate-300 inline-block"></span>
+                        <span>Chưa làm</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded bg-indigo-600 text-white inline-block"></span>
+                        <span>Đã điền đáp án</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded bg-amber-400 text-slate-900 inline-block"></span>
+                        <span>Đang xem</span>
+                    </div>
+                    <div id="legend-results" class="hidden space-y-2 pt-2 border-t border-slate-100">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3.5 h-3.5 rounded bg-emerald-500 text-white inline-block"></span>
+                            <span>Trả lời Đúng</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3.5 h-3.5 rounded bg-rose-500 text-white inline-block"></span>
+                            <span>Trả lời Sai</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5 bg-indigo-50 border border-indigo-100 p-3.5 rounded-xl text-xs text-indigo-900 font-semibold space-y-1">
+                    <div class="font-extrabold text-indigo-950">💡 Mẹo làm bài:</div>
+                    <p>• Nhấp trực tiếp vào số câu ở bảng trên để di chuyển nhanh.</p>
+                    <p>• Số nguyên hoặc số thập phân (dùng dấu chấm <code>.</code>) nếu có.</p>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <!-- Modal Ket Qua -->
+    <div id="result-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 text-center shadow-2xl transform transition-all">
+            <div id="modal-emoji" class="text-6xl mb-2">🎉</div>
+            <h2 id="modal-title" class="text-2xl sm:text-3xl font-black text-slate-900">Kết Quả Bài Thi</h2>
+            <p id="modal-subtitle" class="text-xs sm:text-sm text-slate-500 font-bold mt-1">Đã nộp bài thành công!</p>
+
+            <div class="my-6 grid grid-cols-2 gap-3">
+                <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-2xl">
+                    <div class="text-xs text-indigo-500 font-extrabold uppercase">Điểm Số (Thang 10)</div>
+                    <div id="modal-score" class="text-3xl sm:text-4xl font-black text-indigo-700 my-1">0.0</div>
+                    <div id="modal-correct-text" class="text-xs text-indigo-900 font-bold">0/30 câu đúng</div>
+                </div>
+                <div class="bg-amber-50 border border-amber-100 p-4 rounded-2xl flex flex-col justify-center">
+                    <div class="text-xs text-amber-600 font-extrabold uppercase">Thời Gian Làm Bài</div>
+                    <div id="modal-time" class="text-xl sm:text-2xl font-black text-amber-800 my-1">00:00</div>
+                    <div id="modal-rank" class="text-xs font-bold text-amber-900">Xuất sắc</div>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="closeModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold py-3 rounded-xl transition text-sm">
+                    🔍 Xem Lời Giải Chi Tiết
+                </button>
+                <button onclick="closeModal(); renewExam();" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold py-3 rounded-xl transition text-sm shadow-md">
+                    🔄 Đổi Đề Mới
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 font-medium mt-8">
+        <p>© 2026 Ứng dụng Luyện Thi Toán Tìm X - 20 Phút 30 Câu | Thiết kế tối ưu Tiếng Việt.</p>
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        // State variables
+        let questions = [];
+        let userAnswers = {};
+        let currentQuestionIndex = 0;
+        let isSubmitted = false;
+        let timerInterval = null;
+        let timeLeft = 1200; // 20 minutes in seconds
+        let timeSpent = 0;
+
+        // Sound FX using Web Audio API
+        function playAudioEffect(type) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if (type === 'finish') {
+                    // Fanfare chord
+                    const now = ctx.currentTime;
+                    [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+                        const o = ctx.createOscillator();
+                        const g = ctx.createGain();
+                        o.frequency.value = freq;
+                        o.connect(g);
+                        g.connect(ctx.destination);
+                        g.gain.setValueAtTime(0.1, now + i * 0.08);
+                        g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.5);
+                        o.start(now + i * 0.08);
+                        o.stop(now + i * 0.08 + 0.5);
+                    });
+                }
+            } catch (e) {}
+        }
+
+        // Random integer helper
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Generate 30 Random Find-X Questions with Varied Templates
+        function generateQuestions() {
+            const list = [];
+            
+            // Templates definition
+            for (let i = 1; i <= 30; i++) {
+                let expr = "";
+                let ans = 0;
+                let steps = [];
+
+                if (i <= 6) {
+                    // Group 1: Single operation addition/subtraction
+                    const type = i % 4;
+                    if (type === 1) {
+                        const a = getRandomInt(10, 80);
+                        const b = getRandomInt(15, 90);
+                        ans = b;
+                        const c = a + b;
+                        expr = `x + ${a} = ${c}`;
+                        steps = [`x = ${c} - ${a}`, `x = ${ans}`];
+                    } else if (type === 2) {
+                        const a = getRandomInt(10, 80);
+                        const b = getRandomInt(15, 90);
+                        ans = a;
+                        const c = a + b;
+                        expr = `${b} + x = ${c}`;
+                        steps = [`x = ${c} - ${b}`, `x = ${ans}`];
+                    } else if (type === 3) {
+                        const b = getRandomInt(12, 50);
+                        const c = getRandomInt(15, 60);
+                        ans = b + c;
+                        expr = `x - ${b} = ${c}`;
+                        steps = [`x = ${c} + ${b}`, `x = ${ans}`];
+                    } else {
+                        const a = getRandomInt(50, 150);
+                        const c = getRandomInt(10, 45);
+                        ans = a - c;
+                        expr = `${a} - x = ${c}`;
+                        steps = [`x = ${a} - ${c}`, `x = ${ans}`];
+                    }
+                } else if (i <= 12) {
+                    // Group 2: Single operation multiplication/division
+                    const type = i % 4;
+                    if (type === 1) {
+                        const a = getRandomInt(3, 12);
+                        ans = getRandomInt(4, 15);
+                        const c = a * ans;
+                        expr = `x × ${a} = ${c}`;
+                        steps = [`x = ${c} : ${a}`, `x = ${ans}`];
+                    } else if (type === 2) {
+                        const a = getRandomInt(3, 12);
+                        ans = getRandomInt(4, 15);
+                        const c = a * ans;
+                        expr = `${a} × x = ${c}`;
+                        steps = [`x = ${c} : ${a}`, `x = ${ans}`];
+                    } else if (type === 3) {
+                        const b = getRandomInt(3, 10);
+                        const c = getRandomInt(5, 15);
+                        ans = b * c;
+                        expr = `x : ${b} = ${c}`;
+                        steps = [`x = ${c} × ${b}`, `x = ${ans}`];
+                    } else {
+                        const c = getRandomInt(3, 12);
+                        ans = getRandomInt(4, 15);
+                        const a = c * ans;
+                        expr = `${a} : x = ${c}`;
+                        steps = [`x = ${a} : ${c}`, `x = ${ans}`];
+                    }
+                } else if (i <= 22) {
+                    // Group 3: Two-step operations (a * x + b = c, etc.)
+                    const type = i % 4;
+                    if (type === 1) {
+                        const a = getRandomInt(2, 8);
+                        ans = getRandomInt(3, 15);
+                        const b = getRandomInt(5, 40);
+                        const c = a * ans + b;
+                        expr = `${a} × x + ${b} = ${c}`;
+                        steps = [`${a} × x = ${c} - ${b}`, `${a} × x = ${a * ans}`, `x = ${a * ans} : ${a}`, `x = ${ans}`];
+                    } else if (type === 2) {
+                        const a = getRandomInt(2, 8);
+                        ans = getRandomInt(6, 20);
+                        const b = getRandomInt(5, 30);
+                        const c = a * ans - b;
+                        expr = `${a} × x - ${b} = ${c}`;
+                        steps = [`${a} × x = ${c} + ${b}`, `${a} × x = ${a * ans}`, `x = ${a * ans} : ${a}`, `x = ${ans}`];
+                    } else if (type === 3) {
+                        const b = getRandomInt(2, 6);
+                        ans = getRandomInt(5, 25);
+                        const c = getRandomInt(10, 50);
+                        const a = (ans * b) + c;
+                        expr = `(x - ${c}) : ${b} = ${ans}`;
+                        steps = [`x - ${c} = ${ans} × ${b}`, `x - ${c} = ${ans * b}`, `x = ${ans * b} + ${c}`, `x = ${a}`];
+                        ans = a;
+                    } else {
+                        const k = getRandomInt(2, 7);
+                        ans = getRandomInt(3, 12);
+                        const b = getRandomInt(10, 50);
+                        const c = k * ans;
+                        expr = `${b} + x × ${k} = ${b + c}`;
+                        steps = [`x × ${k} = ${b + c} - ${b}`, `x × ${k} = ${c}`, `x = ${c} : ${k}`, `x = ${ans}`];
+                    }
+                } else {
+                    // Group 4: Advanced parentheses and 3-step operations
+                    const type = i % 3;
+                    if (type === 1) {
+                        const k = getRandomInt(2, 6);
+                        const offset = getRandomInt(2, 10);
+                        ans = getRandomInt(5, 15);
+                        const c = k * (ans + offset);
+                        expr = `${k} × (x + ${offset}) = ${c}`;
+                        steps = [`x + ${offset} = ${c} : ${k}`, `x + ${offset} = ${ans + offset}`, `x = ${ans + offset} - ${offset}`, `x = ${ans}`];
+                    } else if (type === 2) {
+                        const k = getRandomInt(2, 6);
+                        const offset = getRandomInt(2, 10);
+                        ans = getRandomInt(12, 25);
+                        const c = k * (ans - offset);
+                        expr = `${k} × (x - ${offset}) = ${c}`;
+                        steps = [`x - ${offset} = ${c} : ${k}`, `x - ${offset} = ${ans - offset}`, `x = ${ans - offset} + ${offset}`, `x = ${ans}`];
+                    } else {
+                        const a = getRandomInt(100, 300);
+                        const k = getRandomInt(3, 9);
+                        ans = getRandomInt(5, 15);
+                        const c = a - (k * ans);
+                        expr = `${a} - x × ${k} = ${c}`;
+                        steps = [`x × ${k} = ${a} - ${c}`, `x × ${k} = ${k * ans}`, `x = ${k * ans} : ${k}`, `x = ${ans}`];
+                    }
+                }
+
+                list.push({
+                    id: i,
+                    expr: expr,
+                    correctAnswer: ans,
+                    steps: steps
+                });
+            }
+
+            return list;
+        }
+
+        // Timer management
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 1200;
+            timeSpent = 0;
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                if (!isSubmitted) {
+                    timeLeft--;
+                    timeSpent++;
+                    updateTimerDisplay();
+
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        alert("⏱️ Đã hết thời gian 20 phút! Hệ thống sẽ tự động nộp bài thi của em.");
+                        submitExam(true);
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const text = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            const timerTextElem = document.getElementById('timer-text');
+            const timerBoxElem = document.getElementById('timer-box');
+
+            timerTextElem.innerText = text;
+
+            // Warning under 3 minutes (180s)
+            if (timeLeft <= 180 && !isSubmitted) {
+                timerBoxElem.classList.add('timer-warning');
+            } else {
+                timerBoxElem.classList.remove('timer-warning');
+            }
+        }
+
+        // Render Questions UI
+        function renderQuestionsUI() {
+            const wrapper = document.getElementById('questions-wrapper');
+            const palette = document.getElementById('palette-grid');
+
+            wrapper.innerHTML = '';
+            palette.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                // Question Card
+                const card = document.createElement('div');
+                card.id = `q-card-${q.id}`;
+                card.className = "bg-white rounded-2xl p-5 shadow-sm border border-slate-200 transition relative";
+                
+                card.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                        <span class="bg-indigo-100 text-indigo-700 text-xs font-black px-3 py-1 rounded-full">
+                            Câu ${q.id} / 30
+                        </span>
+                        <span id="status-badge-${q.id}" class="text-xs font-bold text-slate-400">
+                            Chưa trả lời
+                        </span>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Đề bài:</div>
+                        <div class="text-xl sm:text-2xl font-black text-slate-900 font-mono tracking-wide">
+                            ${q.expr}
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-3">
+                        <label class="text-sm font-extrabold text-slate-700">Đáp án:</label>
+                        <div class="flex items-center gap-2 max-w-xs w-full">
+                            <span class="font-black text-indigo-700 text-base">x =</span>
+                            <input type="number" step="any" id="input-q-${q.id}" 
+                                value="${userAnswers[q.id] !== undefined ? userAnswers[q.id] : ''}" 
+                                oninput="handleInput(${q.id}, this.value)"
+                                placeholder="Nhập số..." 
+                                ${isSubmitted ? 'disabled' : ''}
+                                class="w-full text-base font-bold p-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 focus:bg-white transition">
+                        </div>
+                    </div>
+
+                    <!-- Result feedback after submit -->
+                    <div id="feedback-${q.id}" class="hidden mt-4 pt-3 border-t border-slate-100 space-y-2">
+                        <!-- Filled after grading -->
+                    </div>
+                `;
+
+                wrapper.appendChild(card);
+
+                // Palette Button
+                const btn = document.createElement('button');
+                btn.id = `palette-btn-${q.id}`;
+                btn.onclick = () => scrollToQuestion(index);
+                btn.className = "question-btn h-10 rounded-xl font-black text-xs border border-slate-200 bg-slate-100 text-slate-700 flex items-center justify-center transition";
+                btn.innerText = q.id;
+                palette.appendChild(btn);
+            });
+
+            updatePaletteAndProgress();
+        }
+
+        // Handle Input change
+        function handleInput(qId, val) {
+            if (isSubmitted) return;
+
+            if (val.trim() !== '') {
+                userAnswers[qId] = parseFloat(val);
+            } else {
+                delete userAnswers[qId];
+            }
+
+            updatePaletteAndProgress();
+        }
+
+        // Scroll to specific question
+        function scrollToQuestion(index) {
+            if (index < 0) index = 0;
+            if (index >= questions.length) index = questions.length - 1;
+
+            currentQuestionIndex = index;
+            const qId = questions[index].id;
+            const elem = document.getElementById(`q-card-${qId}`);
+
+            if (elem) {
+                elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            updatePaletteAndProgress();
+        }
+
+        // Update Palette colors and count text
+        function updatePaletteAndProgress() {
+            let count = 0;
+
+            questions.forEach((q, idx) => {
+                const btn = document.getElementById(`palette-btn-${q.id}`);
+                const badge = document.getElementById(`status-badge-${q.id}`);
+                const hasAnswer = userAnswers[q.id] !== undefined && userAnswers[q.id] !== null && !isNaN(userAnswers[q.id]);
+
+                if (hasAnswer) count++;
+
+                if (!isSubmitted) {
+                    if (badge) {
+                        badge.innerText = hasAnswer ? "Đã điền" : "Chưa trả lời";
+                        badge.className = hasAnswer ? "text-xs font-extrabold text-indigo-600" : "text-xs font-bold text-slate-400";
+                    }
+
+                    if (btn) {
+                        if (idx === currentQuestionIndex) {
+                            btn.className = "question-btn h-10 rounded-xl font-black text-xs bg-amber-400 text-slate-950 border-2 border-amber-500 shadow-sm";
+                        } else if (hasAnswer) {
+                            btn.className = "question-btn h-10 rounded-xl font-black text-xs bg-indigo-600 text-white shadow-sm";
+                        } else {
+                            btn.className = "question-btn h-10 rounded-xl font-black text-xs bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200";
+                        }
+                    }
+                } else {
+                    // After submission state styling
+                    const isCorrect = userAnswers[q.id] === q.correctAnswer;
+                    if (btn) {
+                        if (isCorrect) {
+                            btn.className = "question-btn h-10 rounded-xl font-black text-xs bg-emerald-500 text-white";
+                        } else {
+                            btn.className = "question-btn h-10 rounded-xl font-black text-xs bg-rose-500 text-white";
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('answered-count-text').innerText = `${count} / 30`;
+        }
+
+        // Submission Confirmation
+        function confirmSubmit() {
+            if (isSubmitted) return;
+
+            const answeredCount = Object.keys(userAnswers).length;
+            const remaining = 30 - answeredCount;
+
+            let msg = "Em có chắc chắn muốn NỘP BÀI THI ngay bây giờ?";
+            if (remaining > 0) {
+                msg = `Em vẫn còn ${remaining} câu CHƯA TRẢ LỜI!\n\n${msg}`;
+            }
+
+            if (confirm(msg)) {
+                submitExam(false);
+            }
+        }
+
+        // Submit Exam Logic
+        function submitExam(autoSubmitted = false) {
+            if (isSubmitted) return;
+
+            isSubmitted = true;
+            clearInterval(timerInterval);
+
+            let correctCount = 0;
+
+            questions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.correctAnswer;
+                if (isCorrect) correctCount++;
+
+                // Disable inputs
+                const inputElem = document.getElementById(`input-q-${q.id}`);
+                if (inputElem) inputElem.disabled = true;
+
+                // Show detailed feedback under card
+                const feedbackElem = document.getElementById(`feedback-${q.id}`);
+                const cardElem = document.getElementById(`q-card-${q.id}`);
+
+                if (feedbackElem) {
+                    feedbackElem.classList.remove('hidden');
+
+                    let stepsHtml = q.steps.map(s => `<div>👉 <span class="font-mono font-extrabold">${s}</span></div>`).join('');
+
+                    if (isCorrect) {
+                        cardElem.className = "bg-emerald-50/40 rounded-2xl p-5 shadow-sm border-2 border-emerald-400 transition relative";
+                        feedbackElem.innerHTML = `
+                            <div class="text-xs font-black text-emerald-700 flex items-center gap-1.5 mb-2">
+                                <i class="fa-solid fa-circle-check text-base"></i> Chính xác! Đáp án x = ${q.correctAnswer}
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-emerald-200 text-xs text-slate-700 space-y-1">
+                                <div class="font-extrabold text-emerald-900 mb-1">📘 Lời giải chi tiết:</div>
+                                ${stepsHtml}
+                            </div>
+                        `;
+                    } else {
+                        cardElem.className = "bg-rose-50/40 rounded-2xl p-5 shadow-sm border-2 border-rose-300 transition relative";
+                        const userValText = userAns !== undefined ? userAns : "Chưa làm";
+                        feedbackElem.innerHTML = `
+                            <div class="text-xs font-black text-rose-600 flex items-center gap-1.5 mb-2">
+                                <i class="fa-solid fa-circle-xmark text-base"></i> Chưa đúng (Em chọn: ${userValText} | Đáp án đúng: x = ${q.correctAnswer})
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-rose-200 text-xs text-slate-700 space-y-1">
+                                <div class="font-extrabold text-rose-900 mb-1">📘 Lời giải chi tiết:</div>
+                                ${stepsHtml}
+                            </div>
+                        `;
+                    }
+                }
+            });
+
+            // Update Header & UI Buttons
+            document.getElementById('btn-submit-head').style.display = 'none';
+            document.getElementById('btn-submit-main').style.display = 'none';
+            document.getElementById('legend-results').classList.remove('hidden');
+
+            updatePaletteAndProgress();
+
+            // Calculate Score (Scale of 10)
+            const score = ((correctCount / 30) * 10).toFixed(1);
+            const minutesSpent = Math.floor(timeSpent / 60);
+            const secondsSpent = timeSpent % 60;
+            const timeFormatted = `${String(minutesSpent).padStart(2, '0')}:${String(secondsSpent).padStart(2, '0')}`;
+
+            // Rank evaluation
+            let rank = "";
+            let emoji = "🎉";
+            if (correctCount >= 28) {
+                rank = "Xuất Sắc 🏆";
+                emoji = "🌟";
+            } else if (correctCount >= 23) {
+                rank = "Giỏi 👏";
+                emoji = "🎉";
+            } else if (correctCount >= 18) {
+                rank = "Khá 👍";
+                emoji = "😃";
+            } else if (correctCount >= 12) {
+                rank = "Trung Bình 😐";
+                emoji = "📚";
+            } else {
+                rank = "Cần Cố Gắng Thêm 💪";
+                emoji = "💡";
+            }
+
+            // Populate Modal
+            document.getElementById('modal-score').innerText = score;
+            document.getElementById('modal-correct-text').innerText = `${correctCount}/30 câu đúng`;
+            document.getElementById('modal-time').innerText = timeFormatted;
+            document.getElementById('modal-rank').innerText = rank;
+            document.getElementById('modal-emoji').innerText = emoji;
+
+            if (autoSubmitted) {
+                document.getElementById('modal-subtitle').innerText = "Hết thời gian 20 phút - Hệ thống đã nộp bài tự động!";
+            } else {
+                document.getElementById('modal-subtitle').innerText = "Đã hoàn thành bài thi!";
+            }
+
+            // Trigger sound & confetti
+            playAudioEffect('finish');
+            if (correctCount >= 18 && typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+
+            // Show Modal
+            document.getElementById('result-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('result-modal').classList.add('hidden');
+        }
+
+        // Renew Exam Functionality
+        function renewExam() {
+            if (isSubmitted || confirm("Em có muốn tạo ĐỀ THI MỚI và làm lại từ đầu không?")) {
+                isSubmitted = false;
+                userAnswers = {};
+                currentQuestionIndex = 0;
+
+                // Reset UI Buttons
+                document.getElementById('btn-submit-head').style.display = 'inline-flex';
+                document.getElementById('btn-submit-main').style.display = 'inline-block';
+                document.getElementById('legend-results').classList.add('hidden');
+
+                // Generate new set of random questions
+                questions = generateQuestions();
+                renderQuestionsUI();
+                startTimer();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Initialize App
+        window.onload = function() {
+            questions = generateQuestions();
+            renderQuestionsUI();
+            startTimer();
+        };
+    </script>
+</body>
+</html>
