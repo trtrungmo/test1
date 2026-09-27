@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luyện Tập Rút Gọn Phân Số</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @keyframes pulse-fast {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .animate-pulse-fast {
+            animation: pulse-fast 0.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-teal-500 selection:text-white">
+
+    <header class="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 shadow-lg px-4 py-3 sm:px-6">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            
+            <!-- Logo & Title -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-emerald-600 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-teal-500/20">
+                    <i class="fa-solid fa-divide"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-white leading-tight">Luyện Tập Rút Gọn Phân Số</h1>
+                    <p class="text-xs text-slate-400">30 câu hỏi dạng trả lời ngắn (a/b)</p>
+                </div>
+            </div>
+
+            <!-- Timer & Action Bar -->
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                <!-- Answer Counter -->
+                <div class="bg-slate-800/80 border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-300 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-teal-400"></i>
+                    <span>Đã làm: <strong id="progress-text" class="text-teal-400 font-bold">0/30</strong></span>
+                </div>
+
+                <!-- Timer Badge (20 Minutes) -->
+                <div id="timer-badge" class="bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-1.5 flex items-center gap-2 text-teal-400 font-mono font-extrabold text-base tracking-wider transition-all">
+                    <i class="fa-regular fa-clock" id="timer-icon"></i>
+                    <span id="timer-display">20:00</span>
+                </div>
+
+                <!-- Action Buttons -->
+                <button onclick="quizApp.generateNewQuiz()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 active:scale-95" title="Tạo bộ đề 30 câu mới">
+                    <i class="fa-solid fa-arrows-rotate text-emerald-400"></i> Đề Mới
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto w-full p-4 sm:p-6 flex-grow space-y-6">
+
+        <!-- Top Overview Banner (Hidden by default, shown on result) -->
+        <section id="result-banner" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+            <div class="absolute -top-24 -right-24 w-64 h-64 bg-teal-600/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+                
+                <!-- Score Breakdown -->
+                <div class="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+                    <div class="relative flex items-center justify-center">
+                        <div class="w-28 h-28 rounded-full border-4 border-slate-800 bg-slate-950 flex flex-col items-center justify-center shadow-inner">
+                            <span id="final-score-10" class="text-3xl font-extrabold text-teal-400">0.0</span>
+                            <span class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Thang điểm 10</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <h2 id="result-title" class="text-2xl font-extrabold text-white">Kết Quả Bài Làm</h2>
+                        <p id="result-subtext" class="text-sm text-slate-400">Bạn đã hoàn thành bài thi rút gọn phân số.</p>
+                        
+                        <div class="flex flex-wrap gap-3 pt-2 justify-center sm:justify-start text-xs font-medium">
+                            <span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-lg flex items-center gap-1.5">
+                                <i class="fa-solid fa-check"></i> Đúng: <strong id="stat-correct">0</strong>
+                            </span>
+                            <span class="px-2.5 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/20 rounded-lg flex items-center gap-1.5">
+                                <i class="fa-solid fa-xmark"></i> Sai: <strong id="stat-wrong">0</strong>
+                            </span>
+                            <span class="px-2.5 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-lg flex items-center gap-1.5">
+                                <i class="fa-solid fa-minus"></i> Bỏ trống: <strong id="stat-skipped">0</strong>
+                            </span>
+                            <span class="px-2.5 py-1 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-lg flex items-center gap-1.5">
+                                <i class="fa-regular fa-clock"></i> Thời gian: <strong id="stat-time">00:00</strong>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action button on result -->
+                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                    <button onclick="quizApp.generateNewQuiz()" class="px-6 py-3 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-teal-500/20 transition-all text-sm flex items-center justify-center gap-2 active:scale-95">
+                        <i class="fa-solid fa-arrows-rotate"></i> Làm Đề Mới Khác
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <form id="quiz-form" onsubmit="quizApp.handleSubmit(event)" class="space-y-6">
+            <div id="questions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Dynamically generated 30 question cards -->
+            </div>
+
+            <!-- Footer Submit Section -->
+            <div id="submit-section" class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4 sticky bottom-4 z-20 shadow-2xl backdrop-blur-md">
+                <div class="text-xs text-slate-400 flex items-center gap-2 text-center sm:text-left">
+                    <i class="fa-solid fa-circle-info text-teal-400"></i>
+                    <span>Nhập đáp án dạng <b>a/b</b> (ví dụ: <b>2/3</b>) hoặc số nguyên nếu mẫu bằng 1.</span>
+                </div>
+                
+                <button type="submit" id="btn-submit" class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/25 transition-all text-sm flex items-center justify-center gap-2 active:scale-95 cursor-pointer">
+                    <i class="fa-solid fa-paper-plane"></i> Nộp Bài & Chấm Điểm
+                </button>
+            </div>
+        </form>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
+        <p>© Ứng Dụng Luyện Tập Rút Gọn Phân Số • 30 câu ngẫu nhiên • Thời gian 20 phút</p>
+    </footer>
+
+    <script>
+        // Helper function: Greatest Common Divisor (GCD)
+        function gcd(a, b) {
+            return b === 0 ? a : gcd(b, a % b);
+        }
+
+        class QuizApp {
+            constructor() {
+                this.totalQuestions = 30;
+                this.timeLimitSeconds = 1200; // 20 minutes = 1200 seconds
+                this.timeLeft = this.timeLimitSeconds;
+                this.timerInterval = null;
+                this.questions = [];
+                this.isSubmitted = false;
+
+                // DOM Cache
+                this.gridContainer = document.getElementById('questions-grid');
+                this.timerDisplay = document.getElementById('timer-display');
+                this.timerBadge = document.getElementById('timer-badge');
+                this.timerIcon = document.getElementById('timer-icon');
+                this.progressText = document.getElementById('progress-text');
+                this.resultBanner = document.getElementById('result-banner');
+                this.submitSection = document.getElementById('submit-section');
+
+                // Initialize
+                this.generateNewQuiz();
+            }
+
+            // Generate 30 random unsimplified fraction questions
+            generateQuestions() {
+                const list = [];
+                for (let i = 0; i < this.totalQuestions; i++) {
+                    // Step 1: Pick irreducible fraction a/b
+                    let a, b;
+                    do {
+                        a = Math.floor(Math.random() * 9) + 1; // 1 to 9
+                        b = Math.floor(Math.random() * 11) + 2; // 2 to 12
+                    } while (gcd(a, b) !== 1 || a === b); // ensure irreducible and not equal to 1
+
+                    // Step 2: Pick common factor k >= 2
+                    const k = Math.floor(Math.random() * 8) + 2; // 2 to 9
+
+                    // Step 3: Compute unsimplified fraction
+                    const unsimplifiedA = a * k;
+                    const unsimplifiedB = b * k;
+
+                    // Simplified answer string: "a/b" or "a" if b === 1
+                    const simplifiedAnswer = b === 1 ? `${a}` : `${a}/${b}`;
+
+                    list.push({
+                        id: i + 1,
+                        rawNum: unsimplifiedA,
+                        rawDen: unsimplifiedB,
+                        simplifiedNum: a,
+                        simplifiedDen: b,
+                        expression: `${unsimplifiedA}/${unsimplifiedB}`,
+                        correctAnswer: simplifiedAnswer
+                    });
+                }
+                return list;
+            }
+
+            // Start / Reset Quiz state
+            generateNewQuiz() {
+                this.isSubmitted = false;
+                this.questions = this.generateQuestions();
+                this.timeLeft = this.timeLimitSeconds;
+                
+                // Hide result banner, show submit section
+                this.resultBanner.classList.add('hidden');
+                this.submitSection.classList.remove('hidden');
+
+                // Reset timer visual style
+                this.timerBadge.className = "bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-1.5 flex items-center gap-2 text-teal-400 font-mono font-extrabold text-base tracking-wider transition-all";
+                this.timerIcon.className = "fa-regular fa-clock";
+
+                // Render questions to DOM
+                this.renderQuestions();
+                this.updateProgress();
+
+                // Restart timer
+                this.startTimer();
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Render 30 Question Cards into DOM
+            renderQuestions() {
+                this.gridContainer.innerHTML = '';
+
+                this.questions.forEach((q, index) => {
+                    const card = document.createElement('div');
+                    card.id = `q-card-${index}`;
+                    card.className = "bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between space-y-3 transition-all hover:border-slate-700 shadow-md relative";
+
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Câu ${q.id}</span>
+                            <span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20">
+                                Rút gọn
+                            </span>
+                        </div>
+
+                        <!-- Fraction Display -->
+                        <div class="text-center py-2 flex items-center justify-center gap-3">
+                            <div class="flex flex-col items-center font-mono font-extrabold text-2xl text-white">
+                                <span class="border-b-2 border-slate-600 px-2 pb-0.5">${q.rawNum}</span>
+                                <span class="pt-0.5 px-2">${q.rawDen}</span>
+                            </div>
+                            <span class="text-2xl font-bold text-slate-500">=</span>
+                            <span class="text-xl font-bold text-teal-400 font-mono">?</span>
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="relative flex items-center">
+                                <input 
+                                    type="text" 
+                                    id="input-${index}" 
+                                    oninput="quizApp.updateProgress()" 
+                                    placeholder="Nhập dạng a/b (vd: 2/3)" 
+                                    autocomplete="off"
+                                    class="w-full bg-slate-950 border border-slate-700 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/30 rounded-xl px-3 py-2.5 text-center text-lg font-bold text-white placeholder-slate-600 outline-none transition-all"
+                                >
+                            </div>
+                            <!-- Result Info Placeholder -->
+                            <div id="status-${index}" class="text-xs text-center font-medium min-h-[20px]"></div>
+                        </div>
+                    `;
+
+                    this.gridContainer.appendChild(card);
+                });
+            }
+
+            // Update Progress counter
+            updateProgress() {
+                if (this.isSubmitted) return;
+                
+                let answeredCount = 0;
+                this.questions.forEach((_, idx) => {
+                    const val = document.getElementById(`input-${idx}`)?.value.trim();
+                    if (val !== '' && val !== undefined) {
+                        answeredCount++;
+                    }
+                });
+
+                this.progressText.textContent = `${answeredCount}/${this.totalQuestions}`;
+            }
+
+            // Timer management
+            startTimer() {
+                clearInterval(this.timerInterval);
+                this.updateTimerDisplay();
+
+                this.timerInterval = setInterval(() => {
+                    this.timeLeft--;
+                    this.updateTimerDisplay();
+
+                    if (this.timeLeft <= 0) {
+                        clearInterval(this.timerInterval);
+                        this.handleSubmit(null, true); // Auto submit on timeout
+                    }
+                }, 1000);
+            }
+
+            updateTimerDisplay() {
+                const minutes = Math.floor(this.timeLeft / 60);
+                const seconds = this.timeLeft % 60;
+                const formatted = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                this.timerDisplay.textContent = formatted;
+
+                // Warning colors under 2 minutes (120 seconds)
+                if (this.timeLeft <= 120 && this.timeLeft > 0) {
+                    this.timerBadge.className = "bg-rose-500/20 border border-rose-500/50 rounded-xl px-3.5 py-1.5 flex items-center gap-2 text-rose-400 font-mono font-extrabold text-base tracking-wider animate-pulse-fast";
+                    this.timerIcon.className = "fa-solid fa-triangle-exclamation text-rose-400";
+                }
+            }
+
+            // Standardize user input format (e.g. "2 / 3" -> "2/3")
+            normalizeFractionInput(str) {
+                if (!str) return "";
+                // remove all whitespaces
+                const cleaned = str.replace(/\s+/g, '');
+                
+                // If contains slash
+                if (cleaned.includes('/')) {
+                    const parts = cleaned.split('/');
+                    if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1]) && parts[0] !== '' && parts[1] !== '') {
+                        const num = parseInt(parts[0], 10);
+                        const den = parseInt(parts[1], 10);
+                        if (den === 0) return "invalid"; // Division by zero
+                        if (den === 1) return `${num}`;
+                        return `${num}/${den}`;
+                    }
+                } else if (!isNaN(cleaned) && cleaned !== '') {
+                    return `${parseInt(cleaned, 10)}`;
+                }
+                return "invalid";
+            }
+
+            // Submit & Grade
+            handleSubmit(e, isTimeout = false) {
+                if (e) e.preventDefault();
+                if (this.isSubmitted) return;
+
+                this.isSubmitted = true;
+                clearInterval(this.timerInterval);
+
+                const timeSpentSeconds = this.timeLimitSeconds - this.timeLeft;
+                const timeSpentMinutes = Math.floor(timeSpentSeconds / 60);
+                const timeSpentRemSec = timeSpentSeconds % 60;
+                const timeSpentFormatted = `${timeSpentMinutes.toString().padStart(2, '0')}:${timeSpentRemSec.toString().padStart(2, '0')}`;
+
+                let correctCount = 0;
+                let wrongCount = 0;
+                let skippedCount = 0;
+
+                // Grade each item
+                this.questions.forEach((q, idx) => {
+                    const inputEl = document.getElementById(`input-${idx}`);
+                    const cardEl = document.getElementById(`q-card-${idx}`);
+                    const statusEl = document.getElementById(`status-${idx}`);
+
+                    const rawVal = inputEl.value.trim();
+                    inputEl.disabled = true;
+
+                    if (rawVal === '') {
+                        skippedCount++;
+                        cardEl.className = "bg-amber-950/20 border border-amber-500/40 rounded-2xl p-4 flex flex-col justify-between space-y-3 transition-all shadow-md";
+                        statusEl.className = "text-xs text-center font-semibold text-amber-400";
+                        statusEl.innerHTML = `<i class="fa-solid fa-minus"></i> Bỏ trống (Đáp án: <strong class="text-white">${q.correctAnswer}</strong>)`;
+                    } else {
+                        const normalizedUserVal = this.normalizeFractionInput(rawVal);
+                        
+                        if (normalizedUserVal === q.correctAnswer) {
+                            correctCount++;
+                            cardEl.className = "bg-emerald-950/20 border border-emerald-500/40 rounded-2xl p-4 flex flex-col justify-between space-y-3 transition-all shadow-md";
+                            inputEl.className = "w-full bg-emerald-950/40 border border-emerald-500/60 rounded-xl px-3 py-2.5 text-center text-lg font-bold text-emerald-300 outline-none";
+                            statusEl.className = "text-xs text-center font-semibold text-emerald-400";
+                            statusEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> Chính xác!`;
+                        } else {
+                            wrongCount++;
+                            cardEl.className = "bg-rose-950/20 border border-rose-500/40 rounded-2xl p-4 flex flex-col justify-between space-y-3 transition-all shadow-md";
+                            inputEl.className = "w-full bg-rose-950/40 border border-rose-500/60 rounded-xl px-3 py-2.5 text-center text-lg font-bold text-rose-300 line-through outline-none";
+                            statusEl.className = "text-xs text-center font-semibold text-rose-400";
+                            statusEl.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Sai (Đáp án: <strong class="text-white">${q.correctAnswer}</strong>)`;
+                        }
+                    }
+                });
+
+                // Calculate Score out of 10
+                const scoreOut10 = ((correctCount / this.totalQuestions) * 10).toFixed(1);
+
+                // Update Result Banner
+                document.getElementById('final-score-10').textContent = scoreOut10;
+                document.getElementById('stat-correct').textContent = correctCount;
+                document.getElementById('stat-wrong').textContent = wrongCount;
+                document.getElementById('stat-skipped').textContent = skippedCount;
+                document.getElementById('stat-time').textContent = timeSpentFormatted;
+
+                const resultTitle = document.getElementById('result-title');
+                const resultSubtext = document.getElementById('result-subtext');
+
+                if (isTimeout) {
+                    resultTitle.textContent = "Hết Giờ Làm Bài!";
+                    resultSubtext.textContent = "Hệ thống đã tự động thu bài và chấm điểm bài làm của bạn.";
+                } else if (correctCount === 30) {
+                    resultTitle.textContent = "Tuyệt Vời! Điểm Tối Đa 🎉";
+                    resultSubtext.textContent = "Bạn đã rút gọn chính xác tất cả 30 phân số!";
+                } else if (scoreOut10 >= 8) {
+                    resultTitle.textContent = "Kết Quả Rất Tốt! 🌟";
+                    resultSubtext.textContent = "Kỹ năng toán học và rút gọn phân số của bạn rất xuất sắc.";
+                } else if (scoreOut10 >= 5) {
+                    resultTitle.textContent = "Kết Quả Khá! 👍";
+                    resultSubtext.textContent = "Hãy rèn luyện thêm để rút gọn phân số nhanh và chính xác hơn!";
+                } else {
+                    resultTitle.textContent = "Cần Luyện Tập Thêm! 💪";
+                    resultSubtext.textContent = "Đừng nản lòng, hãy bấm 'Làm Đề Mới' để thực hành lại nhé!";
+                }
+
+                // UI adjustments
+                this.resultBanner.classList.remove('hidden');
+                this.submitSection.classList.add('hidden');
+
+                // Scroll to top to see score
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Initialize App Instance on load
+        let quizApp;
+        window.onload = () => {
+            quizApp = new QuizApp();
+        };
+    </script>
+</body>
+</html>
