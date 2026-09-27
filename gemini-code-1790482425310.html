@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn Tập Lập Trình Xử Lý Dữ Liệu (Bài 1 - 3)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        code, pre { font-family: 'Fira Code', 'Consolas', monospace; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen pb-12">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50 shadow-md">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl font-bold text-sky-400">Lập Trình Xử Lý Dữ Liệu - Luyện Tập Bài 1 đến 3</h1>
+                <p class="text-xs text-slate-400 mt-1">Nguồn: courses.iaidev.com & Đề kiểm tra tuần 3</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="shuffleBtn" onclick="shuffleQuestions()" class="bg-amber-600 hover:bg-amber-500 text-white text-sm px-3 py-2 rounded-lg font-semibold transition flex items-center gap-2">
+                    <i class="fa-solid fa-shuffle"></i> Xáo Trộn
+                </button>
+                <button id="resetBtn" onclick="resetAll()" class="bg-rose-600 hover:bg-rose-500 text-white text-sm px-3 py-2 rounded-lg font-semibold transition flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i> Làm Lại
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-5xl mx-auto px-4 mt-6">
+        
+        <!-- Filter and Stats Bar -->
+        <div class="bg-slate-800 rounded-xl p-4 mb-6 border border-slate-700 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex gap-2">
+                <button onclick="filterType('all')" id="btn-all" class="filter-btn bg-sky-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium">Tất cả (<span id="cnt-all">0</span>)</button>
+                <button onclick="filterType('mcq')" id="btn-mcq" class="filter-btn bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1.5 rounded-lg text-sm font-medium">Trắc nghiệm (<span id="cnt-mcq">0</span>)</button>
+                <button onclick="filterType('essay')" id="btn-essay" class="filter-btn bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1.5 rounded-lg text-sm font-medium">Tự luận (<span id="cnt-essay">0</span>)</button>
+            </div>
+            <div class="text-sm font-medium text-slate-300">
+                Đã hoàn thành: <span id="completedCount" class="text-emerald-400 font-bold">0</span> / <span id="totalCount">0</span>
+            </div>
+        </div>
+
+        <!-- Questions List Container -->
+        <div id="questionsContainer" class="space-y-6"></div>
+
+    </main>
+
+    <script>
+        const rawQuestions = [
+            // ================= CAU HOI MAU TU DE (1-15) =================
+            {
+                id: 1,
+                type: 'mcq',
+                topic: 'Bài 1: Tập hợp (Set) & Phép toán Set trong Python',
+                question: 'Danh sách sinh viên đăng ký hai đợt khảo sát được lưu bằng hai set:\n\ndot_1 = {"An", "Bình", "Chi", "Dũng"}\ndot_2 = {"Bình", "Dũng", "Em"}\n\nBiểu thức nào cho ra {\'An\', \'Chi\'} (những người chỉ đăng ký đợt 1)?',
+                options: [
+                    'dot_1 | dot_2',
+                    'dot_2 - dot_1',
+                    'dot_1 - dot_2',
+                    'dot_1 & dot_2'
+                ],
+                correct: 2,
+                explanation: 'Hiệu dot_1 - dot_2 giữ phần tử có ở đợt 1 mà không có ở đợt 2: An và Chi. Phương án D: phép giao cho những người đăng ký cả hai đợt, {\'Bình\', \'Dũng\'}. Phương án B: đảo chiều hiệu, cho người chỉ có ở đợt 2, {\'Em\'}. Phương án A: phép hợp gồm cả năm người, chưa trừ phần chung.'
+            },
+            {
+                id: 2,
+                type: 'mcq',
+                topic: 'Bài 3: Mảng Boolean NumPy & Phép logicbitwise (&)',
+                question: 'Cho d = np.array([4.5, 7.0, 5.0, 8.0, 6.5, 3.0]) là điểm của 6 bài. Biểu thức nào cho ra 50.0, tức tỷ lệ phần trăm số bài có điểm từ 5 đến dưới 8?',
+                options: [
+                    '(d >= 5 & d < 8).mean() * 100',
+                    '((d >= 5) & (d < 8)).mean() * 100',
+                    '((d >= 5) and (d < 8)).mean() * 100',
+                    '((d >= 5) & (d < 8)).sum()'
+                ],
+                correct: 1,
+                explanation: 'Hai về so sánh đặt trong ngoặc, ghép bằng &, mean() trên mảng bool cho tỷ lệ 3/6, nhân 100 được 50.0. Phương án C: and không dùng được với mảng, phát sinh ValueError vì giá trị chân lý của mảng không xác định. Phương án A: thiếu ngoặc, & được tính trước phép so sánh ( 5 & d ), phát sinh TypeError. Phương án D: sum() cho số bài (3), không phải tỷ lệ.'
+            },
+            {
+                id: 3,
+                type: 'mcq',
+                topic: 'Bài 1: Môi trường ảo Python (venv) & Quản lý thư viện (pip)',
+                question: 'Bạn nhận repo bài tập lớn của nhóm (đã có requirements.txt) trên một máy mới chưa cài gì ngoài Python. Trình tự lệnh nào dựng lại đúng môi trường của nhóm?',
+                options: [
+                    'python -m venv .venv, rồi pip freeze > requirements.txt, rồi pip install -r requirements.txt',
+                    'python -m venv .venv, rồi source .venv/bin/activate, rồi pip install -r requirements.txt',
+                    'Chép thư mục .venv từ máy của bạn cùng nhóm sang, rồi source .venv/bin/activate, rồi pip freeze',
+                    'pip install -r requirements.txt, rồi python -m venv .venv, rồi source .venv/bin/activate'
+                ],
+                correct: 1,
+                explanation: 'Tạo venv, kích hoạt để mọi lệnh pip trỏ vào venv, rồi cài đúng danh sách đã ghim trong requirements.txt. Phương án D: cài trước khi có venv thì gói rơi vào Python hệ thống, venv tạo sau vẫn trống. Phương án C: thư mục .venv gắn với đường dẫn và bản Python của máy tạo ra nó, chép sang máy khác không chạy được. Phương án A: pip freeze chỉ chụp hiện trạng (đang trống) và ghi đè file của nhóm, không cài gì.'
+            },
+            {
+                id: 4,
+                type: 'mcq',
+                topic: 'Bài 1: Bắt ngoại lệ ngoại lệ chính xác (Exception Handling)',
+                question: 'Hàm dưới đây cần trả về None cho cả ba ca thử to_int(""), to_int("abc") và to_int(None), đồng thời không che khuất các lỗi lập trình khác (ví dụ gõ sai tên biến trong thân hàm). Mệnh đề nào điền vào chỗ trống?\n\ndef to_int(s):\n    try:\n        return int(s)\n    ______:\n        return None',
+                options: [
+                    'except (TypeError, IndexError)',
+                    'except (ValueError, KeyError)',
+                    'except (Exception, KeyError)',
+                    'except (ValueError, TypeError)'
+                ],
+                correct: 3,
+                explanation: 'int("") và int("abc") phát sinh ValueError, int(None) phát sinh TypeError; bắt đúng hai loại này thì ba ca thử đều trả None và lỗi lập trình khác vẫn hiện ra. Phương án B: coi int(None) cũng là ValueError (thêm KeyError không liên quan), nên ca None làm chương trình dừng. Phương án A: coi chuỗi không phải số gây TypeError (thêm IndexError không liên quan), nên ca "abc" làm chương trình dừng. Phương án C: Exception bao trùm mọi lỗi (thêm KeyError là thừa); chạy được cả ba ca nhưng nuốt luôn NameError và mọi lỗi lập trình khác, trái với nguyên tắc của bài 2.'
+            },
+            {
+                id: 5,
+                type: 'mcq',
+                topic: 'Bài 3: Thao tác chiều ma trận NumPy (axis, argmax)',
+                question: 'Ma trận số lượt mượn sách của 3 khoa (hàng) trong 4 tuần (cột). Đoạn code in ra [2 0 1], tức tuần cao điểm của từng khoa. Biểu thức nào ở chỗ trống?\n\nM = np.array([[3, 7, 9, 1],\n              [8, 2, 4, 5],\n              [1, 6, 3, 2]])\nprint(_______)',
+                options: [
+                    'M.argmax(axis=0)',
+                    'M.sum(0).argmax()',
+                    'M.argmax(axis=1)',
+                    'M.max(axis=1)'
+                ],
+                correct: 2,
+                explanation: 'Cần một vị trí cho mỗi hàng nên chiều cột phải "biến mất": argmax(axis=1) cho [2, 0, 1]. Phương án A: axis=0 cho một vị trí mỗi tuần, mảng 4 phần tử [1, 0, 0, 1]. Phương án D: max trả giá trị lớn nhất [9, 8, 6], không phải vị trí. Phương án B: tổng theo tuần rồi lấy một vị trí duy nhất cho cả ma trận, ra số 2.'
+            },
+            {
+                id: 6,
+                type: 'mcq',
+                topic: 'Bài 1: Quy định sử dụng AI & Khai báo bài tập',
+                question: 'Trong phần "Bài tự làm" (chế độ mở) của lab, một sinh viên dùng chatbot để viết đoạn code xếp hạng khu. Theo yêu cầu ghi trong lab, sinh viên phải khai báo tối thiểu những gì?',
+                options: [
+                    'Không cần khai báo, vì phần bài tự làm của lab không tính điểm và không phải bài tập lớn.',
+                    'Ghi tên công cụ đã dùng ở đầu notebook là đủ; prompt là chi tiết kỹ thuật không cần lưu lại.',
+                    'Ghi vào file AI_USAGE.md của bài tập lớn, vì đó là nơi khai báo duy nhất mà môn học công nhận.',
+                    'Ghi ngay trong notebook prompt chính đã hỏi và cách đã kiểm chứng kết quả mà AI đã tạo ra.'
+                ],
+                correct: 3,
+                explanation: 'Lab yêu cầu ghi lại ngay trong notebook prompt chính và cách kiểm chứng, coi đó là luyện tập cho cách khai báo trong AI_USAGE.md của bài tập lớn; trách nhiệm khai báo đi kèm mọi hoạt động ở chế độ mở. Phương án A: nghĩ khai báo chỉ bắt buộc ở bài tập lớn. Phương án B: khai báo chung chung, thiếu prompt và cách kiểm chứng. Phương án C: AI_USAGE.md là của bài tập lớn; bài trong lab khai báo tại chỗ trong notebook.'
+            },
+            {
+                id: 7,
+                type: 'mcq',
+                topic: 'Bài 3: Khái niệm View vs Copy trong Slicing NumPy',
+                question: 'Nhóm muốn lấy hàng đầu của ma trận M ra một biến h để thử nghiệm, sao cho mọi phép gán vào h sau đó KHÔNG làm đổi M. Cách viết nào đạt yêu cầu?',
+                options: [
+                    'h = M[0].copy() : lấy hàng là view nên phải sao chép tường minh mới độc lập.',
+                    'h = M[0] : lấy nguyên một hàng thì NumPy tạo mảng mới, không dính tới M.',
+                    'h = M[0:1] : lát cắt theo khoảng tạo mảng mới có shape (1, n), tách khỏi M.',
+                    'h = M[0, :] : viết rõ dấu hai chấm buộc NumPy sao chép dữ liệu của hàng.'
+                ],
+                correct: 0,
+                explanation: 'Lấy hàng bằng chỉ số hay lát cắt cơ bản đều tạo view dùng chung bộ nhớ với M; chỉ .copy() tạo mảng độc lập. Phương án B: coi M[0] là bản sao. Phương án D: nghĩ viết rõ dấu : làm NumPy sao chép dữ liệu; M[0, :] vẫn là view. Phương án C: nghĩ lát cắt theo khoảng 0:1 tạo bản sao; đây vẫn là lát cắt cơ bản (view) có shape (1, n).'
+            },
+            {
+                id: 8,
+                type: 'mcq',
+                topic: 'Bài 1: Định dạng chuỗi (f-string Formatting)',
+                question: 'Cho p = 0.625 và n = 1250. Biểu thức nào tạo ra đúng chuỗi Tỷ lệ đạt: 62.5% | 1,250 SV ?',
+                options: [
+                    'f"Tỷ lệ đạt: {p:.1%} | {n:,} SV"',
+                    'f"Tỷ lệ đạt: {p:.1%} | {n:d} SV"',
+                    'f"Tỷ lệ đạt: {p:.1f}% | {n:,} SV"',
+                    'f"Tỷ lệ đạt: {p * 100:.1%} | {n:,} SV"'
+                ],
+                correct: 0,
+                explanation: 'Đuôi :.1% nhân 100 rồi giữ một chữ số thập phân và dán ký hiệu %; đuôi :, chèn dấu phẩy phân cách hàng nghìn cho số nguyên. Phương án C: .1f không nhân 100, ra 0.6%. Phương án D: tự nhân 100 rồi vẫn dùng %, nhân hai lần thành 6250.0%. Phương án B: d chỉ in số nguyên, không tự chèn dấu phân cách, ra 1250.'
+            },
+            {
+                id: 9,
+                type: 'mcq',
+                topic: 'Bài 2: Đọc file CSV bằng csv.DictReader & Ép kiểu dữ liệu',
+                question: 'File sv.csv có hai cột ten,tuoi và mọi ô đều có giá trị. Sau rows = list(csv.DictReader(f)), lệnh sum(r["tuoi"] for r in rows) báo lỗi TypeError: unsupported operand type(s) for +: \'int\' and \'str\'. Nguyên nhân là gì?',
+                options: [
+                    'DictReader trả mọi ô dưới dạng chuỗi, kể cả cột số, nên phải ép kiểu int() trước khi cộng.',
+                    'sum không nhận generator; phải đổi thành sum([r["tuoi"] for r in rows]) là chạy được.',
+                    'Cột tuoi có ô rỗng được đọc thành chuỗi rỗng, chỉ ô rỗng mới gây lỗi khi cộng.',
+                    'File có dòng trống nên một giá trị tuoi được đọc thành None và không cộng được với số nguyên.'
+                ],
+                correct: 0,
+                explanation: 'CSV không mang kiểu; DictReader đọc "20" thành chuỗi \'20\', sum bắt đầu từ số 0 nên phép 0 + \'20\' phát sinh TypeError. Phương án D: ô trống hay dòng trống không thành None; đề cũng nói mọi ô đều có giá trị. Phương án C: mọi ô đều là chuỗi chứ không riêng ô rỗng, nên ép kiểu từng ô là bắt buộc. Phương án B: sum nhận generator bình thường; đổi sang list vẫn cộng chuỗi và vẫn lỗi.'
+            },
+            {
+                id: 10,
+                type: 'mcq',
+                topic: 'Bài 3: Quy tắc Broadcasting trong NumPy',
+                question: 'M là ma trận giá shape (3, 4) của 3 thành phố trong 4 tháng; v = np.array([10, 20, 30]) là phụ phí riêng của từng thành phố. Cách viết nào cho ra ma trận cùng shape với M, trong đó mỗi hàng được cộng đúng phụ phí của thành phố đó?',
+                options: [
+                    'M + v.reshape(1, 3)',
+                    'M.transpose() + v',
+                    'M + v.reshape(3)',
+                    'M + v.reshape(3, 1)'
+                ],
+                correct: 3,
+                explanation: 'So shape từ phải sang: (3, 4) với (3, 1) khớp (4 với 1, 3 với 3), cột phụ phí được mở rộng theo từng hàng. Phương án C: reshape(3) vẫn là (3,), so với chiều cuối 4 không khớp, phát sinh lỗi dù độ dài bằng số hàng. Phương án A: (1, 3) có 3 ở chiều cuối, vẫn không khớp với 4. Phương án B: cộng được vì M.transpose() có shape (4, 3), nhưng kết quả (4, 3) bị chuyển vị so với M; muốn đúng phải chuyển vị lại.'
+            },
+            {
+                id: 11,
+                type: 'essay',
+                topic: 'Bài 3: Xử lý giá trị khuyết (NaN) & Tính trung bình mảng NumPy',
+                question: 'Điểm của 6 bài kiểm tra, trong đó hai bài chưa có điểm (NaN). Nhóm muốn đếm số bài có điểm cao hơn điểm trung bình của các bài đã có điểm. Chỉ trả lời bằng một con số là giá trị được in ra.\n\nimport numpy as np\nd = np.array([3.5, np.nan, 7.0, np.nan, 5.5, 8.0])\nnguong = np.nanmean(d)\nprint((d > nguong).sum())',
+                modelAnswer: '2',
+                explanation: 'Giải thích chi tiết:\n1. np.nanmean(d) bỏ qua các giá trị NaN và tính trung bình các giá trị hữu hiệu: (3.5 + 7.0 + 5.5 + 8.0) / 4 = 24.0 / 4 = 6.0.\n2. So sánh d > 6.0 tạo ra mảng boolean: [False, False, True, False, False, True] (Lưu ý: np.nan > 6.0 trả về False).\n3. Phép .sum() đếm các giá trị True: 2 bài (7.0 và 8.0).\n=> Kết quả in ra là 2.'
+            },
+            {
+                id: 12,
+                type: 'essay',
+                topic: 'Bài 1 & 2: Xử lý ngoại lệ với dữ liệu đọc từ JSON/Dict',
+                question: 'Hàm to_float do AI viết qua ba ca thử "1,200", "N/A" và "". Khi áp lên cột giá đọc từ file JSON (ô trống được ghi là null), chương trình dừng với AttributeError: \'NoneType\' object has no attribute \'replace\' dù hàm đã có mệnh đề except (ValueError, TypeError). Giải thích vì sao và nêu cách sửa. Chỉ trả lời bằng một câu ngắn.\n\ndef to_float(s):\n    x = s.replace(",", "")\n    try:\n        return float(x)\n    except (ValueError, TypeError):\n        return None',
+                modelAnswer: 'Khi s nhận giá trị None (do JSON đọc null), dòng s.replace nằm ngoài khối try sẽ phát sinh AttributeError; sửa bằng cách đưa s.replace vào trong try hoặc kiểm tra if s is None return None trước.',
+                explanation: 'Giải thích chi tiết:\n- Khi file JSON chứa null, Python đọc vào thành None. Phép gọi None.replace(...) phát sinh AttributeError.\n- Lỗi này xảy ra trước khi chương trình đi vào khối try, nên except (ValueError, TypeError) không thể bắt được.\n- Cách sửa đơn giản: Chuyển x = s.replace(",", "") vào bên trong khối try (sau đó bổ sung AttributeError vào ngoại lệ cần bắt), hoặc kiểm tra `if s is None: return None` ở đầu hàm.'
+            },
+            {
+                id: 13,
+                type: 'essay',
+                topic: 'Bài 1: Thứ tự thực thi ô lệnh (Execution Order) trong Jupyter Notebook',
+                question: 'Một notebook có bốn ô code hiển thị theo thứ tự từ trên xuống như dưới; số trong In [n] là thứ tự thực thi thật của từng ô. Sau khi chạy bốn ô như vậy, sinh viên tạo một ô mới và chạy print(tong). Chỉ trả lời bằng một con số là giá trị được in ra.\n\nIn [3]: tong = sum(ds)\nIn [1]: ds = [4, 6]\nIn [4]: ds.append(10)\nIn [2]: ds = ds + [5]',
+                modelAnswer: '15',
+                explanation: 'Giải thích chi tiết:\nThứ tự chạy thực tế dựa trên chỉ số In [n]:\n- In [1]: ds = [4, 6]\n- In [2]: ds = ds + [5] => ds trở thành [4, 6, 5]\n- In [3]: tong = sum(ds) => tong = 4 + 6 + 5 = 15. (Được gán tại thời điểm này!)\n- In [4]: ds.append(10) => ds trở thành [4, 6, 5, 10], nhưng biến tong KHÔNG bị cập nhật lại vì nó đã được tính ở bước [3].\n=> Do đó, print(tong) sẽ in ra 15.'
+            },
+            {
+                id: 14,
+                type: 'essay',
+                topic: 'Bài 3: Chuẩn hóa Z-score với NumPy std',
+                question: 'Điểm của 7 bài kiểm tra là 2, 4, 6, 8, 10, 12, 14. Chuẩn hoá bằng z-score với độ lệch chuẩn tổng thể (chia cho n, như std() mặc định của NumPy). Điểm z của bài 14 điểm bằng bao nhiêu? Chỉ trả lời bằng một con số.',
+                modelAnswer: '1.5',
+                explanation: 'Giải thích chi tiết:\n1. Giá trị trung bình mean = (2 + 4 + 6 + 8 + 10 + 12 + 14) / 7 = 56 / 7 = 8.\n2. Các độ lệch so với mean: [-6, -4, -2, 0, 2, 4, 6].\n3. Bình phương độ lệch: [36, 16, 4, 0, 4, 16, 36]. Tổng = 112.\n4. Phương sai variance = 112 / 7 = 16.\n5. Độ lệch chuẩn std = sqrt(16) = 4.\n6. Điểm Z của bài 14: z = (x - mean) / std = (14 - 8) / 4 = 6 / 4 = 1.5.'
+            },
+            {
+                id: 15,
+                type: 'essay',
+                topic: 'Bài 1: Giá trị Chân lý (Truthy / Falsy) & Lọc Dictionary',
+                question: 'Đoạn code tính điểm trung bình của các sinh viên "có điểm", nhưng điều kiện lọc dùng if v. Chỉ trả lời bằng một con số là giá trị được in ra.\n\ndiem = {"An": 8, "Bình": 0, "Chi": None, "Dũng": 6, "Em": 0}\nco_diem = {k: v for k, v in diem.items() if v}\nprint(sum(co_diem.values()) / len(co_diem))',
+                modelAnswer: '7',
+                explanation: 'Giải thích chi tiết:\n1. Trong Python, giá trị 0 và None đều được coi là Falsy (coi như False trong mệnh đề `if v`).\n2. Do đó, điều kiện `if v` sẽ loại bỏ cả "Chi" (None) và "Bình", "Em" (điểm 0!).\n3. Dictionary `co_diem` chỉ còn lại: {"An": 8, "Dũng": 6}.\n4. Tổng điểm: 8 + 6 = 14. Số lượng phần tử: 2.\n5. Trung bình = 14 / 2 = 7.'
+            },
+
+            // ================= CAU HOI PHAN LUONG ON TAP BO SUNG =================
+            {
+                id: 16,
+                type: 'mcq',
+                topic: 'Bài 3: Tạo mảng NumPy & Kiểu dữ liệu ngầm định',
+                question: 'Cho đoạn code NumPy sau:\na = np.array([1, 2, 3.0, 4])\nKiểu dữ liệu (dtype) của mảng `a` sẽ là gì?',
+                options: [
+                    'int64',
+                    'float64',
+                    'object',
+                    'string'
+                ],
+                correct: 1,
+                explanation: 'NumPy yêu cầu mọi phần tử trong mảng phải cùng kiểu dữ liệu. Do trong danh sách có phần tử 3.0 (float), NumPy sẽ tự động ép kiểu tất cả các phần tử còn lại sang float64.'
+            },
+            {
+                id: 17,
+                type: 'mcq',
+                topic: 'Bài 2: Đọc file JSON với thư viện json',
+                question: 'Khi sử dụng hàm `json.load(f)` để đọc dữ liệu từ một file JSON đang mở `f`, dữ liệu kiểu JSON Object `{ "name": "An", "age": 20 }` sẽ được chuyển đổi thành cấu trúc dữ liệu nào trong Python?',
+                options: [
+                    'List',
+                    'Tuple',
+                    'Dictionary',
+                    'Set'
+                ],
+                correct: 2,
+                explanation: 'Trong Python, mô đun `json` tự động ánh xạ JSON Object thành kiểu `dict` (dictionary) và JSON Array thành `list`.'
+            },
+            {
+                id: 18,
+                type: 'essay',
+                topic: 'Bài 3: Phép toán trên mảng Boolean NumPy',
+                question: 'Cho mảng x = np.array([10, 25, 30, 45, 50]). Tính giá trị biểu thức: np.sum((x > 20) & (x < 50)). Chỉ trả lời bằng một con số.',
+                modelAnswer: '3',
+                explanation: 'Giải thích chi tiết:\n1. Điều kiện (x > 20) tạo mảng bool: [False, True, True, True, True]\n2. Điều kiện (x < 50) tạo mảng bool: [True, True, True, True, False]\n3. Kết hợp logic &: [False, True, True, True, False] (các giá trị 25, 30, 45 thỏa mãn)\n4. np.sum() đếm số phần tử True => Kết quả bằng 3.'
+            }
+        ];
+
+        let questions = JSON.parse(JSON.stringify(rawQuestions));
+        let currentFilter = 'all';
+        let userAnswers = {};
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            const filtered = questions.filter(q => {
+                if (currentFilter === 'mcq') return q.type === 'mcq';
+                if (currentFilter === 'essay') return q.type === 'essay';
+                return true;
+            });
+
+            filtered.forEach((q, idx) => {
+                const qCard = document.createElement('div');
+                qCard.className = 'bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-lg relative transition';
+                qCard.id = `card-${q.id}`;
+
+                let html = `
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                        <span class="text-xs font-semibold px-2.5 py-1 rounded bg-slate-700 text-sky-300">Câu ${idx + 1} (${q.type === 'mcq' ? 'Trắc nghiệm' : 'Tự luận'})</span>
+                        <span class="text-xs font-mono text-amber-400 bg-amber-950/60 border border-amber-800/60 px-2 py-0.5 rounded"><i class="fa-solid fa-book-bookmark mr-1"></i>${q.topic}</span>
+                    </div>
+                    <div class="text-slate-100 font-medium mb-4 whitespace-pre-wrap leading-relaxed">${escapeHtml(q.question)}</div>
+                `;
+
+                if (q.type === 'mcq') {
+                    html += `<div class="space-y-2 mb-4">`;
+                    q.options.forEach((opt, oIdx) => {
+                        const isSelected = userAnswers[q.id] === oIdx;
+                        let btnStyle = 'bg-slate-700/50 hover:bg-slate-700 text-slate-200 border-slate-600';
+                        
+                        if (userAnswers[q.id] !== undefined) {
+                            if (oIdx === q.correct) {
+                                btnStyle = 'bg-emerald-900/60 text-emerald-200 border-emerald-500 font-semibold';
+                            } else if (isSelected) {
+                                btnStyle = 'bg-rose-900/60 text-rose-200 border-rose-500';
+                            }
+                        }
+
+                        html += `
+                            <button onclick="selectMcq(${q.id}, ${oIdx})" ${userAnswers[q.id] !== undefined ? 'disabled' : ''} 
+                                class="w-full text-left p-3 rounded-lg border ${btnStyle} transition flex items-start gap-3 text-sm">
+                                <span class="font-bold border rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5 border-current">
+                                    ${String.fromCharCode(65 + oIdx)}
+                                </span>
+                                <span class="whitespace-pre-wrap">${escapeHtml(opt)}</span>
+                            </button>
+                        `;
+                    });
+                    html += `</div>`;
+                } else {
+                    const savedText = userAnswers[q.id] || '';
+                    html += `
+                        <div class="mb-4">
+                            <textarea id="input-${q.id}" oninput="saveEssay(${q.id}, this.value)" rows="3" 
+                                placeholder="Nhập câu trả lời hoặc đáp số của bạn ở đây..." 
+                                class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-slate-200 text-sm focus:outline-none focus:border-sky-500 transition">${savedText}</textarea>
+                        </div>
+                    `;
+                }
+
+                // Answer / Explanation Section
+                const isAnswered = userAnswers[q.id] !== undefined;
+                const showExp = isAnswered || userAnswers[`show_${q.id}`];
+
+                html += `
+                    <div id="exp-container-${q.id}" class="${showExp ? '' : 'hidden'} mt-4">
+                        <div class="p-4 rounded-lg bg-slate-900/90 border border-sky-800/50 text-sm text-slate-300 space-y-2">
+                            ${q.type === 'essay' ? `<div class="font-bold text-amber-400 mb-1">Đáp án mẫu / Kết quả: <span class="text-white font-mono bg-slate-800 px-2 py-0.5 rounded">${escapeHtml(q.modelAnswer)}</span></div>` : ''}
+                            <div class="font-semibold text-sky-400 border-b border-slate-800 pb-1 flex items-center gap-2">
+                                <i class="fa-solid fa-circle-info"></i> Giải thích chi tiết & Căn cứ kiến thức:
+                            </div>
+                            <div class="whitespace-pre-wrap text-xs sm:text-sm text-slate-300 leading-relaxed">${escapeHtml(q.explanation)}</div>
+                        </div>
+                    </div>
+                `;
+
+                if (q.type === 'essay' && !isAnswered) {
+                    html += `
+                        <button onclick="toggleAnswer(${q.id})" class="mt-2 text-xs text-sky-400 hover:text-sky-300 font-semibold underline flex items-center gap-1">
+                            <i class="fa-solid fa-eye"></i> ${userAnswers[`show_${q.id}`] ? 'Ẩn đáp án' : 'Hiện đáp án & giải thích'}
+                        </button>
+                    `;
+                }
+
+                qCard.innerHTML = html;
+                container.appendChild(qCard);
+            });
+
+            updateStats();
+        }
+
+        function selectMcq(qId, optionIdx) {
+            userAnswers[qId] = optionIdx;
+            renderQuestions();
+        }
+
+        function saveEssay(qId, val) {
+            if (val.trim()) {
+                userAnswers[qId] = val;
+            } else {
+                delete userAnswers[qId];
+            }
+            updateStats();
+        }
+
+        function toggleAnswer(qId) {
+            userAnswers[`show_${qId}`] = !userAnswers[`show_${qId}`];
+            renderQuestions();
+        }
+
+        function filterType(type) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('bg-sky-600', 'text-white');
+                b.classList.add('bg-slate-700', 'text-slate-300');
+            });
+            document.getElementById(`btn-${type}`).classList.add('bg-sky-600', 'text-white');
+            document.getElementById(`btn-${type}`).classList.remove('bg-slate-700', 'text-slate-300');
+            renderQuestions();
+        }
+
+        function shuffleQuestions() {
+            for (let i = questions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[j]] = [questions[j], questions[i]];
+            }
+            renderQuestions();
+        }
+
+        function resetAll() {
+            if (confirm("Bạn có chắc chắn muốn xóa toàn bộ câu trả lời để làm lại từ đầu?")) {
+                userAnswers = {};
+                questions = JSON.parse(JSON.stringify(rawQuestions));
+                renderQuestions();
+            }
+        }
+
+        function updateStats() {
+            const total = questions.length;
+            const mcqCount = questions.filter(q => q.type === 'mcq').length;
+            const essayCount = questions.filter(q => q.type === 'essay').length;
+
+            document.getElementById('cnt-all').innerText = total;
+            document.getElementById('cnt-mcq').innerText = mcqCount;
+            document.getElementById('cnt-essay').innerText = essayCount;
+
+            const completed = Object.keys(userAnswers).filter(k => !k.startsWith('show_')).length;
+            document.getElementById('completedCount').innerText = completed;
+            document.getElementById('totalCount').innerText = total;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Initialize App
+        window.onload = () => {
+            renderQuestions();
+        };
+    </script>
+</body>
+</html>
