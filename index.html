@@ -1,526 +1,131 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bài tập Nhiệt học — VLĐC1</title>
-<script>
-window.MathJax = {
-  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
-  svg: { fontCache: 'global' }
-};
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
-<style>
-  :root{
-    --bg:#0f1117; --bg2:#161923; --panel:#1b1f2b; --panel2:#20263a;
-    --border:#2a3142; --text:#e6e9f0; --muted:#9aa4b8;
-    --accent:#5eb0ff; --accent2:#7ee2b8; --warn:#ffb454; --danger:#ff6b81;
-    --purple:#c792ea;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0; background:linear-gradient(180deg,#0b0d13,#0f1117 300px);
-    color:var(--text); font-family:'Segoe UI',Roboto,-apple-system,sans-serif;
-    line-height:1.65;
-  }
-  header.top{
-    padding:34px 20px 24px; text-align:center;
-    background:radial-gradient(1200px 300px at 50% -50%, rgba(94,176,255,.15), transparent),
-               linear-gradient(180deg,#12151f,#0f1117);
-    border-bottom:1px solid var(--border);
-  }
-  header.top h1{margin:0 0 6px; font-size:1.7rem; color:#fff; letter-spacing:.3px;}
-  header.top p{margin:0; color:var(--muted); font-size:.95rem;}
-  nav.sticky{
-    position:sticky; top:0; z-index:50;
-    background:rgba(15,17,23,.95); backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--border);
-    padding:10px 14px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
-  }
-  nav.sticky a{
-    color:var(--muted); text-decoration:none; font-size:.82rem;
-    padding:6px 11px; border-radius:20px; border:1px solid var(--border);
-    transition:.15s; white-space:nowrap;
-  }
-  nav.sticky a:hover{color:#fff; border-color:var(--accent); background:rgba(94,176,255,.08);}
-  main{max-width:900px; margin:0 auto; padding:26px 16px 80px;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Nguyễn Minh Đức</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-  .part-title{
-    margin:46px 0 18px; font-size:1.25rem; color:var(--accent2);
-    border-bottom:2px solid var(--border); padding-bottom:10px;
-    display:flex; align-items:center; gap:10px;
-  }
-  .part-title .tag{
-    font-size:.7rem; background:var(--accent2); color:#0b1a14; font-weight:700;
-    padding:3px 9px; border-radius:5px; letter-spacing:.5px;
-  }
-  .part-title .tag.alt{background:var(--warn); color:#3a2200;}
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+        }
 
-  .theory{
-    background:var(--panel); border:1px solid var(--border); border-left:4px solid var(--accent);
-    border-radius:10px; padding:18px 20px; margin:16px 0 22px;
-  }
-  .theory h3{margin:0 0 10px; color:var(--accent); font-size:1.02rem;}
-  .theory h4{margin:14px 0 6px; color:#cfe8ff; font-size:.93rem;}
-  .theory ul{margin:6px 0; padding-left:22px;}
-  .theory li{margin:4px 0;}
-  .formula-box{
-    background:var(--bg2); border:1px solid var(--border); border-radius:8px;
-    padding:10px 14px; margin:8px 0; overflow-x:auto;
-  }
-  .note{
-    background:rgba(255,180,84,.08); border:1px solid rgba(255,180,84,.3);
-    border-radius:8px; padding:10px 14px; margin:10px 0; font-size:.88rem; color:#ffd9a0;
-  }
+        /* Hiệu ứng trang trí nền */
+        .background-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(0, 0, 0, 0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            pointer-events: none;
+        }
 
-  .qcard{
-    background:var(--panel2); border:1px solid var(--border); border-radius:12px;
-    padding:20px 22px; margin:18px 0; box-shadow:0 3px 10px rgba(0,0,0,.25);
-  }
-  .qcard .qhead{
-    display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;
-  }
-  .qcard .qhead h3{margin:0; color:#fff; font-size:1.05rem;}
-  .qcard .points{
-    font-size:.72rem; color:var(--warn); border:1px solid var(--warn); border-radius:6px; padding:2px 8px;
-  }
-  .qcard .stem{margin:8px 0 14px; color:#d8dceb;}
-  .qcard .given{
-    font-size:.85rem; color:var(--muted); background:var(--bg2); border-radius:6px;
-    padding:8px 12px; margin:8px 0;
-  }
-  .subq{margin:14px 0; padding-left:2px;}
-  .subq .label{color:var(--purple); font-weight:600;}
+        .card {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem 4rem;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            max-width: 600px;
+            width: 90%;
+            animation: fadeIn 1.2s ease-out;
+        }
 
-  details.ans{
-    margin-top:10px; border:1px dashed var(--border); border-radius:8px;
-    background:rgba(94,176,255,.04);
-  }
-  details.ans>summary{
-    cursor:pointer; padding:10px 14px; color:var(--accent); font-weight:600; font-size:.88rem;
-    list-style:none; user-select:none;
-  }
-  details.ans>summary::-webkit-details-marker{display:none;}
-  details.ans>summary::before{content:"▶ "; display:inline-block; transition:.2s;}
-  details.ans[open]>summary::before{content:"▼ ";}
-  details.ans .ans-body{padding:2px 16px 16px; border-top:1px solid var(--border); color:#dfe3ee;}
-  .ans-body .step{margin:8px 0;}
-  .ans-body .step .k{color:var(--accent2); font-weight:600;}
-  .conclude{
-    margin-top:10px; padding:10px 12px; border-left:3px solid var(--accent2);
-    background:rgba(126,226,184,.06); border-radius:6px;
-  }
-  .result{color:#fff; font-weight:700;}
+        .welcome-text {
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
 
-  svg.fig{display:block; margin:14px auto; max-width:100%; background:var(--bg2); border-radius:8px; border:1px solid var(--border);}
-  .imgcap{text-align:center; color:var(--muted); font-size:.8rem; margin-top:-8px;}
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #ffffff, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-  footer{text-align:center; color:var(--muted); font-size:.8rem; padding:30px 0 10px;}
-  code{background:var(--bg2); padding:1px 6px; border-radius:4px; color:#ffd479; font-size:.85em;}
-</style>
+        p {
+            color: #94a3b8;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 2rem 1.5rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<header class="top">
-  <h1>📊 Bài tập Nhiệt học — Vật lý đại cương 1</h1>
-  <p>Phương trình trạng thái · Công trong quá trình biến đổi thể tích · Nguyên lý I nhiệt động lực học</p>
-</header>
+    <div class="background-glow"></div>
 
-<nav class="sticky">
-  <a href="#p1">Câu 4 – Đề mẫu 1</a>
-  <a href="#p2">Câu 4 – Đề mẫu 2</a>
-  <a href="#p3">Tự luyện 1</a>
-  <a href="#p4">Tự luyện 2</a>
-  <a href="#p5">Tự luyện 3</a>
-</nav>
-
-<main>
-
-<!-- ============ PART 1 ============ -->
-<h2 class="part-title" id="p1"><span class="tag">ĐỀ MẪU</span> Câu 4 — Quá trình biến đổi trạng thái nhiều đoạn abc</h2>
-
-<div class="theory">
-  <h3>Lý thuyết cần dùng</h3>
-  <h4>1. Phương trình trạng thái khí lý tưởng</h4>
-  <div class="formula-box">$$pV = nRT \;\Rightarrow\; T = \frac{pV}{nR}$$</div>
-  <p style="margin:4px 0;">Với mỗi điểm trên đồ thị $p$–$V$, chỉ cần đọc tọa độ $(p,V)$ của điểm đó rồi thay vào công thức trên để tính nhiệt độ tương ứng ($n$ không đổi trong suốt quá trình vì là cùng một khối khí).</p>
-
-  <h4>2. Công trong quá trình biến đổi thể tích</h4>
-  <div class="formula-box">$$W = \int_{V_1}^{V_2} p\,dV \;=\; \text{diện tích hình học nằm dưới đường biểu diễn quá trình trên đồ thị } p\text{–}V$$</div>
-  <ul>
-    <li>Đoạn thẳng nối hai điểm $(V_1,p_1)$ và $(V_2,p_2)$ (biến đổi tuyến tính) → diện tích là <b>hình thang</b>: $W=\dfrac{p_1+p_2}{2}(V_2-V_1)$.</li>
-    <li>Đẳng tích ($\Delta V=0$) → $W=0$ (đoạn thẳng đứng trên đồ thị $p$–$V$, không có diện tích).</li>
-    <li>Công của cả quá trình nhiều đoạn = <b>tổng đại số</b> công từng đoạn nhỏ.</li>
-  </ul>
-
-  <h4>3. Nguyên lý I nhiệt động lực học</h4>
-  <div class="formula-box">$$\Delta U = Q - W \quad\Longleftrightarrow\quad Q = \Delta U + W$$</div>
-  <p style="margin:4px 0;">$Q>0$: hệ nhận nhiệt; $W>0$: hệ sinh công (thể tích tăng). Khi biết $\Delta U$ và $W$ của cả quá trình, suy ra ngay $Q$.</p>
-
-  <div class="note">💡 Quy trình giải chuẩn cho dạng bài đồ thị $p$–$V$ nhiều đoạn: (1) đọc tọa độ từng điểm mốc → tính $T$ bằng $pV=nRT$; (2) tính công từng đoạn bằng diện tích hình học rồi cộng lại; (3) dùng nguyên lý I để liên hệ $Q$, $\Delta U$, $W$.</div>
-</div>
-
-<div class="qcard">
-  <div class="qhead"><h3>Câu 4 (3 điểm)</h3><span class="points">Đề thi mẫu</span></div>
-  <p class="stem">Một khối khí lý tưởng có số mol $n=0{,}45$ mol thực hiện quá trình biến đổi trạng thái $abc$ được mô tả trên đồ thị $p$–$V$ như hình vẽ.</p>
-  <div class="given">Cho hằng số khí lý tưởng $R = 8{,}314$ J/mol·K.</div>
-
-  <svg class="fig" viewBox="0 0 480 340" xmlns="http://www.w3.org/2000/svg">
-    <!-- axes -->
-    <line x1="70" y1="290" x2="440" y2="290" stroke="#5a6478" stroke-width="1.5"/>
-    <line x1="70" y1="290" x2="70" y2="30" stroke="#5a6478" stroke-width="1.5"/>
-    <text x="450" y="294" fill="#9aa4b8" font-size="13">V (m³)</text>
-    <text x="30" y="28" fill="#9aa4b8" font-size="13">p (×10⁵ Pa)</text>
-    <!-- gridlines V: 0.020,0.040,0.060,0.080 at x=130,190,250,310... spacing 60px per 0.020 -->
-    <g stroke="#2a3142" stroke-width="1">
-      <line x1="130" y1="290" x2="130" y2="30"/>
-      <line x1="190" y1="290" x2="190" y2="30"/>
-      <line x1="250" y1="290" x2="250" y2="30"/>
-      <line x1="310" y1="290" x2="310" y2="30"/>
-      <line x1="370" y1="290" x2="370" y2="30"/>
-    </g>
-    <g fill="#9aa4b8" font-size="11" text-anchor="middle">
-      <text x="130" y="306">0.020</text>
-      <text x="190" y="306">0.040</text>
-      <text x="250" y="306">0.060</text>
-      <text x="310" y="306">0.080</text>
-    </g>
-    <!-- gridlines p: 2,4,6,8 at y=230,170,110,50 (each unit 30px, p=2 at 230)-->
-    <g stroke="#2a3142" stroke-width="1">
-      <line x1="70" y1="230" x2="440" y2="230"/>
-      <line x1="70" y1="170" x2="440" y2="170"/>
-      <line x1="70" y1="110" x2="440" y2="110"/>
-      <line x1="70" y1="50" x2="440" y2="50"/>
-    </g>
-    <g fill="#9aa4b8" font-size="11" text-anchor="end">
-      <text x="62" y="234">2.0</text>
-      <text x="62" y="174">4.0</text>
-      <text x="62" y="114">6.0</text>
-      <text x="62" y="54">8.0</text>
-    </g>
-    <!-- points: a(0.020,2.0)->x=130,y=230 ; b(0.070,5.0)-> x=280,y=140... 0.070 => 130+ (0.070-0.020)/0.02*60=130+150=280; p=5.0 => 230-(5-2)/2*30=230-45=185 -->
-    <!-- recompute p mapping: p=2 at y=230, each +2 => -30px steps? p2->230,p4->170,p6->110,p8->50 => step 2 units =60px per 2, so 30px per 1 unit -->
-    <!-- p5.0 -> y=230-(5-2)*30=230-90=140 -->
-    <!-- p8.0 -> y=230-(8-2)*30=230-180=50 -->
-    <line x1="130" y1="230" x2="280" y2="140" stroke="#5eb0ff" stroke-width="3"/>
-    <line x1="280" y1="140" x2="280" y2="50" stroke="#5eb0ff" stroke-width="3"/>
-    <circle cx="130" cy="230" r="5" fill="#7ee2b8"/>
-    <circle cx="280" cy="140" r="5" fill="#7ee2b8"/>
-    <circle cx="280" cy="50" r="5" fill="#7ee2b8"/>
-    <text x="112" y="250" fill="#7ee2b8" font-size="14" font-weight="bold">a</text>
-    <text x="292" y="145" fill="#7ee2b8" font-size="14" font-weight="bold">b</text>
-    <text x="292" y="48" fill="#7ee2b8" font-size="14" font-weight="bold">c</text>
-  </svg>
-  <p class="imgcap">a(0,020 ; 2,0) → b(0,070 ; 5,0) → c(0,070 ; 8,0) — đơn vị V: m³, p: ×10⁵ Pa</p>
-
-  <div class="subq">
-    <span class="label">a)</span> Xác định nhiệt độ của khối khí tại các trạng thái $a$, $b$ và $c$.
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step"><span class="k">Áp dụng:</span> $T=\dfrac{pV}{nR}$, với $nR = 0{,}45\times8{,}314=3{,}7413$ J/K.</div>
-      <div class="step">Tại $a$: $p_a=2{,}0\times10^5$ Pa, $V_a=0{,}020$ m³ $\Rightarrow p_aV_a=4000$ J.
-      $$T_a=\frac{4000}{3{,}7413}\approx 1069{,}2\text{ K}$$</div>
-      <div class="step">Tại $b$: $p_b=5{,}0\times10^5$ Pa, $V_b=0{,}070$ m³ $\Rightarrow p_bV_b=35000$ J.
-      $$T_b=\frac{35000}{3{,}7413}\approx 9355{,}1\text{ K}$$</div>
-      <div class="step">Tại $c$: $p_c=8{,}0\times10^5$ Pa, $V_c=0{,}070$ m³ $\Rightarrow p_cV_c=56000$ J.
-      $$T_c=\frac{56000}{3{,}7413}\approx 14968{,}3\text{ K}$$</div>
-      <div class="conclude">Kết quả: $T_a\approx\text{1069,2 K}$; $T_b\approx\text{9355,1 K}$; $T_c\approx\text{14968,3 K}$.</div>
-    </div></details>
-  </div>
-
-  <div class="subq">
-    <span class="label">b)</span> Tính công mà khối khí thực hiện (hoặc nhận được) trong quá trình biến đổi trạng thái $abc$.
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step"><span class="k">Đoạn $a\to b$</span> (đường thẳng, không phải đẳng áp/đẳng tích/đẳng nhiệt) — công là diện tích hình thang dưới đoạn thẳng:
-      $$W_{ab}=\frac{p_a+p_b}{2}(V_b-V_a)=\frac{(2{,}0+5{,}0)\times10^5}{2}\times(0{,}070-0{,}020)=3{,}5\times10^5\times0{,}050=17500\text{ J}$$</div>
-      <div class="step"><span class="k">Đoạn $b\to c$</span> là đẳng tích ($V_b=V_c=0{,}070$ m³) $\Rightarrow W_{bc}=0$.</div>
-      <div class="step"><span class="k">Tổng công cả quá trình:</span> $W_{abc}=W_{ab}+W_{bc}=17500+0=17500$ J.</div>
-      <div class="conclude">$W_{abc}=\text{17500 J} > 0$: <b>khối khí sinh công</b> (thực hiện công lên môi trường ngoài) vì thể tích tăng dần trong quá trình.</div>
-    </div></details>
-  </div>
-
-  <div class="subq">
-    <span class="label">c)</span> Giả sử độ biến thiên nội năng của khối khí trong quá trình biến đổi trạng thái $abc$ là $\Delta U = 15000$ J. Hãy tính nhiệt lượng cần cung cấp cho khối khí.
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step"><span class="k">Áp dụng nguyên lý I:</span> $Q=\Delta U+W$.</div>
-      <div class="step">$Q = 15000 + 17500 = 32500$ J.</div>
-      <div class="conclude">Vậy cần cung cấp cho khối khí một nhiệt lượng $Q=\text{32500 J}$ (khí nhận nhiệt).</div>
-    </div></details>
-  </div>
-</div>
-
-<!-- ============ PART 2 ============ -->
-<h2 class="part-title" id="p2"><span class="tag">ĐỀ MẪU</span> Câu 4 — Quá trình đẳng nhiệt trên đồ thị p–V</h2>
-
-<div class="theory">
-  <h3>Lý thuyết cần dùng</h3>
-  <h4>1. Đường đẳng nhiệt &amp; định luật Boyle – Mariotte</h4>
-  <p>Khi $T=\text{const}$ và $n$ không đổi, từ $pV=nRT$ suy ra $pV=\text{const}$ trong suốt quá trình, tức là:</p>
-  <div class="formula-box">$$p_aV_a = p_bV_b = nRT$$</div>
-  <p style="margin:4px 0;">Đây là công cụ chính để: (i) tìm số mol $n$ nếu biết một cặp $(p,V)$ và $T$; (ii) suy ra tọa độ điểm còn thiếu nếu biết tọa độ một điểm khác trên cùng đường đẳng nhiệt.</p>
-
-  <h4>2. Công trong quá trình đẳng nhiệt của khí lý tưởng</h4>
-  <div class="formula-box">$$W=\int_{V_1}^{V_2}p\,dV = nRT\ln\frac{V_2}{V_1} = p_1V_1\ln\frac{V_2}{V_1}$$</div>
-  <p style="margin:4px 0;">Nếu $V_2>V_1$ (giãn nở) thì $W>0$: khí sinh công. Nếu $V_2<V_1$ (nén) thì $W<0$: khí nhận công.</p>
-
-  <h4>3. Nội năng khí lý tưởng trong quá trình đẳng nhiệt</h4>
-  <p>Nội năng khí lý tưởng chỉ phụ thuộc nhiệt độ ($U=U(T)$), nên khi $T=\text{const}$:</p>
-  <div class="formula-box">$$\Delta U = 0 \quad\Rightarrow\quad Q = W$$</div>
-
-  <div class="note">💡 Đổi đơn vị áp suất atm → Pa trước khi tính bằng công thức $pV=nRT$ (SI): $1\text{ atm}=1{,}013\times10^5$ Pa. Đổi $^\circ$C sang K: $T(\text{K})=t(^\circ\text{C})+273$.</div>
-</div>
-
-<div class="qcard">
-  <div class="qhead"><h3>Câu 4 (3 điểm)</h3><span class="points">Đề thi mẫu</span></div>
-  <p class="stem">Hình bên biểu diễn đồ thị $p$–$V$ của một quá trình, trong đó nhiệt độ của khí lý tưởng được giữ không đổi ở $85^\circ$C.</p>
-  <div class="given">Lấy $1\text{ atm}=1{,}013\times10^5$ Pa, $R=8{,}314$ J/mol·K.</div>
-
-  <svg class="fig" viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg">
-    <line x1="70" y1="250" x2="440" y2="250" stroke="#5a6478" stroke-width="1.5"/>
-    <line x1="70" y1="250" x2="70" y2="30" stroke="#5a6478" stroke-width="1.5"/>
-    <text x="450" y="254" fill="#9aa4b8" font-size="13">V (m³)</text>
-    <text x="30" y="28" fill="#9aa4b8" font-size="13">p (atm)</text>
-    <g stroke="#2a3142" stroke-width="1">
-      <line x1="180" y1="250" x2="180" y2="30"/>
-      <line x1="360" y1="250" x2="360" y2="30"/>
-    </g>
-    <text x="180" y="266" fill="#9aa4b8" font-size="11" text-anchor="middle">0.050</text>
-    <text x="360" y="266" fill="#9aa4b8" font-size="11" text-anchor="middle">0.100</text>
-    <g stroke="#2a3142" stroke-width="1">
-      <line x1="70" y1="90" x2="440" y2="90"/>
-      <line x1="70" y1="190" x2="440" y2="190"/>
-    </g>
-    <text x="62" y="94" fill="#9aa4b8" font-size="11" text-anchor="end">0.600</text>
-    <text x="62" y="194" fill="#9aa4b8" font-size="11" text-anchor="end">0.200</text>
-    <!-- a at V=0.0333->x=70+0.0333/0.05*180=70+120=190, p=0.6->y=90 -->
-    <!-- b at V=0.100 -> x=360, p=0.2 -> y=190 -->
-    <path d="M 190 90 C 260 95, 320 130, 360 190" fill="none" stroke="#5eb0ff" stroke-width="3"/>
-    <circle cx="190" cy="90" r="5" fill="#7ee2b8"/>
-    <circle cx="360" cy="190" r="5" fill="#7ee2b8"/>
-    <text x="172" y="78" fill="#7ee2b8" font-size="14" font-weight="bold">a</text>
-    <text x="372" y="188" fill="#7ee2b8" font-size="14" font-weight="bold">b</text>
-    <line x1="360" y1="250" x2="360" y2="190" stroke="#3a4257" stroke-dasharray="3 3"/>
-  </svg>
-  <p class="imgcap">Đường đẳng nhiệt từ a xuống b; chỉ biết $p_a=0{,}600$ atm, $p_b=0{,}200$ atm, $V_b=0{,}100$ m³.</p>
-
-  <div class="subq">
-    <span class="label">a)</span> Có bao nhiêu mol khí tham gia trong quá trình?
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step"><span class="k">Đổi đơn vị:</span> $T=85+273=358$ K; $p_b=0{,}200\times1{,}013\times10^5=2{,}026\times10^4$ Pa.</div>
-      <div class="step">Dùng trạng thái $b$ (đã biết đủ $p_b,V_b$) trong phương trình trạng thái:
-      $$n=\frac{p_bV_b}{RT}=\frac{2{,}026\times10^4\times0{,}100}{8{,}314\times358}=\frac{2026}{2976{,}4}$$</div>
-      <div class="conclude">$n\approx\text{0,681 mol}$.</div>
-    </div></details>
-  </div>
-
-  <div class="subq">
-    <span class="label">b)</span> Khí chiếm thể tích bao nhiêu tại trạng thái $a$?
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step"><span class="k">Dùng định luật Boyle – Mariotte</span> (vì $a,b$ cùng nằm trên một đường đẳng nhiệt): $p_aV_a=p_bV_b$.</div>
-      <div class="step">$$V_a=\frac{p_bV_b}{p_a}=\frac{0{,}200\times0{,}100}{0{,}600}=\frac{0{,}020}{0{,}600}$$</div>
-      <div class="conclude">$V_a\approx\text{0,0333 m³}$ (≈ 33,3 lít).</div>
-    </div></details>
-  </div>
-
-  <div class="subq">
-    <span class="label">c)</span> Công thực hiện trong quá trình khí chuyển từ trạng thái $a$ đến trạng thái $b$ là bao nhiêu? Khí sinh công hay nhận công?
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step"><span class="k">Công thức đẳng nhiệt:</span> $W=nRT\ln\dfrac{V_b}{V_a}=p_bV_b\ln\dfrac{V_b}{V_a}$ (dùng $p_bV_b=nRT=2026$ J tính ở câu a).</div>
-      <div class="step">$$W=2026\times\ln\left(\frac{0{,}100}{0{,}0333}\right)=2026\times\ln 3 = 2026\times1{,}0986$$</div>
-      <div class="conclude">$W\approx\text{2225,8 J} > 0$. Vì $V_b>V_a$ (khí giãn nở) nên <b>khí sinh công</b> lên môi trường ngoài.</div>
-    </div></details>
-  </div>
-
-  <div class="subq">
-    <span class="label">d)</span> Nội năng của khí thay đổi bao nhiêu trong quá trình này?
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step">Vì đây là quá trình <b>đẳng nhiệt</b> ($T=\text{const}=358$ K) và nội năng khí lý tưởng chỉ phụ thuộc $T$ nên:</div>
-      <div class="conclude">$\Delta U = 0$ J. (Hệ quả: toàn bộ nhiệt lượng khí nhận vào đã chuyển hết thành công sinh ra, $Q=W\approx\text{2225,8 J}$.)</div>
-    </div></details>
-  </div>
-</div>
-
-<!-- ============ PART 3: Tự luyện 1 ============ -->
-<h2 class="part-title" id="p3"><span class="tag alt">TỰ LUYỆN</span> Bài 1 — Quá trình hai đoạn: đẳng áp rồi đẳng tích</h2>
-
-<div class="theory">
-  <h3>Nhắc lại lý thuyết</h3>
-  <ul>
-    <li>$T=\dfrac{pV}{nR}$ tại mỗi trạng thái.</li>
-    <li>Đoạn <b>đẳng áp</b> ($p=\text{const}$): $W=p(V_2-V_1)$ — diện tích là hình chữ nhật.</li>
-    <li>Đoạn <b>đẳng tích</b> ($V=\text{const}$): $W=0$.</li>
-    <li>Nguyên lý I: $Q=\Delta U+W$ cho cả quá trình (công, nhiệt cộng đại số theo từng đoạn; $\Delta U$ chỉ phụ thuộc trạng thái đầu – cuối).</li>
-  </ul>
-</div>
-
-<div class="qcard">
-  <div class="qhead"><h3>Bài 1 (tự luyện)</h3><span class="points">Tương tự Câu 4 – Đề mẫu 1</span></div>
-  <p class="stem">Một khối khí lý tưởng có số mol $n=0{,}30$ mol thực hiện quá trình biến đổi trạng thái $def$ theo đồ thị $p$–$V$ như hình vẽ: đoạn $d\to e$ là đẳng áp (giãn nở), đoạn $e\to f$ là đẳng tích (áp suất giảm).</p>
-  <div class="given">Cho $R=8{,}314$ J/mol·K.</div>
-
-  <svg class="fig" viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg">
-    <line x1="70" y1="250" x2="440" y2="250" stroke="#5a6478" stroke-width="1.5"/>
-    <line x1="70" y1="250" x2="70" y2="30" stroke="#5a6478" stroke-width="1.5"/>
-    <text x="450" y="254" fill="#9aa4b8" font-size="13">V (m³)</text>
-    <text x="30" y="28" fill="#9aa4b8" font-size="13">p (×10⁵ Pa)</text>
-    <g stroke="#2a3142" stroke-width="1">
-      <line x1="150" y1="250" x2="150" y2="30"/>
-      <line x1="330" y1="250" x2="330" y2="30"/>
-    </g>
-    <text x="150" y="266" fill="#9aa4b8" font-size="11" text-anchor="middle">0.015</text>
-    <text x="330" y="266" fill="#9aa4b8" font-size="11" text-anchor="middle">0.045</text>
-    <g stroke="#2a3142" stroke-width="1">
-      <line x1="70" y1="200" x2="440" y2="200"/>
-      <line x1="70" y1="90" x2="440" y2="90"/>
-    </g>
-    <text x="62" y="204" fill="#9aa4b8" font-size="11" text-anchor="end">2.0</text>
-    <text x="62" y="94" fill="#9aa4b8" font-size="11" text-anchor="end">3.0</text>
-    <!-- d(0.015,3.0)->x150,y90 ; e(0.045,3.0)->x330,y90 ; f(0.045,2.0)->x330,y200 -->
-    <line x1="150" y1="90" x2="330" y2="90" stroke="#5eb0ff" stroke-width="3"/>
-    <line x1="330" y1="90" x2="330" y2="200" stroke="#5eb0ff" stroke-width="3"/>
-    <circle cx="150" cy="90" r="5" fill="#7ee2b8"/>
-    <circle cx="330" cy="90" r="5" fill="#7ee2b8"/>
-    <circle cx="330" cy="200" r="5" fill="#7ee2b8"/>
-    <text x="132" y="76" fill="#7ee2b8" font-size="14" font-weight="bold">d</text>
-    <text x="342" y="86" fill="#7ee2b8" font-size="14" font-weight="bold">e</text>
-    <text x="342" y="205" fill="#7ee2b8" font-size="14" font-weight="bold">f</text>
-  </svg>
-  <p class="imgcap">d(0,015 ; 3,0) → e(0,045 ; 3,0) → f(0,045 ; 2,0) — đơn vị V: m³, p: ×10⁵ Pa</p>
-
-  <div class="subq">
-    <span class="label">a)</span> Xác định nhiệt độ khối khí tại các trạng thái $d$, $e$, $f$.
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step">$nR=0{,}30\times8{,}314=2{,}4942$ J/K.</div>
-      <div class="step">$T_d=\dfrac{3{,}0\times10^5\times0{,}015}{2{,}4942}=\dfrac{4500}{2{,}4942}\approx1804{,}2$ K.</div>
-      <div class="step">$T_e=\dfrac{3{,}0\times10^5\times0{,}045}{2{,}4942}=\dfrac{13500}{2{,}4942}\approx5412{,}6$ K.</div>
-      <div class="step">$T_f=\dfrac{2{,}0\times10^5\times0{,}045}{2{,}4942}=\dfrac{9000}{2{,}4942}\approx3608{,}4$ K.</div>
-      <div class="conclude">$T_d\approx\text{1804,2 K}$; $T_e\approx\text{5412,6 K}$; $T_f\approx\text{3608,4 K}$.</div>
-    </div></details>
-  </div>
-
-  <div class="subq">
-    <span class="label">b)</span> Tính công mà khối khí thực hiện trong cả quá trình $def$.
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step"><span class="k">Đoạn $d\to e$</span> đẳng áp: $W_{de}=p(V_e-V_d)=3{,}0\times10^5\times(0{,}045-0{,}015)=3{,}0\times10^5\times0{,}030=9000$ J.</div>
-      <div class="step"><span class="k">Đoạn $e\to f$</span> đẳng tích: $W_{ef}=0$.</div>
-      <div class="conclude">$W_{def}=9000+0=\text{9000 J}$ (khí sinh công, do giãn nở ở đoạn $d\to e$).</div>
-    </div></details>
-  </div>
-
-  <div class="subq">
-    <span class="label">c)</span> Biết độ biến thiên nội năng của khối khí trong cả quá trình $def$ là $\Delta U = 5000$ J. Tính nhiệt lượng trao đổi với khối khí.
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step">$Q=\Delta U+W=5000+9000$.</div>
-      <div class="conclude">$Q=\text{14000 J}$ — khối khí nhận nhiệt lượng 14000 J.</div>
-    </div></details>
-  </div>
-</div>
-
-<!-- ============ PART 4: Tự luyện 2 ============ -->
-<h2 class="part-title" id="p4"><span class="tag alt">TỰ LUYỆN</span> Bài 2 — Quá trình đẳng nhiệt</h2>
-
-<div class="theory">
-  <h3>Nhắc lại lý thuyết</h3>
-  <ul>
-    <li>$p_1V_1=p_2V_2=nRT$ trên cùng một đường đẳng nhiệt.</li>
-    <li>$W=nRT\ln\dfrac{V_2}{V_1}=p_1V_1\ln\dfrac{V_2}{V_1}$.</li>
-    <li>$\Delta U=0\Rightarrow Q=W$ (khí lý tưởng, đẳng nhiệt).</li>
-    <li>Đổi đơn vị: $1$ atm $=1{,}013\times10^5$ Pa; $T(\text{K})=t(^\circ\text{C})+273$.</li>
-  </ul>
-</div>
-
-<div class="qcard">
-  <div class="qhead"><h3>Bài 2 (tự luyện)</h3><span class="points">Tương tự Câu 4 – Đề mẫu 2</span></div>
-  <p class="stem">Một khối khí lý tưởng biến đổi theo một quá trình đẳng nhiệt ở nhiệt độ $27^\circ$C, từ trạng thái $a$ đến trạng thái $b$. Biết $p_a=0{,}800$ atm, $p_b=0{,}400$ atm, và tại $b$ khí chiếm thể tích $V_b=0{,}150$ m³.</p>
-  <div class="given">Lấy $1$ atm $=1{,}013\times10^5$ Pa, $R=8{,}314$ J/mol·K.</div>
-
-  <div class="subq">
-    <span class="label">a)</span> Tính số mol khí tham gia quá trình.
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step">$T=27+273=300$ K; $p_b=0{,}400\times1{,}013\times10^5=4{,}052\times10^4$ Pa.</div>
-      <div class="step">$n=\dfrac{p_bV_b}{RT}=\dfrac{4{,}052\times10^4\times0{,}150}{8{,}314\times300}=\dfrac{6078}{2494{,}2}$.</div>
-      <div class="conclude">$n\approx\text{2,437 mol}$.</div>
-    </div></details>
-  </div>
-
-  <div class="subq">
-    <span class="label">b)</span> Tính thể tích khí tại trạng thái $a$.
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step">$p_aV_a=p_bV_b \Rightarrow V_a=\dfrac{p_bV_b}{p_a}=\dfrac{0{,}400\times0{,}150}{0{,}800}=0{,}150\times0{,}5$.</div>
-      <div class="conclude">$V_a=\text{0,075 m³}$.</div>
-    </div></details>
-  </div>
-
-  <div class="subq">
-    <span class="label">c)</span> Tính công trong quá trình $a\to b$. Khí sinh công hay nhận công?
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step">$W=nRT\ln\dfrac{V_b}{V_a}=p_bV_b\ln\dfrac{V_b}{V_a}=6078\times\ln\dfrac{0{,}150}{0{,}075}=6078\times\ln2$.</div>
-      <div class="conclude">$W\approx6078\times0{,}6931\approx\text{4213,0 J}>0$: vì $V_b>V_a$, <b>khí sinh công</b> lên môi trường ngoài.</div>
-    </div></details>
-  </div>
-
-  <div class="subq">
-    <span class="label">d)</span> Tính nhiệt lượng khí trao đổi trong quá trình này.
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step">Đẳng nhiệt $\Rightarrow \Delta U=0 \Rightarrow Q=W$.</div>
-      <div class="conclude">$Q\approx\text{4213,0 J}$ — khí nhận nhiệt lượng đúng bằng công đã sinh ra.</div>
-    </div></details>
-  </div>
-</div>
-
-<!-- ============ PART 5: Tự luyện 3 ============ -->
-<h2 class="part-title" id="p5"><span class="tag alt">TỰ LUYỆN</span> Bài 3 — Nhiệt dung mol, hệ thức Mayer (đẳng áp)</h2>
-
-<div class="theory">
-  <h3>Nhắc lại lý thuyết</h3>
-  <div class="formula-box">$$C_V=\frac{i}{2}R \qquad C_p=C_V+R \qquad \Delta U=nC_V\Delta T\ \text{(luôn đúng, mọi quá trình)} \qquad Q_{p}=nC_p\Delta T\ \text{(riêng đẳng áp)}$$</div>
-  <p style="margin:4px 0;">Khí đơn nguyên tử: $i=3\Rightarrow C_V=\tfrac32R,\ C_p=\tfrac52R$. Đây là bài tập rèn kỹ năng tính trực tiếp từ nhiệt dung mol (không cần đọc đồ thị), đồng thời kiểm chứng lại nguyên lý I: $Q=\Delta U+W$ phải khớp với $Q=nC_p\Delta T$.</p>
-</div>
-
-<div class="qcard">
-  <div class="qhead"><h3>Bài 3 (tự luyện)</h3><span class="points">Kiểm chứng hệ thức Mayer</span></div>
-  <p class="stem">Một lượng khí lý tưởng đơn nguyên tử, $n=0{,}5$ mol, biến đổi đẳng áp ở $p=1{,}5\times10^5$ Pa, nhiệt độ tăng từ $T_1=290$ K đến $T_2=410$ K.</p>
-  <div class="given">Cho $R=8{,}314$ J/mol·K. Khí đơn nguyên tử: $C_V=\tfrac32R$, $C_p=\tfrac52R$.</div>
-
-  <div class="subq">
-    <span class="label">a)</span> Tính thể tích khí ở hai trạng thái đầu và cuối.
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step">$V_1=\dfrac{nRT_1}{p}=\dfrac{0{,}5\times8{,}314\times290}{1{,}5\times10^5}=\dfrac{1205{,}5}{1{,}5\times10^5}\approx0{,}00804$ m³.</div>
-      <div class="step">$V_2=\dfrac{nRT_2}{p}=\dfrac{0{,}5\times8{,}314\times410}{1{,}5\times10^5}=\dfrac{1704{,}4}{1{,}5\times10^5}\approx0{,}01136$ m³.</div>
-      <div class="conclude">$V_1\approx\text{8,04 lít}$; $V_2\approx\text{11,36 lít}$.</div>
-    </div></details>
-  </div>
-
-  <div class="subq">
-    <span class="label">b)</span> Tính công do khí thực hiện.
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step">$W=p(V_2-V_1)=1{,}5\times10^5\times(0{,}01136-0{,}00804)=1{,}5\times10^5\times0{,}003325$</div>
-      <div class="step">(hoặc nhanh hơn: $W=nR\Delta T=0{,}5\times8{,}314\times120=498{,}8$ J — hai cách cho cùng kết quả.)</div>
-      <div class="conclude">$W\approx\text{498,8 J}$ (khí sinh công vì giãn nở).</div>
-    </div></details>
-  </div>
-
-  <div class="subq">
-    <span class="label">c)</span> Tính độ biến thiên nội năng $\Delta U$.
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step">$\Delta U=nC_V\Delta T=0{,}5\times\left(\tfrac32\times8{,}314\right)\times(410-290)=0{,}5\times12{,}471\times120$.</div>
-      <div class="conclude">$\Delta U\approx\text{748,3 J}$.</div>
-    </div></details>
-  </div>
-
-  <div class="subq">
-    <span class="label">d)</span> Tính nhiệt lượng $Q$ bằng hai cách: (i) qua nguyên lý I, (ii) qua $C_p$ trực tiếp — so sánh kết quả để kiểm chứng hệ thức Mayer.
-    <details class="ans"><summary>Xem đáp án</summary><div class="ans-body">
-      <div class="step"><span class="k">Cách (i) — Nguyên lý I:</span> $Q=\Delta U+W=748{,}3+498{,}8\approx1247{,}1$ J.</div>
-      <div class="step"><span class="k">Cách (ii) — Trực tiếp:</span> $Q=nC_p\Delta T=0{,}5\times\left(\tfrac52\times8{,}314\right)\times120=0{,}5\times20{,}785\times120\approx1247{,}1$ J.</div>
-      <div class="conclude">Hai cách cho cùng kết quả $Q\approx\text{1247,1 J}$, <b>khớp hoàn toàn</b> — kiểm chứng trực tiếp hệ thức Mayer $C_p=C_V+R$ (phần chênh lệch giữa $Q$ đẳng áp và $\Delta U$ chính là công $W=nR\Delta T$ dùng để giãn nở).</div>
-    </div></details>
-  </div>
-</div>
-
-</main>
-
-<footer>Tài liệu hướng dẫn giải bài tập — tổng hợp từ lý thuyết Nhiệt học VLĐC1 &amp; đề thi mẫu. Nhấn vào từng câu để mở đáp án chi tiết.</footer>
+    <div class="card">
+        <div class="welcome-text">WELCOME TO MY WEBSITE</div>
+        <h1>NGUYỄN MINH ĐỨC</h1>
+        <p>Chào mừng bạn đã đến với trang web cá nhân của tôi. Nơi chia sẻ về công việc, dự án và thông tin cá nhân.</p>
+        <a href="#about" class="btn">Khám phá ngay</a>
+    </div>
 
 </body>
 </html>
