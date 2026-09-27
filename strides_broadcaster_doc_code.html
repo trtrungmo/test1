@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập NumPy: Dung lượng, Strides, Broadcasting & Đọc Code</title>
+    
+    <!-- Nhúng Google Fonts (Inter cho văn bản & Fira Code cho Code) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #0284c7;
+            --primary-dark: #0369a1;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+            --success-color: #16a34a;
+            --danger-color: #dc2626;
+            --code-bg: #0f172a;
+            --code-color: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            /* Sửa font chuẩn Tiếng Việt */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #0284c7, #1e3a8a);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            opacity: 0.95;
+            font-size: 1.05rem;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            color: var(--primary-dark);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin: 40px 0 20px 0;
+            font-weight: 700;
+        }
+
+        .theory-card {
+            background: var(--card-bg);
+            border-left: 5px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .theory-card h3 {
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .exercise-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .exercise-card h4 {
+            color: #0f172a;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        /* Font chuyên dụng hiển thị Code */
+        pre, code {
+            font-family: 'Fira Code', Consolas, Monaco, 'Courier New', monospace;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 12px 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        p code, li code {
+            background-color: #e2e8f0;
+            color: #0f172a;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .toggle-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        .toggle-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .solution {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            color: #166534;
+        }
+
+        .solution.show {
+            display: block;
+        }
+
+        /* Quiz Styling */
+        .quiz-options {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .quiz-option {
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .quiz-option:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .quiz-option.correct {
+            background-color: #dcfce7 !important;
+            border-color: var(--success-color) !important;
+            color: #15803d;
+            font-weight: 600;
+        }
+
+        .quiz-option.incorrect {
+            background-color: #fee2e2 !important;
+            border-color: var(--danger-color) !important;
+            color: #b91c1c;
+        }
+
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #eff6ff;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+            color: #1e40af;
+        }
+
+        .explanation.show {
+            display: block;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Lập Trình Xử Lý Dữ Liệu - Bài Tập NumPy</h1>
+        <p>Viện Trí tuệ Nhân tạo - ĐHQGHN (2026–2027)</p>
+        <p>Bộ bài tập luyện tập chuyên sâu: Dung lượng, Strides, Broadcasting &amp; Đọc Code "Xoáy"</p>
+    </header>
+
+    <!-- ==================== DẠNG 1 ==================== -->
+    <h2 class="section-title">Dạng 1: Tính Toán Dung Lượng Bộ Nhớ &amp; Strides Của Mảng</h2>
+    
+    <div class="theory-card">
+        <h3>💡 Hướng dẫn Lý thuyết &amp; Công thức tính</h3>
+        <p>Mảng <code>ndarray</code> lưu dữ liệu liên tục trong bộ nhớ RAM kèm theo các thông tin quản lý (Metadata):</p>
+        <ul>
+            <li><strong>Kích thước 1 phần tử (itemsize):</strong> Xác định bởi <code>dtype</code> (VD: <code>int8</code>/<code>uint8</code> = 1 byte; <code>int32</code>/<code>float32</code> = 4 bytes; <code>int64</code>/<code>float64</code> = 8 bytes).</li>
+            <li><strong>Tổng số phần tử (size):</strong> N = Tích các chiều trong shape.</li>
+            <li><strong>Dung lượng vùng dữ liệu thô (nbytes):</strong> <code>nbytes = size × itemsize</code>.</li>
+            <li><strong>Strides (Bước nhảy bộ nhớ):</strong> Là một tuple chứa số <em>byte</em> cần di chuyển trong bộ nhớ để tiến 1 bước dọc theo chiều (axis) tương ứng.
+                <ul>
+                    <li>Đối với mảng lưu theo hàng chuẩn (C-contiguous / C-order) kích thước (d₀, d₁, ..., dₖ₋₁):</li>
+                    <li><code>stride[k-1] = itemsize</code></li>
+                    <li><code>stride[i] = stride[i+1] × d[i+1]</code></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 10 BÀI TẬP DẠNG 1 -->
+    <div id="dạng-1-exercises">
+        <!-- Bài 1.1 -->
+        <div class="exercise-card">
+            <h4>Bài 1.1: Mảng 2D cơ bản</h4>
+            <p>Cho mảng NumPy <code>A = np.zeros((4, 5), dtype=np.float64)</code> được khởi tạo theo C-order.</p>
+            <p><strong>Yêu cầu:</strong> Tính <code>A.itemsize</code>, <code>A.size</code>, <code>A.nbytes</code> và <code>A.strides</code>.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d1-1')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d1-1" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li><code>dtype = float64</code> &rarr; mỗi phần tử chiếm 64 / 8 = 8 bytes &rarr; <code>itemsize = 8</code>.</li>
+                    <li><code>shape = (4, 5)</code> &rarr; <code>size = 4 * 5 = 20</code> phần tử.</li>
+                    <li><code>nbytes = size * itemsize = 20 * 8 = 160</code> bytes.</li>
+                    <li><strong>Strides:</strong>
+                        <ul>
+                            <li>Trục 1 (cột): Nhảy 1 phần tử tốn 8 bytes &rarr; <code>stride[1] = 8</code>.</li>
+                            <li>Trục 0 (hàng): Nhảy 1 hàng (qua 5 cột) tốn 5 × 8 = 40 bytes &rarr; <code>stride[0] = 40</code>.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p><strong>Đáp án:</strong> <code>itemsize = 8</code>, <code>size = 20</code>, <code>nbytes = 160</code> bytes, <code>strides = (40, 8)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 1.2 -->
+        <div class="exercise-card">
+            <h4>Bài 1.2: Mảng 3D C-order</h4>
+            <p>Cho mảng NumPy <code>B = np.ones((2, 3, 4), dtype=np.int32)</code>.</p>
+            <p><strong>Yêu cầu:</strong> Tính dung lượng dữ liệu <code>nbytes</code> và bộ <code>strides</code> của mảng <code>B</code>.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d1-2')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d1-2" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li><code>dtype = int32</code> &rarr; <code>itemsize = 4</code> bytes.</li>
+                    <li><code>size = 2 * 3 * 4 = 24</code> phần tử.</li>
+                    <li><code>nbytes = 24 * 4 = 96</code> bytes.</li>
+                    <li><strong>Strides (C-order):</strong>
+                        <ul>
+                            <li>Axis 2: 4 bytes.</li>
+                            <li>Axis 1: 4 phần tử × 4 bytes = 16 bytes.</li>
+                            <li>Axis 0: 3 × 16 = 48 bytes.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p><strong>Đáp án:</strong> <code>nbytes = 96</code> bytes, <code>strides = (48, 16, 4)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 1.3 -->
+        <div class="exercise-card">
+            <h4>Bài 1.3: Chuyển đổi Shape (Reshape)</h4>
+            <p>Cho mảng <code>x = np.arange(12, dtype=np.int64)</code>. Thực hiện <code>y = x.reshape(3, 4)</code>.</p>
+            <p><strong>Yêu cầu:</strong> Việc reshape có làm thay đổi <code>nbytes</code> của dữ liệu không? Xác định <code>strides</code> của <code>x</code> và <code>y</code>.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d1-3')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d1-3" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li><code>int64</code> có <code>itemsize = 8</code> bytes. Cả <code>x</code> và <code>y</code> đều chia sẻ chung vùng bộ nhớ 12 phần tử &rarr; <code>nbytes = 12 * 8 = 96</code> bytes (không thay đổi).</li>
+                    <li><code>x.shape = (12,)</code> &rarr; <code>x.strides = (8,)</code>.</li>
+                    <li><code>y.shape = (3, 4)</code> &rarr; <code>y.strides = (4*8, 8) = (32, 8)</code>.</li>
+                </ul>
+                <p><strong>Đáp án:</strong> Dung lượng không đổi (96 bytes); <code>x.strides = (8,)</code>, <code>y.strides = (32, 8)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 1.4 -->
+        <div class="exercise-card">
+            <h4>Bài 1.4: Thao tác Chuyển vị (Transpose)</h4>
+            <p>Cho <code>A = np.zeros((3, 5), dtype=np.float32)</code> và <code>T = A.T</code> (chuyển vị của A).</p>
+            <p><strong>Yêu cầu:</strong> Tính <code>strides</code> của <code>A</code> và <code>T</code>. Giải thích vì sao <code>T</code> không làm copy dữ liệu.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d1-4')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d1-4" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li><code>float32</code> &rarr; <code>itemsize = 4</code> bytes.</li>
+                    <li><code>A.shape = (3, 5)</code> &rarr; <code>A.strides = (5*4, 4) = (20, 4)</code>.</li>
+                    <li>Khi gọi <code>A.T</code>, NumPy chỉ cần hoán đổi <code>shape</code> thành <code>(5, 3)</code> và đảo ngược bộ <code>strides</code> thành <code>(4, 20)</code>. Vì chỉ sửa metadata nên không cần cấp phát lại bộ nhớ dữ liệu (View).</li>
+                </ul>
+                <p><strong>Đáp án:</strong> <code>A.strides = (20, 4)</code>; <code>T.strides = (4, 20)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 1.5 -->
+        <div class="exercise-card">
+            <h4>Bài 1.5: Slicing và Bước nhảy (Step > 1)</h4>
+            <p>Cho <code>arr = np.arange(20, dtype=np.int8)</code>. Tạo mảng con <code>sub = arr[::2]</code>.</p>
+            <p><strong>Yêu cầu:</strong> Tính <code>sub.size</code>, <code>sub.nbytes</code> và <code>sub.strides</code>.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d1-5')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d1-5" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li><code>dtype = int8</code> &rarr; <code>itemsize = 1</code> byte.</li>
+                    <li>Lấy bước 2 &rarr; <code>sub</code> có 10 phần tử &rarr; <code>sub.size = 10</code>.</li>
+                    <li><code>sub.nbytes = 10 * 1 = 10</code> bytes.</li>
+                    <li>Bước nhảy của slice là 2 &rarr; mỗi bước dịch chuyển trong RAM tốn 2 × 1 = 2 bytes.</li>
+                </ul>
+                <p><strong>Đáp án:</strong> <code>sub.size = 10</code>, <code>sub.nbytes = 10</code>, <code>sub.strides = (2,)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 1.6 -->
+        <div class="exercise-card">
+            <h4>Bài 1.6: Fortran-order (F-contiguous)</h4>
+            <p>Cho mảng <code>F = np.zeros((3, 4), dtype=np.int64, order='F')</code>.</p>
+            <p><strong>Yêu cầu:</strong> Tính <code>F.strides</code> và so sánh với mảng lưu theo C-order cùng kích thước.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d1-6')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d1-6" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li><code>itemsize = 8</code> bytes. Mảng Fortran-order lưu theo cột (column-major).</li>
+                    <li>Trục 0 (hàng): Tiến 1 phần tử trong cùng cột tốn 8 bytes &rarr; <code>stride[0] = 8</code>.</li>
+                    <li>Trục 1 (cột): Tiến 1 cột (qua 3 hàng) tốn 3 × 8 = 24 bytes &rarr; <code>stride[1] = 24</code>.</li>
+                    <li>(Nếu là C-order thì <code>strides = (32, 8)</code>).</li>
+                </ul>
+                <p><strong>Đáp án:</strong> <code>F.strides = (8, 24)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 1.7 -->
+        <div class="exercise-card">
+            <h4>Bài 1.7: Mảng 4D trong Deep Learning</h4>
+            <p>Trong xử lý ảnh, một batch dữ liệu có <code>shape = (32, 64, 64, 3)</code> với kiểu dữ liệu <code>np.float32</code> (32 ảnh RGB 64x64).</p>
+            <p><strong>Yêu cầu:</strong> Tính tổng dung lượng RAM (tính theo Megabytes - MB) chứa dữ liệu thô này và bộ <code>strides</code> của mảng.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d1-7')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d1-7" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li><code>itemsize = 4</code> bytes.</li>
+                    <li><code>size = 32 * 64 * 64 * 3 = 393,216</code> phần tử.</li>
+                    <li><code>nbytes = 393,216 * 4 = 1,572,864</code> bytes &approx; 1.5 MB.</li>
+                    <li><strong>Strides:</strong>
+                        <ul>
+                            <li>s[3] = 4 bytes</li>
+                            <li>s[2] = 3 × 4 = 12 bytes</li>
+                            <li>s[1] = 64 × 12 = 768 bytes</li>
+                            <li>s[0] = 64 × 768 = 49,152 bytes</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p><strong>Đáp án:</strong> Dung lượng &approx; 1.5 MB (1,572,864 bytes); <code>strides = (49152, 768, 12, 4)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 1.8 -->
+        <div class="exercise-card">
+            <h4>Bài 1.8: So sánh List vs ndarray</h4>
+            <p>Giả sử ta cần lưu 1.000.000 số nguyên 64-bit. So sánh dung lượng bộ nhớ dữ liệu khi dùng <code>np.array(..., dtype=np.int64)</code> và danh sách chuẩn của Python <code>list</code> (giả thiết mỗi PyObject_Int tốn 28 bytes + 8 bytes tham chiếu trong list).</p>
+            <p><strong>Yêu cầu:</strong> Tính tỉ lệ chênh lệch bộ nhớ xấp xỉ.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d1-8')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d1-8" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li>Với NumPy <code>ndarray</code>: 1.000.000 × 8 bytes = 8.000.000 bytes &approx; 7.63 MB.</li>
+                    <li>Với Python <code>list</code>: Mỗi phần tử gồm pointer (8 bytes) + PyObject (28 bytes) = 36 bytes &rarr; 36.000.000 bytes &approx; 34.33 MB.</li>
+                    <li>Tỉ lệ: Python List tốn gấp &approx; 4.5 lần so với NumPy array.</li>
+                </ul>
+                <p><strong>Đáp án:</strong> NumPy tốn 8 MB; Python List tốn &approx; 36 MB (Gấp 4.5 lần).</p>
+            </div>
+        </div>
+
+        <!-- Bài 1.9 -->
+        <div class="exercise-card">
+            <h4>Bài 1.9: Strides khi đảo ngược mảng (Reverse Slicing)</h4>
+            <p>Cho <code>arr = np.array([10, 20, 30, 40, 50], dtype=np.int64)</code>. Tạo <code>rev = arr[::-1]</code>.</p>
+            <p><strong>Yêu cầu:</strong> Xác định <code>rev.strides</code> và nêu ý nghĩa số âm trong strides.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d1-9')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d1-9" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li><code>itemsize = 8</code> bytes.</li>
+                    <li>Khi dùng bước slice là -1, trong bộ nhớ pointer sẽ lùi lại thay vì tiến lên.</li>
+                    <li>Do đó, <code>rev.strides = (-8,)</code>. Số âm nghĩa là để sang phần tử kế tiếp của mảng view, ta phải dịch con trỏ lùi về trước trong RAM 8 bytes.</li>
+                </ul>
+                <p><strong>Đáp án:</strong> <code>rev.strides = (-8,)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 1.10 -->
+        <div class="exercise-card">
+            <h4>Bài 1.10: Dummy Dimension và Stride bằng 0</h4>
+            <p>Dùng kĩ thuật <code>stride_tricks</code> để mở rộng mảng <code>a = np.array([1, 2, 3], dtype=np.int64)</code> thành mảng 2D kích thước <code>(4, 3)</code> mà không tốn thêm bộ nhớ bằng cách đặt <code>stride[0] = 0</code>.</p>
+            <p><strong>Yêu cầu:</strong> Dung lượng bộ nhớ thực tế tiêu tốn là bao nhiêu? Giải thích stride = 0.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d1-10')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d1-10" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li>Mảng ban đầu chỉ có 3 phần tử <code>int64</code> &rarr; 3 × 8 = 24 bytes.</li>
+                    <li>Khi thiết lập <code>stride[0] = 0</code> và <code>stride[1] = 8</code> với <code>shape = (4, 3)</code>, bất kỳ khi nào chỉ số hàng thay đổi, con trỏ dịch chuyển 0 byte (tức là dùng lại đúng 3 phần tử đó cho cả 4 hàng).</li>
+                    <li>Dung lượng dữ liệu tiêu tốn thực tế giữ nguyên là 24 bytes.</li>
+                </ul>
+                <p><strong>Đáp án:</strong> Dung lượng thực tế tiêu tốn = 24 bytes. Stride = 0 có nghĩa là các hàng trỏ cùng vào một vùng nhớ.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== DẠNG 2 ==================== -->
+    <h2 class="section-title">Dạng 2: Lý Thuyết Broadcasting &amp; Bài Tập Áp Dụng</h2>
+
+    <div class="theory-card">
+        <h3>💡 Lý thuyết Broadcasting trong NumPy</h3>
+        <p><strong>Broadcasting</strong> là cơ chế cho phép NumPy thực hiện các phép toán đại số trên các mảng có kích thước (shape) khác nhau mà không cần sao chép dữ liệu không cần thiết.</p>
+        <p><strong>Quy tắc Broadcasting (Thực hiện từ phải sang trái - Trailing dimensions):</strong></p>
+        <ol>
+            <li>Nếu hai mảng khác số chiều, mảng có ít chiều hơn sẽ được <strong>thêm các chiều có kích thước bằng 1 vào bên trái</strong>.</li>
+            <li>Hai chiều được coi là <strong>tương thích (compatible)</strong> nếu:
+                <ul>
+                    <li>Kích thước của chúng <strong>bằng nhau</strong>, HOẶC</li>
+                    <li>Một trong hai chiều có kích thước <strong>bằng 1</strong>.</li>
+                </ul>
+            </li>
+        </ol>
+        <p>Nếu hai điều kiện trên thỏa mãn ở tất cả các chiều, mảng sẽ broadcast thành công. Nếu không, NumPy sẽ báo lỗi <code>ValueError: operands could not be broadcast together</code>.</p>
+    </div>
+
+    <!-- 10 BÀI TẬP DẠNG 2 -->
+    <div id="dạng-2-exercises">
+        <!-- Bài 2.1 -->
+        <div class="exercise-card">
+            <h4>Bài 2.1: Kiểm tra tính tương thích 2D &amp; 1D</h4>
+            <p>Cho <code>A.shape = (3, 4)</code> và <code>B.shape = (4,)</code>.</p>
+            <p><strong>Yêu cầu:</strong> Phép tính <code>A + B</code> có hợp lệ không? Nếu có, kích thước kết quả là bao nhiêu?</p>
+            <button class="toggle-btn" onclick="toggleSolution('d2-1')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d2-1" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li>Căn chỉnh chiều từ phải sang trái:
+                        <br>A: <code>(3, 4)</code>
+                        <br>B: <code>(1, 4)</code> (Thêm 1 vào bên trái B)
+                    </li>
+                    <li>So sánh: Axis 1 (4 == 4), Axis 0 (3 tương thích với 1).</li>
+                </ul>
+                <p><strong>Đáp án:</strong> Hợp lệ. Shape kết quả là <code>(3, 4)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 2.2 -->
+        <div class="exercise-card">
+            <h4>Bài 2.2: Báo lỗi Broadcasting</h4>
+            <p>Cho <code>A.shape = (3, 4)</code> và <code>B.shape = (3,)</code>.</p>
+            <p><strong>Yêu cầu:</strong> Phép tính <code>A + B</code> có thực hiện được không? Giải thích vì sao và đề xuất cách sửa.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d2-2')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d2-2" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li>Căn chỉnh:
+                        <br>A: <code>(3, 4)</code>
+                        <br>B: <code>(1, 3)</code> (B tự động chèn 1 sang trái)
+                    </li>
+                    <li>So sánh trục cuối: 4 &ne; 3 (Không có cái nào bằng 1) &rarr; Báo lỗi <code>ValueError</code>.</li>
+                    <li>Sửa: Đổi shape B thành <code>(3, 1)</code> bằng <code>B[:, np.newaxis]</code>. Lúc đó <code>(3, 4) + (3, 1) -> (3, 4)</code>.</li>
+                </ul>
+                <p><strong>Đáp án:</strong> Không thực hiện được. Cần đổi B thành shape <code>(3, 1)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 2.3 -->
+        <div class="exercise-card">
+            <h4>Bài 2.3: Ma trận Outer Product đơn giản</h4>
+            <p>Cho <code>a = np.array([1, 2, 3])</code> (shape <code>(3,)</code>) và <code>b = np.array([10, 20])</code> (shape <code>(2,)</code>).</p>
+            <p><strong>Yêu cầu:</strong> Dùng broadcasting để tạo ma trận tích kích thước <code>(3, 2)</code>.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d2-3')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d2-3" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li>Biến đổi <code>a</code> thành shape <code>(3, 1)</code> bằng <code>a[:, np.newaxis]</code>.</li>
+                    <li><code>b</code> có shape <code>(2,)</code> bọc thành <code>(1, 2)</code>.</li>
+                    <li>Phép nhân <code>a[:, np.newaxis] * b</code> có shape <code>(3, 1) * (1, 2) -> (3, 2)</code>.</li>
+                    <li>Kết quả: <code>[[10, 20], [20, 40], [30, 60]]</code>.</li>
+                </ul>
+                <p><strong>Đáp án:</strong> Code: <code>a[:, None] * b</code>. Result shape <code>(3, 2)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 2.4 -->
+        <div class="exercise-card">
+            <h4>Bài 2.4: Phức tạp hóa 3D</h4>
+            <p>Cho 3 mảng: <code>X.shape = (1, 5, 1)</code>, <code>Y.shape = (4, 1, 1)</code>, <code>Z.shape = (3,)</code>.</p>
+            <p><strong>Yêu cầu:</strong> Kích thước mảng kết quả của <code>X + Y + Z</code> là bao nhiêu?</p>
+            <button class="toggle-btn" onclick="toggleSolution('d2-4')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d2-4" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li>Căn chỉnh các shape:
+                        <br>X: <code>(1, 5, 1)</code>
+                        <br>Y: <code>(4, 1, 1)</code>
+                        <br>Z: <code>(1, 1, 3)</code>
+                    </li>
+                    <li>Kết hợp từng trục: max(1, 4, 1) = 4; max(5, 1, 1) = 5; max(1, 1, 3) = 3.</li>
+                </ul>
+                <p><strong>Đáp án:</strong> Kích thước kết quả là <code>(4, 5, 3)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 2.5 -->
+        <div class="exercise-card">
+            <h4>Bài 2.5: Chuẩn hóa dữ liệu (Column-wise Normalization)</h4>
+            <p>Cho ma trận dữ liệu <code>Data.shape = (100, 10)</code> (100 mẫu, 10 đặc trưng). Ta tính trung bình mỗi đặc trưng được <code>mean = Data.mean(axis=0)</code>.</p>
+            <p><strong>Yêu cầu:</strong> Phép tính <code>Data - mean</code> hoạt động nhờ broadcasting như thế nào?</p>
+            <button class="toggle-btn" onclick="toggleSolution('d2-5')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d2-5" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li><code>mean</code> tính theo <code>axis=0</code> nên có shape là <code>(10,)</code>.</li>
+                    <li>Khi thực hiện <code>Data - mean</code>:
+                        <br>Data: <code>(100, 10)</code>
+                        <br>mean: <code>(  1, 10)</code>
+                    </li>
+                    <li>Mảng <code>mean</code> được broadcast tự động dọc theo 100 hàng, trừ giá trị trung bình tương ứng của từng cột.</li>
+                </ul>
+                <p><strong>Đáp án:</strong> Phép trừ hợp lệ, shape kết quả <code>(100, 10)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 2.6 -->
+        <div class="exercise-card">
+            <h4>Bài 2.6: Row-wise Normalization</h4>
+            <p>Cho <code>Data.shape = (100, 10)</code>. Ta muốn trừ đi giá trị trung bình của từng hàng <code>row_mean = Data.mean(axis=1)</code>.</p>
+            <p><strong>Yêu cầu:</strong> Viết biểu thức chuẩn hóa đúng (tránh lỗi shape mismatch).</p>
+            <button class="toggle-btn" onclick="toggleSolution('d2-6')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d2-6" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li><code>row_mean = Data.mean(axis=1)</code> có shape <code>(100,)</code>.</li>
+                    <li>Nếu viết <code>Data - row_mean</code>: <code>(100, 10)</code> vs <code>(1, 100)</code> &rarr; Lỗi!</li>
+                    <li>Cần biến đổi <code>row_mean</code> về 2D có shape <code>(100, 1)</code>: dùng <code>Data.mean(axis=1, keepdims=True)</code> hoặc <code>row_mean[:, np.newaxis]</code>.</li>
+                </ul>
+                <p><strong>Đáp án:</strong> Code đúng: <code>Data - Data.mean(axis=1, keepdims=True)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 2.7 -->
+        <div class="exercise-card">
+            <h4>Bài 2.7: Tải ảnh RGB</h4>
+            <p>Một bức ảnh RGB có shape <code>(256, 256, 3)</code>. Ta muốn nhân hệ số chỉnh màu cho 3 kênh màu R, G, B tương ứng với mảng <code>scale = np.array([1.2, 0.9, 1.1])</code>.</p>
+            <p><strong>Yêu cầu:</strong> Phép tính <code>img * scale</code> có hợp lệ không? Giải thích.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d2-7')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d2-7" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li><code>img.shape = (256, 256, 3)</code></li>
+                    <li><code>scale.shape = (3,)</code> &rarr; được bổ sung 1 thành <code>(1, 1, 3)</code>.</li>
+                    <li>Khớp chiều cuối 3 == 3. <code>scale</code> sẽ nhân tương ứng vào tất cả các pixel.</li>
+                </ul>
+                <p><strong>Đáp án:</strong> Hợp lệ. Shape kết quả là <code>(256, 256, 3)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 2.8 -->
+        <div class="exercise-card">
+            <h4>Bài 2.8: Ma trận khoảng cách Euclidean (Pairwise Distance)</h4>
+            <p>Cho mảng A chứa 3 điểm 1D: <code>A = np.array([1, 4, 10])</code> (shape <code>(3,)</code>).</p>
+            <p><strong>Yêu cầu:</strong> Dùng broadcasting tạo ma trận khoảng cách D_ij = |A_i - A_j|.</p>
+            <button class="toggle-btn" onclick="toggleSolution('d2-8')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d2-8" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li>Biến đổi A thành cột <code>A_col = A[:, np.newaxis]</code> (shape <code>(3, 1)</code>).</li>
+                    <li>Thực hiện phép trừ broadcast: <code>D = np.abs(A[:, np.newaxis] - A)</code>.</li>
+                    <li><code>(3, 1) - (1, 3) -> (3, 3)</code>.</li>
+                </ul>
+                <p><strong>Đáp án:</strong> <code>np.abs(A[:, None] - A)</code>.</p>
+            </div>
+        </div>
+
+        <!-- Bài 2.9 -->
+        <div class="exercise-card">
+            <h4>Bài 2.9: Scalar Broadcast</h4>
+            <p>Cho <code>m = np.ones((5, 5), dtype=np.int32)</code> và số vô hướng s = 5.</p>
+            <p><strong>Yêu cầu:</strong> Số vô hướng được coi có shape là bao nhiêu khi broadcast với <code>m</code>?</p>
+            <button class="toggle-btn" onclick="toggleSolution('d2-9')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d2-9" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li>Số vô hướng (scalar) có shape là tuple rỗng <code>()</code>.</li>
+                    <li>Nó được tự động pad thêm các chiều 1 thành <code>(1, 1)</code> và lấp đầy toàn bộ các phần tử của <code>m</code>.</li>
+                </ul>
+                <p><strong>Đáp án:</strong> Scalar có shape <code>()</code>, broadcast tự do với mọi mảng.</p>
+            </div>
+        </div>
+
+        <!-- Bài 2.10 -->
+        <div class="exercise-card">
+            <h4>Bài 2.10: Tìm lỗi sai phức tạp</h4>
+            <p>Phép toán nào sau đây gây ra lỗi <code>ValueError</code>?</p>
+            <p>a) <code>np.zeros((2, 1, 4)) + np.zeros((3, 4))</code></p>
+            <p>b) <code>np.zeros((2, 1, 4)) + np.zeros((3, 1))</code></p>
+            <button class="toggle-btn" onclick="toggleSolution('d2-10')">Xem Lời Giải &amp; Đáp Án</button>
+            <div id="d2-10" class="solution">
+                <p><strong>Lời giải:</strong></p>
+                <ul>
+                    <li>Trường hợp a: <code>(2, 1, 4)</code> và <code>(1, 3, 4)</code>. Trục 1: 1 vs 3 (ok), Trục 2: 4 vs 4 (ok) &rarr; Thành công: <code>(2, 3, 4)</code>.</li>
+                    <li>Trường hợp b: <code>(2, 1, 4)</code> và <code>(1, 3, 1)</code>. Trục 0: 2 vs 1 (ok), Trục 1: 1 vs 3 (ok), Trục 2: 4 vs 1 (ok) &rarr; Thành công: <code>(2, 3, 4)</code>.</li>
+                    <li>Cả 2 đều KHÔNG lỗi!</li>
+                </ul>
+                <p><strong>Đáp án:</strong> Cả 2 phép toán đều hợp lệ và cho ra shape <code>(2, 3, 4)</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== DẠNG 3 ==================== -->
+    <h2 class="section-title">Dạng 3: Đọc Code NumPy &amp; Trắc Nghiệm "Xoáy" (10 Câu)</h2>
+    <p style="margin-bottom: 20px;">Chọn đáp án đúng nhất cho từng đoạn code dưới đây. Hệ thống sẽ chấm điểm và hiển thị giải thích chi tiết bẫy ngay lập tức.</p>
+
+    <div id="quiz-container">
+        <!-- Câu 1 -->
+        <div class="exercise-card" id="q1">
+            <h4>Câu 1: Tràn số (Integer Overflow) với dtype hẹp</h4>
+            <pre>import numpy as np
+a = np.array([100, 120, 127], dtype=np.int8)
+b = a + 10
+print(b[2])</pre>
+            <ul class="quiz-options">
+                <li class="quiz-option" onclick="checkQuiz(1, 0, false)">A. 137</li>
+                <li class="quiz-option" onclick="checkQuiz(1, 1, true)">B. -119</li>
+                <li class="quiz-option" onclick="checkQuiz(1, 2, false)">C. Lỗi OverflowError</li>
+                <li class="quiz-option" onclick="checkQuiz(1, 3, false)">D. 127</li>
+            </ul>
+            <div class="explanation" id="exp-1">
+                <strong>Giải thích Bẫy:</strong> Trong NumPy, <code>int8</code> biểu diễn số nguyên có dấu từ -128 đến 127. Khi lấy 127 + 10 = 137, nó bị tràn số quay vòng (wrap-around) trong hệ nhị phân 8-bit: 137 - 256 = -119. Khác với Python thuần tự tăng kích thước bit, NumPy giữ nguyên dtype ngoại trừ khi dùng ufunc ép kiểu.
+            </div>
+        </div>
+
+        <!-- Câu 2 -->
+        <div class="exercise-card" id="q2">
+            <h4>Câu 2: Slicing (View) vs Advanced Indexing (Copy)</h4>
+            <pre>import numpy as np
+arr = np.array([10, 20, 30, 40, 50])
+v1 = arr[1:4]
+v2 = arr[[1, 2, 3]]
+v1[0] = 99
+v2[1] = 88
+print(arr)</pre>
+            <ul class="quiz-options">
+                <li class="quiz-option" onclick="checkQuiz(2, 0, false)">A. [10, 99, 88, 40, 50]</li>
+                <li class="quiz-option" onclick="checkQuiz(2, 1, true)">B. [10, 99, 30, 40, 50]</li>
+                <li class="quiz-option" onclick="checkQuiz(2, 2, false)">C. [10, 20, 30, 40, 50]</li>
+                <li class="quiz-option" onclick="checkQuiz(2, 3, false)">D. [10, 99, 88, 99, 50]</li>
+            </ul>
+            <div class="explanation" id="exp-2">
+                <strong>Giải thích Bẫy:</strong> <code>v1 = arr[1:4]</code> là <em>Basic Slicing</em> &rarr; tạo <strong>View</strong> (chia sẻ bộ nhớ với <code>arr</code>). Khi đổi <code>v1[0] = 99</code>, <code>arr[1]</code> đổi thành 99. Trong khi đó, <code>v2 = arr[[1, 2, 3]]</code> dùng <em>Fancy Indexing</em> (dùng list chỉ số) &rarr; tạo <strong>Copy</strong> hoàn toàn mới. Thay đổi trên <code>v2</code> không ảnh hưởng <code>arr</code>!
+            </div>
+        </div>
+
+        <!-- Câu 3 -->
+        <div class="exercise-card" id="q3">
+            <h4>Câu 3: Phép gán inplace operator (+=) vs (+)</h4>
+            <pre>import numpy as np
+a = np.array([1, 2, 3], dtype=np.float64)
+b = a
+a += 1
+c = a + 1
+print(b, a is b)</pre>
+            <ul class="quiz-options">
+                <li class="quiz-option" onclick="checkQuiz(3, 0, false)">A. [1. 2. 3.] False</li>
+                <li class="quiz-option" onclick="checkQuiz(3, 1, false)">B. [2. 3. 4.] False</li>
+                <li class="quiz-option" onclick="checkQuiz(3, 2, true)">C. [2. 3. 4.] True</li>
+                <li class="quiz-option" onclick="checkQuiz(3, 3, false)">D. [3. 4. 5.] True</li>
+            </ul>
+            <div class="explanation" id="exp-3">
+                <strong>Giải thích Bẫy:</strong> Toán tử <code>a += 1</code> sửa trực tiếp dữ liệu trên vùng nhớ hiện tại (in-place operation). Vì <code>b</code> trỏ cùng mảng với <code>a</code> nên <code>b</code> cũng thay đổi thành <code>[2., 3., 4.]</code>. Biểu thức <code>a + 1</code> sau đó tạo ra một mảng mới gắn cho <code>c</code> nhưng không làm đổi <code>a</code>. <code>a is b</code> trả về <code>True</code>.
+            </div>
+        </div>
+
+        <!-- Câu 4 -->
+        <div class="exercise-card" id="q4">
+            <h4>Câu 4: Chuyển kiểu dtype trước hay sau phép tính</h4>
+            <pre>import numpy as np
+x = np.array([100, 100], dtype=np.int8)
+res1 = (x * 2).astype(np.int16)
+res2 = x.astype(np.int16) * 2
+print(res1[0], res2[0])</pre>
+            <ul class="quiz-options">
+                <li class="quiz-option" onclick="checkQuiz(4, 0, false)">A. 200 200</li>
+                <li class="quiz-option" onclick="checkQuiz(4, 1, true)">B. -56 200</li>
+                <li class="quiz-option" onclick="checkQuiz(4, 2, false)">C. -56 -56</li>
+                <li class="quiz-option" onclick="checkQuiz(4, 3, false)">D. Lỗi ValueError</li>
+            </ul>
+            <div class="explanation" id="exp-4">
+                <strong>Giải thích Bẫy:</strong> Trong <code>res1</code>, phép nhân <code>x * 2</code> chạy trước trên kiểu <code>int8</code>. 100 × 2 = 200 tràn số 200 - 256 = -56. Sau đó mới cast sang <code>int16</code> thì đã muộn (-56). Với <code>res2</code>, <code>x</code> được đổi sang <code>int16</code> trước nên phép nhân ra kết quả 200 chính xác.
+            </div>
+        </div>
+
+        <!-- Câu 5 -->
+        <div class="exercise-card" id="q5">
+            <h4>Câu 5: Cạm bẫy Axis trong ufunc (sum)</h4>
+            <pre>import numpy as np
+m = np.array([[1, 2, 3],
+              [4, 5, 6]])
+print(m.sum(axis=0))</pre>
+            <ul class="quiz-options">
+                <li class="quiz-option" onclick="checkQuiz(5, 0, false)">A. [6, 15]</li>
+                <li class="quiz-option" onclick="checkQuiz(5, 1, true)">B. [5, 7, 9]</li>
+                <li class="quiz-option" onclick="checkQuiz(5, 2, false)">C. 21</li>
+                <li class="quiz-option" onclick="checkQuiz(5, 3, false)">D. [[5, 7, 9]]</li>
+            </ul>
+            <div class="explanation" id="exp-5">
+                <strong>Giải thích Bẫy:</strong> <code>axis=0</code> trong NumPy là tính tổng **dọc theo các hàng** (tức là cộng dồn các phần tử ở từng cột lại với nhau): [1+4, 2+5, 3+6] = [5, 7, 9]. Rất nhiều bạn nhầm <code>axis=0</code> là cộng theo chiều ngang từng hàng!
+            </div>
+        </div>
+
+        <!-- Câu 6 -->
+        <div class="exercise-card" id="q6">
+            <h4>Câu 6: Boolean Masking &amp; Shape collapse</h4>
+            <pre>import numpy as np
+A = np.array([[1, 2], [3, 4]])
+mask = A > 2
+print(A[mask].shape)</pre>
+            <ul class="quiz-options">
+                <li class="quiz-option" onclick="checkQuiz(6, 0, false)">A. (2, 2)</li>
+                <li class="quiz-option" onclick="checkQuiz(6, 1, false)">B. (1, 2)</li>
+                <li class="quiz-option" onclick="checkQuiz(6, 2, true)">C. (2,)</li>
+                <li class="quiz-option" onclick="checkQuiz(6, 3, false)">D. (2, 1)</li>
+            </ul>
+            <div class="explanation" id="exp-6">
+                <strong>Giải thích Bẫy:</strong> Lọc dữ liệu bằng Boolean Mask (như <code>A[A > 2]</code>) luôn luôn làm "phẳng" (flatten) kết quả về mảng 1D, vì số lượng phần tử thỏa mãn điều kiện ở mỗi hàng/cột có thể không đồng đều. Do đó kết quả thu được mảng <code>[3, 4]</code> có shape <code>(2,)</code>.
+            </div>
+        </div>
+
+        <!-- Câu 7 -->
+        <div class="exercise-card" id="q7">
+            <h4>Câu 7: Broadcasting với newaxis</h4>
+            <pre>import numpy as np
+a = np.array([1, 2, 3])
+b = np.array([10, 20])
+res = a[:, np.newaxis] + b
+print(res.shape)</pre>
+            <ul class="quiz-options">
+                <li class="quiz-option" onclick="checkQuiz(7, 0, true)">A. (3, 2)</li>
+                <li class="quiz-option" onclick="checkQuiz(7, 1, false)">B. (2, 3)</li>
+                <li class="quiz-option" onclick="checkQuiz(7, 2, false)">C. (3,)</li>
+                <li class="quiz-option" onclick="checkQuiz(7, 3, false)">D. Báo lỗi ValueError</li>
+            </ul>
+            <div class="explanation" id="exp-7">
+                <strong>Giải thích Bẫy:</strong> <code>a[:, np.newaxis]</code> biến <code>a</code> từ <code>(3,)</code> thành <code>(3, 1)</code>. Mảng <code>b</code> có shape <code>(2,)</code> được coi là <code>(1, 2)</code>. Broadcast <code>(3, 1) + (1, 2)</code> ra kết quả <code>(3, 2)</code>.
+            </div>
+        </div>
+
+        <!-- Câu 8 -->
+        <div class="exercise-card" id="q8">
+            <h4>Câu 8: Strides sau khi Reshape vs Transpose</h4>
+            <pre>import numpy as np
+x = np.arange(6, dtype=np.int32).reshape(2, 3)
+y = x.T
+print(x.strides, y.strides)</pre>
+            <ul class="quiz-options">
+                <li class="quiz-option" onclick="checkQuiz(8, 0, false)">A. (12, 4) và (12, 4)</li>
+                <li class="quiz-option" onclick="checkQuiz(8, 1, true)">B. (12, 4) và (4, 12)</li>
+                <li class="quiz-option" onclick="checkQuiz(8, 2, false)">C. (24, 8) và (8, 24)</li>
+                <li class="quiz-option" onclick="checkQuiz(8, 3, false)">D. (4, 12) và (12, 4)</li>
+            </ul>
+            <div class="explanation" id="exp-8">
+                <strong>Giải thích Bẫy:</strong> <code>int32</code> có <code>itemsize = 4</code> bytes.
+                <br><code>x.shape = (2, 3)</code> &rarr; <code>x.strides = (3*4, 4) = (12, 4)</code>.
+                <br>Khi chuyển vị <code>y = x.T</code>, shape đổi thành <code>(3, 2)</code> và bộ strides chỉ việc đảo ngược lại thành <code>(4, 12)</code>.
+            </div>
+        </div>
+
+        <!-- Câu 9 -->
+        <div class="exercise-card" id="q9">
+            <h4>Câu 9: Bẫy chia cho 0 trong NumPy khác với Python</h4>
+            <pre>import numpy as np
+a = np.array([0, 1], dtype=np.float64)
+b = np.array([0, 2], dtype=np.float64)
+c = a / b
+print(c[0])</pre>
+            <ul class="quiz-options">
+                <li class="quiz-option" onclick="checkQuiz(9, 0, false)">A. ZeroDivisionError</li>
+                <li class="quiz-option" onclick="checkQuiz(9, 1, false)">B. 0.0</li>
+                <li class="quiz-option" onclick="checkQuiz(9, 2, true)">C. nan</li>
+                <li class="quiz-option" onclick="checkQuiz(9, 3, false)">D. inf</li>
+            </ul>
+            <div class="explanation" id="exp-9">
+                <strong>Giải thích Bẫy:</strong> Phép chia 0/0 trong Python thuần bắn lỗi <code>ZeroDivisionError</code>. Tuy nhiên trong NumPy trên số thực (float), nó sẽ phát ra RuntimeWarning và trả về giá trị đặc biệt <code>np.nan</code> (Not a Number). Nếu là 1/0 thì trả về <code>np.inf</code>.
+            </div>
+        </div>
+
+        <!-- Câu 10 -->
+        <div class="exercise-card" id="q10">
+            <h4>Câu 10: Copy sâu và View với Fancy Indexing</h4>
+            <pre>import numpy as np
+x = np.zeros((3, 3))
+x[[0, 1], [0, 1]] = 5
+print(np.count_nonzero(x))</pre>
+            <ul class="quiz-options">
+                <li class="quiz-option" onclick="checkQuiz(10, 0, false)">A. 4</li>
+                <li class="quiz-option" onclick="checkQuiz(10, 1, true)">B. 2</li>
+                <li class="quiz-option" onclick="checkQuiz(10, 2, false)">C. 9</li>
+                <li class="quiz-option" onclick="checkQuiz(10, 3, false)">D. 0</li>
+            </ul>
+            <div class="explanation" id="exp-10">
+                <strong>Giải thích Bẫy:</strong> Cú pháp <code>x[[0, 1], [0, 1]] = 5</code> chọn các phần tử tại vị trí tọa độ cặp (0,0) và (1,1) (chứ không phải chọn cả ma trận con 2x2). Do đó chỉ có 2 vị trí đường chéo được gán bằng 5, tổng số phần tử khác 0 là 2.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSolution(id) {
+        const el = document.getElementById(id);
+        if (el.classList.contains('show')) {
+            el.classList.remove('show');
+        } else {
+            el.classList.add('show');
+        }
+    }
+
+    function checkQuiz(qNum, optionIdx, isCorrect) {
+        const qCard = document.getElementById(`q${qNum}`);
+        const options = qCard.querySelectorAll('.quiz-option');
+        const exp = document.getElementById(`exp-${qNum}`);
+
+        options.forEach((opt, idx) => {
+            opt.classList.remove('correct', 'incorrect');
+            if (idx === optionIdx) {
+                if (isCorrect) {
+                    opt.classList.add('correct');
+                } else {
+                    opt.classList.add('incorrect');
+                }
+            }
+        });
+
+        exp.classList.add('show');
+    }
+</script>
+
+</body>
+</html>
