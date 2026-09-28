@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lời giải Problem Set 02 — UET.MAT1052</title>
+<script>
+MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<style>
+:root{
+  --bg:#0f1115; --bg2:#161a21; --card:#1b1f27; --card2:#20242e;
+  --text:#e6e8ee; --muted:#9aa4b2; --accent:#5eead4; --accent2:#7dd3fc;
+  --warn:#fbbf24; --warn-bg:#3a2f12; --ok:#34d399; --border:#2a2f3a;
+  --code-bg:#11141a;
+}
+*{box-sizing:border-box;}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
+  margin:0; line-height:1.6;
+}
+header.top{
+  position:sticky; top:0; z-index:50;
+  background:rgba(15,17,21,0.96); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--border);
+  padding:10px 16px;
+}
+header.top h1{
+  font-size:1.05rem; margin:0 0 8px 0; color:var(--accent);
+  font-weight:600;
+}
+nav.tabs{
+  display:flex; flex-wrap:wrap; gap:6px;
+}
+nav.tabs a{
+  color:var(--muted); text-decoration:none; font-size:0.82rem;
+  padding:4px 9px; border-radius:999px; border:1px solid var(--border);
+  white-space:nowrap;
+}
+nav.tabs a:hover{ color:var(--text); border-color:var(--accent2); }
+main{ max-width:920px; margin:0 auto; padding:20px 16px 80px; }
+.intro{
+  background:var(--card); border:1px solid var(--border); border-radius:12px;
+  padding:16px 18px; margin-bottom:22px;
+}
+.intro p{ margin:6px 0; color:var(--muted); font-size:0.92rem; }
+section.bai{
+  margin-bottom:18px; border:1px solid var(--border); border-radius:14px;
+  overflow:hidden; background:var(--card);
+}
+section.bai > summary{
+  cursor:pointer; padding:14px 18px; font-weight:600; font-size:1.05rem;
+  color:var(--accent2); list-style:none; display:flex; justify-content:space-between;
+  align-items:center; background:var(--card2);
+}
+section.bai > summary::-webkit-details-marker{ display:none; }
+section.bai > summary::after{
+  content:'▾'; color:var(--muted); transition:transform .2s; font-size:0.9rem;
+}
+section.bai:not([open]) > summary::after{ transform:rotate(-90deg); }
+.bai-body{ padding:6px 18px 18px; }
+.q{
+  margin:14px 0; padding:12px 14px; background:var(--bg2);
+  border-left:3px solid var(--accent); border-radius:8px;
+}
+.q .qn{ font-weight:600; color:var(--accent); margin-bottom:6px; display:block; }
+.answer{ color:var(--text); }
+.answer ul, .answer ol{ margin:6px 0 6px 20px; padding:0; }
+.answer li{ margin:3px 0; }
+table.tbl{
+  border-collapse:collapse; width:100%; margin:10px 0; font-size:0.9rem;
+}
+table.tbl th, table.tbl td{
+  border:1px solid var(--border); padding:6px 10px; text-align:right;
+}
+table.tbl th{ background:var(--card2); color:var(--accent2); text-align:center; }
+table.tbl td:first-child, table.tbl th:first-child{ text-align:left; }
+.note{
+  background:var(--warn-bg); border:1px solid #5a4a1c; color:var(--warn);
+  border-radius:8px; padding:10px 14px; margin:10px 0; font-size:0.87rem;
+}
+.result{
+  background:#0f2a24; border:1px solid #1d5c4c; color:var(--ok);
+  border-radius:8px; padding:10px 14px; margin:10px 0; font-size:0.92rem;
+  font-weight:600;
+}
+pre{
+  background:var(--code-bg); border:1px solid var(--border); border-radius:8px;
+  padding:10px 12px; overflow-x:auto; font-size:0.82rem; color:#d4d8e0;
+}
+code{ font-family:'Cascadia Code','Fira Code',Consolas,monospace; }
+.tag{
+  display:inline-block; font-size:0.68rem; padding:1px 7px; border-radius:999px;
+  background:#2a2f3a; color:var(--muted); margin-left:6px; vertical-align:middle;
+}
+.divider{ border:none; border-top:1px dashed var(--border); margin:14px 0; }
+footer{ text-align:center; color:var(--muted); font-size:0.8rem; padding:20px; }
+a.backtop{ color:var(--accent2); text-decoration:none; font-size:0.8rem; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>📊 Lời giải — Problem Set 02 · UET.MAT1052 (Tóm tắt dữ liệu)</h1>
+  <nav class="tabs">
+    <a href="#bai1">Bài 1</a><a href="#bai2">Bài 2</a><a href="#bai3">Bài 3</a><a href="#bai4">Bài 4</a>
+    <a href="#bai5">Bài 5</a><a href="#bai6">Bài 6</a><a href="#bai7">Bài 7</a><a href="#bai8">Bài 8</a>
+    <a href="#bai9">Bài 9</a><a href="#bai10">Bài 10</a>
+  </nav>
+</header>
+
+<main>
+
+<div class="intro">
+  <p><strong>Cách dùng file này:</strong> mỗi Bài là một panel gấp/mở được — bấm vào tiêu đề để ẩn/hiện. Công thức được render bằng MathJax nên có thể mất 1-2 giây khi tải trang.</p>
+  <p><strong>Về Phần B (Bài 5–8, 10):</strong> các bài này dùng dữ liệu thật tải từ <code>openintro.org</code> qua Python. Mình <strong>đã chạy thật</strong> Bài 9 (Palmer Penguins, tải từ GitHub) nên số liệu ở đó là số liệu thật, chính xác. Với Bài 5, 6, 7, 8, 10 (dữ liệu từ openintro.org), mình không truy cập được server đó từ môi trường hiện tại nên <em>không có</em> con số chính xác — nhưng phần lập luận thống kê (là phần chính mà đề bài yêu cầu: "câu trả lời chính vẫn phải giải thích bằng ngôn ngữ thống kê") được giải đầy đủ, kèm code Python để bạn tự chạy lấy số liệu chính xác và đối chiếu.</p>
+</div>
+
+<!-- ================= BÀI 1 ================= -->
+<details class="bai" id="bai1" open>
+<summary>Bài 1 — Một bảng, hai hướng điều kiện (Lending Club) <span class="tag">Phần A</span></summary>
+<div class="bai-body">
+
+<div class="q"><span class="qn">Bước 1 — Đọc bảng trước khi chia</span>
+<div class="answer">
+Ô <strong>362</strong>: đếm số hồ sơ vừa thuộc loại <strong>Joint</strong> vừa có tình trạng nhà ở <strong>Thuê nhà</strong>.<br>
+Ba mẫu số:
+<ul>
+<li><strong>1495</strong> = tổng số hồ sơ Joint (tổng hàng Joint)</li>
+<li><strong>3858</strong> = tổng số hồ sơ có tình trạng Thuê nhà, không phân biệt loại hồ sơ (tổng cột Thuê nhà)</li>
+<li><strong>10000</strong> = tổng toàn bộ mẫu (tổng chung)</li>
+</ul>
+</div></div>
+
+<div class="q"><span class="qn">Bước 2 — Phân phối homeownership trong nhóm Joint</span>
+<div class="answer">
+\[
+\frac{362}{1495}=24.22\%,\quad \frac{950}{1495}=63.55\%,\quad \frac{183}{1495}=12.24\%
+\]
+Tổng: \(24.22+63.55+12.24=100.00\%\) ✓ (khớp yêu cầu cộng lại bằng 1)
+</div></div>
+
+<div class="q"><span class="qn">Bước 3 — Phân phối homeownership trong nhóm Individual</span>
+<div class="answer">
+\[
+\frac{3496}{8505}=41.10\%,\quad \frac{3839}{8505}=45.14\%,\quad \frac{1170}{8505}=13.76\%
+\]
+Tổng \(=100.00\%\) ✓.<br>
+<strong>Khác biệt đáng chú ý:</strong> Joint có tỉ lệ <em>Có thế chấp</em> cao vượt trội (63.55% so với 45.14%), còn Individual có tỉ lệ <em>Thuê nhà</em> cao hơn hẳn (41.10% so với 24.22%). Hai phân phối điều kiện này khác nhau rõ rệt.
+</div></div>
+
+<div class="q"><span class="qn">Bước 4 — Đảo hướng điều kiện (trong nhóm Thuê nhà)</span>
+<div class="answer">
+\[
+\text{Joint trong nhóm Thuê nhà} = \frac{362}{3858}=9.38\%
+\]
+\[
+\text{Individual trong nhóm Thuê nhà} = \frac{3496}{3858}=90.62\%
+\]
+</div></div>
+
+<div class="q"><span class="qn">Bước 5 — Cùng tử số 362, hai tỉ lệ khác ý nghĩa</span>
+<div class="answer">
+\(\dfrac{362}{1495}=24.22\%\): <em>"Trong số các hồ sơ Joint, 24.22% là hồ sơ thuê nhà."</em><br>
+\(\dfrac{362}{3858}=9.38\%\): <em>"Trong số những người thuê nhà, 9.38% là hồ sơ Joint."</em><br>
+Hai câu trả lời hai câu hỏi khác nhau vì mẫu số khác nhau: một câu hỏi trong nội bộ nhóm Joint, câu kia hỏi trong nội bộ nhóm Thuê nhà. Cùng tử số không có nghĩa là cùng một đại lượng thống kê.
+</div></div>
+
+<div class="q"><span class="qn">Bước 6 — Kiểm tra kết luận vội vàng</span>
+<div class="answer">
+Phát biểu <em>"3496 > 362 nên Individual thuê nhà nhiều hơn Joint"</em> so sánh <strong>số đếm thô</strong> giữa hai nhóm có quy mô rất khác nhau (8505 so với 1495) — đây là lỗi logic, vì nhóm lớn hơn gần như luôn có số đếm lớn hơn dù tỉ lệ có thể thấp hơn.<br>
+Cần so hai tỉ lệ <strong>có cùng mẫu số logic</strong> (mẫu số riêng của từng nhóm):
+\[
+\text{Joint: } \frac{362}{1495}=24.22\% \qquad \text{Individual: } \frac{3496}{8505}=41.10\%
+\]
+Ở đây, xét theo tỉ lệ đúng, Individual <em>thật sự</em> có tỉ lệ thuê nhà cao hơn Joint (41.10% > 24.22%) — nên kết luận về <em>hướng</em> tình cờ đúng, nhưng <strong>lý luận ban đầu (dựa vào số đếm thô) là sai</strong> vì không kiểm soát quy mô nhóm.
+</div></div>
+
+<div class="q"><span class="qn">Bước 7 — Kết luận về mối liên hệ mô tả</span>
+<div class="answer">
+Có: hai biến <code>application_type</code> và <code>homeownership</code> có mối liên hệ mô tả (association), căn cứ vào việc <strong>phân phối có điều kiện của homeownership thay đổi rõ rệt</strong> giữa hai mức của application_type (Joint thiên về "Có thế chấp", Individual thiên về "Thuê nhà" hơn tương đối). Đây chỉ là mối liên hệ mô tả trên dữ liệu quan sát được, <strong>không</strong> phải bằng chứng nhân quả.
+</div></div>
+
+</div>
+</details>
+
+<!-- ================= BÀI 2 ================= -->
+<details class="bai" id="bai2">
+<summary>Bài 2 — Histogram nén dữ liệu như thế nào?</summary>
+<div class="bai-body">
+
+<div class="q"><span class="qn">Bước 1 — Sắp xếp tăng dần</span>
+<div class="answer">
+Dữ liệu gốc: 8, 11, 7, 7, 8, 11, 9, 6, 10, 7, 9 (n = 11)<br>
+Sắp tăng dần: <strong>6, 7, 7, 7, 8, 8, 9, 9, 10, 11, 11</strong>
+</div></div>
+
+<div class="q"><span class="qn">Bước 2 — Bảng khoảng chia — số quan sát — tần suất tương đối</span>
+<div class="answer">
+<table class="tbl">
+<tr><th>Khoảng</th><th>Số quan sát</th><th>Tần suất tương đối</th></tr>
+<tr><td>[6, 8)</td><td>4</td><td>4/11 ≈ 0.364</td></tr>
+<tr><td>[8, 10)</td><td>4</td><td>4/11 ≈ 0.364</td></tr>
+<tr><td>[10, 12)</td><td>3</td><td>3/11 ≈ 0.273</td></tr>
+</table>
+</div></div>
+
+<div class="q"><span class="qn">Bước 3 — Vẽ histogram (số đếm làm chiều cao)</span>
+<div class="answer">
+Ba cột cao lần lượt 4, 4, 3, cùng độ rộng 2 đơn vị — vì độ rộng bằng nhau nên có thể so sánh trực tiếp chiều cao các cột (tỉ lệ chiều cao = tỉ lệ tần số).
+</div></div>
+
+<div class="q"><span class="qn">Bước 4 — Thay bằng trung điểm bin, tạo \(x^*\)</span>
+<div class="answer">
+Theo đúng thứ tự dữ liệu gốc (8, 11, 7, 7, 8, 11, 9, 6, 10, 7, 9), mỗi giá trị được thay bằng trung điểm bin chứa nó (8→9 vì 8∈[8,10); 11→11; 7→7; 6→7 vì 6∈[6,8); 10→11 vì 10∈[10,12); 9→9):
+\[
+x^* = 9,\ 11,\ 7,\ 7,\ 9,\ 11,\ 9,\ 7,\ 11,\ 7,\ 9
+\]
+Sắp tăng dần: <strong>7, 7, 7, 7, 9, 9, 9, 9, 11, 11, 11</strong> (đúng bốn 7, bốn 9, ba 11 — khớp số đếm mỗi bin).
+</div></div>
+
+<div class="q"><span class="qn">Bước 5 — Vì sao histogram của \(x^*\) giống hệt histogram gốc?</span>
+<div class="answer">
+Mỗi trung điểm bin (7, 9, 11) vẫn nằm <strong>trong đúng bin gốc</strong> của nó ([6,8), [8,10), [10,12) tương ứng), nên khi đếm lại theo đúng ba bin này, số quan sát rơi vào mỗi bin không đổi (vẫn 4, 4, 3). Histogram chỉ quan tâm "quan sát rơi vào bin nào", không quan tâm giá trị cụ thể bên trong bin, nên phép thay thế bằng trung điểm không làm đổi histogram.
+</div></div>
+
+<div class="q"><span class="qn">Bước 6 — Mean và median của \(x\) và \(x^*\)</span>
+<div class="answer">
+<table class="tbl">
+<tr><th>Đại lượng</th><th>x (gốc)</th><th>x* (trung điểm)</th></tr>
+<tr><td>Tổng</td><td>93</td><td>97</td></tr>
+<tr><td>Mean</td><td>93/11 ≈ 8.4545</td><td>97/11 ≈ 8.8182</td></tr>
+<tr><td>Median</td><td>8 (giá trị thứ 6)</td><td>9 (giá trị thứ 6)</td></tr>
+</table>
+<div class="result">Hai histogram giống hệt nhau nhưng mean và median <strong>không</strong> giống nhau (8.4545 ≠ 8.8182; 8 ≠ 9)! Histogram giống nhau <u>không</u> buộc mean/median phải giống nhau.</div>
+</div></div>
+
+<div class="q"><span class="qn">Bước 7 — Thông tin bị mất khi chuyển sang histogram</span>
+<div class="answer">
+<ul>
+<li>Giá trị chính xác của từng quan sát trong một bin (chỉ biết "thuộc bin nào", không biết là 6, 7 hay giá trị lẻ nào khác trong khoảng đó).</li>
+<li>Thứ tự xuất hiện gốc của các quan sát (thứ tự thời gian/thứ tự thu thập).</li>
+</ul>
+</div></div>
+
+<div class="q"><span class="qn">Bước 8 — Bác bỏ "histogram giống hệt ⇒ dataset giống nhau"</span>
+<div class="answer">
+Sai. Ở bước 4–7, \(x\) và \(x^*\) cho <strong>cùng một histogram</strong> (3 bin với đếm 4-4-3) nhưng có <strong>mean khác nhau</strong> (8.4545 vs 8.8182) và <strong>median khác nhau</strong> (8 vs 9). Vậy hai bộ dữ liệu về bản chất là khác nhau, dù histogram (một dạng tóm tắt đã nén thông tin theo khoảng) không phân biệt được chúng.
+</div></div>
+
+</div>
+</details>
+
+<!-- ================= BÀI 3 ================= -->
+<details class="bai" id="bai3">
+<summary>Bài 3 — Tự dựng boxplot từ 20 điểm thi</summary>
+<div class="bai-body">
+
+<div class="q"><span class="qn">Bước 1 — Năm giá trị: min, Q1, median, Q3, max</span>
+<div class="answer">
+Dữ liệu (n=20, đã sắp): 57, 66, 69, 71, 72, 73, 74, 77, 78, 78, 79, 79, 81, 81, 82, 83, 83, 88, 89, 94<br>
+- min = <strong>57</strong>, max = <strong>94</strong><br>
+- Median = trung bình vị trí 10 &amp; 11 = (78+79)/2 = <strong>78.5</strong><br>
+- Q1 = median của 10 giá trị nửa dưới (57...78) = trung bình vị trí 5 &amp; 6 = (72+73)/2 = <strong>72.5</strong><br>
+- Q3 = median của 10 giá trị nửa trên (79...94) = trung bình vị trí 5 &amp; 6 trong nửa này = (82+83)/2 = <strong>82.5</strong>
+<div class="result">Tóm tắt năm số: (57, 72.5, 78.5, 82.5, 94)</div>
+</div></div>
+
+<div class="q"><span class="qn">Bước 2 — IQR</span>
+<div class="answer">\[ \text{IQR}=Q_3-Q_1=82.5-72.5=10 \]</div></div>
+
+<div class="q"><span class="qn">Bước 3 — Hai hàng rào 1.5·IQR</span>
+<div class="answer">
+\[F_L=Q_1-1.5\,\text{IQR}=72.5-15=57.5\]
+\[F_U=Q_3+1.5\,\text{IQR}=82.5+15=97.5\]
+</div></div>
+
+<div class="q"><span class="qn">Bước 4 — Quan sát ngoài hàng rào &amp; hai đầu râu</span>
+<div class="answer">
+<ul>
+<li><strong>Ngoài hàng rào:</strong> chỉ có 57 (vì 57 &lt; 57.5); không có giá trị nào &gt; 97.5.</li>
+<li><strong>Đầu râu dưới:</strong> quan sát nhỏ nhất vẫn ≥ 57.5, đó là <strong>66</strong>.</li>
+<li><strong>Đầu râu trên:</strong> quan sát lớn nhất vẫn ≤ 97.5, đó là <strong>94</strong> (chính là max, không có ngoại lai phía trên).</li>
+</ul>
+</div></div>
+
+<div class="q"><span class="qn">Bước 5 — Vẽ boxplot (mô tả)</span>
+<div class="answer">
+Trục số từ 57 đến 94. Hộp trải từ Q1=72.5 đến Q3=82.5, có vạch median tại 78.5. Râu trái kéo từ mép hộp (72.5) tới 66. Râu phải kéo từ mép hộp (82.5) tới 94. Điểm 57 được vẽ tách riêng (chấm) vì nằm ngoài hàng rào dưới.
+</div></div>
+
+<div class="q"><span class="qn">Bước 6 — Vì sao râu dưới không phải min?</span>
+<div class="answer">
+Vì giá trị 57 (chính là min) nằm <strong>ngoài</strong> hàng rào dưới (57 &lt; F_L = 57.5), nên theo quy ước 1.5-IQR nó được xem là ngoại lai tiềm năng và vẽ tách riêng, không được dùng để kéo dài râu. Râu dưới dừng lại ở quan sát hợp lệ gần hàng rào nhất, tức 66.
+</div></div>
+
+<div class="q"><span class="qn">Bước 7 — Đổi thang \(y=x/10\)</span>
+<div class="answer">
+Đây là phép biến đổi tuyến tính \(y=ax\) với \(a=1/10>0\), giữ nguyên thứ tự, nên mọi mốc vị trí chia đều cho 10:
+<table class="tbl">
+<tr><th>Đại lượng</th><th>Thang x</th><th>Thang y=x/10</th></tr>
+<tr><td>min</td><td>57</td><td>5.7</td></tr>
+<tr><td>Q1</td><td>72.5</td><td>7.25</td></tr>
+<tr><td>median</td><td>78.5</td><td>7.85</td></tr>
+<tr><td>Q3</td><td>82.5</td><td>8.25</td></tr>
+<tr><td>max</td><td>94</td><td>9.4</td></tr>
+<tr><td>IQR</td><td>10</td><td>1.0</td></tr>
+<tr><td>Hàng rào dưới / trên</td><td>57.5 / 97.5</td><td>5.75 / 9.75</td></tr>
+<tr><td>Râu dưới / trên</td><td>66 / 94</td><td>6.6 / 9.4</td></tr>
+</table>
+Không cần tính lại từ 20 giá trị gốc — chỉ cần chia mọi mốc đã có cho 10.
+</div></div>
+
+<div class="q"><span class="qn">Bước 8 — Đổi thang \(z=x+5\)</span>
+<div class="answer">
+Với phép <strong>tịnh tiến</strong> \(z=x+b\) (\(b=5\)):
+<ul>
+<li><strong>Tăng thêm 5</strong>: mọi đại lượng <em>vị trí</em> — min, Q1, median, Q3, max, hai hàng rào, hai đầu râu — vì "vị trí" phụ thuộc vào gốc tọa độ.</li>
+<li><strong>Giữ nguyên</strong>: IQR (và mọi thước đo <em>độ phân tán</em>) — vì độ phân tán là khoảng cách tương đối giữa các giá trị, không phụ thuộc việc dịch chuyển toàn bộ trục số.</li>
+</ul>
+</div></div>
+
+</div>
+</details>
+
+<!-- ================= BÀI 4 ================= -->
+<details class="bai" id="bai4">
+<summary>Bài 4 — Mean hay median: tính loss bằng tay</summary>
+<div class="bai-body">
+
+<div class="q"><span class="qn">Bước 1 — Sắp xếp, median, mean</span>
+<div class="answer">
+Dữ liệu: 10.90, 9.92, 26.30, 9.92, 9.43 → sắp: <strong>9.43, 9.92, 9.92, 10.90, 26.30</strong><br>
+Median (giá trị giữa, vị trí 3/5) = <strong>9.92</strong><br>
+Mean: \(\bar x = \dfrac{10.90+9.92+26.30+9.92+9.43}{5}=\dfrac{66.47}{5}=\mathbf{13.294}\)
+</div></div>
+
+<div class="q"><span class="qn">Bước 2 — Bảng với \(c=\text{median}=9.92\)</span>
+<div class="answer">
+<table class="tbl">
+<tr><th>\(x_i\)</th><th>\(x_i-c\)</th><th>\(|x_i-c|\)</th><th>\((x_i-c)^2\)</th></tr>
+<tr><td>10.90</td><td>0.98</td><td>0.98</td><td>0.9604</td></tr>
+<tr><td>9.92</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>26.30</td><td>16.38</td><td>16.38</td><td>268.3044</td></tr>
+<tr><td>9.92</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>9.43</td><td>-0.49</td><td>0.49</td><td>0.2401</td></tr>
+<tr><td><strong>Tổng</strong></td><td>—</td><td><strong>17.85</strong></td><td><strong>269.5049</strong></td></tr>
+</table>
+\(L_1(\text{median})=17.85\), \(L_2(\text{median})=269.5049\)
+</div></div>
+
+<div class="q"><span class="qn">Bước 3 — Bảng với \(c=\bar x=13.294\)</span>
+<div class="answer">
+<table class="tbl">
+<tr><th>\(x_i\)</th><th>\(x_i-c\)</th><th>\(|x_i-c|\)</th><th>\((x_i-c)^2\)</th></tr>
+<tr><td>10.90</td><td>-2.394</td><td>2.394</td><td>5.7312</td></tr>
+<tr><td>9.92</td><td>-3.374</td><td>3.374</td><td>11.3839</td></tr>
+<tr><td>26.30</td><td>13.006</td><td>13.006</td><td>169.1560</td></tr>
+<tr><td>9.92</td><td>-3.374</td><td>3.374</td><td>11.3839</td></tr>
+<tr><td>9.43</td><td>-3.864</td><td>3.864</td><td>14.9305</td></tr>
+<tr><td><strong>Tổng</strong></td><td>—</td><td><strong>26.012</strong></td><td><strong>212.5855</strong></td></tr>
+</table>
+\(L_1(\bar x)=26.012\), \(L_2(\bar x)=212.5855\)
+</div></div>
+
+<div class="q"><span class="qn">Bước 4 — So sánh</span>
+<div class="answer">
+<ul>
+<li>\(L_1\) nhỏ hơn tại <strong>median</strong>: \(17.85 &lt; 26.012\)</li>
+<li>\(L_2\) nhỏ hơn tại <strong>mean</strong>: \(212.5855 &lt; 269.5049\)</li>
+</ul>
+Đúng như lý thuyết: mean tối ưu cho hàm mất mát bình phương, median tối ưu cho hàm mất mát tuyệt đối.
+</div></div>
+
+<div class="q"><span class="qn">Bước 5 — Vì sao kết quả \(L_2\) không phải tình cờ</span>
+<div class="answer">
+Từ đẳng thức phân rã: \(L_2(c)=L_2(\bar x)+n(c-\bar x)^2\). Với \(c=\text{median}=9.92\ne \bar x=13.294\), số hạng \(n(c-\bar x)^2 = 5\times(9.92-13.294)^2 = 5\times 11.383876 = 56.9194 \ge 0\) luôn không âm.<br>
+Kiểm tra: \(L_2(\text{median})-L_2(\bar x)=269.5049-212.5855=56.9194\) ✓ khớp chính xác.<br>
+Vậy \(L_2(\bar x)\le L_2(c)\) với <strong>mọi</strong> c — đây là hệ quả tất định của đại số, không phải ngẫu nhiên.
+</div></div>
+
+<div class="q"><span class="qn">Bước 6 — Vì sao squared loss nhạy với 26.30 hơn</span>
+<div class="answer">
+26.30 là giá trị lệch xa trung tâm nhất. Squared loss phạt theo <strong>bình phương</strong> độ lệch: độ lệch 16.38 so với median tạo ra đóng góp 268.30 — chiếm gần trọn tổng \(L_2\) — khiến mean bị "kéo" mạnh về phía nó (mean = 13.294, cao hơn hẳn 4/5 giá trị còn lại đều nhỏ hơn 11). Absolute loss chỉ phạt tuyến tính (16.38), nên ít bị chi phối bởi giá trị cực đoan hơn — đây chính là cơ chế khiến trung vị bền vững (robust) hơn trung bình trước ngoại lai.
+</div></div>
+
+<div class="q"><span class="qn">Bước 7 — Hoàn thành câu</span>
+<div class="answer">
+<em>"Không thể nói mean hay median là 'tâm đúng' nếu chưa nói <strong>ta đang dùng hàm mất mát nào (tuyệt đối hay bình phương) và mục tiêu của việc tóm tắt là gì</strong>."</em>
+</div></div>
+
+</div>
+</details>
+
+<!-- ================= BÀI 5 ================= -->
+<details class="bai" id="bai5">
+<summary>Bài 5 — nycflights: cùng dữ liệu, histogram kể chuyện khác nhau <span class="tag">Phần B — cần chạy code</span></summary>
+<div class="bai-body">
+
+<div class="note">Dữ liệu <code>nycflights.csv</code> nằm trên <code>openintro.org</code>, môi trường giải bài hiện tại không truy cập được domain này. Dưới đây là code chạy đúng theo đề, và phần lập luận thống kê đầy đủ cho từng câu hỏi (đây mới là phần đề bài chấm chính — số liệu chỉ để kiểm chứng).</div>
+
+<pre><code>import numpy as np, pandas as pd, matplotlib.pyplot as plt
+url = "https://www.openintro.org/data/csv/nycflights.csv"
+flights = pd.read_csv(url)
+x = flights["arr_delay"].dropna()
+x = x[(x >= -30) & (x < 150)]
+
+fig, axes = plt.subplots(2, 2, figsize=(10,7))
+for ax, bw in zip(axes.flat, [5, 15, 30, 60]):
+    ax.hist(x, bins=np.arange(-30, 150+bw, bw))
+    ax.set_xlim(-30, 150)
+    ax.set_title(f"bin width = {bw} phút")
+plt.tight_layout(); plt.show()
+
+print("mean", x.mean(), "median", x.median())
+print("sd", x.std(ddof=1))
+print("IQR", x.quantile(.75, interpolation="linear") - x.quantile(.25, interpolation="linear"))
+</code></pre>
+
+<div class="q"><span class="qn">Câu 1 — Vẽ bốn histogram</span>
+<div class="answer">Chạy code trên; giữ chung trục ngang [-30, 150] để so sánh công bằng giữa 4 cách chia.</div></div>
+
+<div class="q"><span class="qn">Câu 2 — Mô tả từng histogram (hình dạng–trung tâm–phân tán–bất thường)</span>
+<div class="answer">
+Đặc điểm chung mà mọi bin width nên cho thấy (vì đây là thuộc tính bản chất của biến <code>arr_delay</code>, đã biết trước từ ngữ cảnh hàng không dân dụng):
+<ul>
+<li><strong>Hình dạng:</strong> lệch phải (right-skewed) — đa số chuyến bay đến đúng giờ hoặc sớm một chút, nhưng có một đuôi dài các chuyến trễ rất nặng.</li>
+<li><strong>Trung tâm:</strong> nằm gần 0, có thể hơi âm (nhiều chuyến đến sớm hơn lịch một chút).</li>
+<li><strong>Độ phân tán:</strong> phần lớn khối lượng nằm trong khoảng −30 đến 60 phút, nhưng đuôi phải kéo dài tới gần 150.</li>
+<li><strong>Bất thường:</strong> không nêu số chính xác nếu hình không hỗ trợ — chỉ mô tả xu hướng, không "bịa" số đỉnh hay vị trí chính xác khi chưa xem đồ thị thật.</li>
+</ul>
+</div></div>
+
+<div class="q"><span class="qn">Câu 3 — Ổn định vs. thay đổi theo bin width</span>
+<div class="answer">
+<strong>Ổn định (không đổi khi đổi bin width):</strong>
+<ul>
+<li>Hướng lệch chung (lệch phải) và vị trí trung tâm xấp xỉ (gần 0).</li>
+<li>Phạm vi khối lượng chính (đa số quan sát nằm trong khoảng âm nhỏ tới vài chục phút).</li>
+</ul>
+<strong>Thay đổi đáng kể theo bin width:</strong>
+<ul>
+<li>Số đỉnh/mấp mô nhỏ nhìn thấy được (bin hẹp lộ nhiều dao động ngẫu nhiên hơn).</li>
+<li>Độ mượt của hình dạng và chiều cao chi tiết từng cột.</li>
+</ul>
+</div></div>
+
+<div class="q"><span class="qn">Câu 4 — Phản biện "ba mốt" từ bin width = 5 phút</span>
+<div class="answer">
+Số đỉnh quan sát được ở một histogram với bin rất hẹp rất dễ là <strong>nhiễu ngẫu nhiên</strong> (do biến thiên lấy mẫu ở từng khoảng nhỏ) chứ không phải cấu trúc thật của tổng thể. Cách kiểm tra: so sánh với các bin width rộng hơn (15, 30, 60) — nếu 3 đỉnh không còn thấy rõ ở bin rộng hơn (mà chỉ còn 1 đỉnh chính), đó là bằng chứng cho thấy "ba đỉnh" không bền vững, chỉ là hiện tượng của riêng cách chia bin hẹp đó, không phải đặc điểm thật của phân phối.
+</div></div>
+
+<div class="q"><span class="qn">Câu 5 — Mean/median/SD/IQR có đổi theo bin width không?</span>
+<div class="answer">
+<strong>Không.</strong> Bốn đại lượng này được tính <strong>trực tiếp từ dữ liệu gốc</strong> \(x\) (từng giá trị arr_delay), hoàn toàn độc lập với việc ta chọn vẽ histogram với bin width bao nhiêu. Bin width chỉ ảnh hưởng đến <em>cách vẽ đồ thị</em>, không chạm vào dữ liệu gốc dùng để tính các đặc trưng số.
+</div></div>
+
+<div class="q"><span class="qn">Câu 6 — Chọn bin width cho báo cáo</span>
+<div class="answer">
+Gợi ý chọn <strong>15 phút</strong> (không có đáp án duy nhất): đủ mịn để thấy dạng lệch phải và cụm chính quanh 0, nhưng không quá hẹp để bị nhiễu vụn như bin 5 phút, cũng không quá thô để mất chi tiết như bin 60 phút. Nguyên tắc bảo vệ lựa chọn: "cách chia nào làm lộ cấu trúc chính mà không tạo quá nhiều chi tiết nhiễu?"
+</div></div>
+
+<div class="q"><span class="qn">Câu 7 — Hoàn thành câu tổng quát</span>
+<div class="answer">
+<em>"Độ rộng khoảng chia là một quyết định phân tích vì nó ảnh hưởng đến việc ta nhìn thấy cấu trúc thật của dữ liệu hay chỉ là nhiễu ngẫu nhiên, mặc dù nó không thay đổi các đặc trưng số được tính trực tiếp từ dữ liệu gốc."</em>
+</div></div>
+
+</div>
+</details>
+
+<!-- ================= BÀI 6 ================= -->
+<details class="bai" id="bai6">
+<summary>Bài 6 — Spike ở 40 giờ nói lên điều gì? <span class="tag">Phần B — cần chạy code</span></summary>
+<div class="bai-body">
+
+<div class="note">Dữ liệu <code>gss2010.csv</code> trên openintro.org không truy cập được từ môi trường này. Code chạy đúng theo đề + lập luận đầy đủ bên dưới.</div>
+
+<pre><code>import pandas as pd
+url = "https://www.openintro.org/data/csv/gss2010.csv"
+gss = pd.read_csv(url)
+hrs = gss["hrs1"].dropna()
+
+for bw in [1, 5]:
+    hrs.plot.hist(bins=range(int(hrs.min()), int(hrs.max())+bw, bw))
+
+for v in [39, 40, 41]:
+    n = (hrs == v).sum()
+    print(v, n, n/len(hrs))
+</code></pre>
+
+<div class="q"><span class="qn">Câu 1 — Bin width 1h vs 5h</span>
+<div class="answer">
+Với bin width <strong>1 giờ</strong>, spike chính xác tại 40 sẽ hiện rõ là một cột nhô cao hẳn so với 38, 39, 41, 42. Với bin width <strong>5 giờ</strong>, 40 bị gộp chung vào một khoảng (ví dụ [40, 45)) cùng với 41–44, làm loãng/che mờ tính chất "chính xác 40" dù khoảng đó vẫn có thể cao.
+</div></div>
+
+<div class="q"><span class="qn">Câu 2 — So sánh 39, 40, 41</span>
+<div class="answer">
+Cần dữ liệu thật để có số chính xác, nhưng theo đặc điểm phổ biến của biến này (được biết đến rộng rãi trong thống kê nhập môn): số người báo cáo <strong>đúng 40</strong> sẽ vượt trội rõ rệt so với 39 và 41 — đây chính là hiện tượng "spike" (đột biến) tại một giá trị tròn.
+</div></div>
+
+<div class="q"><span class="qn">Câu 3 — Hai cơ chế có thể sinh spike</span>
+<div class="answer">
+<ul>
+<li><strong>Cơ chế hành vi thực tế:</strong> 40 giờ/tuần là chuẩn định nghĩa phổ biến của công việc toàn thời gian (full-time), nên nhiều người thực sự làm đúng 40 giờ.</li>
+<li><strong>Cơ chế nhớ/làm tròn/tự báo cáo:</strong> người trả lời không nhớ chính xác số giờ (ví dụ thực tế là 38 hoặc 42) nên làm tròn về mốc quen thuộc "40" khi trả lời khảo sát.</li>
+</ul>
+</div></div>
+
+<div class="q"><span class="qn">Câu 4 — Có thể quyết định cơ chế nào đúng chỉ từ histogram?</span>
+<div class="answer">
+<strong>Không.</strong> Cả hai cơ chế đều tạo ra cùng một dấu hiệu quan sát được (một spike tại 40). Histogram và bảng tần số chỉ cho thấy <em>hiện tượng</em>, không cho biết <em>nguyên nhân</em> đứng sau nó.
+</div></div>
+
+<div class="q"><span class="qn">Câu 5 — Dữ liệu bổ sung để phân biệt</span>
+<div class="answer">
+Ví dụ: dữ liệu chấm công thực tế (timesheet) từ nơi làm việc để đối chiếu với số tự báo cáo, hoặc hỏi trực tiếp người trả lời cách họ tính ra con số đó (đếm chính xác hay ước lượng).
+</div></div>
+
+<div class="q"><span class="qn">Câu 6 — Phản biện "đa số người Mỹ làm đúng 40 giờ"</span>
+<div class="answer">
+Histogram chỉ cho biết 40 là <strong>giá trị phổ biến nhất</strong> (mốt), không chứng minh đó là <strong>đa số</strong> — mốt có thể chỉ chiếm một tỉ lệ nhỏ (ví dụ 15–20%) trong khi phần còn lại trải rộng ở các giá trị khác. Ngoài ra, đây là số liệu <strong>tự báo cáo</strong>, có thể khác với số giờ làm việc thực tế do làm tròn/ước lượng — nên không thể khẳng định chắc chắn về hành vi thực.
+</div></div>
+
+</div>
+</details>
+
+<!-- ================= BÀI 7 ================= -->
+<details class="bai" id="bai7">
+<summary>Bài 7 — Con người có báo cáo số tròn không? <span class="tag">Phần B — cần chạy code</span></summary>
+<div class="bai-body">
+
+<div class="note">Dữ liệu <code>gpa_study_hours.csv</code> trên openintro.org không truy cập được từ môi trường này.</div>
+
+<pre><code>import pandas as pd
+url = "https://www.openintro.org/data/csv/gpa_study_hours.csv"
+study = pd.read_csv(url)
+h = study["study_hours"].dropna()
+
+last_digit = (h % 10).astype(int)
+print(last_digit.value_counts(normalize=True).sort_index())
+
+print("bội của 5:", (h % 5 == 0).mean())
+print("bội của 10:", (h % 10 == 0).mean())
+
+h_round = (h/5).round()*5
+for s in [h, h_round]:
+    print(s.mean(), s.median(), s.std(ddof=1),
+          s.quantile(.75)-s.quantile(.25))
+</code></pre>
+
+<div class="q"><span class="qn">Câu 1–2 — Bảng tần số chữ số cuối &amp; kỳ vọng đồng đều</span>
+<div class="answer">
+Nếu 10 chữ số cuối (0–9) xuất hiện đồng đều, mỗi chữ số sẽ chiếm khoảng <strong>10%</strong>. Trên dữ liệu tự báo cáo thực tế, dự đoán chữ số <strong>0</strong> và <strong>5</strong> sẽ chiếm tỉ lệ <em>cao hơn nhiều</em> so với 10% — đây là dấu hiệu điển hình của digit preference.
+</div></div>
+
+<div class="q"><span class="qn">Câu 3 — Tỉ lệ bội của 5 và của 10</span>
+<div class="answer">
+Nếu tỉ lệ bội của 5 vượt xa mức ngẫu nhiên kỳ vọng (20%, vì 2/10 chữ số cuối là 0 và 5), và tỉ lệ bội của 10 vượt xa 10% kỳ vọng, đó là dấu hiệu rõ ràng của <strong>heaping</strong> (dồn cục ở số tròn).
+</div></div>
+
+<div class="q"><span class="qn">Câu 4 — Không được kết luận ngay là "học đúng 5, 10, 15... giờ"</span>
+<div class="answer">
+Vì con người có xu hướng <strong>ước lượng/làm tròn</strong> khi tự báo cáo một con số không nhớ chính xác — số giờ học thực tế có thể là 7, 12, 18 giờ nhưng được làm tròn về 5, 10, 20 khi trả lời khảo sát. Đây là hiện tượng của <em>cách đo</em>, không phải bằng chứng về hành vi học tập thật.
+</div></div>
+
+<div class="q"><span class="qn">Câu 5 — Dự đoán ảnh hưởng của việc làm tròn tới 5 gần nhất</span>
+<div class="answer">
+<ul>
+<li><strong>Mean:</strong> gần như không đổi (làm tròn có xu hướng đối xứng, sai số dương/âm triệt tiêu nhau khi tổng hợp).</li>
+<li><strong>Median:</strong> gần như không đổi, có thể dịch nhẹ tới bội gần nhất của 5.</li>
+<li><strong>SD:</strong> <em>giảm nhẹ</em> — làm tròn thu hẹp biến thiên trong nội bộ nhóm gần nhau lại thành cùng một giá trị.</li>
+<li><strong>IQR:</strong> có thể giữ nguyên hoặc thay đổi nhẹ tùy vị trí quartile so với các mốc tròn.</li>
+</ul>
+</div></div>
+
+<div class="q"><span class="qn">Câu 6 — So sánh với dự đoán</span>
+<div class="answer">
+Chạy code trên để lấy số liệu thật; trọng tâm của bài không phải là con số chính xác mà là <strong>thói quen dự đoán trước rồi mới kiểm chứng</strong> — nếu SD giảm mạnh hơn dự đoán, có nghĩa là mức độ làm tròn trong dữ liệu gốc đã khá lớn từ trước.
+</div></div>
+
+<div class="q"><span class="qn">Câu 7 — Phân biệt biến thiên thật và mẫu hình do đo lường</span>
+<div class="answer">
+Biến thiên thật giữa các sinh viên phản ánh sự khác biệt thực tế về thời gian học (một số học nhiều, một số học ít). Mẫu hình digit preference chỉ phản ánh cách con người <em>tự báo cáo</em> — họ làm tròn số giờ theo thói quen ước lượng, không phản ánh sự khác biệt thực về hành vi học tập. Khi phân tích, cần tách bạch hai nguồn này để tránh diễn giải sai lệch (ví dụ không nên coi mọi "cụm tại 10, 15, 20" là các nhóm hành vi thực sự khác nhau).
+</div></div>
+
+</div>
+</details>
+
+<!-- ================= BÀI 8 ================= -->
+<details class="bai" id="bai8">
+<summary>Bài 8 — "Hãng nhiều chuyến trễ nhất là hãng tệ nhất"? <span class="tag">Phần B — cần chạy code</span></summary>
+<div class="bai-body">
+
+<div class="note">Dữ liệu <code>nycflights.csv</code> trên openintro.org không truy cập được từ môi trường này.</div>
+
+<pre><code>import pandas as pd
+url = "https://www.openintro.org/data/csv/nycflights.csv"
+flights = pd.read_csv(url)
+f = flights.dropna(subset=["carrier", "arr_delay"]).copy()
+f["severe_delay"] = f["arr_delay"] >= 60
+
+count_by_carrier = f.groupby("carrier")["severe_delay"].sum().sort_values(ascending=False)
+total_by_carrier = f.groupby("carrier").size()
+rate_by_carrier = (count_by_carrier / total_by_carrier).sort_values(ascending=False)
+
+print(count_by_carrier)
+print(rate_by_carrier)
+</code></pre>
+
+<div class="q"><span class="qn">Câu 1–2 — Xếp hạng theo số đếm vs. theo tỉ lệ</span>
+<div class="answer">
+Xếp theo <strong>số đếm thô</strong> (raw count) sẽ thiên vị các hãng bay <strong>nhiều chuyến hơn</strong> — họ có nhiều "cơ hội" tích lũy chuyến trễ nghiêm trọng hơn dù tỉ lệ trễ trên mỗi chuyến có thể thấp. Xếp theo <strong>tỉ lệ</strong> (rate = số trễ nghiêm trọng / tổng chuyến của hãng đó) mới phản ánh đúng "rủi ro trên mỗi chuyến".
+</div></div>
+
+<div class="q"><span class="qn">Câu 3 — Hai bảng xếp hạng có giống nhau không?</span>
+<div class="answer">
+Có thể khác nhau, và <strong>dù giống hay khác</strong>, hai đại lượng vẫn trả lời hai câu hỏi khác nhau: raw count trả lời <em>"tổng thiệt hại tuyệt đối trong dữ liệu"</em>, còn rate trả lời <em>"nguy cơ trễ khi bay một chuyến bất kỳ của hãng đó"</em>.
+</div></div>
+
+<div class="q"><span class="qn">Câu 4 — Mẫu số của "tỉ lệ trễ nghiêm trọng của hãng X"</span>
+<div class="answer">
+Mẫu số = <strong>tổng số chuyến bay của riêng hãng X</strong> trong dữ liệu (không phải tổng số chuyến của mọi hãng cộng lại).
+</div></div>
+
+<div class="q"><span class="qn">Câu 5 — Chỉ ra lỗi lập luận &amp; viết lại</span>
+<div class="answer">
+Lỗi: nhầm lẫn giữa <strong>số vụ tuyệt đối</strong> và <strong>rủi ro trên mỗi lượt</strong> — chưa kiểm soát quy mô (số chuyến bay) của mỗi hãng.<br>
+Viết lại: <em>"Hãng X có số chuyến trễ nghiêm trọng nhiều nhất trong dữ liệu này, nhưng chưa rõ tỉ lệ trễ trên mỗi chuyến của hãng X có cao hơn các hãng khác hay không — cần tính thêm tỉ lệ mới kết luận được về nguy cơ trễ của một hành khách ngẫu nhiên."</em>
+</div></div>
+
+<div class="q"><span class="qn">Câu 6 — Giải thích phép tương tự</span>
+<div class="answer">
+Giống như đếm số vụ tai nạn theo địa điểm mà không biết mật độ giao thông qua lại ở đó: nơi có nhiều xe cộ đi qua tự nhiên có nhiều vụ tai nạn hơn dù không nguy hiểm hơn <em>trên mỗi lượt xe</em>. Với carrier: hãng bay càng nhiều chuyến thì càng có nhiều "cơ hội" tích lũy chuyến trễ nghiêm trọng, khiến raw count cao mà không phản ánh đúng bản chất rủi ro trên mỗi chuyến.
+</div></div>
+
+<div class="q"><span class="qn">Câu 7 — Biến khác muốn xem trước khi diễn giải</span>
+<div class="answer">
+<ul>
+<li>Sân bay khởi hành/đến (một số sân bay vốn tắc nghẽn hơn).</li>
+<li>Thời điểm bay (giờ cao điểm, mùa cao điểm/thời tiết xấu).</li>
+<li>Độ dài/khoảng cách chuyến bay (chuyến dài dễ tích lũy trễ trên đường bay hơn).</li>
+</ul>
+Nếu các hãng phân bố không đều theo những yếu tố này, khác biệt quan sát được có thể do <em>điều kiện vận hành</em> chứ không phải bản chất "hãng tốt/tệ".
+</div></div>
+
+</div>
+</details>
+
+<!-- ================= BÀI 9 ================= -->
+<details class="bai" id="bai9" open>
+<summary>Bài 9 — Cùng mean/SD, hình dạng vẫn khác nhau (Palmer Penguins) <span class="tag">✅ Số liệu thật — đã chạy code</span></summary>
+<div class="bai-body">
+
+<div class="result">Đã tải thật dữ liệu <code>penguins.csv</code> (GitHub — allisonhorst/palmerpenguins) và tính toán bằng Python/pandas. n = 342 quan sát hợp lệ của <code>body_mass_g</code>.</div>
+
+<div class="q"><span class="qn">Câu 1 — Mô tả dữ liệu gốc \(x\)</span>
+<div class="answer">
+<table class="tbl">
+<tr><th>Đại lượng</th><th>Giá trị</th></tr>
+<tr><td>Mean \(\bar x\)</td><td>4201.75 g</td></tr>
+<tr><td>Median</td><td>4050 g</td></tr>
+<tr><td>SD mẫu</td><td>801.95 g</td></tr>
+<tr><td>Q1 / Q3</td><td>3550 / 4750 g</td></tr>
+<tr><td>IQR</td><td>1200 g</td></tr>
+<tr><td>Min / Max</td><td>2700 / 6300 g</td></tr>
+</table>
+<strong>Mô tả (hình dạng–trung tâm–phân tán–bất thường):</strong> Vì <code>median (4050) &lt; mean (4201.75)</code>, phân phối <strong>lệch phải nhẹ</strong> — có một số chim cánh cụt rất nặng (loài Gentoo, không tách riêng ở bài này) kéo mean lên cao hơn median. Do trộn ba loài có khối lượng đặc trưng khác nhau (Adelie, Chinstrap ~ 3700g; Gentoo ~ 5000g) mà không tách nhóm, hình dạng tổng thể có xu hướng <strong>đa đỉnh/hai cụm</strong> chứ không đơn thuần một đỉnh. Trung tâm quanh 4050–4200 g, độ phân tán khá lớn (SD ≈ 802g, IQR = 1200g), trải rộng từ 2700g đến 6300g, không có ngoại lai cực đoan rõ rệt (khoảng cách min/max tới trung tâm không quá bất thường so với IQR).
+</div></div>
+
+<div class="q"><span class="qn">Câu 2 — Dự đoán trước khi tính trên \(x^* = 2\bar x - x_i\)</span>
+<div class="answer">
+<ul>
+<li><strong>Mean của \(x^*\):</strong> dự đoán <em>bằng</em> mean của x (vì phép phản chiếu bảo toàn trung bình — chứng minh ở câu 4).</li>
+<li><strong>SD của \(x^*\):</strong> dự đoán <em>bằng</em> SD của x (khoảng cách tới tâm được giữ nguyên độ lớn, chỉ đổi dấu).</li>
+<li><strong>Hướng lệch:</strong> dự đoán <em>đảo ngược</em> — từ lệch phải (x) thành lệch trái (x*), vì phản chiếu qua mean đảo ngược vị trí tương đối của đuôi dài.</li>
+</ul>
+</div></div>
+
+<div class="q"><span class="qn">Câu 3 — Kiểm tra bằng tính toán thật</span>
+<div class="answer">
+<table class="tbl">
+<tr><th>Đại lượng</th><th>x (gốc)</th><th>x* (phản chiếu)</th></tr>
+<tr><td>Mean</td><td>4201.7544</td><td>4201.7544</td></tr>
+<tr><td>SD mẫu</td><td>801.9545</td><td>801.9545</td></tr>
+<tr><td>Median</td><td>4050.00</td><td>4353.51</td></tr>
+<tr><td>Q1 / Q3</td><td>3550 / 4750</td><td>3653.51 / 4853.51</td></tr>
+<tr><td>IQR</td><td>1200</td><td>1200</td></tr>
+<tr><td>Min / Max</td><td>2700 / 6300</td><td>2103.51 / 5703.51</td></tr>
+</table>
+<div class="result">Đúng như dự đoán: mean và SD giống hệt nhau tuyệt đối. Median <strong>đổi</strong> (4050 → 4353.51) — đúng bằng \(2\bar x - \text{median}(x) = 2(4201.75)-4050=4353.51\). Bất ngờ thú vị: <strong>IQR cũng giữ nguyên y hệt</strong> (1200 = 1200) dù median thay đổi — xem giải thích đại số ở câu 5.</div>
+</div></div>
+
+<div class="q"><span class="qn">Câu 4 — Chứng minh đại số: phản chiếu giữ nguyên mean và SD</span>
+<div class="answer">
+<strong>Mean:</strong>
+\[
+\bar{x^*}=\frac{1}{n}\sum_i (2\bar x - x_i) = 2\bar x - \frac{1}{n}\sum_i x_i = 2\bar x - \bar x = \bar x
+\]
+<strong>SD:</strong> Với mỗi i,
+\[
+x_i^* - \bar{x^*} = (2\bar x - x_i) - \bar x = \bar x - x_i = -(x_i-\bar x)
+\]
+Độ lệch so với tâm chỉ đổi dấu, giữ nguyên độ lớn. Bình phương triệt tiêu dấu:
+\[
+(x_i^*-\bar{x^*})^2 = (x_i-\bar x)^2 \ \Rightarrow\ \sum_i(x_i^*-\bar{x^*})^2=\sum_i(x_i-\bar x)^2 \ \Rightarrow\ s^{*2}=s^2 \Rightarrow s^*=s
+\]
+</div></div>
+
+<div class="q"><span class="qn">Câu 5 — Median và IQR có nhất thiết giữ nguyên như mean/SD?</span>
+<div class="answer">
+<strong>Median: KHÔNG</strong> giữ nguyên nói chung. Dưới phản chiếu, \(\text{Med}(x^*) = 2\bar x - \text{Med}(x)\) — chỉ bằng \(\text{Med}(x)\) khi \(\bar x = \text{Med}(x)\) (tức phân phối đối xứng quanh tâm). Ở đây \(\bar x=4201.75\ne\text{Med}(x)=4050\), nên median đổi.<br>
+<strong>IQR: CÓ</strong>, giữ nguyên — vì phản chiếu hoán đổi vị trí của Q1 và Q3 (\(Q_1^*=2\bar x - Q_3\), \(Q_3^*=2\bar x-Q_1\)), nên hiệu số không đổi:
+\[
+\text{IQR}^*=Q_3^*-Q_1^*=(2\bar x-Q_1)-(2\bar x-Q_3)=Q_3-Q_1=\text{IQR}
+\]
+Đây là điểm tinh tế: SD và IQR đều là thước đo <em>khoảng cách/độ phân tán</em> nên bất biến dưới phản chiếu; còn median là thước đo <em>vị trí cụ thể</em> nên chỉ bất biến khi phân phối đối xứng quanh đúng điểm phản chiếu (ở đây là mean).
+</div></div>
+
+<div class="q"><span class="qn">Câu 6 — Phản biện "cùng mean, SD ⇒ hình dạng phải giống nhau"</span>
+<div class="answer">
+<strong>Sai.</strong> \(x\) và \(x^*\) có <strong>mean và SD giống hệt nhau tuyệt đối</strong> (4201.75 và 801.95) nhưng \(x\) lệch phải trong khi \(x^*\) lệch trái (ảnh gương của nhau qua trục mean) — hai hình dạng phân phối hoàn toàn khác nhau về hướng lệch. Đây là phản ví dụ trực tiếp, được xây dựng ngay từ chính dữ liệu thật.
+</div></div>
+
+<div class="q"><span class="qn">Câu 7 — Vì sao một cặp đặc trưng số không thể thay thế một đồ thị</span>
+<div class="answer">
+Vì mean và SD (hoặc bất kỳ cặp tóm tắt số nào) chỉ nắm bắt <strong>vị trí</strong> và <strong>độ phân tán tổng thể</strong>, không mã hóa <strong>hình dạng chi tiết</strong> (hướng lệch, số đỉnh, độ nhọn...). Hai phân phối có thể trùng khớp hoàn toàn về mean/SD nhưng khác biệt hoàn toàn khi nhìn trên đồ thị (histogram) — như trường hợp x và x* ở trên.
+</div></div>
+
+<div class="q"><span class="qn">Câu 8 — Vì sao không nên diễn giải \(x^*\) là dữ liệu chim cánh cụt thật</span>
+<div class="answer">
+\(x^*\) là một <strong>cấu trúc toán học</strong> (phản chiếu qua mean của dữ liệu thật) được tạo ra để làm phản ví dụ minh họa lý thuyết, không phải kết quả đo đạc thực tế trên một con chim cánh cụt nào. Dù mỗi giá trị của \(x^*\) vẫn có đơn vị gam và trông "hợp lý" về mặt số học, nó <strong>không tương ứng với một cá thể sinh học thật</strong> — ví dụ giá trị nhỏ nhất của x* (2103.51g) chỉ là phản chiếu toán học của giá trị lớn nhất thật (6300g), không phải một phép đo cân nặng chim cánh cụt có thật.
+</div></div>
+
+</div>
+</details>
+
+<!-- ================= BÀI 10 ================= -->
+<details class="bai" id="bai10">
+<summary>Bài 10 — Outlier hay lỗi dữ liệu? (GPA) <span class="tag">Phần B — cần chạy code</span></summary>
+<div class="bai-body">
+
+<div class="note">Dữ liệu <code>gpa_study_hours.csv</code> trên openintro.org không truy cập được từ môi trường này.</div>
+
+<pre><code>import pandas as pd
+url = "https://www.openintro.org/data/csv/gpa_study_hours.csv"
+study = pd.read_csv(url)
+gpa = study["gpa"].dropna()
+
+print("Toàn bộ:", gpa.mean(), gpa.median(), gpa.std(ddof=1),
+      gpa.quantile(.75)-gpa.quantile(.25))
+
+gpa_clean = gpa[gpa <= 4]
+print("Sau khi loại lỗi:", gpa_clean.mean(), gpa_clean.median(),
+      gpa_clean.std(ddof=1),
+      gpa_clean.quantile(.75)-gpa_clean.quantile(.25))
+</code></pre>
+
+<div class="q"><span class="qn">Câu 1 — Xem trước khi xóa</span>
+<div class="answer">
+Histogram/dot plot sẽ cho thấy đại đa số giá trị GPA nằm gọn trong [0, 4], và có <strong>một điểm nằm hẳn ngoài</strong> khoảng này (GPA &gt; 4) — nổi bật tách biệt khỏi phần còn lại.
+</div></div>
+
+<div class="q"><span class="qn">Câu 2–4 — Bốn đại lượng trước/sau khi loại quan sát lỗi</span>
+<div class="answer">
+Cần dữ liệu thật để có con số chính xác, nhưng có thể dự đoán chắc chắn về <strong>hướng</strong> thay đổi:
+<ul>
+<li><strong>Mean:</strong> sẽ <em>giảm</em> đáng kể sau khi loại giá trị GPA &gt; 4 (vì nó là điểm cực đại kéo mean lên).</li>
+<li><strong>SD:</strong> sẽ <em>giảm mạnh</em> (vì giá trị ngoại lai đóng góp bình phương độ lệch rất lớn vào tổng).</li>
+<li><strong>Median:</strong> gần như <em>không đổi</em> — chỉ 1 quan sát trong tổng số lớn không đủ dịch chuyển vị trí giữa.</li>
+<li><strong>IQR:</strong> gần như <em>không đổi</em> — vì Q1, Q3 nằm ở giữa phân phối, xa điểm ngoại lai ở đầu mút.</li>
+</ul>
+Thay đổi tương đối (%) của mean và SD sẽ lớn hơn nhiều so với median và IQR.
+</div></div>
+
+<div class="q"><span class="qn">Câu 5 — Kết quả minh họa tính bền vững</span>
+<div class="answer">
+Kết quả minh họa rõ: <strong>mean/SD</strong> nhạy cảm (không bền vững) với một quan sát lỗi đơn lẻ vì chúng dùng toàn bộ độ lớn của mọi quan sát trong phép tính; <strong>median/IQR</strong> bền vững (robust) hơn hẳn vì chỉ dựa vào vị trí/thứ tự, ít bị ảnh hưởng bởi giá trị cực đoan ở một đầu.
+</div></div>
+
+<div class="q"><span class="qn">Câu 6 — Vì sao không được suy ra "cứ outlier là xóa"</span>
+<div class="answer">
+Vì cần phân biệt rõ hai loại "giá trị bất thường":
+<ul>
+<li><strong>Extreme but genuine observation:</strong> một giá trị thật nhưng hiếm gặp (ví dụ một sinh viên GPA rất thấp hoặc rất cao nhưng có thật) — <strong>không nên xóa</strong>, vì đó là thông tin thật về tổng thể.</li>
+<li><strong>Documented data error:</strong> một giá trị vi phạm ràng buộc đã biết của thang đo (GPA vốn chỉ nằm trong [0,4], nên GPA &gt; 4 chắc chắn là lỗi nhập liệu, có xác nhận từ tài liệu của bộ dữ liệu) — <strong>có căn cứ để loại bỏ</strong>.
+</li>
+</ul>
+Việc phân biệt phải dựa vào <strong>ngữ cảnh và tài liệu</strong>, không chỉ dựa vào "nó nằm xa các giá trị khác" — nếu xóa mọi outlier chỉ vì nó gây bất tiện, ta có nguy cơ vứt bỏ thông tin thật.
+</div></div>
+
+<div class="q"><span class="qn">Câu 7 — Chọn hai đặc trưng số + một đồ thị cho GPA</span>
+<div class="answer">
+Chọn <strong>median + IQR</strong> kèm <strong>boxplot</strong> (hoặc histogram): vì GPA có giới hạn thang đo tự nhiên (0–4) và tập dữ liệu đã biết có khả năng chứa lỗi nhập liệu, cặp tóm tắt bền vững này mô tả "GPA điển hình + mức phân tán" mà không bị một quan sát lỗi còn sót lại làm sai lệch nghiêm trọng.
+</div></div>
+
+<div class="q"><span class="qn">Câu 8 — Phản biện "median/IQR luôn tốt hơn mean/SD"</span>
+<div class="answer">
+Đây là một khẩu quyết sai vì bỏ qua <strong>mục tiêu phân tích</strong>. Nếu mục tiêu là <em>dự trù tổng độ lớn</em> (ví dụ tính điểm tích lũy = tổng GPA × tín chỉ để xếp loại), mean/SD vẫn cần thiết vì chúng phản ánh đúng tổng độ lớn thực tế mà median/IQR không nắm bắt được (median không "cộng dồn" độ lớn). "Tốt hơn" luôn phải gắn với câu hỏi cụ thể đang cần trả lời, không phải một quy tắc áp dụng máy móc cho mọi tình huống.
+</div></div>
+
+</div>
+</details>
+
+<hr class="divider">
+<p style="text-align:center;"><a href="#" class="backtop">↑ Về đầu trang</a></p>
+
+</main>
+
+<footer>UET.MAT1052 — Xác suất thống kê · Lời giải Problem Set 02 · Tuần 02</footer>
+
+</body>
+</html>

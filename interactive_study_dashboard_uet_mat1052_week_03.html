@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UET.MAT1052 - Tuần 03: Tóm Tắt Dữ Liệu & Phân Tích Nhóm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#095180',
+                            800: '#073a5d',
+                            900: '#0c2a42',
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'Consolas', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- MathJax Configuration and Loader -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Prism.js for Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        code, pre { font-family: 'Fira Code', monospace !important; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-brand-600 text-white p-2 rounded-xl shadow-md">
+                    <i class="fa-solid me-1 fa-chart-diagram text-xl"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-lg leading-none block text-brand-700 dark:text-brand-100">UET.MAT1052</span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400">Xác Suất Thống Kê • Tuần 03 Dashboard</span>
+                </div>
+            </div>
+
+            <!-- Global Search & Navigation Controls -->
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden md:block w-64">
+                    <input type="text" id="globalSearch" placeholder="Tìm câu hỏi (ví dụ: W03-EX07)..." 
+                           class="w-full pl-9 pr-4 py-1.5 text-sm bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-400"></i>
+                </div>
+                <button id="themeToggle" class="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-moon text-lg dark:hidden"></i>
+                    <i class="fa-solid fa-sun text-lg hidden dark:block"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 flex flex-col md:flex-row gap-6 w-full">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 flex-shrink-0">
+            <div class="sticky top-22 glass-card rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4">
+                <div class="font-semibold text-xs text-slate-400 uppercase tracking-wider px-2">Điều hướng</div>
+                <nav class="space-y-1">
+                    <button onclick="switchTab('theory')" id="nav-theory" 
+                            class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all bg-brand-600 text-white shadow-sm">
+                        <i class="fa-solid fa-book-open w-5 text-center"></i>
+                        <span>Phần 1: Lý Thuyết</span>
+                    </button>
+                    <button onclick="switchTab('exercises')" id="nav-exercises" 
+                            class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i class="fa-solid fa-pen-to-square w-5 text-center"></i>
+                        <span>Phần 2: Bài Tập Slide</span>
+                    </button>
+                </nav>
+
+                <hr class="border-slate-200 dark:border-slate-800">
+
+                <div class="font-semibold text-xs text-slate-400 uppercase tracking-wider px-2">Lối Tắt Nhanh Bài Tập</div>
+                <div class="max-h-60 overflow-y-auto custom-scrollbar space-y-1 pr-1 text-xs">
+                    <a href="#W03-Q01" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-Q01: 3 Quyết định vẽ</a>
+                    <a href="#W03-EX01" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-EX01: Giải mã Scatter</a>
+                    <a href="#W03-EX02" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-EX02: Mapping vs Setting</a>
+                    <a href="#W03-CH01" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-CH01: Nối điểm thứ tự?</a>
+                    <a href="#W03-Q02" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-Q02: Bỏ đường giữ điểm</a>
+                    <a href="#W03-EX03" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-EX03: Phản biện Line+Point</a>
+                    <a href="#W03-PY01" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-PY01: Đọc mã Scatter</a>
+                    <a href="#W03-PY02" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-PY02: Plot vs Scatter</a>
+                    <a href="#W03-Q04" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-Q04: Tên cột vs Nhãn</a>
+                    <a href="#W03-PY03" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-PY03: Đếm query() log</a>
+                    <a href="#W03-Q03" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-Q03: Lọc vs Nhóm</a>
+                    <a href="#W03-EX04" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-EX04: Giao (AND) vs Hợp (OR)</a>
+                    <a href="#W03-PY04" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-PY04: Đổi thứ tự Query/Sort</a>
+                    <a href="#W03-EX05" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-EX05: So sánh Chuỗi A/B</a>
+                    <a href="#W03-PY05" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-PY05: Mean của Bool (Tỉ lệ)</a>
+                    <a href="#W03-EX06" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-EX06: Đọc độ trễ TB</a>
+                    <a href="#W03-EX07" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-EX07: Simpson Thuật toán</a>
+                    <a href="#W03-EX08" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-EX08: Trục Y cắt xén</a>
+                    <a href="#W03-CH02" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-CH02: Tỉ lệ gộp 47.2%</a>
+                    <a href="#W03-CH03" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-CH03: Thiết kế Simpson</a>
+                    <a href="#W03-CH04" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-CH04: Nhóm ẩn / Tải AI</a>
+                    <a href="#W03-CH05" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-CH05: Bác bỏ 2 suy luận</a>
+                    <a href="#W03-CASE01" onclick="switchTab('exercises')" class="block px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400">W03-CASE01: Tổng hợp Case Study</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 space-y-8 min-w-0">
+
+            <section id="tab-theory" class="space-y-8">
+                <!-- Banner -->
+                <div class="bg-gradient-to-r from-brand-700 to-brand-900 text-white rounded-2xl p-6 sm:p-8 shadow-lg relative overflow-hidden">
+                    <div class="relative z-10 space-y-2">
+                        <span class="bg-brand-500/30 text-brand-100 text-xs px-3 py-1 rounded-full border border-brand-400/30">Lý thuyết trọng tâm</span>
+                        <h1 class="text-2xl sm:text-3xl font-bold">Tuần 03: Tóm Tắt Dữ Liệu & Phân Tích Nhóm</h1>
+                        <p class="text-slate-300 text-sm sm:text-base max-w-2xl">
+                            Nắm vững Ngữ pháp đồ họa (Grammar of Graphics), kỹ thuật Điều kiện hóa (Conditioning), xử lý chuỗi Pandas và Nghịch lý Simpson trong phân tích dữ liệu AI.
+                        </p>
+                    </div>
+                    <i class="fa-solid fa-chart-pie absolute -right-6 -bottom-6 text-9xl text-white/5 pointer-events-none"></i>
+                </div>
+
+                <!-- Theory Module 1 -->
+                <div class="glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4">
+                    <div class="flex items-center space-x-3 text-brand-600 dark:text-brand-400">
+                        <i class="fa-solid fa-layer-group text-xl"></i>
+                        <h2 class="text-xl font-bold">1. Ngữ Pháp Đồ Họa (Grammar of Graphics)</h2>
+                    </div>
+                    <p class="text-sm text-slate-600 dark:text-slate-300">
+                        Một biểu đồ không phải là hình vẽ tùy ý mà được cấu thành từ 3 phần tử cốt lõi và các thuộc tính mở rộng:
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div class="p-4 bg-slate-100 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <div class="font-bold text-brand-600 dark:text-brand-400 mb-1"><i class="fa-solid fa-database mr-2"></i>1. Dữ liệu (Data)</div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Bảng dữ liệu chuẩn (Tidy Data) gồm các hàng (đơn vị quan sát) và các cột (biến số).</p>
+                        </div>
+                        <div class="p-4 bg-slate-100 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <div class="font-bold text-brand-600 dark:text-brand-400 mb-1"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i>2. Ánh xạc (Mapping)</div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Liên kết biến dữ liệu vào thuộc tính trực quan: $x, y$, `color`, `shape`, `size`, `alpha`...</p>
+                        </div>
+                        <div class="p-4 bg-slate-100 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <div class="font-bold text-brand-600 dark:text-brand-400 mb-1"><i class="fa-solid fa-shapes mr-2"></i>3. Hình học (Geom)</div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Dạng hiển thị đối tượng: Điểm (point), Đường (line), Cột (bar), Hộp (boxplot), Violin...</p>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Table: Aesthetics vs Settings -->
+                    <div class="mt-4">
+                        <h3 class="font-semibold text-sm mb-2 text-slate-700 dark:text-slate-200">Phân biệt Aesthetic Mapping vs Constant Setting:</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+                                        <th class="p-2.5 font-semibold">Khái niệm</th>
+                                        <th class="p-2.5 font-semibold">Cú pháp Matplotlib ví dụ</th>
+                                        <th class="p-2.5 font-semibold">Bản chất & Tác động</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                                    <tr>
+                                        <td class="p-2.5 font-medium text-brand-600 dark:text-brand-400">Aesthetic Mapping</td>
+                                        <td class="p-2.5 font-mono bg-slate-50 dark:bg-slate-900">c = df['model'].cat.codes</td>
+                                        <td class="p-2.5">Biến số **điều khiển** thuộc tính trực quan. Thay đổi dữ liệu cột sẽ làm đổi màu/ký hiệu tương ứng.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2.5 font-medium text-amber-600 dark:text-amber-400">Constant Setting</td>
+                                        <td class="p-2.5 font-mono bg-slate-50 dark:bg-slate-900">color = "tab:blue"</td>
+                                        <td class="p-2.5">Gán **cố định** 1 giá trị trang trí cho toàn bộ quan sát. Không truyền tải thông tin biến số.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Boxplot vs Violin Plot -->
+                    <div class="p-4 bg-brand-50 dark:bg-brand-950/30 rounded-xl border border-brand-200 dark:border-brand-900/50 space-y-2">
+                        <h3 class="font-semibold text-sm text-brand-800 dark:text-brand-200"><i class="fa-solid fa-chart-line mr-2"></i>Boxplot vs Violin Plot</h3>
+                        <ul class="text-xs space-y-1 text-slate-600 dark:text-slate-300 list-disc list-inside">
+                            <li><strong>Boxplot (Biểu đồ hộp):</strong> Tóm tắt 5 số thống kê (Min, $Q_1$, Median, $Q_3$, Max) và phát hiện Outliers. Rất gọn nhưng bỏ qua thông tin hình dáng phân phối đa đỉnh (multimodal).</li>
+                            <li><strong>Violin Plot (Biểu đồ violin):</strong> Kết hợp Boxplot với Ước lượng mật độ nhân (KDE). Bề rộng đại diện cho mật độ dữ liệu, giúp nhận diện các đỉnh mật độ ẩn.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Theory Module 2 -->
+                <div class="glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4">
+                    <div class="flex items-center space-x-3 text-brand-600 dark:text-brand-400">
+                        <i class="fa-solid fa-code text-xl"></i>
+                        <h2 class="text-xl font-bold">2. Python / Pandas & Chuỗi Thao Tác Dữ Liệu</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                        <div class="p-4 bg-slate-100 dark:bg-slate-900 rounded-xl">
+                            <h3 class="font-semibold text-brand-600 dark:text-brand-400 mb-1">Lọc Hàng (Row Filtering)</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Giữ lại các quan sát thỏa mãn điều kiện logic. Số cột giữ nguyên, số hàng giảm bớt.</p>
+                            <pre class="text-xs p-2 bg-slate-800 text-slate-100 rounded">df.query("log_tokens > 8")</pre>
+                        </div>
+                        <div class="p-4 bg-slate-100 dark:bg-slate-900 rounded-xl">
+                            <h3 class="font-semibold text-brand-600 dark:text-brand-400 mb-1">Chọn Cột (Column Selection)</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Giữ lại các biến số quan tâm. Số hàng giữ nguyên, số cột giảm bớt.</p>
+                            <pre class="text-xs p-2 bg-slate-800 text-slate-100 rounded">df[["latency_s", "task"]]</pre>
+                        </div>
+                    </div>
+
+                    <!-- Split Apply Combine -->
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-sm text-slate-700 dark:text-slate-200">Mô hình Split-Apply-Combine trong Pandas:</h3>
+                        <div class="p-4 bg-slate-900 text-slate-100 rounded-xl text-xs font-mono overflow-x-auto">
+                            <span class="text-slate-400"># Quy trình Gom nhóm & Tóm tắt</span><br>
+                            summary = (<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;jobs<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;.groupby(<span class="text-amber-400">"task"</span>, dropna=<span class="text-emerald-400">False</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;.agg(<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mean_latency=(<span class="text-amber-400">"latency_s"</span>, <span class="text-amber-400">"mean"</span>),<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n=(<span class="text-amber-400">"latency_s"</span>, <span class="text-amber-400">"size"</span>)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;)<br>
+                            )
+                        </div>
+                        <p class="text-xs text-slate-500">Lưu ý: Trung bình của một cột Indicator/Boolean (True/False hoặc 1/0) chính là <strong>Tỉ lệ (Proportion / Percentage)</strong> của nhóm đó.</p>
+                    </div>
+                </div>
+
+                <!-- Theory Module 3 -->
+                <div class="glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4">
+                    <div class="flex items-center space-x-3 text-brand-600 dark:text-brand-400">
+                        <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                        <h2 class="text-xl font-bold">3. Điều Kiện Hóa & Nghịch Lý Simpson (Simpson's Paradox)</h2>
+                    </div>
+
+                    <div class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                        <p>
+                            <strong>Tỉ lệ Gộp là Trung bình có trọng số:</strong> Cho các nhóm không chồng lấp $g$ với quy mô $n_g$ và tỉ lệ trong nhóm $p_g$, tỉ lệ toàn thể $p_{\text{gộp}}$ được tính theo công thức:
+                        </p>
+                        <div class="p-3 bg-slate-100 dark:bg-slate-900 rounded-xl text-center font-mono text-brand-600 dark:text-brand-400">
+                            $$p_{\text{gộp}} = \sum_{g} \left( \frac{n_g}{n} \right) p_g$$
+                        </div>
+
+                        <div class="p-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-xl space-y-2">
+                            <div class="font-bold text-amber-800 dark:text-amber-300 text-sm">
+                                <i class="fa-solid fa-circle-exclamation mr-1"></i> Định nghĩa Nghịch lý Simpson:
+                            </div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300">
+                                Là hiện tượng khi <strong>mối tương quan / xu hướng giữa các nhóm bị đảo ngược</strong> khi dữ liệu được gộp lại toàn thể. Nguyên nhân chính do sự tồn tại của <strong>Biến ẩn (Confounding variable)</strong> gây lệch cơ cấu/trọng số $n_g/n$ giữa các nhóm.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <section id="tab-exercises" class="space-y-6 hidden">
+                
+                <!-- Filter & Search Controls -->
+                <div class="glass-card rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-filter text-slate-400"></i>
+                        <span class="text-sm font-semibold">Lọc dạng bài:</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <button onclick="filterType('all')" class="filter-btn active px-3 py-1.5 rounded-lg border bg-brand-600 text-white border-brand-600">Tất cả (22)</button>
+                        <button onclick="filterType('q')" class="filter-btn px-3 py-1.5 rounded-lg border bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700">Câu hỏi thảo luận (Q)</button>
+                        <button onclick="filterType('ex')" class="filter-btn px-3 py-1.5 rounded-lg border bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700">Bài tập minh họa (EX)</button>
+                        <button onclick="filterType('py')" class="filter-btn px-3 py-1.5 rounded-lg border bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700">Đọc mã Python (PY)</button>
+                        <button onclick="filterType('ch')" class="filter-btn px-3 py-1.5 rounded-lg border bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700">Thử thách (CH)</button>
+                        <button onclick="filterType('case')" class="filter-btn px-3 py-1.5 rounded-lg border bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700">Case Study</button>
+                    </div>
+                </div>
+
+                <!-- Exercise List -->
+                <div id="exercise-container" class="space-y-6">
+
+                    <!-- W03-Q01 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-Q01" data-type="q">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-Q01 • Slide 6</span>
+                            <span class="text-xs text-slate-400">Mức độ 1 • 60 giây</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Ba loại quyết định trước khi vẽ biểu đồ & Quyết định làm thay đổi thông điệp mạnh nhất
+                        </h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">
+                            Nêu ba loại quyết định mà người phân tích phải đưa ra trước khi có một biểu đồ hoàn chỉnh. Quyết định nào có thể làm thay đổi thông điệp mạnh nhất?
+                        </p>
+                        
+                        <button onclick="toggleAnswer('ans-q01')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-q01"></i>
+                        </button>
+
+                        <div id="ans-q01" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-sm space-y-3 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl">
+                            <div class="font-semibold text-brand-700 dark:text-brand-300">Lời giải chi tiết:</div>
+                            <ol class="list-decimal list-inside text-xs space-y-2 text-slate-700 dark:text-slate-300">
+                                <li><strong>3 Loại quyết định tiền xử lý:</strong>
+                                    <ul class="list-disc list-inside pl-4 mt-1 space-y-1 text-slate-600 dark:text-slate-400">
+                                        <li><strong>Dữ liệu & Tập quan sát (Data & Subset):</strong> Chọn bảng dữ liệu nào, lọc bỏ dữ liệu khuyết thiếu/ngoại lệ ra sao, chọn tập quan sát nào.</li>
+                                        <li><strong>Ánh xạ trực quan (Aesthetic Mapping):</strong> Gán biến số nào vào trục $x$, trục $y$, biến nào điều khiển màu sắc (`color`), hình dạng (`shape`), kích thước (`size`).</li>
+                                        <li><strong>Dạng hình học & Thang đo (Geom & Scale):</strong> Chọn hình học hiển thị (điểm, đường, cột, hộp) và quy định thang đo trục (tuyến tính, logarit, giới hạn gốc trục $0$).</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Quyết định thay đổi thông điệp mạnh nhất:</strong> 
+                                    Lựa chọn <strong>Tập quan sát (Dữ liệu/Lọc)</strong> và <strong>Gốc trục / Thang đo (Scale)</strong>. Lọc tùy tiện tập con có thể bóp méo hoàn toàn xu hướng tổng thể; hoặc thay đổi gốc trục $Y$ (như bắt đầu từ 98 thay vì 0) có thể phóng đại mức độ biến động thị giác.
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- W03-EX01 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-EX01" data-type="ex">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-EX01 • Slide 16</span>
+                            <span class="text-xs text-slate-400">Mức độ 2 • 2 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Giải mã biểu đồ kiểm thử AI
+                        </h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">
+                            Quan sát biểu đồ kiểm thử AI (Trục X: Số token đầu vào, Trục Y: Độ trễ ms, Màu/Hình dạng: Mini, Code, Reason). Trả lời các câu hỏi cấu trúc.
+                        </p>
+
+                        <button onclick="toggleAnswer('ans-ex01')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-ex01"></i>
+                        </button>
+
+                        <div id="ans-ex01" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-sm space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-xs text-slate-700 dark:text-slate-300">
+                            <ul class="space-y-2 list-disc list-inside">
+                                <li><strong>Các biến trong bảng & Ánh xạ:</strong>
+                                    <ul class="pl-4 list-square space-y-1 mt-1 text-slate-600 dark:text-slate-400">
+                                        <li>Trục $x \leftarrow$ <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">input_tokens</code> (Số token đầu vào).</li>
+                                        <li>Trục $y \leftarrow$ <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">latency_ms</code> (Độ trễ mili giây).</li>
+                                        <li>Màu sắc / Ký hiệu $\leftarrow$ <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">model</code> (Tên mô hình AI: Mini, Code, Reason).</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Dạng hình học:</strong> Điểm (Scatter Plot / Geom Point). Mỗi điểm là một lần chạy thử (run).</li>
+                                <li><strong>Bỏ cột <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">model</code>:</strong> Tất cả các điểm bị trộn lẫn thành một màu duy nhất. Ta sẽ mất thông tin phân hóa hiệu năng giữa 3 dòng mô hình, không thể nhận ra mô hình Reason có độ trễ cao nhất và Mini có độ trễ thấp nhất.</li>
+                                <li><strong>So sánh GPU:</strong> <strong>KHÔNG THỂ</strong>. Do bản trích xuất dữ liệu không có biến ghi nhận loại GPU. Không thể tự suy đoán nguyên nhân khác biệt độ trễ là do phần cứng nếu không được thu thập dữ liệu hợp lệ.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- W03-EX02 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-EX02" data-type="ex">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-EX02 • Slide 17</span>
+                            <span class="text-xs text-slate-400">Mức độ 2 • 90 giây</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Phân biệt Mapping vs Setting trong Mã Python
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-mono">
+                            <div class="p-3 bg-slate-900 text-slate-100 rounded-lg">
+                                <span class="text-slate-400"># Đoạn A</span><br>
+                                ax.scatter(<br>
+                                &nbsp;&nbsp;valid["input_tokens"],<br>
+                                &nbsp;&nbsp;valid["latency_ms"],<br>
+                                &nbsp;&nbsp;<span class="text-amber-400">c=valid["model"].astype("category").cat.codes</span><br>
+                                )
+                            </div>
+                            <div class="p-3 bg-slate-900 text-slate-100 rounded-lg">
+                                <span class="text-slate-400"># Đoạn B</span><br>
+                                ax.scatter(<br>
+                                &nbsp;&nbsp;valid["input_tokens"],<br>
+                                &nbsp;&nbsp;valid["latency_ms"],<br>
+                                &nbsp;&nbsp;<span class="text-emerald-400">color="tab:blue"</span><br>
+                                )
+                            </div>
+                        </div>
+
+                        <button onclick="toggleAnswer('ans-ex02')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-ex02"></i>
+                        </button>
+
+                        <div id="ans-ex02" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <p><strong>Đoạn A: Ánh xạ màu từ dữ liệu (Aesthetic Mapping).</strong> Biến số <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">model</code> quyết định màu sắc của từng điểm dữ liệu thông qua mã phân loại.</p>
+                            <p><strong>Đoạn B: Thiết lập màu cố định (Constant Setting).</strong> Toàn bộ các điểm được tô một màu xanh duy nhất (<code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">tab:blue</code>), không phụ thuộc vào dữ liệu cột model.</p>
+                            <p><strong>Khi thay đổi giá trị trong cột <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">model</code>:</strong> Chỉ có hình ở <strong>Đoạn A</strong> mới thay đổi màu sắc tương ứng; hình ở Đoạn B vẫn giữ nguyên màu xanh cố định.</p>
+                        </div>
+                    </div>
+
+                    <!-- W03-CH01 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-CH01" data-type="ch">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-CH01 • Slide 18</span>
+                            <span class="text-xs text-slate-400">Mức độ 3 • 3 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Năm học có thứ tự: Có nên nối mọi điểm lại với nhau?
+                        </h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">
+                            Khảo sát giả lập: mỗi hàng là một sinh viên khác nhau (ghi năm học và số mini-project AI hoàn thành). Một bạn đề xuất: "Thay biểu đồ hộp bằng các điểm rồi nối lại vì năm học có thứ tự". Hãy phản biện.
+                        </p>
+
+                        <button onclick="toggleAnswer('ans-ch01')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-ch01"></i>
+                        </button>
+
+                        <div id="ans-ch01" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <ul class="space-y-2 list-disc list-inside">
+                                <li><strong>Biểu đồ hộp đang tóm tắt gì?</strong> Tóm tắt phân phối (Trung vị, $IQR$, khoảng giá trị) của các sinh viên <em>khác nhau</em> thuộc từng khối năm học.</li>
+                                <li><strong>Đường nối ngầm kể câu chuyện nào?</strong> Đường nối tạo ra ảo tưởng về một <strong>hành trình liên tục theo thời gian của cùng một nhóm sinh viên (Longitudinal Data)</strong>. Nó hàm ý sinh viên A năm 1 phát triển thành sinh viên B năm 2.</li>
+                                <li><strong>Năm học có thứ tự đã đủ để nối chưa?</strong> <strong>CHƯA ĐỦ</strong>. Đơn vị quan sát ở đây là các sinh viên độc lập (Cross-sectional Data). Nối các quan sát độc lập sẽ làm sai lệch bản chất dữ liệu, ngoại trừ trường hợp vẽ đường nối thể hiện <em>giá trị trung bình</em> của các năm.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- W03-Q02 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-Q02" data-type="q">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-Q02 • Slide 22</span>
+                            <span class="text-xs text-slate-400">Mức độ 1 • 60 giây</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Giữ dữ liệu daily, chỉ vẽ điểm (bỏ đường nối)
+                        </h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">
+                            Khi chỉ vẽ các điểm Scatter đại diện cho số truy vấn theo 28 ngày: Điều gì dễ nhìn hơn? Thông tin nào kém nổi bật hơn? Khi nào chọn điểm thay cho đường?
+                        </p>
+
+                        <button onclick="toggleAnswer('ans-q02')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-q02"></i>
+                        </button>
+
+                        <div id="ans-q02" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <ul class="space-y-1.5 list-disc list-inside">
+                                <li><strong>Điều dễ nhìn hơn:</strong> Từng giá trị quan sát riêng biệt của từng ngày, giúp dễ phát hiện các điểm bất thường (Outliers) hoặc khoảng trống dữ liệu.</li>
+                                <li><strong>Thông tin kém nổi bật hơn:</strong> Nhịp điệu liên tục, độ dốc biến động giữa các ngày kế tiếp và xu hướng tăng/giảm chung theo thời gian.</li>
+                                <li><strong>Khi nào chọn điểm thay cho đường?</strong> Chọn điểm khi các mốc thời gian không liên tục (khuyết thiếu ngày), hoặc khi thứ tự giữa các mốc không có tính chất chuỗi nối tiếp chặt chẽ.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- W03-EX03 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-EX03" data-type="ex">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-EX03 • Slide 24</span>
+                            <span class="text-xs text-slate-400">Mức độ 2 • 2 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Phản biện: "Biểu đồ Đường + Điểm luôn tốt hơn chỉ có Đường"?
+                        </h3>
+                        
+                        <button onclick="toggleAnswer('ans-ex03')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-ex03"></i>
+                        </button>
+
+                        <div id="ans-ex03" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <p><strong>Bác bỏ khẳng định trên.</strong> Thêm lớp (layer) không đồng nghĩa với thêm thông tin hữu ích mà có thể gây rối thị giác (Chartjunk):</p>
+                            <ul class="space-y-1 list-disc list-inside pl-2">
+                                <li><strong>Mật độ quan sát lớn:</strong> Nếu tăng từ 28 ngày lên <strong>2.800 mốc đo</strong>, biểu đồ Đường + Điểm sẽ biến thành một dải đen dày đặc do các điểm đè lấp lên nhau, làm mất hoàn toàn đường xu hướng. Khi đó biểu đồ <strong>chỉ có đường</strong> là lựa chọn tối ưu.</li>
+                                <li><strong>Bản chất thông tin:</strong> Lớp điểm chỉ thực sự hiệu quả khi số lượng mốc đo nhỏ/vừa phải và cần nhấn mạnh chính xác từng vị trí đo.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- W03-PY01 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-PY01" data-type="py">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-PY01 • Slide 30</span>
+                            <span class="text-xs text-slate-400">Mức độ 1 • 90 giây</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Đọc mã Python scatter: Xác định số điểm vẽ được
+                        </h3>
+                        <pre class="text-xs p-3 bg-slate-900 text-slate-100 rounded-lg font-mono">
+fig, ax = plt.subplots()
+ax.scatter(
+    x=valid["input_tokens"],
+    y=valid["latency_ms"],
+    c=valid["model"].astype("category").cat.codes
+)</pre>
+
+                        <button onclick="toggleAnswer('ans-py01')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-py01"></i>
+                        </button>
+
+                        <div id="ans-py01" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <ul class="space-y-1.5 list-disc list-inside">
+                                <li><strong>3 Biến xuất hiện:</strong> <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">input_tokens</code> (trục $x$), <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">latency_ms</code> (trục $y$), <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">model</code> (màu sắc $c$). Mỗi điểm đại diện cho 1 lần kiểm thử.</li>
+                                <li><strong>Số điểm được vẽ:</strong> Bảng <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">runs</code> gốc có 38 hàng, nhưng có 2 hàng bị thiếu dữ liệu nên tập <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">valid</code> chỉ còn <strong>36 hàng</strong>. Do đó biểu đồ sẽ có đúng <strong>36 điểm</strong>.</li>
+                                <li><strong>Lưu ý diễn giải:</strong> <strong>KHÔNG ĐƯỢC</strong> diễn giải như thể biểu đồ đại diện cho 38 lần thử. Báo cáo thống kê bắt buộc phải nêu rõ đã loại bỏ 2 quan sát thiếu dữ liệu.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- W03-PY02 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-PY02" data-type="py">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-PY02 • Slide 31</span>
+                            <span class="text-xs text-slate-400">Mức độ 2 • 90 giây</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            So sánh plot() và scatter(): Thành phần nào thay đổi?
+                        </h3>
+
+                        <button onclick="toggleAnswer('ans-py02')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-py02"></i>
+                        </button>
+
+                        <div id="ans-py02" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <p><strong>Thành phần thay đổi:</strong> <strong>Dạng hình học (Geom)</strong> thay đổi từ Đường (<code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">ax.plot</code>) sang Điểm (<code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">ax.scatter</code>).</p>
+                            <p><strong>Tại sao không phải dữ liệu khác nhau?</strong> Cả hai đoạn mã đều sử dụng chung một tập dữ liệu <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">daily</code> với cùng hai cột <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">day</code> và <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">total</code>.</p>
+                            <p><strong>Lựa chọn:</strong> Muốn nhấn mạnh diễn biến/xu hướng liên tục theo ngày, ta chọn cách A (<code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">plot</code>).</p>
+                        </div>
+                    </div>
+
+                    <!-- W03-Q04 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-Q04" data-type="q">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-Q04 • Slide 32</span>
+                            <span class="text-xs text-slate-400">Mức độ 1 • 60 giây</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Tên biến trong CSV vs Nhãn hiển thị Tiếng Việt
+                        </h3>
+
+                        <button onclick="toggleAnswer('ans-q04')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-q04"></i>
+                        </button>
+
+                        <div id="ans-q04" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <ul class="space-y-1.5 list-disc list-inside">
+                                <li><strong>Có bắt buộc đổi tên cột CSV không?</strong> <strong>KHÔNG</strong>. Tên cột trong CSV phục vụ việc truy xuất mã lập trình (code readability, tránh khoảng trắng/dấu tiếng Việt để không lỗi cú pháp). Nhãn hiển thị phục vụ người đọc báo cáo.</li>
+                                <li><strong>Đề xuất nhãn chuẩn tiếng Việt kèm đơn vị:</strong>
+                                    <ul class="pl-4 list-square mt-1 space-y-1 text-slate-600 dark:text-slate-400">
+                                        <li>Trục X (<code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">input_tokens</code>): <strong>"Số token đầu vào"</strong> (hoặc "Độ dài văn bản đầu vào (token)").</li>
+                                        <li>Trục Y (<code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">latency_ms</code>): <strong>"Độ trễ xử lý (ms)"</strong>.</li>
+                                        <li>Chú giải (<code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">model</code>): <strong>"Mô hình AI"</strong>.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- W03-PY03 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-PY03" data-type="py">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-PY03 • Slide 41</span>
+                            <span class="text-xs text-slate-400">Mức độ 1 • 2 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Đọc lệnh lọc query("log_tokens > 8")
+                        </h3>
+
+                        <button onclick="toggleAnswer('ans-py03')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-py03"></i>
+                        </button>
+
+                        <div id="ans-py03" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <p>Ghi nhớ: $\text{log\_tokens} = \ln(N) > 8 \iff N > e^8 \approx 2981$ token.</p>
+                            <ul class="space-y-1 list-disc list-inside">
+                                <li><strong>Số hàng được giữ lại:</strong> Tra bảng Dải ID: Các tác vụ có $N > 2981$ thuộc dải <strong>J08-J16</strong> (gồm các giá trị: 3200, 3500, 4000, 4500, 5000, 6000, 8000, 10000, 12000). Tổng cộng giữ lại <strong>9 hàng (tác vụ)</strong>.</li>
+                                <li><strong>Số cột của jobs:</strong> <strong>KHÔNG ĐỔI</strong>. Phép lọc hàng (<code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">query</code>) giữ nguyên các cột ban đầu.</li>
+                                <li><strong>Ý nghĩa:</strong> Lệnh chọn các <strong>tác vụ có đầu vào lớn</strong> (không phải chọn biến lớn). Điều kiện áp dụng lên biến số <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">log_tokens</code>.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- W03-Q03 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-Q03" data-type="q">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-Q03 • Slide 50</span>
+                            <span class="text-xs text-slate-400">Mức độ 1 • 60 giây</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Lọc hay Nhóm? Phân biệt mục tiêu câu hỏi A và B
+                        </h3>
+
+                        <button onclick="toggleAnswer('ans-q03')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-q03"></i>
+                        </button>
+
+                        <div id="ans-q03" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="p-3 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                                    <div class="font-bold text-brand-600 dark:text-brand-400">Câu A: "Độ trễ TB của các tác vụ Chat?"</div>
+                                    <p class="mt-1">Bắt đầu bằng <strong>LỌC (Filter / Query)</strong> tập con <code class="bg-slate-200 dark:bg-slate-700 px-1 rounded">task == 'Chat'</code>, sau đó tính trung bình cột độ trễ. Kết quả cuối cùng là <strong>1 con số đơn lẻ</strong>.</p>
+                                </div>
+                                <div class="p-3 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                                    <div class="font-bold text-brand-600 dark:text-brand-400">Câu B: "Độ trễ TB của từng loại tác vụ?"</div>
+                                    <p class="mt-1">Bắt đầu bằng <strong>NHÓM (Group / Groupby)</strong> theo cột <code class="bg-slate-200 dark:bg-slate-700 px-1 rounded">task</code>, sau đó áp dụng tính trung bình độ trễ trên từng nhóm. Bảng kết quả có <strong>mỗi hàng đại diện cho 1 nhóm loại tác vụ</strong>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- W03-EX04 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-EX04" data-type="ex">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-EX04 • Slide 44</span>
+                            <span class="text-xs text-slate-400">Mức độ 2 • 2 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Giao (AND) vs Hợp (OR) trong Điều Kiện Lọc
+                        </h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">
+                            Tập $A = \{x > 8 \text{ AND } y < 5\}$, Tập $B = \{x > 8 \text{ OR } y < 5\}$. Tập nào nhỏ hơn? Tác vụ $(x=6.55, y=4.5)$ và $(x>8, y=5.2)$ thuộc tập nào?
+                        </p>
+
+                        <button onclick="toggleAnswer('ans-ex04')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-ex04"></i>
+                        </button>
+
+                        <div id="ans-ex04" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <ul class="space-y-1.5 list-disc list-inside">
+                                <li><strong>Tập nào nhỏ hơn?</strong> Tập $A$ luôn là tập con của $B$ ($A \subseteq B$), nên <strong>tập $A$ nhỏ hơn (hoặc bằng) tập $B$</strong>. Phép "VÀ" lấy giao hai miền điều kiện nên là yêu cầu chặt hơn.</li>
+                                <li><strong>Tác vụ $(x=6.55, y=4.5)$:</strong> Không thỏa $x>8$, nhưng thỏa $y<5$. Do đó <strong>thuộc tập B</strong>, nhưng <strong>KHÔNG thuộc tập A</strong>.</li>
+                                <li><strong>Tác vụ $(x>8, y=5.2)$:</strong> Thỏa $x>8$, nhưng không thỏa $y<5$. Do đó <strong>thuộc tập B</strong>, nhưng <strong>KHÔNG thuộc tập A</strong>.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- W03-PY04 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-PY04" data-type="py">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-PY04 • Slide 48</span>
+                            <span class="text-xs text-slate-400">Mức độ 1 • 90 giây</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Thứ tự thao tác trong Chuỗi Method Chaining
+                        </h3>
+
+                        <button onclick="toggleAnswer('ans-py04')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-py04"></i>
+                        </button>
+
+                        <div id="ans-py04" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <ul class="space-y-1.5 list-disc list-inside">
+                                <li>Bước <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">query("log_tokens > 8")</code> là bước <strong>chọn bớt hàng (lọc)</strong>.</li>
+                                <li>Bước <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">sort_values(...)</code> là bước <strong>chỉ đổi thứ tự hàng</strong>.</li>
+                                <li><strong>Đảo thứ tự hai bước:</strong> Tập quan sát cuối cùng và thứ tự các hàng cuối cùng <strong>KHÔNG ĐỔI</strong> đối với trường hợp này. Tuy nhiên, lọc trước rồi mới sắp xếp sẽ tối ưu hiệu năng hơn vì khối lượng dữ liệu cần sắp xếp đã giảm xuống.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- W03-EX05 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-EX05" data-type="ex">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-EX05 • Slide 49</span>
+                            <span class="text-xs text-slate-400">Mức độ 3 • 3 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            So sánh Chuỗi A (Lọc trước khi nhóm) vs Chuỗi B (Nhóm trước khi lọc)
+                        </h3>
+
+                        <button onclick="toggleAnswer('ans-ex05')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-ex05"></i>
+                        </button>
+
+                        <div id="ans-ex05" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <ul class="space-y-1.5 list-disc list-inside">
+                                <li><strong>Chuỗi A trả lời:</strong> "Những loại tác vụ nào có <em>hơn 2 tác vụ chậm</em> ($\text{latency\_s} > 5$)?"</li>
+                                <li><strong>Chuỗi B trả lời:</strong> "Những loại tác vụ nào có <em>tổng số tác vụ lớn hơn 2</em>?"</li>
+                                <li><strong>Tác động điều kiện:</strong> Lệnh <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">query("latency_s > 5")</code> ở Chuỗi A lọc bỏ ngay lập tức các tác vụ nhanh từ trước khi gom nhóm, làm thay đổi mẫu số và số đếm $n_{\text{slow}}$. Cụm <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">query("n > 2")</code> lọc ở cấp độ Nhóm (Group summary level).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- W03-PY05 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-PY05" data-type="py">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-PY05 • Slide 54</span>
+                            <span class="text-xs text-slate-400">Mức độ 2 • 2 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Đọc mã assign(slow=...) .groupby() .agg(p_slow=('slow', 'mean'))
+                        </h3>
+
+                        <button onclick="toggleAnswer('ans-py05')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-py05"></i>
+                        </button>
+
+                        <div id="ans-py05" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <ul class="space-y-1.5 list-disc list-inside">
+                                <li><strong>1 Hàng của result đại diện cho:</strong> Một nhóm loại tác vụ (<code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">task</code>).</li>
+                                <li><strong>Tại sao <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">p_slow</code> là tỉ lệ?</strong> Vì cột <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">slow</code> chứa các giá trị logic True (1) và False (0). Trung bình của các giá trị 1 và 0 chính là: $\frac{\text{Số tác vụ True}}{n} = \text{Tỉ lệ tác vụ chậm}$.</li>
+                                <li><strong>Mẫu số của mỗi tỉ lệ:</strong> Là $n$ (tổng số tác vụ thuộc nhóm đó). Cột $n$ giúp người phân tích biết được độ tin cậy của tỉ lệ (mẫu lớn hay mẫu bé).</li>
+                                <li><strong>Xử lý nhóm thiếu nhãn:</strong> Tham số <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">dropna=False</code> giữ lại cả nhóm có nhãn <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">task</code> bị thiếu, không âm thầm loại bỏ.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- W03-EX06 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-EX06" data-type="ex">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-EX06 • Slide 55</span>
+                            <span class="text-xs text-slate-400">Mức độ 2 • 2 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Đối chiếu dự đoán hình ảnh và Bảng số liệu
+                        </h3>
+
+                        <button onclick="toggleAnswer('ans-ex06')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-ex06"></i>
+                        </button>
+
+                        <div id="ans-ex06" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <p><strong>Dự đoán từ hình:</strong> Mô hình <strong>Mini</strong> nằm ở vùng thấp nhất trên trục Y ($\approx 100\text{ ms}$), do đó sẽ có độ trễ trung bình thấp nhất.</p>
+                            <p><strong>Kiểm tra bằng bảng số:</strong> Chạy câu lệnh <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">valid.groupby("model").agg(...)</code> thu được bảng thống kê độ trễ trung bình cụ thể. Kết quả bảng số phải khớp với trực quan thị giác, giúp xác nhận chính xác các giá trị cụ thể mà hình vẽ không đọc ra được con số chính xác.</p>
+                        </div>
+                    </div>
+
+                    <!-- W03-EX07 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-EX07" data-type="ex">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-EX07 • Slide 56</span>
+                            <span class="text-xs text-slate-400">Mức độ 3 • 4 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Nghịch lý Simpson: So sánh Thuật toán A và B
+                        </h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">
+                            Cho bảng số liệu xử lý tác vụ Dễ / Khó giữa thuật toán A và B:
+                            <br>• Tác vụ Dễ: A ($81/90$), B ($19/20$)
+                            <br>• Tác vụ Khó: A ($1/10$), B ($16/80$)
+                        </p>
+
+                        <button onclick="toggleAnswer('ans-ex07')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-ex07"></i>
+                        </button>
+
+                        <div id="ans-ex07" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-3 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-center border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-200 dark:bg-slate-800">
+                                            <th class="p-2 text-left">Độ khó</th>
+                                            <th class="p-2">Thuật toán A</th>
+                                            <th class="p-2">Thuật toán B</th>
+                                            <th class="p-2">So sánh nhóm</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                                        <tr>
+                                            <td class="p-2 text-left font-semibold">Tác vụ Dễ</td>
+                                            <td class="p-2">81 / 90 = <strong>90.0%</strong></td>
+                                            <td class="p-2">19 / 20 = <strong>95.0%</strong></td>
+                                            <td class="p-2 text-emerald-600 font-bold">B thắng</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2 text-left font-semibold">Tác vụ Khó</td>
+                                            <td class="p-2">1 / 10 = <strong>10.0%</strong></td>
+                                            <td class="p-2">16 / 80 = <strong>20.0%</strong></td>
+                                            <td class="p-2 text-emerald-600 font-bold">B thắng</td>
+                                        </tr>
+                                        <tr class="bg-brand-50 dark:bg-brand-950/40 font-bold">
+                                            <td class="p-2 text-left">TỈ LỆ GỘP</td>
+                                            <td class="p-2">82 / 100 = <strong>82.0%</strong></td>
+                                            <td class="p-2">35 / 100 = <strong>35.0%</strong></td>
+                                            <td class="p-2 text-brand-600 font-bold">A thắng Gộp!</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p><strong>Giải thích cơ chế Nghịch lý Simpson:</strong> Thứ tự đảo ngược do <strong>cơ cấu phân bổ tác vụ quá lệch nhau</strong>. Thuật toán A đảm nhận chủ yếu tác vụ Dễ (90% tổng số tác vụ của A), nên tỷ lệ gộp kéo về mức $90\%$. Thuật toán B phải gánh chủ yếu tác vụ Khó (80% tổng số tác vụ của B), làm tỉ lệ gộp bị kéo tụt xuống $35\%$. Thiếu cơ chế phân công ngẫu nhiên thì không thể kết luận A tốt hơn B.</p>
+                        </div>
+                    </div>
+
+                    <!-- W03-EX08 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-EX08" data-type="ex">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-EX08 • Slide 58</span>
+                            <span class="text-xs text-slate-400">Mức độ 2 • 2 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Cùng số liệu (100ms vs 104ms), Hai ấn tượng thị giác
+                        </h3>
+
+                        <button onclick="toggleAnswer('ans-ex08')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-ex08"></i>
+                        </button>
+
+                        <div id="ans-ex08" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <ul class="space-y-1.5 list-disc list-inside">
+                                <li><strong>Tại sao ấn tượng khác nhau?</strong> 
+                                    Hình A dùng gốc trục $Y=0$, cho thấy mức tăng từ 100ms lên 104ms là rất nhỏ ($4\%$). Hình B cắt xén trục Y bắt đầu từ $98$, làm cho cột 104ms cao gấp đôi cột 100ms, tạo cảm giác bùng nổ giả tạo.
+                                </li>
+                                <li><strong>Đề xuất thể hiện trung thực:</strong> Khi dùng biểu đồ cột (Bar chart), gốc trục $Y$ bắt đầu từ $0$. Nếu muốn nhấn mạnh mức tăng tuyệt đối $4\text{ ms}$, nên dùng biểu đồ thể hiện **Mức chênh lệch ($\Delta = +4\text{ ms}$)** thay vì xén gốc trục.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- W03-CH02 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-CH02" data-type="ch">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-CH02 • Slide 60</span>
+                            <span class="text-xs text-slate-400">Mức độ 3 • 3 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Phản biện câu kết luận từ Tỉ lệ gộp 47.2%
+                        </h3>
+
+                        <button onclick="toggleAnswer('ans-ch02')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-ch02"></i>
+                        </button>
+
+                        <div id="ans-ch02" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <p><strong>Bác bỏ câu kết luận của báo cáo.</strong> Tỉ lệ gộp $17/36 \approx 47.2\%$ vượt $220\text{ ms}$ KHÔNG ĐỦ để tuyên bố tên mô hình không giúp hiểu khả năng vượt ngưỡng.</p>
+                            <p><strong>Cần Điều kiện hóa theo biến <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">model</code>:</strong></p>
+                            <ul class="list-disc list-inside pl-2 space-y-1">
+                                <li>Mô hình Mini: $0\%$ vượt ngưỡng $220\text{ ms}$.</li>
+                                <li>Mô hình Code: một phần vượt ngưỡng.</li>
+                                <li>Mô hình Reason: $100\%$ vượt ngưỡng $220\text{ ms}$.</li>
+                            </ul>
+                            <p>Tên mô hình thực chất giải thích rất rõ khả năng vượt ngưỡng, nhưng thông tin này bị che giấu khi chỉ nhìn con số gộp $47.2\%$.</p>
+                        </div>
+                    </div>
+
+                    <!-- W03-CH03 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-CH03" data-type="ch">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-CH03 • Slide 61</span>
+                            <span class="text-xs text-slate-400">Mức độ 3 • Thiết kế</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Tự dựng một Nghịch lý Simpson
+                        </h3>
+
+                        <button onclick="toggleAnswer('ans-ch03')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-ch03"></i>
+                        </button>
+
+                        <div id="ans-ch03" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-3 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <p>Xây dựng bảng số liệu thỏa mãn: B thắng A trong từng nhóm, nhưng A thắng B khi gộp:</p>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-center border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-200 dark:bg-slate-800">
+                                            <th class="p-1.5 text-left">Nhóm</th>
+                                            <th class="p-1.5">Phương án A</th>
+                                            <th class="p-1.5">Phương án B</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+                                        <tr>
+                                            <td class="p-1.5 text-left">Dễ</td>
+                                            <td class="p-1.5">80 / 100 ($80\%$)</td>
+                                            <td class="p-1.5">9 / 10 ($90\%$) $\rightarrow$ B hơn</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-1.5 text-left">Khó</td>
+                                            <td class="p-1.5">1 / 10 ($10\%$)</td>
+                                            <td class="p-1.5">20 / 100 ($20\%$) $\rightarrow$ B hơn</td>
+                                        </tr>
+                                        <tr class="font-bold bg-slate-100 dark:bg-slate-800">
+                                            <td class="p-1.5 text-left">GỘP</td>
+                                            <td class="p-1.5">81 / 110 ($\approx 73.6\%$)</td>
+                                            <td class="p-1.5">29 / 110 ($\approx 26.4\%$) $\rightarrow$ A hơn!</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- W03-CH04 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-CH04" data-type="ch">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-CH04 • Slide 62</span>
+                            <span class="text-xs text-slate-400">Mức độ 3 • 3 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Nhóm ẩn làm đảo hướng liên hệ: Thông lượng vs Đơn vị tải AI
+                        </h3>
+
+                        <button onclick="toggleAnswer('ans-ch04')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-ch04"></i>
+                        </button>
+
+                        <div id="ans-ex04-2" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <ul class="space-y-1.5 list-disc list-inside">
+                                <li><strong>Nhìn gộp:</strong> Đám điểm có xu hướng đi lên từ trái sang phải, tạo ảo tưởng rằng "Tải càng cao thì Thông lượng càng lớn".</li>
+                                <li><strong>Đề xuất biến thứ ba:</strong> Biến ẩn ở đây là <strong>Cấu hình Server / Loại GPU / Kích thước Batch</strong>.</li>
+                                <li><strong>Trong từng nhóm:</strong> Khi tách theo từng Server (ví dụ Server A cũ và Server B mới), trong từng nhóm, khi tải tăng lên thì <strong>Thông lượng thực tế bị sụt giảm (Tương quan âm)</strong> do nghẽn tài nguyên.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- W03-CH05 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-CH05" data-type="ch">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-CH05 • Slide 63</span>
+                            <span class="text-xs text-slate-400">Mức độ 3 • 3 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Bác bỏ 2 suy luận quá mạnh
+                        </h3>
+
+                        <button onclick="toggleAnswer('ans-ch05')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-ch05"></i>
+                        </button>
+
+                        <div id="ans-ch05" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <p><strong>Khẳng định A: "Liên hệ gộp buộc cùng chiều trong nhóm" $\rightarrow$ SAI.</strong> Phản ví dụ chính là Nghịch lý Simpson (như ví dụ W03-EX07 hay W03-CH04 ở trên).</p>
+                            <p><strong>Khẳng định B: "Điều kiện hóa chứng minh nhân quả" $\rightarrow$ SAI.</strong> Điều kiện hóa chỉ là thao tác quan sát trên tập con. Để chứng minh quan hệ Nhân quả (Causality), cần thực nghiệm can thiệp có đối chứng (A/B testing, Randomization) hoặc các mô hình mạng nhân quả (Causal Inference), không thể chỉ dựa vào biểu đồ mô tả.</p>
+                        </div>
+                    </div>
+
+                    <!-- W03-CASE01 -->
+                    <div class="ex-card glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 space-y-4" id="W03-CASE01" data-type="case">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                            <span class="bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200 text-xs font-bold px-2.5 py-1 rounded-md">W03-CASE01 • Slide 64</span>
+                            <span class="text-xs text-slate-400">Case Study Tổng Hợp • 6 phút</span>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 dark:text-slate-100">
+                            Phân tích Tổng hợp CASE 01 trên tập valid
+                        </h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-300">
+                            Yêu cầu: Lọc tập quan sát các mô hình không phải Mini, có input_tokens từ 400 đến 800 token. Lập bảng tóm tắt, vẽ biểu đồ scatter và giải thích.
+                        </p>
+
+                        <button onclick="toggleAnswer('ans-case01')" class="text-xs font-semibold text-brand-600 hover:text-brand-700 flex items-center space-x-1">
+                            <span>Xem Lời Giải Chi Tiết</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-200" id="icon-ans-case01"></i>
+                        </button>
+
+                        <div id="ans-case01" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 text-xs space-y-3 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl text-slate-700 dark:text-slate-300">
+                            <div class="font-semibold text-brand-600 dark:text-brand-400">Mã Python hoàn chỉnh xử lý CASE 01:</div>
+                            <pre class="p-3 bg-slate-900 text-slate-100 rounded-lg font-mono overflow-x-auto">
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 1. Lọc tập quan sát theo đúng yêu cầu
+sub_df = valid.query("model != 'Mini' and 400 <= input_tokens <= 800")
+
+# 2. Lập bảng tóm tắt theo mô hình
+summary = (
+    sub_df
+    .groupby("model", observed=True)
+    .agg(
+        n=("latency_ms", "size"),
+        mean_tokens=("input_tokens", "mean"),
+        mean_latency=("latency_ms", "mean")
+    )
+    .reset_index()
+)
+print(summary)
+
+# 3. Vẽ biểu đồ phân tán phân biệt mô hình
+fig, ax = plt.subplots(figsize=(7, 4))
+for m, g in sub_df.groupby("model", observed=True):
+    ax.scatter(g["input_tokens"], g["latency_ms"], label=m)
+
+ax.set(xlabel="Số token đầu vào", ylabel="Độ trễ (ms)", title="CASE 01: So sánh Code & Reason")
+ax.legend(title="Mô hình")
+plt.show()</pre>
+
+                            <div class="p-3 bg-slate-200 dark:bg-slate-800 rounded-lg">
+                                <strong>Giải thích lập luận:</strong> Nếu chỉ nhìn vào trung bình số token (<code class="bg-slate-300 dark:bg-slate-700 px-1 rounded">mean_tokens</code>), hai mô hình Code và Reason có thể có trung bình độ dài đầu vào hoàn toàn tương đương nhau. Tuy nhiên, biểu đồ scatter và trung bình độ trễ (<code class="bg-slate-300 dark:bg-slate-700 px-1 rounded">mean_latency</code>) cho thấy mô hình Reason có độ trễ vượt trội hoàn toàn so với Code trên mọi mức token. Chỉ dựa vào trung bình biến $X$ sẽ bỏ lỡ sự phân hóa hiệu năng lớn ở biến $Y$.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 glass-card py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 space-y-1">
+            <p>UET.MAT1052 - Xác Suất Thống Kê • Đại học Công Nghệ - ĐHQGHN (VNU-UET)</p>
+            <p>Hệ thống Học tập Interactive Dashboard • Biên soạn theo bài giảng Tuần 03</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tab Switching Logic
+        function switchTab(tab) {
+            const theoryTab = document.getElementById('tab-theory');
+            const exercisesTab = document.getElementById('tab-exercises');
+            const navTheory = document.getElementById('nav-theory');
+            const navExercises = document.getElementById('nav-exercises');
+
+            if (tab === 'theory') {
+                theoryTab.classList.remove('hidden');
+                exercisesTab.classList.add('hidden');
+                navTheory.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all bg-brand-600 text-white shadow-sm";
+                navExercises.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800";
+            } else {
+                exercisesTab.classList.remove('hidden');
+                theoryTab.classList.add('hidden');
+                navExercises.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all bg-brand-600 text-white shadow-sm";
+                navTheory.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800";
+            }
+        }
+
+        // Answer Toggle Logic
+        function toggleAnswer(id) {
+            const ans = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if (ans.classList.contains('hidden')) {
+                ans.classList.remove('hidden');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+                if (window.MathJax) MathJax.typesetPromise([ans]);
+            } else {
+                ans.classList.add('hidden');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Filter Exercise Types
+        function filterType(type) {
+            const cards = document.querySelectorAll('.ex-card');
+            const btns = document.querySelectorAll('.filter-btn');
+
+            btns.forEach(btn => {
+                btn.className = "filter-btn px-3 py-1.5 rounded-lg border bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-xs";
+            });
+            event.target.className = "filter-btn active px-3 py-1.5 rounded-lg border bg-brand-600 text-white border-brand-600 text-xs";
+
+            cards.forEach(card => {
+                if (type === 'all' || card.dataset.type === type) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Global Search Logic
+        document.getElementById('globalSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            if (query !== '') {
+                switchTab('exercises');
+            }
+            const cards = document.querySelectorAll('.ex-card');
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        });
+
+        // Dark Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+</body>
+</html>

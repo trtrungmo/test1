@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UET.MAT1052 — Lời giải Problem Set 01</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+<style>
+  :root{
+    --bg:#0f1115; --bg2:#161922; --panel:#1b1f2a; --panel2:#20242f;
+    --border:#2a2f3d; --text:#e6e8ee; --muted:#9aa2b1; --accent:#7dd3fc;
+    --accent2:#a78bfa; --good:#4ade80; --warn:#fbbf24; --bad:#f87171;
+    --code:#151822;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:linear-gradient(180deg,#0b0d12,#0f1115 300px);
+    color:var(--text); font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
+    line-height:1.65;
+  }
+  header.top{
+    position:sticky; top:0; z-index:50;
+    background:rgba(15,17,21,0.92); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+    padding:14px 24px;
+  }
+  header.top h1{
+    margin:0; font-size:1.15rem; color:var(--accent); font-weight:600;
+  }
+  header.top .sub{color:var(--muted); font-size:0.85rem; margin-top:2px;}
+  nav.sticky-nav{
+    position:sticky; top:62px; z-index:49;
+    background:var(--bg2); border-bottom:1px solid var(--border);
+    padding:10px 20px; display:flex; flex-wrap:wrap; gap:6px;
+    overflow-x:auto;
+  }
+  nav.sticky-nav a{
+    color:var(--muted); text-decoration:none; font-size:0.8rem;
+    padding:6px 10px; border-radius:6px; border:1px solid transparent;
+    white-space:nowrap; transition:.15s;
+  }
+  nav.sticky-nav a:hover{background:var(--panel); color:var(--accent); border-color:var(--border);}
+  nav.sticky-nav a.sec{color:var(--accent2); font-weight:600;}
+  main{max-width:920px; margin:0 auto; padding:28px 20px 100px;}
+  section.part{margin-top:52px;}
+  section.part h2{
+    color:var(--accent2); border-bottom:2px solid var(--border);
+    padding-bottom:10px; font-size:1.4rem;
+  }
+  .goal-box{
+    background:var(--panel); border:1px solid var(--border); border-left:4px solid var(--accent);
+    border-radius:8px; padding:16px 20px; margin:18px 0; color:var(--muted); font-size:0.92rem;
+  }
+  article.problem{
+    background:var(--panel); border:1px solid var(--border); border-radius:12px;
+    margin:22px 0; overflow:hidden;
+  }
+  article.problem > .p-head{
+    padding:16px 20px; background:var(--panel2); border-bottom:1px solid var(--border);
+  }
+  article.problem > .p-head h3{margin:0; color:var(--accent); font-size:1.08rem;}
+  .data-block{
+    padding:16px 20px; font-size:0.93rem; color:#c9cdd8; border-bottom:1px dashed var(--border);
+  }
+  table{border-collapse:collapse; width:100%; margin:10px 0; font-size:0.88rem;}
+  th,td{border:1px solid var(--border); padding:7px 10px; text-align:center;}
+  th{background:var(--panel2); color:var(--accent);}
+  td.lbl{text-align:left; color:var(--muted);}
+  .qa{padding:0;}
+  .qa-item{border-bottom:1px solid var(--border);}
+  .qa-item:last-child{border-bottom:none;}
+  .qa-btn{
+    width:100%; text-align:left; background:none; border:none; color:var(--text);
+    padding:14px 20px; font-size:0.95rem; cursor:pointer; display:flex; justify-content:space-between;
+    align-items:center; gap:10px; font-family:inherit;
+  }
+  .qa-btn:hover{background:rgba(125,211,252,0.05);}
+  .qa-btn .qnum{color:var(--accent); font-weight:700; margin-right:8px;}
+  .qa-btn .chev{transition:transform .2s; color:var(--muted); flex:none;}
+  .qa-item.open .chev{transform:rotate(90deg);}
+  .qa-panel{
+    max-height:0; overflow:hidden; transition:max-height .25s ease;
+    background:var(--code);
+  }
+  .qa-item.open .qa-panel{max-height:4000px;}
+  .qa-inner{padding:4px 22px 20px 44px; color:#cfd4e0; font-size:0.92rem;}
+  .qa-inner p{margin:8px 0;}
+  .qa-inner ul, .qa-inner ol{margin:6px 0; padding-left:22px;}
+  .tag{
+    display:inline-block; font-size:0.7rem; font-weight:700; padding:2px 8px;
+    border-radius:20px; margin-left:8px; text-transform:uppercase; letter-spacing:.03em;
+  }
+  .tag.calc{background:rgba(125,211,252,0.15); color:var(--accent);}
+  .tag.concept{background:rgba(167,139,250,0.15); color:var(--accent2);}
+  .tag.watch{background:rgba(248,113,113,0.15); color:var(--bad);}
+  .callout{
+    border-left:3px solid var(--warn); background:rgba(251,191,36,0.07);
+    padding:10px 14px; border-radius:6px; margin:10px 0; font-size:0.88rem;
+  }
+  .callout.good{border-left-color:var(--good); background:rgba(74,222,128,0.07);}
+  .callout.bad{border-left-color:var(--bad); background:rgba(248,113,113,0.07);}
+  .toolbar{display:flex; gap:10px; margin:16px 0 6px;}
+  .toolbar button{
+    background:var(--panel2); color:var(--text); border:1px solid var(--border);
+    padding:7px 14px; border-radius:8px; cursor:pointer; font-size:0.82rem;
+  }
+  .toolbar button:hover{border-color:var(--accent); color:var(--accent);}
+  .rule-box{
+    background:linear-gradient(135deg, rgba(125,211,252,0.08), rgba(167,139,250,0.08));
+    border:1px solid var(--border); border-radius:8px; padding:14px 18px; margin:14px 0;
+    font-style:italic; color:var(--accent);
+  }
+  footer{text-align:center; color:var(--muted); font-size:0.8rem; padding:30px 0; border-top:1px solid var(--border); margin-top:60px;}
+  code{background:var(--code); padding:2px 6px; border-radius:4px; color:var(--accent);}
+  ::-webkit-scrollbar{height:6px; width:6px;}
+  ::-webkit-scrollbar-thumb{background:var(--border); border-radius:3px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>UET.MAT1052 — Xác suất thống kê</h1>
+  <div class="sub">Lời giải đầy đủ · Problem Set 01 · Tuần 1 · GV: Nguyễn Bích Vân</div>
+</header>
+
+<nav class="sticky-nav" id="navbar">
+  <a href="#partA" class="sec">Phần A</a>
+  <a href="#b1">Bài 1</a><a href="#b2">Bài 2</a><a href="#b3">Bài 3</a><a href="#b4">Bài 4</a>
+  <a href="#partB" class="sec">Phần B</a>
+  <a href="#b5">Bài 5</a><a href="#b6">Bài 6</a><a href="#b7">Bài 7</a>
+  <a href="#partC" class="sec">Phần C</a>
+  <a href="#b8">Bài 8</a><a href="#b9">Bài 9</a><a href="#b10">Bài 10</a>
+</nav>
+
+<main>
+
+<div class="goal-box">
+  <strong>Mục tiêu Tuần 1 (nhắc lại):</strong> đi theo chuỗi
+  <em>câu hỏi → đơn vị + biến → quá trình tạo dữ liệu → khung dữ liệu &amp; mức chi tiết của hàng → phân tích → khẳng định hợp lệ</em>.
+  Toàn bộ lời giải dưới đây trình bày đầy đủ lập luận cho từng ý, không chỉ dừng ở một nhãn.
+  <div class="toolbar">
+    <button onclick="toggleAll(true)">Mở tất cả</button>
+    <button onclick="toggleAll(false)">Đóng tất cả</button>
+  </div>
+</div>
+
+<section class="part" id="partA">
+<h2>Phần A — Tính tay</h2>
+
+<!-- BAI 1 -->
+<article class="problem" id="b1">
+  <div class="p-head"><h3>Bài 1 — Từ số đếm đến tỷ lệ: mẫu số làm thay đổi câu chuyện</h3></div>
+  <div class="data-block">
+    <table>
+      <tr><th>Loại máy chủ</th><th>Số máy đang vận hành</th><th>Số máy gặp sự cố</th></tr>
+      <tr><td>A</td><td>2.400</td><td>48</td></tr>
+      <tr><td>B</td><td>700</td><td>21</td></tr>
+    </table>
+  </div>
+  <div class="qa">
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">1.</span>Nếu chỉ nhìn số sự cố, loại nào nhiều hơn?<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>So sánh trực tiếp hai số đếm: $48 > 21$, nên nếu chỉ nhìn số sự cố tuyệt đối, <strong>loại A</strong> có nhiều sự cố hơn.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">2.</span>Tính tỷ lệ máy gặp sự cố (phân số, %, trên 1.000 máy)<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Loại A:</strong></p>
+        <ul>
+          <li>Phân số: $\dfrac{48}{2400}=\dfrac{1}{50}$</li>
+          <li>Phần trăm: $\dfrac{48}{2400}\times 100\% = 2\%$</li>
+          <li>Trên 1.000 máy: $\dfrac{48}{2400}\times 1000 = 20$ sự cố / 1.000 máy</li>
+        </ul>
+        <p><strong>Loại B:</strong></p>
+        <ul>
+          <li>Phân số: $\dfrac{21}{700}=\dfrac{3}{100}$</li>
+          <li>Phần trăm: $\dfrac{21}{700}\times 100\% = 3\%$</li>
+          <li>Trên 1.000 máy: $\dfrac{21}{700}\times 1000 = 30$ sự cố / 1.000 máy</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">3.</span>Sau khi dùng mẫu số thích hợp, loại nào có tỷ lệ cao hơn?<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>$2\% < 3\%$, nên <strong>loại B</strong> có tỷ lệ sự cố cao hơn — ngược lại hoàn toàn với kết luận ở câu 1 khi chỉ nhìn số đếm thô.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">4.</span>Vì sao so sánh 48 với 21 trả lời câu hỏi khác với so sánh hai tỷ lệ?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>So sánh $48$ với $21$ trả lời câu hỏi "loại nào đóng góp <em>tổng số</em> sự cố lớn hơn trong tháng", một câu hỏi phụ thuộc vào quy mô (số máy đang vận hành) của từng loại; trong khi so sánh hai tỷ lệ trả lời câu hỏi "một máy thuộc loại nào có <em>nguy cơ</em> gặp sự cố cao hơn", tức là đã chuẩn hóa theo quy mô để loại bỏ ảnh hưởng của số lượng máy khác nhau giữa hai nhóm.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">5.</span>Câu tóm tắt được dữ liệu hỗ trợ trực tiếp<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>"Trong tháng được quan sát, loại máy chủ A có tỷ lệ sự cố là 2% (20 sự cố/1.000 máy), trong khi loại máy chủ B có tỷ lệ sự cố là 3% (30 sự cố/1.000 máy)."</p>
+        <p>Đây là một <strong>khẳng định tóm tắt</strong> (summary) — chỉ mô tả những gì đã quan sát được trong đúng tập dữ liệu này, không suy rộng hay quy nhân quả.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">6.</span>"Dùng loại B làm tăng nguy cơ sự cố" đi xa hơn phép tính như thế nào?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Phép tính ở trên chỉ cho biết một <strong>mối liên hệ mô tả</strong> giữa loại máy và tỷ lệ sự cố trong đúng tháng này. Câu "Dùng loại B <em>làm tăng</em> nguy cơ sự cố" là một <strong>khẳng định nhân quả</strong>: nó ngầm giả định rằng nếu đổi một máy từ loại A sang loại B thì xác suất sự cố của chính máy đó sẽ tăng lên. Số liệu quan sát không loại trừ khả năng có yếu tố gây nhiễu (confounder) — ví dụ loại B có thể được lắp đặt ở môi trường khắc nghiệt hơn, tải công việc nặng hơn, hoặc là các máy cũ hơn — khiến tỷ lệ sự cố cao hơn mà không phải do bản thân "loại B" gây ra.</p>
+      </div></div>
+    </div>
+
+  </div>
+</article>
+
+<!-- BAI 2 -->
+<article class="problem" id="b2">
+  <div class="p-head"><h3>Bài 2 — Tốt hơn trong từng nhóm, tệ hơn khi gộp (Nghịch lý Simpson)</h3></div>
+  <div class="data-block">
+    <table>
+      <tr><th>Loại tác vụ</th><th>Hệ thống A</th><th>Hệ thống B</th></tr>
+      <tr><td>Dễ</td><td>9/10</td><td>80/100</td></tr>
+      <tr><td>Khó</td><td>20/100</td><td>1/10</td></tr>
+    </table>
+  </div>
+  <div class="qa">
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">1.</span>Tỷ lệ thành công trong nhóm tác vụ dễ<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>A: $\dfrac{9}{10}=90\%$ &nbsp;&nbsp;|&nbsp;&nbsp; B: $\dfrac{80}{100}=80\%$</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">2.</span>Tỷ lệ thành công trong nhóm tác vụ khó<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>A: $\dfrac{20}{100}=20\%$ &nbsp;&nbsp;|&nbsp;&nbsp; B: $\dfrac{1}{10}=10\%$</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">3.</span>Trong từng nhóm, hệ thống nào cao hơn?<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Dễ: $90\%>80\%$ → A cao hơn. Khó: $20\%>10\%$ → A cao hơn. <strong>Trong cả hai nhóm, A đều tốt hơn B.</strong></p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">4.</span>Gộp hai loại tác vụ: tổng số tác vụ, tổng thành công, tỷ lệ chung<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Hệ thống A:</strong> tổng tác vụ $=10+100=110$; tổng thành công $=9+20=29$; tỷ lệ chung $=\dfrac{29}{110}\approx 26{,}4\%$.</p>
+        <p><strong>Hệ thống B:</strong> tổng tác vụ $=100+10=110$; tổng thành công $=80+1=81$; tỷ lệ chung $=\dfrac{81}{110}\approx 73{,}6\%$.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">5.</span>Sau khi gộp, hệ thống nào cao hơn? Có cùng chiều với câu 3 không?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Sau khi gộp, $73{,}6\% > 26{,}4\%$, nên <strong>B có tỷ lệ thành công chung cao hơn</strong> — <strong>ngược chiều hoàn toàn</strong> với kết luận "A tốt hơn trong từng nhóm" ở câu 3. Đây chính là hiện tượng đảo chiều Simpson (Simpson's paradox).</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">6.</span>Điền câu bằng số cụ thể<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>"Trong từng loại tác vụ, <strong>hệ thống A (90% ở tác vụ dễ, 20% ở tác vụ khó)</strong> tốt hơn hệ thống B (80% và 10%)."</p>
+        <p>"Khi gộp toàn bộ tác vụ, <strong>hệ thống B (73,6%)</strong> lại có tỷ lệ thành công cao hơn hệ thống A (26,4%)."</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">7.</span>Giải thích bằng mẫu số và trọng số<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Hai hệ thống được giao <strong>tỷ trọng tác vụ rất khác nhau</strong>: A chủ yếu làm tác vụ khó ($100$ trong tổng $110$ tác vụ, tức khoảng $91\%$ là tác vụ khó — vốn có tỷ lệ thành công thấp cho cả hai hệ thống), còn B chủ yếu làm tác vụ dễ ($100$ trong tổng $110$, khoảng $91\%$ là tác vụ dễ — vốn có tỷ lệ thành công cao). Khi gộp, tỷ lệ chung của A bị "kéo xuống" bởi trọng số lớn của nhóm khó (nơi A chỉ đạt $20\%$), còn tỷ lệ chung của B được "kéo lên" bởi trọng số lớn của nhóm dễ (nơi B đạt $80\%$). Vì trọng số tác vụ (cơ cấu dễ/khó) của hai hệ thống hoàn toàn khác nhau, so sánh tỷ lệ gộp thực chất đang so sánh hai hỗn hợp tác vụ khác nhau, chứ không thuần túy so sánh năng lực xử lý.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">8.</span>Thông tin nào bị mất khi gộp?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Bảng gốc có một hàng cho mỗi (hệ thống × loại tác vụ), cho biết <strong>cơ cấu/tỷ trọng loại tác vụ mà mỗi hệ thống đã xử lý</strong> (bao nhiêu tác vụ dễ, bao nhiêu tác vụ khó) cùng với hiệu suất riêng trên từng loại. Khi gộp thành một hàng/hệ thống, thông tin về việc <strong>hai hệ thống được thử nghiệm trên hai hỗn hợp tác vụ khác nhau</strong> hoàn toàn biến mất — người đọc bảng gộp sẽ tưởng nhầm rằng hai hệ thống được so sánh trên cùng điều kiện.</p>
+      </div></div>
+    </div>
+
+  </div>
+</article>
+
+<!-- BAI 3 -->
+<article class="problem" id="b3">
+  <div class="p-head"><h3>Bài 3 — Một trung bình hay hai trung bình? Phép đo lặp và trọng số</h3></div>
+  <div class="data-block">
+    <table>
+      <tr><th>Bộ pin</th><th>Các nhiệt độ còn lại (°C)</th></tr>
+      <tr><td>P1</td><td>10, 14</td></tr>
+      <tr><td>P2</td><td>20, 20, 20, 20</td></tr>
+      <tr><td>P3</td><td>30</td></tr>
+    </table>
+  </div>
+  <div class="qa">
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">1.</span>Bao nhiêu bộ pin? Bao nhiêu hàng/phép đo?<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Có <strong>3 bộ pin</strong> (P1, P2, P3). Số hàng/phép đo nếu mỗi giá trị là một hàng: $2+4+1=\textbf{7 hàng}$.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">2.</span>Nhiệt độ trung bình riêng của từng pin<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>$\bar x_{P1} = \dfrac{10+14}{2} = 12$°C</p>
+        <p>$\bar x_{P2} = \dfrac{20+20+20+20}{4} = 20$°C</p>
+        <p>$\bar x_{P3} = \dfrac{30}{1} = 30$°C</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">3.</span>Trung bình của ba trung bình theo pin<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>$$\frac{\bar x_{P1}+\bar x_{P2}+\bar x_{P3}}{3} = \frac{12+20+30}{3} = \frac{62}{3} \approx 20{,}67°C$$</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">4.</span>Trung bình của toàn bộ 7 phép đo gốc<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>$$\frac{10+14+20+20+20+20+30}{7} = \frac{134}{7} \approx 19{,}14°C$$</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">5.</span>Hai kết quả ở câu 3 và 4 có bằng nhau không?<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Không.</strong> $20{,}67°C \ne 19{,}14°C$.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">6.</span>Đơn vị nào được cho trọng số bằng nhau trong mỗi câu?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Câu 3</strong> ("trung bình của ba trung bình"): mỗi <strong>pin</strong> được cho trọng số bằng nhau ($1/3$ mỗi pin), bất kể pin đó có bao nhiêu phép đo.</p>
+        <p><strong>Câu 4</strong> (trung bình toàn bộ 7 phép đo): mỗi <strong>phép đo</strong> được cho trọng số bằng nhau ($1/7$ mỗi phép đo); do đó pin nào có nhiều phép đo hơn (P2 với 4 phép đo) sẽ ảnh hưởng nhiều hơn đến kết quả chung.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">7.</span>Vì sao "7 hàng dữ liệu" không đồng nghĩa "7 bộ pin độc lập"?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Chỉ có <strong>3 bộ pin độc lập</strong> trong thí nghiệm; 7 hàng chỉ là 7 <strong>phép đo lặp</strong> trên cùng 3 đối tượng đó (P2 được đo lại tới 4 lần). Các phép đo trên cùng một pin không độc lập với nhau — chúng có xu hướng gần giống nhau (như 4 giá trị của P2 đều bằng 20) vì cùng phản ánh đặc tính của một pin duy nhất, chứ không phải 7 pin khác nhau.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">8.</span>Phép tính nào gần với từng câu hỏi nghiên cứu hơn?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Nếu câu hỏi là <em>"nhiệt độ điển hình của một bộ pin"</em> (đơn vị quan tâm = pin), phép tính ở <strong>câu 3</strong> (trung bình của các trung bình, $\approx 20{,}67°C$) phù hợp hơn, vì nó coi mỗi pin là một quan sát và không để pin nào lấn át chỉ vì được đo nhiều lần.</p>
+        <p>Nếu câu hỏi là <em>"nhiệt độ điển hình của một phép đo được ghi lại"</em> (đơn vị quan tâm = phép đo), phép tính ở <strong>câu 4</strong> ($\approx 19{,}14°C$) phù hợp hơn — nhưng khi đó câu trả lời bị ảnh hưởng mạnh bởi việc P2 (nhiệt độ thấp hơn P3, cao hơn P1) tình cờ có nhiều phép đo nhất, nên kết quả có thể thay đổi đáng kể nếu số lần đo mỗi pin khác đi, dù đặc tính thật của các pin không đổi.</p>
+      </div></div>
+    </div>
+
+  </div>
+</article>
+
+<!-- BAI 4 -->
+<article class="problem" id="b4">
+  <div class="p-head"><h3>Bài 4 — Từ dữ liệu từng sinh viên đến bảng liên hợp bằng tay</h3></div>
+  <div class="qa">
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">1.</span>Đơn vị quan sát và số observations<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Đơn vị quan sát của bảng gốc là <strong>một sinh viên trả lời khảo sát</strong>. Bảng có <strong>10 observations</strong> (10 sinh viên, mỗi người một hàng).</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">2.</span>Bảng đếm season × mts_beach<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Đếm từng sinh viên vào đúng ô (season, mts_beach): Spring: 01→Beach, 02→Mountains. Summer: 03→Beach, 04→Beach, 05→Mountains. Fall: 06→Mountains, 07→Mountains. Winter: 08→Beach, 09→Mountains, 10→Beach.</p>
+        <table>
+          <tr><th>season</th><th>Mountains</th><th>Beach</th><th>Total</th></tr>
+          <tr><td class="lbl">Spring</td><td>1</td><td>1</td><td>2</td></tr>
+          <tr><td class="lbl">Summer</td><td>1</td><td>2</td><td>3</td></tr>
+          <tr><td class="lbl">Fall</td><td>2</td><td>0</td><td>2</td></tr>
+          <tr><td class="lbl">Winter</td><td>1</td><td>2</td><td>3</td></tr>
+          <tr><td class="lbl"><strong>Total</strong></td><td><strong>5</strong></td><td><strong>5</strong></td><td><strong>10</strong></td></tr>
+        </table>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">3.</span>Tỷ lệ chọn Beach trong mỗi mùa (theo hàng)<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <ul>
+          <li>Spring: $1/2 = 50\%$</li>
+          <li>Summer: $2/3 \approx 66{,}7\%$</li>
+          <li>Fall: $0/2 = 0\%$</li>
+          <li>Winter: $2/3 \approx 66{,}7\%$</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">4.</span>Chỉ giữ bảng liên hợp, còn biết sinh viên 04 có coding_exp=Yes không?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Không.</strong> Bảng liên hợp chỉ lưu số lượng sinh viên trong từng ô (season, mts_beach); nó không giữ lại thông tin ở cấp cá nhân như <code>coding_exp</code> hay mã số sinh viên. Một khi đã gộp, danh tính và các biến khác của sinh viên 04 bị mất hoàn toàn khỏi bảng tổng hợp.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">5.</span>Có thể khôi phục duy nhất thứ tự 10 sinh viên từ bảng đếm không?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Không.</strong> Bảng đếm chỉ cho biết có bao nhiêu sinh viên rơi vào mỗi tổ hợp (season, mts_beach), chứ không cho biết cụ thể sinh viên nào (student_id nào) nằm trong ô đó, và cũng không giữ thứ tự ban đầu. Có rất nhiều cách gán 10 sinh viên cụ thể vào các ô sao cho vẫn ra đúng các số đếm này — thông tin về thứ tự/danh tính đã không thể phục hồi duy nhất.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">6.</span>So sánh mức chi tiết<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Bảng gốc:</strong> một hàng = một sinh viên, với đầy đủ các biến (season, mts_beach, coding_exp) của riêng người đó.</p>
+        <p><strong>Bảng tổng hợp:</strong> một ô = số lượng sinh viên chia sẻ chung một tổ hợp giá trị (season cụ thể, mts_beach cụ thể).</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">7.</span>Vì sao gộp không chỉ làm bảng ngắn hơn mà còn đổi loại câu hỏi trả lời được?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Khi gộp, ta đánh đổi <strong>chi tiết cấp cá nhân</strong> lấy <strong>tổng quan cấp nhóm</strong>. Bảng gốc trả lời được các câu hỏi về từng cá nhân ("sinh viên 04 có kinh nghiệm lập trình không?") hoặc mối liên hệ giữa nhiều biến cùng lúc ở cấp cá nhân; bảng tổng hợp chỉ còn trả lời được các câu hỏi về <strong>tần suất/tỷ lệ ở cấp nhóm</strong> giữa đúng hai biến đã chọn để lập bảng (season và mts_beach), và vĩnh viễn không thể trả lời lại các câu hỏi cấp cá nhân hay liên quan đến biến thứ ba (coding_exp) đã bị bỏ ra ngoài.</p>
+      </div></div>
+    </div>
+
+  </div>
+</article>
+
+</section>
+
+<section class="part" id="partB">
+<h2>Phần B — Freedman (Khẳng định nhân quả &amp; nghiên cứu quan sát)</h2>
+
+<!-- BAI 5 -->
+<article class="problem" id="b5">
+  <div class="p-head"><h3>Bài 5 — Người vừa bỏ thuốc có vẻ kém khỏe hơn</h3></div>
+  <div class="qa">
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">1.</span>Kết quả cho biết gì về mối liên hệ quan sát được?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Kết quả chỉ cho biết có một <strong>mối liên hệ (association) mang tính mô tả</strong>: trong dữ liệu quan sát, sau khi đã kiểm soát tuổi và giới tính, nhóm người vừa bỏ thuốc có tình trạng sức khỏe kém hơn nhóm đang hút thuốc. Đây thuần túy là một sự đồng xuất hiện được ghi nhận, chưa nói gì về nguyên nhân.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">2.</span>Câu "Bỏ thuốc làm sức khỏe xấu đi" thuộc loại khẳng định nào?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Đây là một <strong>khẳng định nhân quả (causal claim)</strong> — một trong bốn loại khẳng định của Week 01 (tóm tắt, tổng quát hóa, dự đoán, nhân quả) — vì nó khẳng định hành động bỏ thuốc <em>gây ra</em> kết quả sức khỏe kém đi.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">3.</span>Vì sao bước từ câu 1 sang câu 2 không được đảm bảo?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Một bảng dữ liệu quan sát (không phải thực nghiệm ngẫu nhiên) chỉ cho thấy hai biến <strong>đi cùng nhau</strong>, không cho biết chiều nhân quả hay loại trừ được các lời giải thích thay thế như <strong>nhân quả ngược</strong> (sức khỏe kém khiến người ta bỏ thuốc, chứ không phải ngược lại) hay <strong>yếu tố gây nhiễu</strong> khác. Không có phân bổ ngẫu nhiên vào hai nhóm "bỏ thuốc"/"tiếp tục hút", nên các nhóm có thể đã khác nhau từ trước theo những cách ảnh hưởng đến cả việc bỏ thuốc lẫn sức khỏe.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">4.</span>Một quá trình tạo dữ liệu hợp lý theo chiều ngược lại<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Một người bắt đầu có dấu hiệu sức khỏe suy giảm (ví dụ mới được chẩn đoán bệnh tim hoặc hô hấp) → bác sĩ khuyên và bản thân người đó lo lắng nên <strong>quyết định bỏ thuốc</strong> ngay sau đó → tại thời điểm khảo sát, nhóm "vừa bỏ thuốc" chứa nhiều người vốn đã có sức khỏe kém từ trước (chính là lý do khiến họ bỏ thuốc), khiến nhóm này có vẻ kém khỏe hơn nhóm vẫn đang hút — dù việc bỏ thuốc không hề gây ra tình trạng đó.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">5.</span>Viết lại kết luận thành câu yếu hơn nhưng phù hợp với dữ liệu<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>"Trong nhóm được khảo sát, sau khi đã kiểm soát tuổi và giới tính, những người vừa bỏ thuốc có tình trạng sức khỏe được ghi nhận là kém hơn so với những người đang hút thuốc." (thuần mô tả, không quy nhân quả)</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">6.</span>Vì sao thêm nhiều hàng cùng kiểu nghiên cứu quan sát chưa chắc giải quyết được vấn đề?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Vấn đề cốt lõi không phải là <strong>cỡ mẫu nhỏ</strong> mà là <strong>cấu trúc của quá trình tạo dữ liệu</strong>: miễn là việc "bỏ thuốc hay không" vẫn do chính người tham gia tự quyết định (không ngẫu nhiên), thì nhân quả ngược và các yếu tố gây nhiễu vẫn tồn tại y hệt dù có thêm bao nhiêu hàng dữ liệu. Có thêm hàng chỉ giúp ước lượng mối liên hệ quan sát được <strong>chính xác hơn</strong> (ít nhiễu ngẫu nhiên hơn), chứ không làm cho mối liên hệ đó trở thành nhân quả — độ lệch hệ thống (bias) do thiết kế nghiên cứu không tự mất đi khi tăng $n$.</p>
+      </div></div>
+    </div>
+
+  </div>
+</article>
+
+<!-- BAI 6 -->
+<article class="problem" id="b6">
+  <div class="p-head"><h3>Bài 6 — "Cha mẹ nên bớt kiểm soát"?</h3></div>
+  <div class="qa">
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">1.</span>Phát hiện mô tả điều gì về hai biến?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Phát hiện chỉ mô tả một <strong>mối liên hệ (tương quan)</strong> giữa hai biến được đo cùng lúc trên cùng nhóm trẻ: mức mỡ cơ thể của trẻ và mức độ hành vi kiểm soát của mẹ (do người đánh giá gán điểm) — trẻ có mỡ cơ thể cao hơn có xu hướng đi kèm với mẹ được đánh giá kiểm soát nhiều hơn. Đây thuần túy là quan sát đồng thời, không nói gì về chiều tác động.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">2.</span>Lời khuyên ngầm chứa khẳng định nhân quả nào?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Lời khuyên ngầm giả định rằng <strong>hành vi kiểm soát của mẹ là nguyên nhân làm tăng mỡ cơ thể của trẻ</strong> — do đó nếu mẹ giảm kiểm soát thì mỡ cơ thể của trẻ (thừa cân) sẽ giảm theo.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">3.</span>Bước chuyển chính xác từ liên hệ sang nhân quả<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Bài báo lấy một mối liên hệ quan sát được ("mỡ cơ thể cao ↔ mẹ kiểm soát nhiều") và <strong>gán một chiều nhân quả cụ thể</strong> cho nó ("kiểm soát nhiều → mỡ cơ thể tăng"), trong khi bản thân số liệu tương quan không tự nói cho ta biết biến nào là nguyên nhân, biến nào là kết quả (hay liệu có nguyên nhân chung nào khác).</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">4.</span>Hai cơ chế tạo dữ liệu khác cũng cho cùng mối liên hệ<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <ol>
+          <li><strong>Nhân quả ngược:</strong> trẻ vốn đã có mỡ cơ thể cao/thừa cân từ trước → mẹ <em>lo lắng</em> về cân nặng của con nên <em>trở nên kiểm soát nhiều hơn</em> (về ăn uống, vận động) như một phản ứng — tức mỡ cơ thể của trẻ là nguyên nhân, không phải kết quả, của hành vi kiểm soát.</li>
+          <li><strong>Yếu tố gây nhiễu chung:</strong> một đặc điểm gia đình (ví dụ mức độ căng thẳng, thói quen ăn uống, hoặc tính cách lo âu của người mẹ) có thể vừa khiến mẹ có xu hướng kiểm soát nhiều hơn, vừa độc lập ảnh hưởng đến chế độ ăn/vận động của trẻ dẫn tới mỡ cơ thể cao hơn — mà không có quan hệ nhân quả trực tiếp giữa "kiểm soát" và "mỡ cơ thể".</li>
+        </ol>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">5.</span>Tiêu đề/kết luận thay thế không đi xa hơn dữ liệu<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>"Nghiên cứu ghi nhận mối liên hệ giữa mức mỡ cơ thể của trẻ và mức độ kiểm soát được đánh giá của người mẹ, nhưng chưa xác định được nguyên nhân gây ra mối liên hệ này."</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">6.</span>Nếu chỉ gồm gia đình tự nguyện tại một địa điểm, thêm bước suy luận nào khác?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Ngoài vấn đề nhân quả, câu "mọi trẻ em đều có xu hướng như vậy" còn thêm một bước <strong>tổng quát hóa (generalization)</strong> vượt quá phạm vi mẫu: mẫu chỉ gồm các gia đình <em>tự nguyện tham gia</em> tại <em>một địa điểm</em> — đây là một mẫu không đại diện (có thể thiên lệch do tự chọn tham gia và giới hạn địa lý/văn hóa) — nên kết luận rút ra từ mẫu này chưa chắc áp dụng được cho toàn bộ trẻ em nói chung.</p>
+      </div></div>
+    </div>
+
+  </div>
+</article>
+
+<!-- BAI 7 -->
+<article class="problem" id="b7">
+  <div class="p-head"><h3>Bài 7 — Boot camp và tái phạm</h3></div>
+  <div class="qa">
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">1.</span>Câu tóm tắt được dữ liệu trực tiếp hỗ trợ<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>"Trong số các phạm nhân đã tự nguyện tham gia và hoàn thành chương trình boot camp, tỷ lệ quay lại nhà tù sau khi ra tù thấp hơn so với nhóm phạm nhân còn lại."</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">2.</span>"Boot camp làm giảm tái phạm" thuộc loại khẳng định nào?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Đây là một <strong>khẳng định nhân quả</strong>.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">3.</span>Chuỗi tạo ra hai nhóm được so sánh<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Tất cả phạm nhân đủ điều kiện đều có <strong>cơ hội</strong> tham gia boot camp → trong số đó, một bộ phận <strong>tự nguyện chọn</strong> đăng ký tham gia (bước tự chọn thứ nhất), số còn lại không tham gia và nằm trong "nhóm còn lại" → trong số người đã đăng ký, chỉ một phần <strong>hoàn thành</strong> chương trình (bước tự chọn/loại trừ thứ hai — người bỏ dở giữa chừng); nhóm "hoàn thành boot camp" được so sánh với "nhóm còn lại", vốn là hỗn hợp của người chưa từng đăng ký và người đăng ký nhưng không hoàn thành.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">4.</span>Hai nhóm có thể đã khác nhau trước khi chương trình bắt đầu như thế nào?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <ul>
+          <li>Người <strong>tự nguyện đăng ký</strong> có thể vốn đã có động lực cải thiện bản thân cao hơn, hoặc mức độ nguy hiểm/tiền án nhẹ hơn so với người không đăng ký.</li>
+          <li>Người <strong>hoàn thành</strong> chương trình (thay vì bỏ dở) có thể có kỷ luật, sức khỏe thể chất, hoặc mạng lưới hỗ trợ gia đình tốt hơn những người bỏ dở hoặc không tham gia — những đặc điểm này tự nó cũng có thể làm giảm nguy cơ tái phạm, độc lập với nội dung chương trình.</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">5.</span>Vì sao "tự nguyện" và "hoàn thành" đặc biệt quan trọng?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Cả hai điều kiện đều là <strong>bước tự chọn (self-selection)</strong>, không phải phân bổ ngẫu nhiên. Điều đó có nghĩa nhóm "hoàn thành boot camp" không phải một mẫu ngẫu nhiên đại diện cho toàn bộ phạm nhân, mà là một nhóm đã được "lọc" hai lần theo những đặc điểm cá nhân (động lực, kỷ luật, hoàn cảnh) có khả năng liên quan trực tiếp đến nguy cơ tái phạm. Vì vậy chênh lệch tái phạm quan sát được có thể phần lớn đến từ sự khác biệt sẵn có giữa hai nhóm người, chứ không phải do tác dụng của chương trình.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">6.</span>Thêm dữ liệu trên 100.000 tù nhân có tự động thành nhân quả không?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Không.</strong> Nếu vẫn giữ nguyên quy trình tự nguyện đăng ký và tự nguyện hoàn thành, thì việc tăng số hàng chỉ giúp ước lượng chênh lệch tỷ lệ tái phạm <strong>chính xác hơn về mặt thống kê</strong> (giảm sai số ngẫu nhiên), nhưng không loại bỏ được vấn đề tự chọn mẫu vốn có trong <em>thiết kế</em> nghiên cứu. Độ lệch hệ thống (selection bias) tồn tại ở mọi cỡ mẫu chừng nào cơ chế tạo dữ liệu (ai được chọn vào nhóm nào) không thay đổi.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">7.</span>Kết luận thận trọng hơn cho phát ngôn viên<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>"Những phạm nhân tự nguyện tham gia và hoàn thành chương trình boot camp có tỷ lệ tái phạm thấp hơn nhóm còn lại; tuy nhiên vì đây là nghiên cứu quan sát với việc tham gia và hoàn thành đều mang tính tự chọn, chưa thể khẳng định chắc chắn rằng chính chương trình là nguyên nhân làm giảm tái phạm."</p>
+      </div></div>
+    </div>
+
+  </div>
+</article>
+
+</section>
+
+<section class="part" id="partC">
+<h2>Phần C — STAT20 (Loại biến, DataFrame &amp; mức chi tiết)</h2>
+
+<!-- BAI 8 -->
+<article class="problem" id="b8">
+  <div class="p-head"><h3>Bài 8 — Cùng được lưu bằng số, nhưng không cùng loại biến</h3></div>
+  <div class="data-block">
+    <table>
+      <tr><th>Cột</th><th>Một vài giá trị</th><th>Ý nghĩa</th></tr>
+      <tr><td>student_id</td><td>24001234, ...</td><td>mã sinh viên</td></tr>
+      <tr><td>satisfaction</td><td>1, 2, 3, 4, 5</td><td>rất không hài lòng → rất hài lòng</td></tr>
+      <tr><td>num_siblings</td><td>0, 1, 2, 3, ...</td><td>số anh/chị/em ruột</td></tr>
+      <tr><td>temperature_c</td><td>21.4, 21.9, ...</td><td>nhiệt độ (°C)</td></tr>
+    </table>
+  </div>
+  <div class="qa">
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">1.</span>Phân loại biến thống kê từng cột<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <ul>
+          <li><strong>student_id</strong>: biến <em>định danh</em> (nominal categorical) — các chữ số chỉ đóng vai trò nhãn phân biệt cá nhân.</li>
+          <li><strong>satisfaction</strong>: biến <em>thứ tự</em> (ordinal categorical) — các mức có thứ tự tăng dần nhưng khoảng cách giữa các mức không chắc bằng nhau.</li>
+          <li><strong>num_siblings</strong>: biến <em>định lượng rời rạc</em> (discrete quantitative) — một số đếm nguyên có ý nghĩa cộng trừ thực sự.</li>
+          <li><strong>temperature_c</strong>: biến <em>định lượng liên tục</em> (continuous quantitative).</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">2.</span>Cột nào phép chênh lệch có ý nghĩa định lượng thật sự?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>num_siblings</strong> và <strong>temperature_c</strong> có phép chênh lệch mang ý nghĩa định lượng tự nhiên (3 anh chị em nhiều hơn 1 anh chị em đúng 2 người; $22{,}1-21{,}4=0{,}7$°C là một khoảng nhiệt độ thật). Ngược lại, <strong>student_id</strong> và <strong>satisfaction</strong> chủ yếu là mã hoặc mức: hiệu số giữa hai mã sinh viên không có ý nghĩa gì, còn hiệu số giữa hai mức hài lòng (ví dụ $5-4$ so với $2-1$) không đảm bảo phản ánh cùng một "lượng" chênh lệch cảm nhận.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">3.</span>Có nên tính trung bình của student_id không?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Không nên.</strong> student_id chỉ là một <strong>nhãn định danh</strong> được biểu diễn bằng chữ số để thuận tiện lưu trữ, chứ bản thân giá trị số không đại diện cho một "lượng" nào trên một thang đo chung — giống như lấy trung bình cộng của các số điện thoại. Trung bình của các mã số không đại diện cho bất kỳ sinh viên hay đặc tính nào có ý nghĩa.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">4.</span>Đổi satisfaction thành nhãn chữ, loại biến có đổi không?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Không đổi.</strong> Đổi từ số (1–5) sang nhãn chữ ("very dissatisfied", ..., "very satisfied") chỉ thay đổi <strong>cách biểu diễn</strong> (representation), còn bản chất thống kê của biến vẫn là <strong>biến thứ tự (ordinal)</strong> — vẫn có thứ tự rõ ràng, vẫn không đảm bảo khoảng cách đều giữa các mức.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">5.</span>student_id có dtype=int64 cho biết gì và không cho biết gì?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Cho biết:</strong> phần mềm đang lưu trữ các giá trị này dưới dạng số nguyên (một sự thật thuần túy kỹ thuật, về cách máy tính biểu diễn dữ liệu).</p>
+        <p><strong>Không cho biết:</strong> nó không nói lên rằng student_id là một biến định lượng có ý nghĩa số học — bản chất thống kê của biến (là biến định danh, dùng để phân biệt cá nhân) hoàn toàn độc lập với việc phần mềm chọn kiểu lưu trữ nào.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">6.</span>Quy tắc một câu phân biệt statistical variable type và software dtype<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <div class="rule-box">"dtype cho biết máy tính đang <em>lưu</em> giá trị đó như thế nào (số nguyên, số thực, chuỗi...), còn statistical variable type cho biết giá trị đó <em>mang ý nghĩa gì</em> khi trả lời câu hỏi nghiên cứu (định danh, thứ tự, hay định lượng) — hai điều này là hai câu hỏi hoàn toàn độc lập với nhau."</div>
+      </div></div>
+    </div>
+
+  </div>
+</article>
+
+<!-- BAI 9 -->
+<article class="problem" id="b9">
+  <div class="p-head"><h3>Bài 9 — Palmer Penguins: đọc cấu trúc trước khi phân tích</h3></div>
+  <div class="qa">
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">1.</span>Vì sao chỉ từ shape chưa biết mỗi hàng đại diện cho gì?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><code>penguins.shape</code> chỉ trả về <strong>số lượng</strong> hàng và cột — một sự thật thuần túy về kích thước bảng. Nó không nói gì về <strong>ngữ nghĩa</strong> của một hàng (một cá thể chim cánh cụt? một lần đo lặp? một hòn đảo?) — điều này chỉ có thể biết được từ mô tả bộ dữ liệu (data dictionary) hoặc ngữ cảnh thu thập dữ liệu, không thể suy ra chỉ từ hai con số kích thước.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">2.</span>Đơn vị quan sát của một hàng<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Đơn vị quan sát là <strong>một cá thể chim cánh cụt cụ thể</strong> được các nhà nghiên cứu bắt và đo đạc tại quần đảo Palmer (mỗi hàng ghi lại các phép đo — loài, đảo, chiều dài mỏ, khối lượng cơ thể, năm khảo sát — của một con chim).</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">3.</span>Phân loại species, island, bill_length_mm, body_mass_g, year<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <ul>
+          <li><strong>species</strong>: biến định danh (nominal categorical).</li>
+          <li><strong>island</strong>: biến định danh (nominal categorical).</li>
+          <li><strong>bill_length_mm</strong>: biến định lượng liên tục.</li>
+          <li><strong>body_mass_g</strong>: biến định lượng liên tục (một phép đo vật lý, dù thường được ghi bằng số nguyên gram).</li>
+          <li><strong>year</strong>: về mặt lưu trữ là số nguyên (định lượng rời rạc), nhưng về vai trò sử dụng trong phân tích thường được xem như <strong>nhãn thời điểm khảo sát</strong> (gần với biến thứ tự/định danh theo thời gian) hơn là một "lượng" mà ta cộng trừ nhân chia theo nghĩa vật lý thông thường.</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">4.</span>So sánh với dtypes — hai cột minh họa dtype ≠ loại biến<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>species</strong>: dtype thường là <code>object</code> (chuỗi ký tự) — ở đây dtype và loại biến thống kê (định danh) <em>trùng khớp</em> về mặt trực giác.</p>
+        <p><strong>year</strong>: dtype thường là <code>int64</code> (số nguyên) — dễ khiến người đọc lầm tưởng đây thuần túy là một đại lượng số nên có thể tính trung bình một cách vô tư, trong khi về mặt ý nghĩa nghiên cứu, "năm" thường đóng vai trò <strong>nhãn phân biệt các đợt khảo sát</strong> hơn là một phép đo liên tục — minh họa rõ việc dtype (kiểu lưu trữ) và statistical type (ý nghĩa) là hai câu hỏi khác nhau.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">5.</span>Mã hóa species=1,2,3 có thành biến số rời rạc không?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Không.</strong> Việc gán $1,2,3$ chỉ là thay thế nhãn chữ bằng nhãn số để thuận tiện lưu trữ; giữa ba loài <strong>không hề có thứ tự hay khoảng cách định lượng tự nhiên nào</strong> (Adelie không "nhỏ hơn" hay "cách Chinstrap một đơn vị" theo nghĩa số học). Bản chất biến vẫn là <strong>định danh</strong> — chỉ là dtype của cột đã đổi từ chuỗi sang số nguyên, một lần nữa cho thấy dtype không quyết định loại biến thống kê.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">6.</span>Đổi bill_length_mm thành short/medium/long<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Loại biến mới:</strong> biến thứ tự (ordinal categorical) — có thứ tự short &lt; medium &lt; long nhưng không còn là số đo liên tục.</p>
+        <p><strong>Thông tin bị mất:</strong> giá trị số chính xác (theo mm) và <strong>độ lớn của sự khác biệt</strong> giữa các cá thể — hai con chim cùng rơi vào nhóm "medium" có thể có chiều dài mỏ khác nhau đáng kể nhưng nay không còn phân biệt được; ta cũng không thể tính trung bình hay độ lệch chuẩn theo mm nữa.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">7.</span>File CSV có đủ cho biết quá trình thu thập không? Hai câu hỏi cần biết thêm<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Không.</strong> Chỉ nhìn file CSV, ta không biết đầy đủ quá trình các cá thể được chọn và đo. Hai câu hỏi cần làm rõ trước khi tổng quát hóa kết quả ra ngoài các cá thể có trong file:</p>
+        <ul>
+          <li>Các cá thể chim cánh cụt được chọn để bắt và đo như thế nào — ngẫu nhiên trên toàn bộ quần thể ở các đảo, hay chỉ là các cá thể dễ tiếp cận/tình cờ bắt được (convenience sampling)?</li>
+          <li>Việc đo đạc có được thực hiện thống nhất theo cùng một quy trình/dụng cụ và bởi các nhà nghiên cứu khác nhau qua các năm hay không, và có cá thể nào bị loại khỏi dữ liệu do thiếu thông tin (missing data) theo cách có thể gây thiên lệch mẫu hay không?</li>
+        </ul>
+      </div></div>
+    </div>
+
+  </div>
+</article>
+
+<!-- BAI 10 -->
+<article class="problem" id="b10">
+  <div class="p-head"><h3>Bài 10 — Quốc gia hay quốc gia–năm? Phép đo lặp nằm ở đâu?</h3></div>
+  <div class="data-block">
+    <table>
+      <tr><th>country</th><th>year</th><th>life_expectancy</th><th>population</th><th>region</th></tr>
+      <tr><td>Vietnam</td><td>2000</td><td colspan="2">…</td><td>Asia</td></tr>
+      <tr><td>Vietnam</td><td>2010</td><td colspan="2">…</td><td>Asia</td></tr>
+      <tr><td>Japan</td><td>2000</td><td colspan="2">…</td><td>Asia</td></tr>
+      <tr><td>Japan</td><td>2010</td><td colspan="2">…</td><td>Asia</td></tr>
+      <tr><td>Kenya</td><td>2000</td><td colspan="2">…</td><td>Africa</td></tr>
+      <tr><td>Kenya</td><td>2010</td><td colspan="2">…</td><td>Africa</td></tr>
+    </table>
+  </div>
+  <div class="qa">
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">1.</span>Số hàng/observations và đơn vị chính xác của một hàng<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Bảng có <strong>6 hàng/observations</strong>. Đơn vị của một hàng chính xác nhất là một <strong>cặp (quốc gia, năm)</strong> — tức một quốc gia tại một thời điểm cụ thể — chứ không đơn thuần là "một quốc gia".</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">2.</span>Bao nhiêu quốc gia? Quốc gia nào đang được đo lặp?<span class="tag calc">Tính toán</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Có <strong>3 quốc gia khác nhau</strong>: Vietnam, Japan, Kenya. <strong>Cả ba quốc gia đều được đo lặp</strong> — mỗi quốc gia xuất hiện 2 lần, tại năm 2000 và năm 2010.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">3.</span>Vì sao "6 hàng" không đồng nghĩa "6 quốc gia độc lập"?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Vì thực chất chỉ có <strong>3 quốc gia độc lập</strong>; 6 hàng chỉ là kết quả của việc mỗi quốc gia được đo tại 2 mốc thời gian khác nhau (phép đo lặp theo thời gian). Hai hàng của cùng một quốc gia (ví dụ Vietnam 2000 và Vietnam 2010) không độc lập với nhau — chúng đều mang đặc điểm chung của Vietnam (ví dụ cùng thuộc vùng Asia) và thường có giá trị các biến tương quan với nhau qua thời gian.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">4.</span>country là đơn vị quan sát hay là một biến?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Trong bảng này, <strong>country là một biến (cột)</strong> — giá trị của nó thay đổi theo từng hàng để cho biết hàng đó thuộc quốc gia nào — trong khi <strong>đơn vị quan sát thực sự của một hàng là (country, year)</strong>. Hai khái niệm này không đồng nhất vì "đơn vị quan sát" mô tả <em>cái mà một hàng đại diện cho</em> (ở đây là một quốc gia-năm), còn "biến" chỉ là một trong các thuộc tính được ghi lại cho đơn vị đó; nếu bảng được tổng hợp lại thành một hàng/quốc gia (bỏ cột year), khi đó country mới đồng thời vừa là biến vừa là chính đơn vị quan sát.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">5.</span>Phân loại year, life_expectancy, population, region<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <ul>
+          <li><strong>year</strong>: biến định lượng rời rạc, nhưng trong bảng này chức năng chủ yếu như một <em>chỉ số/nhãn thời điểm</em> để phân biệt các lần đo lặp của cùng một quốc gia.</li>
+          <li><strong>life_expectancy</strong>: biến định lượng liên tục.</li>
+          <li><strong>population</strong>: biến định lượng rời rạc (số đếm người), dù với số rất lớn thường được xử lý gần như liên tục trong thực hành.</li>
+          <li><strong>region</strong>: biến định danh (nominal categorical).</li>
+        </ul>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">6.</span>Mức country × year có đủ cho câu hỏi "quốc gia nào có tuổi thọ cao nhất năm 2010"?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Đủ.</strong> Chỉ cần lọc các hàng có <code>year = 2010</code> rồi so sánh <code>life_expectancy</code> giữa các quốc gia còn lại trong tập con đó — mức chi tiết country × year cung cấp chính xác thông tin cần thiết, không cần gộp thêm hay tách nhỏ hơn.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">7.</span>Tạo bảng một hàng/quốc gia để tìm tuổi thọ trung bình cả giai đoạn — thông tin nào bị gộp?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p><strong>Có thể</strong> — lấy trung bình (hoặc tổng hợp khác) của <code>life_expectancy</code> qua các năm cho mỗi quốc gia để tạo một hàng/quốc gia. Khi đó, <strong>thông tin về sự thay đổi theo thời gian</strong> (giá trị cụ thể ở từng năm, xu hướng tăng/giảm/ổn định qua giai đoạn) bị gộp đi và không còn khôi phục được từ bảng tổng hợp một hàng/quốc gia.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">8.</span>Vì sao gộp sớm phá hỏng câu hỏi "thay đổi theo thời gian trong cùng quốc gia"?<span class="tag watch">Cẩn trọng</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Câu hỏi về <strong>sự thay đổi theo thời gian</strong> đòi hỏi phải nhìn được <em>nhiều giá trị khác nhau tại nhiều thời điểm khác nhau</em> của cùng một quốc gia. Nếu gộp sớm thành một hàng/quốc gia (ví dụ chỉ giữ lại trung bình), ta chỉ còn <strong>một con số duy nhất</strong> cho mỗi quốc gia — không có cách nào để tính "thay đổi" (hiệu số giữa các năm) từ một con số đơn lẻ. Mức chi tiết country × year là mức tối thiểu cần giữ lại để trả lời được loại câu hỏi này.</p>
+      </div></div>
+    </div>
+
+    <div class="qa-item">
+      <button class="qa-btn"><span><span class="qnum">9.</span>region lặp lại ở nhiều hàng — vì sao không tự động là duplicate?<span class="tag concept">Khái niệm</span></span><span class="chev">▶</span></button>
+      <div class="qa-panel"><div class="qa-inner">
+        <p>Vì <code>region</code> là một <strong>thuộc tính bất biến theo thời gian của quốc gia</strong> (Vietnam luôn thuộc Asia dù ở năm 2000 hay 2010) — việc nó lặp lại giữa các hàng thuộc cùng một quốc gia là hoàn toàn hợp lý và có chủ đích, phản ánh đúng cấu trúc dữ liệu quốc gia-năm (mỗi hàng vẫn khác nhau ở year, life_expectancy, population — các biến <em>có</em> thay đổi theo thời gian). Duplicate dữ liệu thực sự nghĩa là <strong>toàn bộ các cột của hai hàng đều giống hệt nhau</strong>, điều này không xảy ra ở đây.</p>
+      </div></div>
+    </div>
+
+  </div>
+</article>
+
+</section>
+
+</main>
+
+<footer>UET.MAT1052 — Xác suất thống kê · Problem Set 01 · Tuần 1 · Lời giải biên soạn theo phong cách giảng viên</footer>
+
+<script>
+document.querySelectorAll('.qa-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    btn.parentElement.classList.toggle('open');
+  });
+});
+function toggleAll(open){
+  document.querySelectorAll('.qa-item').forEach(item=>{
+    if(open) item.classList.add('open'); else item.classList.remove('open');
+  });
+}
+</script>
+
+</body>
+</html>
