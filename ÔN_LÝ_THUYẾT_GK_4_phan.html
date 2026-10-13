@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VLĐC 2 - Ôn Tập: Điện Thế, Hiệu Điện Thế, Suất Điện Động & Trường Điện Thế</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1e3a8a',
+                            900: '#0f172a',
+                            950: '#020617',
+                        },
+                        academic: {
+                            gold: '#d97706',
+                            green: '#059669',
+                            blue: '#2563eb',
+                            bg: '#f8fafc'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- MathJax for rendering LaTeX formulas -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .tab-btn.active {
+            border-bottom: 3px solid #2563eb;
+            color: #2563eb;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-navy-900 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-atom text-amber-400 text-2xl"></i>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">VẬT LÝ ĐẠI CƯƠNG 2</h1>
+                    <p class="text-xs text-slate-300">Bộ môn Vật lý - Trang Ôn tậpChuyên đề Điện thế & Trường thế</p>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-4 text-xs font-medium bg-navy-800 px-3 py-1.5 rounded-lg border border-slate-700">
+                <span class="text-emerald-400"><i class="fa-solid fa-user-tie mr-1"></i> Giảng viên phụ trách</span>
+                <span class="text-slate-400">|</span>
+                <span class="text-slate-200">Học kỳ II - NĂM HỌC 2026</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow flex flex-col md:flex-row gap-6 w-full">
+
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 flex-shrink-0">
+            <div class="sticky top-20 bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-2">Danh mục ôn tập</h2>
+                <nav class="space-y-1">
+                    <a href="#lecturer-note" class="flex items-center px-3 py-2 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-100 hover:text-blue-600 transition">
+                        <i class="fa-solid fa-chalkboard-user w-6 text-blue-600"></i> Lời khuyên Giảng viên
+                    </a>
+                    <a href="#core-concepts" class="flex items-center px-3 py-2 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-100 hover:text-blue-600 transition">
+                        <i class="fa-solid fa-book-bookmark w-6 text-amber-500"></i> 4 Khái niệm Trọng tâm
+                    </a>
+                    <a href="#comparison" class="flex items-center px-3 py-2 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-100 hover:text-blue-600 transition">
+                        <i class="fa-solid fa-scale-balanced w-6 text-purple-600"></i> So sánh $V_{ab}$ & Suất điện động
+                    </a>
+                    <a href="#theorems-summary" class="flex items-center px-3 py-2 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-100 hover:text-blue-600 transition">
+                        <i class="fa-solid fa-square-root-variable w-6 text-emerald-600"></i> Định lý & Công thức chuẩn
+                    </a>
+                    <a href="#essay-problems" class="flex items-center px-3 py-2 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-100 hover:text-blue-600 transition">
+                        <i class="fa-solid fa-pen-ruler w-6 text-rose-600"></i> Bài tập Tự luận Trọng tâm
+                    </a>
+                </nav>
+
+                <div class="mt-6 pt-4 border-t border-slate-100 bg-slate-50 p-3 rounded-lg text-xs text-slate-600">
+                    <p class="font-semibold text-slate-800 mb-1"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> Mẹo ôn thi:</p>
+                    Nắm chắc ý nghĩa vật lý của phép toán tích phân đường $\int \vec{E}\cdot d\vec{l}$ và toán tử Gradient $\nabla V$.
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow space-y-6 overflow-hidden">
+
+            <!-- Lecturer Welcome Banner -->
+            <section id="lecturer-note" class="bg-gradient-to-r from-blue-900 via-navy-900 to-indigo-900 rounded-xl p-6 text-white shadow-md relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <div class="relative z-10">
+                    <div class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-400 text-slate-900 mb-2">
+                        Thông điệp Sư phạm
+                    </div>
+                    <h2 class="text-xl md:text-2xl font-bold mb-2">Chào các em sinh viên VLĐC 2,</h2>
+                    <p class="text-slate-200 text-sm leading-relaxed max-w-3xl">
+                        Trong chương trình Vật lý Đại đại cương 2 (Điện - Từ), việc phân biệt rõ giữa các đại lượng **Độ lớn/Vector (Điện trường)** và **Đại lượng Năng lượng/Vô hướng (Điện thế, Hiệu điện thế, Suất điện động)** là chìa khóa để giải quyết 90% các dạng bài thi tự luận. Trang ôn tập này biên soạn lại toàn bộ lý thuyết cốt lõi, bổ sung các bài tập tự luận có lời giải chuẩn mực nhất.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECTION 1: 4 Core Concepts -->
+            <section id="core-concepts" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center border-b pb-3">
+                    <i class="fa-solid fa-cubes text-amber-500 mr-2"></i> 1. Bốn Khái Niệm Cốt Lõi Tĩnh Điện & Dòng Điện
+                </h2>
+
+                <!-- Tabs header -->
+                <div class="flex border-b border-slate-200 overflow-x-auto mb-4 space-x-4 text-sm font-medium">
+                    <button onclick="switchTab('dt')" id="tab-dt" class="tab-btn active py-2 px-1 whitespace-nowrap">1. Điện thế ($V$)</button>
+                    <button onclick="switchTab('hdt')" id="tab-hdt" class="tab-btn py-2 px-1 whitespace-nowrap">2. Hiệu điện thế ($V_{ab}$)</button>
+                    <button onclick="switchTab('sdd')" id="tab-sdd" class="tab-btn py-2 px-1 whitespace-nowrap">3. Suất điện động ($\mathcal{E}$)</button>
+                    <button onclick="switchTab('tdt')" id="tab-tdt" class="tab-btn py-2 px-1 whitespace-nowrap">4. Trường điện thế & Mặt đẳng thế</button>
+                </div>
+
+                <!-- Tab content container -->
+                <div id="tab-content-container" class="text-sm">
+                    <!-- Tab 1: Điện thế -->
+                    <div id="content-dt" class="tab-content space-y-3">
+                        <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-lg">
+                            <h3 class="font-bold text-blue-900">Định nghĩa Điện thế ($V$)</h3>
+                            <p class="mt-1 text-slate-700">Điện thế tại một điểm trong điện trường là đại lượng vô hướng đặc trưng cho điện trường về **phương diện lưu trữ năng lượng (thế năng)** tại điểm đó đối với một điện tích thử $q_0$.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                            <div class="p-3 bg-slate-50 border rounded-lg">
+                                <span class="font-semibold text-slate-800">Biểu thức tổng quát:</span>
+                                $$V = \frac{U}{q_0} \quad \text{(Đơn vị: Volt - V, } 1\text{V} = 1\text{J/C}\text{)}$$
+                            </div>
+                            <div class="p-3 bg-slate-50 border rounded-lg">
+                                <span class="font-semibold text-slate-800">Do 1 điện tích điểm $q$ gây ra ($V_\infty = 0$):</span>
+                                $$V = k \frac{q}{r} = \frac{1}{4\pi\varepsilon_0} \frac{q}{r}$$
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-500 italic mt-2">* Nguyên lý chồng chất điện thế: $V = \sum V_i = k \sum \frac{q_i}{r_i}$ (chỉ cộng đại số vô hướng, không tính toán theo vector như $\vec{E}$).</p>
+                    </div>
+
+                    <!-- Tab 2: Hiệu điện thế -->
+                    <div id="content-hdt" class="tab-content hidden space-y-3">
+                        <div class="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded-r-lg">
+                            <h3 class="font-bold text-indigo-900">Định nghĩa Hiệu điện thế ($V_{ab}$)</h3>
+                            <p class="mt-1 text-slate-700">Hiệu điện thế giữa hai điểm $a$ và $b$ là đại lượng đo bằng **sự chênh lệch điện thế** giữa hai điểm đó, bằng **công của lực điện** dịch chuyển một đơn vị điện tích dương từ $a$ đến $b$.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                            <div class="p-3 bg-slate-50 border rounded-lg">
+                                <span class="font-semibold text-slate-800">Mối liên hệ với Công & Điện thế:</span>
+                                $$V_{ab} = V_a - V_b = \frac{W_{a \to b}}{q_0}$$
+                            </div>
+                            <div class="p-3 bg-slate-50 border rounded-lg">
+                                <span class="font-semibold text-slate-800">Liên hệ qua Tích phân Cường độ điện trường:</span>
+                                $$V_{ab} = V_a - V_b = \int_{a}^{b} \vec{E} \cdot d\vec{l}$$
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Suất điện động -->
+                    <div id="content-sdd" class="tab-content hidden space-y-3">
+                        <div class="bg-amber-50 border-l-4 border-amber-600 p-4 rounded-r-lg">
+                            <h3 class="font-bold text-amber-900">Định nghĩa Suất điện động ($\mathcal{E}$)</h3>
+                            <p class="mt-1 text-slate-700">Suất điện động của nguồn điện là đại lượng đặc trưng cho **khả năng thực hiện công của các lực lạ** (lực không có bản chất tĩnh điện) bên trong nguồn điện để di chuyển điện tích qua một mạch kín.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                            <div class="p-3 bg-slate-50 border rounded-lg">
+                                <span class="font-semibold text-slate-800">Công thức định nghĩa:</span>
+                                $$\mathcal{E} = \frac{W_{\text{lạ}}}{q} \quad \text{(Đơn vị: Volt - V)}$$
+                            </div>
+                            <div class="p-3 bg-slate-50 border rounded-lg">
+                                <span class="font-semibold text-slate-800">Trong mạch kín toàn phần:</span>
+                                $$\mathcal{E} = I(R + r) = V_{\text{ngoài}} + Ir$$
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: Trường điện thế & Mặt đẳng thế -->
+                    <div id="content-tdt" class="tab-content hidden space-y-3">
+                        <div class="bg-emerald-50 border-l-4 border-emerald-600 p-4 rounded-r-lg">
+                            <h3 class="font-bold text-emerald-900">Trường Điện Thế & Tính Chất Lực Thế</h3>
+                            <p class="mt-1 text-slate-700">Trường điện tĩnh là một **trường thế** (lực điện tĩnh là lực thế): Công của lực điện làm dịch chuyển điện tích $q$ từ điểm $a$ đến $b$ **chỉ phụ thuộc vào vị trí điểm đầu và điểm cuối**, không phụ thuộc hình dạng đường đi.</p>
+                        </div>
+                        <div class="space-y-2 mt-2">
+                            <div class="p-3 bg-slate-50 border rounded-lg">
+                                <span class="font-semibold text-slate-800">Mối liên hệ giữa Điện trường và Gradient Điện thế:</span>
+                                $$\vec{E} = -\text{grad}(V) = -\nabla V = -\left( \frac{\partial V}{\partial x}\vec{i} + \frac{\partial V}{\partial y}\vec{j} + \frac{\partial V}{\partial z}\vec{k} \right)$$
+                                <p class="text-xs text-slate-500 mt-1">Dấu âm chỉ ra rằng: Vector cường độ điện trường $\vec{E}$ luôn hướng theo chiều **điện thế giảm nhanh nhất**.</p>
+                            </div>
+                            <div class="p-3 bg-slate-50 border rounded-lg">
+                                <span class="font-semibold text-slate-800">Mặt đẳng thế ($V = \text{const}$):</span>
+                                <ul class="list-disc list-inside text-xs text-slate-600 space-y-1 mt-1">
+                                    <li>Mọi điểm trên mặt đẳng thế có cùng một điện thế $V$.</li>
+                                    <li>Công dịch chuyển điện tích trên mặt đẳng thế bằng $0$ ($W = q\Delta V = 0$).</li>
+                                    <li>Vector cường độ điện trường $\vec{E}$ luôn **vuông góc** với mặt đẳng thế tại mọi điểm.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: Comparison Table -->
+            <section id="comparison" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center border-b pb-3">
+                    <i class="fa-solid fa-code-compare text-purple-600 mr-2"></i> 2. So Sánh Bản Chất: Hiệu Điện Thế ($V_{ab}$) vs. Suất Điện Động ($\mathcal{E}$)
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-slate-600 border border-slate-200 rounded-lg">
+                        <thead class="text-xs text-slate-700 uppercase bg-slate-100">
+                            <tr>
+                                <th class="px-4 py-3 border-b">Tiêu chí so sánh</th>
+                                <th class="px-4 py-3 border-b text-indigo-700">Hiệu điện thế ($V_{ab}$)</th>
+                                <th class="px-4 py-3 border-b text-amber-700">Suất điện động ($\mathcal{E}$)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 text-xs md:text-sm">
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3 font-semibold text-slate-800">Bản chất Lực thực hiện công</td>
+                                <td class="px-4 py-3">Là **Lực điện tĩnh** (lực Coulomb, sinh công làm di chuyển điện tích từ nơi thế cao đến thế thấp).</td>
+                                <td class="px-4 py-3">Là **Lực lạ** (bản chất hóa học, cơ học, nhiệt điện... kéo điện tích từ thế thấp sang thế cao bên trong nguồn).</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3 font-semibold text-slate-800">Tích phân đường trong mạch kín $\oint$</td>
+                                <td class="px-4 py-3 font-mono text-xs">$$\oint \vec{E}_{\text{tĩnh}} \cdot d\vec{l} = 0$$ (Trường điện tĩnh là trường thế)</td>
+                                <td class="px-4 py-3 font-mono text-xs">$$\oint \vec{E}^* \cdot d\vec{l} = \mathcal{E} \neq 0$$ ($\vec{E}^*$ là trường lực lạ, không phải trường thế)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3 font-semibold text-slate-800">Chuyển hóa Năng lượng</td>
+                                <td class="px-4 py-3">Chuyển hóa Điện năng thành các dạng năng lượng khác (Nhiệt, Cơ năng, Quang năng...).</td>
+                                <td class="px-4 py-3">Chuyển hóa các dạng năng lượng khác (Hóa năng, Cơ năng...) thành Điện năng.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3 font-semibold text-slate-800">Vị trí xuất hiện</td>
+                                <td class="px-4 py-3">Xảy ra ở mạch ngoài hoặc giữa hai điểm bất kỳ trong điện trường.</td>
+                                <td class="px-4 py-3">Đặc trưng riêng bên trong nguồn điện (pin, ắc quy, máy phát điện).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION 3: Key Formulas -->
+            <section id="theorems-summary" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center border-b pb-3">
+                    <i class="fa-solid fa-square-root-variable text-emerald-600 mr-2"></i> 3. Tổng Hợp Công Thức & Định Lý Cần Nhớ
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="border border-slate-200 p-4 rounded-lg bg-slate-50">
+                        <h3 class="font-bold text-slate-800 mb-2 border-b pb-1 text-xs uppercase tracking-wide text-blue-600">
+                            1. Định lý về Lưu thông của Vector Điện trường
+                        </h3>
+                        <p class="text-slate-600 mb-2">Lưu thông của vector cường độ điện trường tĩnh dọc theo một đường cong kín bất kỳ bằng 0:</p>
+                        $$\oint \vec{E} \cdot d\vec{l} = 0$$
+                        <p class="text-xs text-slate-500 mt-2">Ý nghĩa: Khẳng định điện trường tĩnh là một trường thế.</p>
+                    </div>
+
+                    <div class="border border-slate-200 p-4 rounded-lg bg-slate-50">
+                        <h3 class="font-bold text-slate-800 mb-2 border-b pb-1 text-xs uppercase tracking-wide text-blue-600">
+                            2. Công của lực điện trường
+                        </h3>
+                        <p class="text-slate-600 mb-2">Công làm dịch chuyển điện tích $q$ từ vị trí $1$ đến $2$:</p>
+                        $$W_{1 \to 2} = q(V_1 - V_2) = -\Delta U = U_1 - U_2$$
+                        <p class="text-xs text-slate-500 mt-2">Chú ý: $W > 0$ khi hạt mang $q>0$ di chuyển từ điện thế cao xuống điện thế thấp.</p>
+                    </div>
+
+                    <div class="border border-slate-200 p-4 rounded-lg bg-slate-50">
+                        <h3 class="font-bold text-slate-800 mb-2 border-b pb-1 text-xs uppercase tracking-wide text-blue-600">
+                            3. Điện thế của các phân bố điện tích liên tục
+                        </h3>
+                        <ul class="list-disc list-inside space-y-1 text-xs text-slate-700">
+                            <li>Dây (Mật độ $\lambda$): $dq = \lambda dl \implies V = k \int \frac{\lambda dl}{r}$</li>
+                            <li>Mặt (Mật độ $\sigma$): $dq = \sigma dA \implies V = k \int \frac{\sigma dA}{r}$</li>
+                            <li>Khối (Mật độ $\rho$): $dq = \rho dV \implies V = k \int \frac{\rho dV}{r}$</li>
+                        </ul>
+                    </div>
+
+                    <div class="border border-slate-200 p-4 rounded-lg bg-slate-50">
+                        <h3 class="font-bold text-slate-800 mb-2 border-b pb-1 text-xs uppercase tracking-wide text-blue-600">
+                            4. Mối liên hệ $E$ và $V$ trong Điện trường đều
+                        </h3>
+                        <p class="text-slate-600 mb-2">Trong vùng điện trường đều có độ lớn $E$:</p>
+                        $$U_{ab} = V_a - V_b = E \cdot d$$
+                        <p class="text-xs text-slate-500 mt-2">Trong đó $d$ là hình chiếu của khoảng cách $ab$ lên phương của đường sức điện.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: Important Essay Exercises -->
+            <section id="essay-problems" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-3 mb-6 gap-2">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center">
+                            <i class="fa-solid fa-pen-ruler text-rose-600 mr-2"></i> 4. Bài Tập Tự Luận Trọng Tâm (Kèm Lời Giải Sư Phạm)
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-1">Dạng bài tập tính toán & chứng minh lý thuyết xuất hiện 95% trong đề thi VLĐC 2</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+
+                    <!-- Problem 1 -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/50 hover:bg-slate-50 transition">
+                        <div class="flex items-start justify-between">
+                            <span class="px-2.5 py-1 bg-rose-100 text-rose-800 text-xs font-bold rounded-md">Bài 1: Lý thuyết & Chứng minh</span>
+                            <span class="text-xs text-slate-400 font-mono">Dạng: Trường thế & Gradient</span>
+                        </div>
+                        <h3 class="font-bold text-slate-800 mt-3 text-base">
+                            Chứng minh trường điện tĩnh là trường thế và mối liên hệ giữa vector $\vec{E}$ và điện thế $V$ ($\vec{E} = -\nabla V$).
+                        </h3>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            <strong>Đề bài:</strong> 
+                            a) Bằng việc tính công của lực tĩnh điện do điện tích điểm $q$ tác dụng lên điện tích thử $q_0$, hãy chứng minh lực điện tĩnh là lực thế.<br>
+                            b) Bằng xét vi phân công dịch chuyển, hãy suy ra công thức gradient điện thế $\vec{E} = -\text{grad}(V)$.
+                        </p>
+                        
+                        <button onclick="toggleSolution('sol-1')" class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold flex items-center transition">
+                            <i class="fa-solid fa-eye mr-2"></i> <span id="btn-text-sol-1">Hiện lời giải chi tiết</span>
+                        </button>
+
+                        <div id="sol-1" class="hidden mt-4 pt-4 border-t border-slate-200 bg-white p-4 rounded-lg text-sm text-slate-700 space-y-3">
+                            <h4 class="font-bold text-emerald-700 text-xs uppercase tracking-wide"><i class="fa-solid fa-check-circle mr-1"></i> Lời giải chuẩn sư phạm:</h4>
+                            
+                            <p><strong>a) Chứng minh lực điện tĩnh là lực thế:</strong></p>
+                            <p>Xét điện tích điểm $q$ đặt tại gốc tọa độ. Công của lực điện tác dụng lên $q_0$ khi dịch chuyển từ điểm $A$ (khoảng cách $r_A$) đến $B$ (khoảng cách $r_B$) là:</p>
+                            $$W_{A \to B} = \int_{A}^{B} \vec{F} \cdot d\vec{r} = \int_{A}^{B} \left( k\frac{qq_0}{r^2} \hat{r} \right) \cdot d\vec{r}$$
+                            <p>Vì $\hat{r} \cdot d\vec{r} = dr$ (độ dịch chuyển theo phương bán kính), tích phân trở thành:</p>
+                            $$W_{A \to B} = \int_{r_A}^{r_B} k\frac{qq_0}{r^2} dr = -kqq_0 \left[ \frac{1}{r} \right]_{r_A}^{r_B} = kqq_0 \left( \frac{1}{r_A} - \frac{1}{r_B} \right)$$
+                            <p><em>Nhận xét:</em> Biểu thức công $W_{A \to B}$ **chỉ phụ thuộc vào khoảng cách đầu $r_A$ và khoảng cách cuối $r_B$**, hoàn toàn không phụ thuộc vào dạng đường đi. Do đó, lực điện tĩnh là lực thế, và trường điện tĩnh là một trường thế.</p>
+
+                            <p class="pt-2"><strong>b) Suy ra mối liên hệ $\vec{E} = -\nabla V$:</strong></p>
+                            <p>Vi phân công của lực điện khi dịch chuyển điện tích $q_0$ một đoạn nhỏ $d\vec{l}$ là:</p>
+                            $$dW = \vec{F} \cdot d\vec{l} = q_0 \vec{E} \cdot d\vec{l}$$
+                            <p>Mặt khác, theo định nghĩa điện thế và thế năng: $dW = -dU = -q_0 dV$. Đồng nhất hai biểu thức:</p>
+                            $$q_0 \vec{E} \cdot d\vec{l} = -q_0 dV \implies dV = -\vec{E} \cdot d\vec{l}$$
+                            <p>Trong hệ tọa độ Cartesian, toán tử vi phân toàn phần $dV = \frac{\partial V}{\partial x}dx + \frac{\partial V}{\partial y}dy + \frac{\partial V}{\partial z}dz = (\nabla V) \cdot d\vec{l}$. Do đó:</p>
+                            $$\nabla V \cdot d\vec{l} = -\vec{E} \cdot d\vec{l} \implies \vec{E} = -\nabla V = -\text{grad}(V)$$
+                        </div>
+                    </div>
+
+                    <!-- Problem 2 -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/50 hover:bg-slate-50 transition">
+                        <div class="flex items-start justify-between">
+                            <span class="px-2.5 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-md">Bài 2: Tính toán Phân bố liên tục</span>
+                            <span class="text-xs text-slate-400 font-mono">Dạng: Vòng dây tích điện</span>
+                        </div>
+                        <h3 class="font-bold text-slate-800 mt-3 text-base">
+                            Tính điện thế $V(x)$ và cường độ điện trường $E(x)$ trên trục của vòng dây tròn tích điện đều.
+                        </h3>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            <strong>Đề bài:</strong> Một vòng dây mảnh bán kính $R$ mang điện tích tổng cộng $Q$ phân bố đều. Tìm điện thế $V(x)$ tại điểm $P$ nằm trên trục của vòng dây, cách tâm vòng dây một khoảng $x$. Từ kết quả điện thế $V(x)$, hãy suy ra biểu thức cường độ điện trường $E(x)$ tại điểm đó.
+                        </p>
+
+                        <button onclick="toggleSolution('sol-2')" class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold flex items-center transition">
+                            <i class="fa-solid fa-eye mr-2"></i> <span id="btn-text-sol-2">Hiện lời giải chi tiết</span>
+                        </button>
+
+                        <div id="sol-2" class="hidden mt-4 pt-4 border-t border-slate-200 bg-white p-4 rounded-lg text-sm text-slate-700 space-y-3">
+                            <h4 class="font-bold text-emerald-700 text-xs uppercase tracking-wide"><i class="fa-solid fa-check-circle mr-1"></i> Lời giải chuẩn sư phạm:</h4>
+                            
+                            <p><strong>1. Tính Điện thế $V(x)$:</strong></p>
+                            <p>Chia vòng dây thành các phần tử vi phân điện tích $dq$. Mọi phần tử $dq$ trên vòng dây đều cách điểm $P$ một khoảng cách không đổi là $r = \sqrt{x^2 + R^2}$.</p>
+                            <p>Điện thế vi phân do phần tử $dq$ gây ra tại $P$ là:</p>
+                            $$dV = k \frac{dq}{r} = \frac{1}{4\pi\varepsilon_0} \frac{dq}{\sqrt{x^2 + R^2}}$$
+                            <p>Điện thế tổng cộng tại $P$ được tính bằng tích phân trên toàn bộ vòng dây:</p>
+                            $$V(x) = \int dV = \frac{1}{4\pi\varepsilon_0 \sqrt{x^2 + R^2}} \int dq = \frac{1}{4\pi\varepsilon_0} \frac{Q}{\sqrt{x^2 + R^2}}$$
+
+                            <p class="pt-2"><strong>2. Suy ra Cường độ điện trường $E(x)$:</strong></p>
+                            <p>Do tính chất đối xứng quay quanh trục $x$, cường độ điện trường tổng cộng tại $P$ chỉ có thành phần hướng dọc theo trục $x$ ($E_y = E_z = 0$).</p>
+                            <p>Áp dụng mối liên hệ $E_x = -\frac{\partial V}{\partial x}$:</p>
+                            $$E_x = -\frac{d}{dx} \left( \frac{1}{4\pi\varepsilon_0} \frac{Q}{(x^2 + R^2)^{1/2}} \right) = -\frac{Q}{4\pi\varepsilon_0} \cdot \left( -\frac{1}{2} \right) (x^2 + R^2)^{-3/2} \cdot (2x)$$
+                            $$E_x = \frac{1}{4\pi\varepsilon_0} \frac{Q x}{(x^2 + R^2)^{3/2}}$$
+                            <p><em>Kiểm tra giới hạn:</em> Khi $x \gg R$, $E_x \approx \frac{1}{4\pi\varepsilon_0} \frac{Q}{x^2}$ (vòng dây thu về dạng điện tích điểm $Q$). Tại tâm $x = 0 \implies E = 0, V = \frac{kQ}{R}$.</p>
+                        </div>
+                    </div>
+
+                    <!-- Problem 3 -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/50 hover:bg-slate-50 transition">
+                        <div class="flex items-start justify-between">
+                            <span class="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-md">Bài 3: So sánh & Bản chất Vật lý</span>
+                            <span class="text-xs text-slate-400 font-mono">Dạng: Mạch điện & Suất điện động</span>
+                        </div>
+                        <h3 class="font-bold text-slate-800 mt-3 text-base">
+                            Phân biệt Hiệu điện thế ($V_{ab}$) và Suất điện động ($\mathcal{E}$) trong một mạch điện kín có điện trở trong $r$.
+                        </h3>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            <strong>Đề bài:</strong> Xét một nguồn điện có suất điện động $\mathcal{E}$, điện trở trong $r$ mắc vào điện trở mạch ngoài $R$ thành mạch kín. Hãy:<br>
+                            a) Giải thích vai trò của suất điện động $\mathcal{E}$ trong việc duy trì dòng điện liên tục.<br>
+                            b) Lập biểu thức so sánh giữa hiệu điện thế hai đầu cực nguồn $U_N$ và suất điện động $\mathcal{E}$ khi mạch đóng và khi mạch hở.
+                        </p>
+
+                        <button onclick="toggleSolution('sol-3')" class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold flex items-center transition">
+                            <i class="fa-solid fa-eye mr-2"></i> <span id="btn-text-sol-3">Hiện lời giải chi tiết</span>
+                        </button>
+
+                        <div id="sol-3" class="hidden mt-4 pt-4 border-t border-slate-200 bg-white p-4 rounded-lg text-sm text-slate-700 space-y-3">
+                            <h4 class="font-bold text-emerald-700 text-xs uppercase tracking-wide"><i class="fa-solid fa-check-circle mr-1"></i> Lời giải chuẩn sư phạm:</h4>
+                            
+                            <p><strong>a) Vai trò của Suất điện động $\mathcal{E}$:</strong></p>
+                            <p>Ở mạch ngoài, lực điện tĩnh làm điện tích dương di chuyển từ cực dương (thế cao) sang cực âm (thế thấp). Nếu không có nguồn, điện tích sẽ tích tụ làm trung hòa điện thế và dòng điện tắt ngấm.</p>
+                            <p>Bên trong nguồn điện, **lực lạ** thực hiện công $W_{\text{lạ}}$ chống lại lực điện tĩnh, đẩy điện tích dương từ cực âm (thế thấp) về cực dương (thế cao). Suất điện động $\mathcal{E} = \frac{W_{\text{lạ}}}{q}$ chính là năng lượng mà nguồn cấp cho mỗi đơn vị điện tích để duy trì sự chênh lệch điện thế và giữ cho dòng điện chạy liên tục.</p>
+
+                            <p class="pt-2"><strong>b) So sánh $U_N$ và $\mathcal{E}$:</strong></p>
+                            <p>Theo định luật Ohm toàn mạch: $I = \frac{\mathcal{E}}{R + r}$. Hiệu điện thế giữa hai cực của nguồn điện (mạch ngoài $U_N$) là:</p>
+                            $$U_N = I \cdot R = \frac{\mathcal{E}}{R + r} \cdot R = \mathcal{E} - I \cdot r$$
+                            <ul class="list-disc list-inside space-y-1 text-xs">
+                                <li><strong>Khi mạch kín ($I > 0$):</strong> $U_N = \mathcal{E} - Ir < \mathcal{E}$. Hiệu điện thế hai cực nguồn luôn nhỏ hơn suất điện động do có độ giảm thế $Ir$ trên điện trở trong $r$.</li>
+                                <li><strong>Khi mạch hở ($I = 0$):</strong> $U_N = \mathcal{E}$. Hiệu điện thế giữa hai cực của nguồn khi hở mạch bằng chính suất điện động của nguồn.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Problem 4 -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/50 hover:bg-slate-50 transition">
+                        <div class="flex items-start justify-between">
+                            <span class="px-2.5 py-1 bg-purple-100 text-purple-800 text-xs font-bold rounded-md">Bài 4: Vật dẫn & Gauss</span>
+                            <span class="text-xs text-slate-400 font-mono">Dạng: Quả cầu dẫn điện</span>
+                        </div>
+                        <h3 class="font-bold text-slate-800 mt-3 text-base">
+                            Xác định $E(r)$ và $V(r)$ của quả cầu dẫn tích điện $Q$, bán kính $R$.
+                        </h3>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            <strong>Đề bài:</strong> Một quả cầu dẫn tích điện tích dương $Q$, bán kính $R$ đặt trong chân không. Tìm điện trường $E(r)$ và điện thế $V(r)$ ở mọi điểm trong không gian ($r < R$ và $r > R$).
+                        </p>
+
+                        <button onclick="toggleSolution('sol-4')" class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold flex items-center transition">
+                            <i class="fa-solid fa-eye mr-2"></i> <span id="btn-text-sol-4">Hiện lời giải chi tiết</span>
+                        </button>
+
+                        <div id="sol-4" class="hidden mt-4 pt-4 border-t border-slate-200 bg-white p-4 rounded-lg text-sm text-slate-700 space-y-3">
+                            <h4 class="font-bold text-emerald-700 text-xs uppercase tracking-wide"><i class="fa-solid fa-check-circle mr-1"></i> Lời giải chuẩn sư phạm:</h4>
+                            
+                            <p><strong>1. Tính Cường độ điện trường $E(r)$:</strong></p>
+                            <p>Ở trạng thái cân bằng tĩnh điện, điện tích dư $Q$ phân bố đều trên bề mặt quả cầu dẫn.</p>
+                            <ul class="list-disc list-inside text-xs space-y-1">
+                                <li><strong>Bên trong quả cầu ($r < R$):</strong> Chọn mặt Gauss bán kính $r < R$, điện tích bao bởi mặt Gauss $Q_{\text{enc}} = 0 \implies E(r) = 0$.</li>
+                                <li><strong>Bên ngoài quả cầu ($r \ge R$):</strong> Theo định luật Gauss: $\Phi_E = E \cdot 4\pi r^2 = \frac{Q}{\varepsilon_0} \implies E(r) = \frac{1}{4\pi\varepsilon_0} \frac{Q}{r^2} = k \frac{Q}{r^2}$.</li>
+                            </ul>
+
+                            <p class="pt-2"><strong>2. Tính Điện thế $V(r)$ (Chọn mốc $V(\infty) = 0$):</strong></p>
+                            <ul class="list-disc list-inside text-xs space-y-1">
+                                <li><strong>Bên ngoài quả cầu ($r \ge R$):</strong>
+                                    $$V(r) = \int_{r}^{\infty} E(r') dr' = \int_{r}^{\infty} \frac{kQ}{r'^2} dr' = \frac{kQ}{r}$$
+                                </li>
+                                <li><strong>Bên trong quả cầu ($r < R$):</strong>
+                                    Vì bên trong $E = 0$ nên $V$ không đổi và bằng điện thế trên bề mặt:
+                                    $$V(r) = V(R) = \frac{kQ}{R} = \text{const}$$
+                                </li>
+                            </ul>
+                            <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 mt-2">
+                                <strong>Lưu ý quan trọng:</strong> Bên trong vật dẫn cân bằng tĩnh điện, cường độ điện trường bằng $0$ ($E = 0$), nhưng điện thế **không bằng $0$** mà bằng một hằng số $V = \frac{kQ}{R}$.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-navy-950 text-slate-400 text-xs py-6 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p>Tài liệu Ôn tập Học phần Vật lý Đại đại cương 2 - Hệ thống hóa theo Giáo trình Chuẩn BKHN/VNU</p>
+            <p class="text-slate-600">Designed for Interactive Revision & Essay Exam Preparation | 2026 Academic Year</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Functions for Tab Switch & Solution Toggle -->
+    <script>
+        function switchTab(tabId) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            // Remove active class from all tab buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab content
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+
+            // Set active class on clicked button
+            document.getElementById('tab-' + tabId).classList.add('active');
+        }
+
+        function toggleSolution(solId) {
+            const solDiv = document.getElementById(solId);
+            const btnText = document.getElementById('btn-text-' + solId);
+
+            if (solDiv.classList.contains('hidden')) {
+                solDiv.classList.remove('hidden');
+                btnText.textContent = 'Ẩn lời giải';
+            } else {
+                solDiv.classList.add('hidden');
+                btnText.textContent = 'Hiện lời giải chi tiết';
+            }
+        }
+    </script>
+</body>
+</html>
