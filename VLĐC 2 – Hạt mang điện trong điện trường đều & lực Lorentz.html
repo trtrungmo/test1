@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VLĐC 2 – Hạt mang điện trong điện trường đều & lực Lorentz</title>
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#0f1218;--card:#181d27;--tx:#dde3ee;--mu:#8e9ab0;--ac:#6cb6ff;--ok:#7ee0a0;--wn:#ffcf70;--bd:#2a3242}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 56px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 "Segoe UI",system-ui,Arial,sans-serif}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:#0f1218ee;border-bottom:1px solid var(--bd);display:flex;gap:6px;overflow-x:auto;padding:8px 12px}
+nav a{white-space:nowrap;color:var(--ac);text-decoration:none;padding:4px 10px;border:1px solid var(--bd);border-radius:14px;font-size:14px}
+main{max-width:920px;margin:0 auto;padding:16px}
+h1{font-size:24px;margin:8px 0}h2{color:var(--ac);border-bottom:1px solid var(--bd);padding-bottom:6px;margin-top:36px}
+h3{color:var(--wn);margin:20px 0 6px;font-size:17px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px 16px;margin:12px 0}
+.mu{color:var(--mu)}.key{border-left:3px solid var(--ok)}.warn{border-left:3px solid var(--wn)}
+.res{background:#10281b;border:1px solid #2c6a47;border-radius:8px;padding:6px 12px;margin:8px 0;color:var(--ok)}
+details{background:var(--card);border:1px solid var(--bd);border-radius:8px;margin:8px 0;padding:6px 14px}
+summary{cursor:pointer;color:var(--ac);font-weight:600}
+mjx-container{overflow-x:auto;overflow-y:hidden;max-width:100%}
+svg.fig{width:100%;max-width:440px;display:block;margin:8px auto;background:#121722;border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:14px;display:block;overflow-x:auto}td,th{border:1px solid var(--bd);padding:4px 8px}
+.prob{font-style:normal;color:#c9d4e8}
+</style></head><body>
+<nav><a href="#lt">Lý thuyết</a><a href="#b6">Bài 6</a><a href="#b9">Bài 9</a><a href="#b5">Bài 5</a><a href="#tt">Bài tương tự</a></nav>
+<main>
+<h1>Hạt mang điện trong điện trường đều &amp; lực Lorentz</h1>
+<p class="mu">Vật lý đại cương 2 – Chương 1 (điện trường) &amp; Chương 3 (công, thế năng). Hằng số dùng: \(e=1{,}602\times10^{-19}\) C; \(m_e=9{,}109\times10^{-31}\) kg; \(m_p=1{,}673\times10^{-27}\) kg; \(k=8{,}99\times10^{9}\) N·m²/C²; \(g=9{,}8\) m/s².</p>
+
+<h2 id="lt">0. Kiến thức &amp; công thức cần dùng</h2>
+<div class="card key">
+<b>Lực điện &amp; gia tốc:</b> \(\vec F=q\vec E\), \(\vec a=\dfrac{q\vec E}{m}\). \(q>0\): \(\vec F\uparrow\uparrow\vec E\); \(q<0\): \(\vec F\uparrow\downarrow\vec E\).<br>
+<b>Chuyển động trong điện trường đều</b> (tương tự ném ngang trong trọng trường): theo phương \(v_0\) chuyển động đều \(x=v_0t\); theo phương \(\vec E\) nhanh/chậm dần đều \(y=\tfrac12at^2,\ v_y=at\). Khử \(t\): \(y=\dfrac{qE}{2mv_0^2}x^2\) (parabol), \(\tan\theta=\dfrac{v_y}{v_0}\).<br>
+<b>Chuyển động thẳng biến đổi đều (E cùng phương v):</b> \(v^2=v_0^2+2as\), \(v=v_0+at\).<br>
+<b>Công – năng lượng:</b> \(W=qE\,d\), \(W=\Delta K\) (hoặc \(K+U=\text{const}\)).<br>
+<b>Vòng dây tròn tích điện đều</b> (bán kính \(a\), trục Ox): \(E_x=\dfrac{kQx}{(x^2+a^2)^{3/2}}\); \(x\gg a\Rightarrow E\approx kQ/x^2\); \(E_{max}\) tại \(x=a/\sqrt2\).<br>
+<b>Định luật III Newton:</b> \(\vec F_{12}=-\vec F_{21}\).<br>
+<b>Lực Lorentz tổng quát:</b> \(\vec F=q(\vec E+\vec v\times\vec B)\), \(F_B=|q|vB\sin\alpha\) (vuông góc \(\vec v\), không sinh công). Trong 3 bài dưới đây \(B=0\) nên chỉ còn lực điện \(q\vec E\).
+</div>
+<div class="card warn"><b>Quy trình chung:</b> (1) chọn hệ trục, xác định chiều \(\vec E\), dấu \(q\) ⇒ chiều \(\vec F\); (2) viết \(a=|q|E/m\); (3) tách chuyển động theo 2 phương; (4) đặt điều kiện bài (thoát khỏi vùng, dừng lại…) ⇒ giải; (5) kiểm tra thứ nguyên, bậc độ lớn.</div>
+
+<h2 id="b6">Bài 6 (21.29**) – Electron/proton bay vào giữa hai tấm song song</h2>
+<svg class="fig" viewBox="0 0 440 150"><rect x="40" y="20" width="360" height="8" fill="#c9a24a"/><rect x="40" y="120" width="360" height="8" fill="#c9a24a"/>
+<g stroke="#e0659a" stroke-width="2"><path d="M110 40v70M180 40v70M250 40v70M320 40v70M385 40v70"/></g><text x="395" y="90" fill="#e0659a" font-size="14">E↓</text>
+<circle cx="45" cy="74" r="6" fill="#6cb6ff"/><path d="M52 74h40" stroke="#7ee0a0" stroke-width="3"/><text x="62" y="66" fill="#7ee0a0" font-size="13">v₀</text>
+<path d="M45 74Q250 74 400 28" fill="none" stroke="#6cb6ff" stroke-dasharray="5 4"/><text x="170" y="145" fill="#8e9ab0" font-size="12">L = 2,00 cm · khoảng cách tới tấm = 1,00 cm</text></svg>
+<div class="card key"><b>Phân tích:</b> chọn Ox theo \(\vec v_0\), Oy hướng lên (ngược \(\vec E\)). Electron mang điện âm ⇒ \(\vec F=-e\vec E\) hướng lên, cong về tấm trên. Quỹ đạo đứt nét ra đúng mép tấm trên: tại \(x=L=2{,}00\) cm thì \(y=1{,}00\) cm.</div>
+<h3>a) Độ lớn E</h3>
+<p>Thời gian bay: \(t=\dfrac{L}{v_0}=\dfrac{2{,}00\times10^{-2}}{1{,}6\times10^{6}}=1{,}25\times10^{-8}\) s.</p>
+<p>\(y=\tfrac12at^2\Rightarrow a=\dfrac{2y}{t^2}=\dfrac{2(1{,}00\times10^{-2})}{(1{,}25\times10^{-8})^2}=1{,}28\times10^{14}\) m/s².</p>
+<p>\(eE=m_ea\Rightarrow E=\dfrac{m_ea}{e}=\dfrac{(9{,}109\times10^{-31})(1{,}28\times10^{14})}{1{,}602\times10^{-19}}\)</p>
+<div class="res">E ≈ 7,3 × 10² N/C (≈ 728 N/C), hướng xuống (từ tấm trên sang tấm dưới).</div>
+<h3>b) Thay bằng proton cùng \(v_0\)</h3>
+<p>Proton \(q=+e\) ⇒ lực hướng xuống (cùng \(\vec E\)): lệch về tấm dưới. Cùng \(E\), \(v_0\), \(L\) ⇒ cùng \(t=1{,}25\times10^{-8}\) s.</p>
+<p>\(a_p=\dfrac{eE}{m_p}=\dfrac{(1{,}602\times10^{-19})(728)}{1{,}673\times10^{-27}}=6{,}97\times10^{10}\) m/s² (nhỏ hơn \(a_e\) khoảng \(m_p/m_e\approx1836\) lần).</p>
+<p>Độ lệch khi ra khỏi vùng: \(\Delta y=\tfrac12a_pt^2=\tfrac12(6{,}97\times10^{10})(1{,}25\times10^{-8})^2=5{,}45\times10^{-6}\) m \(=5{,}45\ \mu\)m \(\ll 1{,}00\) cm ⇒ <b>proton không va vào tấm nào</b>.</p>
+<p>Vận tốc ngang vẫn \(v_x=v_0\); \(v_y=a_pt=871\) m/s (hướng xuống); \(\tan\theta=\dfrac{871}{1{,}6\times10^6}=5{,}45\times10^{-4}\Rightarrow\theta\approx0{,}031^\circ\).</p>
+<div class="res">Sau khi thoát (x = 2,00 cm): lệch xuống ≈ 5,45 µm so với đường ban đầu; tiếp tục chuyển động thẳng đều, hướng gần như ngang, nghiêng xuống dưới (cùng phía \(\vec E\)) góc ≈ 0,031°.</div>
+<h3>c) So sánh quỹ đạo</h3>
+<div class="card">Cả hai đều là <b>parabol</b> \(y=\dfrac{qE}{2mv_0^2}x^2\). Khác nhau: (i) <b>chiều cong</b> – electron (q&lt;0) cong ngược chiều \(\vec E\) (lên), proton (q&gt;0) cong cùng chiều \(\vec E\) (xuống); (ii) <b>mức độ cong</b> – cùng độ lớn lực \(eE\) nhưng \(a=eE/m\), nên \(a_e/a_p=m_p/m_e\approx1836\); electron lệch 1,00 cm còn proton chỉ ~5 µm.</div>
+<h3>d) Bỏ qua trọng lực?</h3>
+<p>Trọng lực electron: \(m_eg=8{,}9\times10^{-30}\) N; proton: \(m_pg=1{,}6\times10^{-26}\) N. Lực điện: \(eE=1{,}17\times10^{-16}\) N. Tỉ số \(m_eg/eE\sim8\times10^{-14}\), \(m_pg/eE\sim1{,}4\times10^{-10}\).</p>
+<div class="res">Trọng lực nhỏ hơn lực điện cỡ 10¹⁰–10¹³ lần ⇒ bỏ qua hay không đều <b>không làm thay đổi</b> kết quả (sai lệch tương đối ≲10⁻¹⁰); việc bỏ qua trọng lực là hợp lý.</div>
+
+<h2 id="b9">Bài 9 (21.51*) – Điện trường của vòng dây tròn &amp; lực lên vòng</h2>
+<svg class="fig" viewBox="0 0 440 140"><ellipse cx="120" cy="70" rx="22" ry="55" fill="none" stroke="#c9a24a" stroke-width="4"/><path d="M60 70H420" stroke="#8e9ab0"/><circle cx="330" cy="70" r="5" fill="#6cb6ff"/><text x="322" y="92" fill="#6cb6ff" font-size="13">P</text><text x="100" y="90" fill="#c9a24a" font-size="13">O</text><path d="M335 70H395" stroke="#7ee0a0" stroke-width="3"/><text x="350" y="60" fill="#7ee0a0" font-size="13">E (Q&gt;0)</text><text x="200" y="110" fill="#8e9ab0" font-size="12">x = 40 cm, a = 2,5 cm</text></svg>
+<div class="card key"><b>Cách giải:</b> chia vòng thành các phần tử \(dq\); mỗi phần tử gây \(dE=\dfrac{k\,dq}{r^2}\), \(r^2=x^2+a^2\). Theo đối xứng, các thành phần vuông góc trục triệt tiêu, chỉ còn \(dE_x=dE\cos\alpha\) với \(\cos\alpha=\dfrac{x}{\sqrt{x^2+a^2}}\). Lấy tích phân: \(E_x=\dfrac{kQx}{(x^2+a^2)^{3/2}}\).</div>
+<h3>a) E tại P (x = 40 cm)</h3>
+<p>\(x^2+a^2=0{,}16+6{,}25\times10^{-4}=0{,}160625\) m²; \((x^2+a^2)^{3/2}=0{,}160625\times0{,}40078=0{,}064375\) m³.</p>
+<p>\(kQ=(8{,}99\times10^9)(0{,}125\times10^{-9})=1{,}124\) N·m²/C.</p>
+<p>\(E=\dfrac{1{,}124\times0{,}40}{0{,}064375}\)</p>
+<div class="res">E ≈ 6,98 N/C, hướng theo chiều +x (ra xa vòng, vì Q &gt; 0).</div>
+<p class="mu">Kiểm tra: \(x\gg a\Rightarrow E\approx kQ/x^2=1{,}124/0{,}16=7{,}03\) N/C ✓.</p>
+<h3>b) Lực giữa q = −2,5 mC và vòng</h3>
+<p>Lực của vòng lên q: \(F=|q|E=(2{,}5\times10^{-3})(6{,}98)=1{,}75\times10^{-2}\) N, hướng về vòng (q âm, trái dấu ⇒ hút). Theo định luật III Newton, lực của q lên vòng cùng độ lớn, ngược chiều.</p>
+<div class="res">F = 1,75 × 10⁻² N (≈ 0,0175 N), hướng +x, tức hướng về phía điện tích q (hút).</div>
+
+<h2 id="b5">Bài 5 (21.25**) – Proton giảm tốc trong điện trường</h2>
+<svg class="fig" viewBox="0 0 440 100"><circle cx="50" cy="50" r="7" fill="#ff7b7b"/><path d="M60 50H150" stroke="#7ee0a0" stroke-width="3"/><text x="90" y="42" fill="#7ee0a0" font-size="13">v₀</text><rect x="150" y="25" width="200" height="50" fill="none" stroke="#2a3242" stroke-dasharray="4"/><path d="M330 90H200" stroke="#e0659a" stroke-width="3"/><text x="240" y="86" fill="#e0659a" font-size="13">E (←)</text><text x="260" y="62" fill="#8e9ab0" font-size="12">s = 3,2 cm</text></svg>
+<div class="card key"><b>Phân tích:</b> proton chuyển động sang phải, muốn chậm dần đều rồi dừng thì lực phải hướng sang trái ⇒ (q&gt;0) \(\vec E\) hướng sang trái. «Nhỏ nhất» ứng với dừng đúng sau 3,2 cm (\(v=0\) tại \(s=3{,}2\) cm).</div>
+<h3>a) Độ lớn và hướng của E nhỏ nhất</h3>
+<p>\(v^2=v_0^2+2as\Rightarrow a=-\dfrac{v_0^2}{2s}=-\dfrac{(4{,}5\times10^6)^2}{2(0{,}032)}=-3{,}16\times10^{14}\) m/s².</p>
+<p>\(E=\dfrac{m_p|a|}{e}=\dfrac{(1{,}673\times10^{-27})(3{,}16\times10^{14})}{1{,}602\times10^{-19}}\)</p>
+<div class="res">E ≈ 3,3 × 10⁶ N/C, hướng ngược chiều chuyển động của proton (sang trái).</div>
+<h3>b) Thời gian dừng</h3>
+<p>Vận tốc trung bình \(=v_0/2\) ⇒ \(t=\dfrac{2s}{v_0}=\dfrac{2(0{,}032)}{4{,}5\times10^6}\) (hoặc \(t=v_0/|a|\)).</p>
+<div class="res">t ≈ 1,42 × 10⁻⁸ s (≈ 14,2 ns).</div>
+<h3>c) Electron trong cùng điều kiện (cùng \(v_0\), cùng \(s\))</h3>
+<p>\(E_e=\dfrac{m_ev_0^2}{2es}=E_p\cdot\dfrac{m_e}{m_p}=\dfrac{(9{,}109\times10^{-31})(4{,}5\times10^6)^2}{2(1{,}602\times10^{-19})(0{,}032)}\)</p>
+<div class="res">E ≈ 1,80 × 10³ N/C (nhỏ hơn ~1836 lần); với electron (q&lt;0) \(\vec E\) phải <b>cùng chiều</b> chuyển động (sang phải) để lực hướng ngược \(\vec v\).</div>
+
+<h2 id="tt">Bài tương tự (đáp án &amp; lời giải ẩn – bấm để mở)</h2>
+<h3>Nhóm A – giống Bài 6 (hạt bay vào giữa hai tấm)</h3>
+<div class="card prob"><b>A1.</b> Electron \(v_0=3{,}0\times10^6\) m/s bay song song vào giữa hai tấm dài 5,0 cm, cách nhau 2,0 cm, \(E=500\) N/C. Electron có thoát ra không? Nếu không, nó đập vào tấm nào, tại vị trí nào?
+<details><summary>Lời giải &amp; đáp số</summary>\(a=eE/m_e=8{,}79\times10^{13}\) m/s². Nếu bay hết \(L\): \(t=L/v_0=1{,}67\times10^{-8}\) s ⇒ \(y=\tfrac12at^2=1{,}22\) cm &gt; 1,0 cm ⇒ <b>va vào tấm</b> (tấm đối diện chiều \(\vec E\) tức tấm tích điện dương, phía electron bị hút). Khi \(y=1{,}0\) cm: \(t=\sqrt{2y/a}=1{,}51\times10^{-8}\) s ⇒ \(x=v_0t\approx4{,}5\) cm tính từ mép vào.</details></div>
+<div class="card prob"><b>A2.</b> Proton \(v_0=4{,}0\times10^5\) m/s bay vào vùng điện trường đều \(E=2{,}0\times10^3\) N/C (vuông góc \(\vec v_0\)) rộng 3,0 cm. Tìm độ lệch và góc lệch khi ra khỏi vùng.
+<details><summary>Lời giải &amp; đáp số</summary>\(a=eE/m_p=1{,}92\times10^{11}\); \(t=0{,}03/4\times10^5=7{,}5\times10^{-8}\) s. \(\Delta y=\tfrac12at^2\approx5{,}4\times10^{-4}\) m (0,54 mm); \(v_y=at=1{,}44\times10^4\) m/s; \(\tan\theta=v_y/v_0=0{,}0359\Rightarrow\theta\approx2{,}06^\circ\) (về phía \(\vec E\)).</details></div>
+<div class="card prob"><b>A3.</b> Electron \(v_0=2{,}0\times10^6\) m/s vào vùng điện trường đều dài 4,0 cm và bị lệch 0,50 cm khi ra khỏi vùng. Tìm độ lớn và hướng của \(\vec E\).
+<details><summary>Lời giải &amp; đáp số</summary>\(t=2\times10^{-8}\) s; \(a=2y/t^2=2{,}5\times10^{13}\) m/s²; \(E=m_ea/e\approx142\) N/C. Electron lệch về phía nào thì lực hướng phía đó ⇒ \(\vec E\) <b>ngược</b> chiều với chiều lệch.</details></div>
+<h3>Nhóm B – giống Bài 9 (vòng dây tròn)</h3>
+<div class="card prob"><b>B1.</b> Vòng dây bán kính 3,0 cm mang \(Q=+5{,}0\) nC phân bố đều. Tìm E trên trục tại \(x=4{,}0\) cm.
+<details><summary>Lời giải &amp; đáp số</summary>\(x^2+a^2=25\times10^{-4}\) ⇒ \((\cdot)^{3/2}=1{,}25\times10^{-4}\). \(E=\dfrac{kQx}{(\cdot)^{3/2}}=\dfrac{(44{,}95)(0{,}04)}{1{,}25\times10^{-4}}\approx1{,}44\times10^4\) N/C, hướng +x.</details></div>
+<div class="card prob"><b>B2.</b> Vòng bán kính 5,0 cm mang \(Q=-2{,}0\) nC. Tại vị trí nào trên trục E có độ lớn cực đại? Tính \(E_{max}\) và hướng.
+<details><summary>Lời giải &amp; đáp số</summary>\(dE/dx=0\Rightarrow x=a/\sqrt2=3{,}54\) cm. \(E_{max}=\dfrac{2kQ}{3\sqrt3\,a^2}=0{,}385\dfrac{(17{,}98)}{0{,}0025}\approx2{,}77\times10^3\) N/C, hướng về phía vòng (Q&lt;0, tức −x tại x&gt;0).</details></div>
+<div class="card prob"><b>B3.</b> Vòng bán kính 2,0 cm mang \(Q=+0{,}50\) nC. Điện tích điểm \(q=+1{,}0\ \mu\)C đặt trên trục cách tâm vòng 15 cm. Tìm lực do q tác dụng lên vòng (độ lớn, chiều).
+<details><summary>Lời giải &amp; đáp số</summary>\(E=\dfrac{kQx}{(x^2+a^2)^{3/2}}=\dfrac{(4{,}495)(0{,}15)}{3{,}465\times10^{-3}}\approx195\) N/C. \(F=qE\approx1{,}95\times10^{-4}\) N. Cùng dấu ⇒ đẩy: lực lên vòng hướng ra xa q (theo chiều từ q về vòng).</details></div>
+<h3>Nhóm C – giống Bài 5 (giảm tốc / dừng)</h3>
+<div class="card prob"><b>C1.</b> Proton \(v_0=2{,}0\times10^6\) m/s dừng lại sau 1,5 cm. Tìm \(E_{min}\) và thời gian dừng.
+<details><summary>Lời giải &amp; đáp số</summary>\(E=\dfrac{m_pv_0^2}{2es}=\dfrac{(1{,}673\times10^{-27})(4\times10^{12})}{2(1{,}602\times10^{-19})(0{,}015)}\approx1{,}39\times10^6\) N/C (ngược chiều \(\vec v\)). \(t=2s/v_0=1{,}5\times10^{-8}\) s.</details></div>
+<div class="card prob"><b>C2.</b> Electron \(v_0=5{,}0\times10^6\) m/s đi vào vùng \(E=1{,}0\times10^3\) N/C. Để electron chậm dần, E phải hướng thế nào? Electron đi được bao xa và mất bao lâu thì dừng?
+<details><summary>Lời giải &amp; đáp số</summary>E cùng chiều \(\vec v\) (q&lt;0 ⇒ \(\vec F\) ngược \(\vec E\)). \(s=\dfrac{m_ev_0^2}{2eE}=\dfrac{(9{,}109\times10^{-31})(2{,}5\times10^{13})}{2(1{,}602\times10^{-19})(10^3)}\approx7{,}1\) cm; \(t=2s/v_0\approx2{,}84\times10^{-8}\) s.</details></div>
+<div class="card prob"><b>C3.</b> Proton \(v_0=3{,}0\times10^6\) m/s đi vào vùng \(E=2{,}0\times10^6\) N/C hướng ngược \(\vec v_0\). Tìm quãng đường tối đa vào trong vùng và tổng thời gian từ lúc vào đến lúc quay ra lại biên.
+<details><summary>Lời giải &amp; đáp số</summary>\(s=\dfrac{m_pv_0^2}{2eE}\approx2{,}35\) cm. \(a=eE/m_p=1{,}92\times10^{14}\) m/s²; \(t_{dừng}=v_0/a=1{,}57\times10^{-8}\) s; do đối xứng, tổng thời gian \(=2t_{dừng}\approx3{,}13\times10^{-8}\) s, ra với tốc độ \(3{,}0\times10^6\) m/s ngược chiều (bảo toàn cơ năng).</details></div>
+</main></body></html>
