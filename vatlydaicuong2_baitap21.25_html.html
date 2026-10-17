@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Giảng Vật Lý Đại Cường 2 - Chuyển Động Hạt Mang Điện Trong Điện Trường</title>
+    
+    <!-- Google Fonts: Be Vietnam Pro & Roboto (Hỗ trợ Tiếng Việt Unicode hoàn hảo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Be Vietnam Pro"', 'Roboto', 'sans-serif'],
+                        serif: ['"Be Vietnam Pro"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- KaTeX CSS & JS for Reliable Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS Reset & General Rules */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Be Vietnam Pro', 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            line-height: 1.6;
+        }
+        .math-display {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.75rem 0;
+        }
+        /* Custom scrollbar for math */
+        .math-display::-webkit-scrollbar {
+            height: 4px;
+        }
+        .math-display::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col antialiased">
+
+    <!-- Header Navigation -->
+    <header class="bg-indigo-950 text-white shadow-xl sticky top-0 z-50 border-b border-indigo-800">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-800 p-2.5 rounded-xl border border-indigo-700 shadow-inner">
+                    <i class="fa-solid fa-atom text-amber-400 text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg md:text-xl tracking-tight text-slate-100">BỘ MÔN VẬT LÝ ĐẠI CƯỜNG</h1>
+                    <p class="text-xs text-indigo-300 font-medium">Học phần: Vật Lý Đại Cường 2 (Điện - Từ Học)</p>
+                </div>
+            </div>
+            <div class="mt-2 md:mt-0 flex items-center space-x-3 text-xs md:text-sm font-medium">
+                <span class="bg-indigo-900/80 px-3.5 py-1.5 rounded-full text-indigo-200 border border-indigo-700/80 flex items-center gap-2">
+                    <i class="fa-solid fa-chalkboard-user text-amber-400"></i> Bài Giảng Tương Tác Giảng Viên
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow space-y-8">
+
+        <!-- Title Banner -->
+        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200">
+            <div class="border-b border-slate-200 pb-4 mb-4">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-100/80 text-amber-900 rounded-md text-xs font-semibold uppercase tracking-wider mb-2 border border-amber-200">
+                    <i class="fa-solid fa-bookmark text-amber-600"></i> Chuyên đề: Điện trường & Chuyển động hạt mang điện
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight leading-snug">
+                    Bài 5 (21.25**): Chuyển động hãm của hạt mang điện trong điện trường đều
+                </h2>
+            </div>
+            
+            <!-- Problem Statement Box -->
+            <div class="bg-slate-50 border-l-4 border-indigo-600 p-5 rounded-r-xl my-4 text-slate-800">
+                <h3 class="font-bold text-indigo-950 text-base md:text-lg mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-file-lines text-indigo-600"></i> ĐỀ BÀI CHI TIẾT
+                </h3>
+                <p class="text-slate-800 text-base leading-relaxed mb-3">
+                    Một proton đang chuyển động theo phương ngang sang phải với vận tốc ban đầu \(v_0 = 4.5 \times 10^6\text{ m/s}\).
+                </p>
+                <ul class="space-y-2.5 text-slate-700 pl-1">
+                    <li class="flex items-start gap-2">
+                        <span class="font-bold text-indigo-700 shrink-0">a)</span>
+                        <span>Tìm độ lớn và hướng của điện trường nhỏ nhất có thể khiến proton chuyển động chậm dần đều và dừng lại sau một khoảng đường \(s = 3.2\text{ cm}\).</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="font-bold text-indigo-700 shrink-0">b)</span>
+                        <span>Phải mất bao lâu để proton dừng lại sau khi đi vào điện trường?</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="font-bold text-indigo-700 shrink-0">c)</span>
+                        <span>Cần có điện trường tối thiểu bao nhiêu để dừng một electron trong các điều kiện ở câu a?</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Theoretical Constants Table -->
+            <div class="mt-6 bg-indigo-50/60 rounded-xl p-4 border border-indigo-100">
+                <h4 class="font-bold text-indigo-950 text-xs uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-database text-indigo-600"></i> Các Hằng Số Vật Lý Chuẩn Hệ SI
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                    <div class="bg-white p-3 rounded-lg border border-slate-200/80 shadow-xs">
+                        <span class="text-slate-500 block text-xs">Điện tích proton:</span>
+                        <span class="font-semibold text-slate-800">\(q_p = +e = +1.6 \times 10^{-19}\text{ C}\)</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border border-slate-200/80 shadow-xs">
+                        <span class="text-slate-500 block text-xs">Khối lượng proton:</span>
+                        <span class="font-semibold text-slate-800">\(m_p = 1.67 \times 10^{-27}\text{ kg}\)</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border border-slate-200/80 shadow-xs">
+                        <span class="text-slate-500 block text-xs">Điện tích electron:</span>
+                        <span class="font-semibold text-slate-800">\(q_e = -e = -1.6 \times 10^{-19}\text{ C}\)</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg border border-slate-200/80 shadow-xs">
+                        <span class="text-slate-500 block text-xs">Khối lượng electron:</span>
+                        <span class="font-semibold text-slate-800">\(m_e = 9.11 \times 10^{-31}\text{ kg}\)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Solution Section -->
+        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 space-y-8">
+            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+                <h3 class="text-xl font-bold text-indigo-950 flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap text-indigo-600"></i> LỜI GIẢI CHI TIẾT TỪ GIẢNG VIÊN
+                </h3>
+                <span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-1 rounded-md border border-emerald-200">Chuẩn Sư Phạm</span>
+            </div>
+
+            <!-- SVG Diagram Section -->
+            <div class="bg-slate-900 rounded-xl p-4 text-white shadow-inner border border-slate-800">
+                <h4 class="text-xs font-semibold text-slate-300 mb-3 text-center uppercase tracking-wider">Sơ đồ vectơ lực hãm và điện trường</h4>
+                <div class="w-full flex justify-center overflow-x-auto py-2">
+                    <svg width="650" height="210" viewBox="0 0 650 210" class="max-w-full">
+                        <defs>
+                            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#334155" stroke-width="0.5"/>
+                            </pattern>
+                            <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444"/>
+                            </marker>
+                            <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/>
+                            </marker>
+                            <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981"/>
+                            </marker>
+                        </defs>
+                        <rect width="650" height="210" fill="#0f172a" rx="8"/>
+                        <rect width="650" height="210" fill="url(#grid)" rx="8"/>
+
+                        <!-- Trục chuyển động -->
+                        <line x1="80" y1="115" x2="570" y2="115" stroke="#64748b" stroke-width="2" stroke-dasharray="4 4"/>
+                        <text x="580" y="120" fill="#94a3b8" font-size="12" font-family="sans-serif">Trục Ox</text>
+
+                        <!-- Proton điểm A -->
+                        <circle cx="160" cy="115" r="18" fill="#3b82f6" fill-opacity="0.25" stroke="#3b82f6" stroke-width="2"/>
+                        <circle cx="160" cy="115" r="12" fill="#ef4444"/>
+                        <text x="160" y="120" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">+</text>
+                        <text x="160" y="150" fill="#e2e8f0" font-size="12" text-anchor="middle" font-weight="bold">Proton (q > 0)</text>
+
+                        <!-- Vectơ Vận tốc v0 -->
+                        <line x1="160" y1="115" x2="270" y2="115" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrow-blue)"/>
+                        <text x="215" y="105" fill="#60a5fa" font-size="13" font-weight="bold">v₀ (Sang phải)</text>
+
+                        <!-- Vectơ Lực hãm Fe -->
+                        <line x1="160" y1="115" x2="70" y2="115" stroke="#ef4444" stroke-width="3" marker-end="url(#arrow-red)"/>
+                        <text x="80" y="100" fill="#f87171" font-size="13" font-weight="bold">Fₑ (Lực hãm)</text>
+
+                        <!-- Vectơ Điện trường E -->
+                        <line x1="390" y1="55" x2="270" y2="55" stroke="#10b981" stroke-width="3" marker-end="url(#arrow-green)"/>
+                        <text x="330" y="45" fill="#34d399" font-size="13" font-weight="bold">E_min (Ngược chiều v₀)</text>
+                        
+                        <!-- Đường sức trường -->
+                        <line x1="100" y1="35" x2="540" y2="35" stroke="#059669" stroke-width="1" stroke-dasharray="2 2" opacity="0.4"/>
+                        <line x1="100" y1="75" x2="540" y2="75" stroke="#059669" stroke-width="1" stroke-dasharray="2 2" opacity="0.4"/>
+
+                        <!-- Điểm dừng -->
+                        <circle cx="460" cy="115" r="12" fill="#64748b" stroke="#94a3b8" stroke-dasharray="2 2"/>
+                        <text x="460" y="150" fill="#94a3b8" font-size="12" text-anchor="middle">v = 0 (Dừng lại)</text>
+
+                        <!-- Kích thước s -->
+                        <line x1="160" y1="170" x2="460" y2="170" stroke="#f59e0b" stroke-width="1.5"/>
+                        <line x1="160" y1="165" x2="160" y2="175" stroke="#f59e0b" stroke-width="1.5"/>
+                        <line x1="460" y1="165" x2="460" y2="175" stroke="#f59e0b" stroke-width="1.5"/>
+                        <text x="310" y="190" fill="#fbbf24" font-size="13" font-weight="bold" text-anchor="middle">Quãng đường hãm s = 3.2 cm</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Câu A -->
+            <div class="space-y-4">
+                <div class="flex items-center space-x-2 text-lg font-bold text-slate-900 border-l-4 border-indigo-600 pl-3">
+                    <span>Câu a) Độ lớn và hướng của điện trường nhỏ nhất \(E_{\min}\)</span>
+                </div>
+
+                <!-- Step 1: Physical Explanation -->
+                <div class="bg-amber-50/80 border border-amber-200 rounded-xl p-4 text-slate-800">
+                    <h5 class="font-bold text-amber-950 text-sm flex items-center mb-2 gap-2">
+                        <i class="fa-solid fa-lightbulb text-amber-600"></i> LÝ GIẢI BẢN CHẤT VẬT LÝ
+                    </h5>
+                    <p class="text-sm leading-relaxed text-slate-700">
+                        Theo định luật II Newton, lực điện tác dụng gây ra gia tốc hãm cho hạt: \(\vec{F}_e = q\vec{E} = m\vec{a}\). <br>
+                        Để hãm dừng hạt trên quãng đường \(s\) cho trước với vận tốc ban đầu \(v_0\), gia tốc hãm cần thiết có độ lớn tối thiểu: \(a = \frac{v_0^2}{2s}\). <br>
+                        Nếu điện trường nghiêng góc \(\theta\) so với phương chuyển động, thành phần lực hãm sẽ là \(F_e \cdot \cos\theta = m a \implies q E \cos\theta = m a \implies E = \frac{m a}{q \cos\theta}\). <br>
+                        Giá trị \(E\) đạt <strong>nhỏ nhất (\(E_{\min}\))</strong> khi \(\cos\theta = 1\) (\(\theta = 0^\circ\)), nghĩa là lực điện \(\vec{F}_e\) song song và ngược chiều hoàn toàn với vận tốc ban đầu \(\vec{v}_0\).
+                    </p>
+                </div>
+
+                <div class="space-y-3 text-slate-700 leading-relaxed pl-1">
+                    <p class="font-semibold text-slate-900">1. Hướng của điện trường:</p>
+                    <p class="pl-4">
+                        Do proton mang điện tích dương (\(q_p = +e > 0\)), lực điện cùng chiều điện trường (\(\vec{F}_e = q_p \vec{E}\)). <br>
+                        Để proton chuyển động chậm dần đều, lực điện \(\vec{F}_e\) phải hướng <strong>sang trái</strong> (ngược chiều \(\vec{v}_0\)). <br>
+                        \(\Rightarrow\) Vectơ điện trường \(\vec{E}\) phải có <strong>phương ngang, hướng sang trái</strong>.
+                    </p>
+
+                    <p class="font-semibold text-slate-900">2. Độ lớn điện trường \(E_{\min}\):</p>
+                    <p class="pl-4">
+                        Áp dụng định lý biến thiên động năng:
+                        \[\Delta W_d = W_{d2} - W_{d1} = A_{\vec{F}_e}\]
+                        Khi proton dừng lại: \(v = 0 \implies W_{d2} = 0\). <br>
+                        Động năng ban đầu: \(W_{d1} = \frac{1}{2}m_p v_0^2\). <br>
+                        Công của lực điện hãm: \(A_{\vec{F}_e} = - F_e \cdot s = - q_p E s\).
+                    </p>
+                    <p class="pl-4">
+                        Cho hai vế bằng nhau:
+                        \[-\frac{1}{2}m_p v_0^2 = - q_p E s \implies E = \frac{m_p v_0^2}{2 q_p s}\]
+                    </p>
+                    <p class="pl-4">
+                        Thay số với các giá trị chuẩn hệ SI:
+                        \[m_p = 1.67 \times 10^{-27}\text{ kg}, \quad v_0 = 4.5 \times 10^6\text{ m/s}\]
+                        \[q_p = 1.6 \times 10^{-19}\text{ C}, \quad s = 3.2\text{ cm} = 0.032\text{ m}\]
+                    </p>
+                    <div class="bg-indigo-50/70 p-4 rounded-xl border border-indigo-200 math-display text-center font-bold text-indigo-950">
+                        \[E = \frac{(1.67 \times 10^{-27}) \cdot (4.5 \times 10^6)^2}{2 \cdot (1.6 \times 10^{-19}) \cdot 0.032} \approx 3.298 \times 10^3\text{ V/m} = 3.30 \times 10^3\text{ V/m}\]
+                    </div>
+                </div>
+            </div>
+
+            <!-- Câu B -->
+            <div class="space-y-4 pt-4 border-t border-slate-100">
+                <div class="flex items-center space-x-2 text-lg font-bold text-slate-900 border-l-4 border-indigo-600 pl-3">
+                    <span>Câu b) Thời gian hãm dừng của Proton (\(t\))</span>
+                </div>
+                <div class="space-y-3 text-slate-700 leading-relaxed pl-1">
+                    <p>
+                        Trong chuyển động chậm dần đều, quãng đường liên hệ với vận tốc trung bình:
+                        \[s = v_{\text{tb}} \cdot t = \left(\frac{v_0 + v}{2}\right) \cdot t\]
+                    </p>
+                    <p>
+                        Khi dừng lại (\(v = 0\)), ta suy ra:
+                        \[s = \frac{v_0}{2} \cdot t \implies t = \frac{2s}{v_0}\]
+                    </p>
+                    <p>Thay số vào biểu thức:</p>
+                    <div class="bg-indigo-50/70 p-4 rounded-xl border border-indigo-200 math-display text-center font-bold text-indigo-950">
+                        \[t = \frac{2 \cdot 0.032\text{ m}}{4.5 \times 10^6\text{ m/s}} \approx 1.422 \times 10^{-8}\text{ s} = 14.22\text{ ns}\]
+                    </div>
+                </div>
+            </div>
+
+            <!-- Câu C -->
+            <div class="space-y-4 pt-4 border-t border-slate-100">
+                <div class="flex items-center space-x-2 text-lg font-bold text-slate-900 border-l-4 border-indigo-600 pl-3">
+                    <span>Câu c) Điện trường tối thiểu để dừng một Electron</span>
+                </div>
+                <div class="space-y-3 text-slate-700 leading-relaxed pl-1">
+                    <p>
+                        Áp dụng công thức điện trường hãm cho electron có khối lượng \(m_e\) và điện tích \(|q_e| = e\):
+                        \[E_e = \frac{m_e v_0^2}{2 e s}\]
+                    </p>
+                    <p>
+                        Lập tỷ số giữa điện trường dừng Electron (\(E_e\)) và Proton (\(E_p\)):
+                        \[\frac{E_e}{E_p} = \frac{m_e}{m_p}\]
+                    </p>
+                    <div class="bg-amber-50/70 p-3.5 rounded-lg border border-amber-200 text-sm text-slate-800">
+                        <strong>Lưu ý quan trọng về hướng:</strong> Electron mang điện tích âm (\(q_e = -e < 0\)), nên lực điện \(\vec{F}_e = q_e \vec{E}\) sẽ <em>ngược chiều</em> với \(\vec{E}\). Để lực điện có tác dụng hãm (hướng sang trái), điện trường \(\vec{E}_e\) phải <strong>hướng sang phải</strong>.
+                    </div>
+                    <p>Thay số tính giá trị độ lớn \(E_e\):</p>
+                    <div class="bg-indigo-50/70 p-4 rounded-xl border border-indigo-200 math-display text-center font-bold text-indigo-950">
+                        \[E_e = E_p \cdot \left(\frac{m_e}{m_p}\right) = (3.298 \times 10^3) \cdot \left(\frac{9.11 \times 10^{-31}}{1.67 \times 10^{-27}}\right) \approx 1.80\text{ V/m}\]
+                    </div>
+                    <p class="text-xs text-slate-500 italic mt-1">
+                        * Nhận xét: Do khối lượng electron bé hơn proton khoảng 1836 lần (\(m_p \approx 1836 m_e\)), động năng của electron nhỏ hơn rất nhiều ở cùng vận tốc, nên chỉ cần điện trường rất nhỏ (\(1.80\text{ V/m}\)) là đủ để dừng hạt.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Conclusion Box -->
+            <div class="bg-slate-100/80 p-4 rounded-xl border-l-4 border-emerald-500 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div>
+                    <span class="font-bold text-slate-900 text-sm uppercase block">Tóm tắt đáp số bài 5:</span>
+                    <span class="text-xs text-slate-700">a) \(E = 3.30 \times 10^3\text{ V/m}\) (hướng sang trái) &nbsp;|&nbsp; b) \(t = 14.22\text{ ns}\) &nbsp;|&nbsp; c) \(E_e = 1.80\text{ V/m}\) (hướng sang phải)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Exercises Section -->
+        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 space-y-6">
+            <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-pen-ruler text-indigo-600"></i> BÀI TẬP TỰ LUYỆN TƯƠNG TỰ
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-1">Các dạng bài tập rèn luyện tư duy kèm nút xem lời giải tương tác</p>
+                </div>
+            </div>
+
+            <!-- Exercise 1 -->
+            <div class="border border-slate-200 rounded-xl p-5 hover:border-indigo-300 transition-colors bg-slate-50/50">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="px-2.5 py-1 bg-indigo-100 text-indigo-800 text-xs font-bold rounded-md border border-indigo-200">Bài tập 1 (Cơ bản - Electron)</span>
+                </div>
+                <p class="text-slate-800 font-medium mb-3">
+                    Một electron bắn vào một điện trường đều có độ lớn \(E = 500\text{ V/m}\) với vận tốc ban đầu \(v_0 = 3.0 \times 10^6\text{ m/s}\) dọc theo đường sức điện trường sao cho lực điện đóng vai trò lực hãm.
+                </p>
+                <p class="text-sm text-slate-700 mb-4">
+                    a) Hỏi electron đi được quãng đường bao nhiêu trước khi dừng lại?<br>
+                    b) Tính thời gian kể từ lúc đi vào điện trường đến khi electron quay trở lại vị trí ban đầu.
+                </p>
+
+                <!-- Toggle Solution Button -->
+                <button onclick="toggleSolution('sol-1')" class="inline-flex items-center gap-2 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-3.5 py-2 rounded-lg transition-colors border border-indigo-200 shadow-xs cursor-pointer">
+                    <i class="fa-solid fa-eye" id="icon-sol-1"></i>
+                    <span id="btn-text-sol-1">Hiện lời giải chi tiết</span>
+                </button>
+
+                <!-- Hidden Solution -->
+                <div id="sol-1" class="hidden mt-4 pt-4 border-t border-slate-200 space-y-3 text-sm text-slate-700 bg-white p-4 rounded-lg border">
+                    <p class="font-bold text-indigo-950">Lời giải Bài 1:</p>
+                    <p>
+                        <strong>a) Quãng đường hãm dừng \(s\):</strong><br>
+                        Gia tốc hãm của electron: 
+                        \[a = \frac{|q_e|E}{m_e} = \frac{(1.6 \times 10^{-19})(500)}{9.11 \times 10^{-31}} \approx 8.78 \times 10^{13}\text{ m/s}^2\]
+                        Quãng đường dừng lại: 
+                        \[s = \frac{v_0^2}{2a} = \frac{(3.0 \times 10^6)^2}{2 \cdot (8.78 \times 10^{13})} \approx 0.0512\text{ m} = 5.12\text{ cm}\]
+                    </p>
+                    <p>
+                        <strong>b) Thời gian quay lại vị trí ban đầu \(t_{\text{tổng}}\):</strong><br>
+                        Thời gian hãm dừng: 
+                        \[t_1 = \frac{v_0}{a} = \frac{3.0 \times 10^6}{8.78 \times 10^{13}} \approx 3.42 \times 10^{-8}\text{ s} = 34.2\text{ ns}\]
+                        Do chuyển động biến đổi đều có tính đối xứng, thời gian quay trở lại vị trí ban đầu là: 
+                        \[t_{\text{tổng}} = 2 t_1 = 2 \cdot 34.2\text{ ns} = 68.4\text{ ns}\]
+                    </p>
+                </div>
+            </div>
+
+            <!-- Exercise 2 -->
+            <div class="border border-slate-200 rounded-xl p-5 hover:border-indigo-300 transition-colors bg-slate-50/50">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="px-2.5 py-1 bg-amber-100 text-amber-900 text-xs font-bold rounded-md border border-amber-200">Bài tập 2 (Kha - Hạt Alpha)</span>
+                </div>
+                <p class="text-slate-800 font-medium mb-3">
+                    Một hạt Alpha (\(\alpha\), hạt nhân Heli có \(q_\alpha = +2e = +3.2 \times 10^{-19}\text{ C}\), khối lượng \(m_\alpha = 6.64 \times 10^{-27}\text{ kg}\)) chuyển động với vận tốc \(v_0 = 1.2 \times 10^6\text{ m/s}\) đi vào vùng điện trường đều \(E = 1.5 \times 10^4\text{ V/m}\) có hướng ngược với hướng chuyển động của hạt.
+                </p>
+                <p class="text-sm text-slate-700 mb-4">
+                    Xác định quãng đường hạt đi được và vận tốc của hạt sau thời gian \(t = 2.0\text{ }\mu\text{s}\) kể từ khi vào điện trường.
+                </p>
+
+                <!-- Toggle Solution Button -->
+                <button onclick="toggleSolution('sol-2')" class="inline-flex items-center gap-2 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-3.5 py-2 rounded-lg transition-colors border border-indigo-200 shadow-xs cursor-pointer">
+                    <i class="fa-solid fa-eye" id="icon-sol-2"></i>
+                    <span id="btn-text-sol-2">Hiện lời giải chi tiết</span>
+                </button>
+
+                <!-- Hidden Solution -->
+                <div id="sol-2" class="hidden mt-4 pt-4 border-t border-slate-200 space-y-3 text-sm text-slate-700 bg-white p-4 rounded-lg border">
+                    <p class="font-bold text-indigo-950">Lời giải Bài 2:</p>
+                    <p>
+                        Gia tốc hãm do lực điện: 
+                        \[a = \frac{q_\alpha E}{m_\alpha} = \frac{(3.2 \times 10^{-19})(1.5 \times 10^4)}{6.64 \times 10^{-27}} \approx 7.23 \times 10^{11}\text{ m/s}^2\]
+                        Thời gian hạt hãm cho tới khi dừng hẳn:
+                        \[t_{\text{dừng}} = \frac{v_0}{a} = \frac{1.2 \times 10^6}{7.23 \times 10^{11}} \approx 1.66 \times 10^{-6}\text{ s} = 1.66\text{ }\mu\text{s}\]
+                    </p>
+                    <p>
+                        Tại thời điểm \(t = 2.0\text{ }\mu\text{s} > 1.66\text{ }\mu\text{s}\):<br>
+                        - Quãng đường đi tiến hãm dừng: \(s_1 = \frac{v_0^2}{2a} \approx 0.996\text{ m}\).<br>
+                        - Trong \(0.34\text{ }\mu\text{s}\) tiếp theo, hạt đảo chiều tăng tốc ngược lại:
+                        \[s_2 = \frac{1}{2} a (t - t_{\text{dừng}})^2 = \frac{1}{2}(7.23 \times 10^{11})(0.34 \times 10^{-6})^2 \approx 0.0418\text{ m}\]
+                        \(\Rightarrow\) Tổng quãng đường hạt đã đi: \(S = s_1 + s_2 = 0.996 + 0.0418 = 1.0378\text{ m}\).<br>
+                        \(\Rightarrow\) Vận tốc sau \(2.0\text{ }\mu\text{s}\): \(v = a \cdot (t - t_{\text{dừng}}) = (7.23 \times 10^{11})(0.34 \times 10^{-6}) \approx 2.46 \times 10^5\text{ m/s}\) (theo chiều ngược lại).
+                    </p>
+                </div>
+            </div>
+
+            <!-- Exercise 3 -->
+            <div class="border border-slate-200 rounded-xl p-5 hover:border-indigo-300 transition-colors bg-slate-50/50">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="px-2.5 py-1 bg-red-100 text-red-900 text-xs font-bold rounded-md border border-red-200">Bài tập 3 (Nâng cao - Tụ điện)</span>
+                </div>
+                <p class="text-slate-800 font-medium mb-3">
+                    Một hạt mang điện \(q = +3.2 \times 10^{-19}\text{ C}\), khối lượng \(m = 4.0 \times 10^{-26}\text{ kg}\) bay vào khoảng giữa hai bản tụ điện phẳng đặt song song cách nhau \(d = 4\text{ cm}\) với vận tốc ban đầu \(v_0 = 2.0 \times 10^5\text{ m/s}\) vuông góc đường sức.
+                </p>
+                <p class="text-sm text-slate-700 mb-4">
+                    Nếu muốn hạt không va chạm vào bản đối diện có chiều dài \(L = 10\text{ cm}\), hiệu điện thế tối đa \(U_{\max}\) giữa hai bản tụ có thể đặt vào là bao nhiêu?
+                </p>
+
+                <!-- Toggle Solution Button -->
+                <button onclick="toggleSolution('sol-3')" class="inline-flex items-center gap-2 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-3.5 py-2 rounded-lg transition-colors border border-indigo-200 shadow-xs cursor-pointer">
+                    <i class="fa-solid fa-eye" id="icon-sol-3"></i>
+                    <span id="btn-text-sol-3">Hiện lời giải chi tiết</span>
+                </button>
+
+                <!-- Hidden Solution -->
+                <div id="sol-3" class="hidden mt-4 pt-4 border-t border-slate-200 space-y-3 text-sm text-slate-700 bg-white p-4 rounded-lg border">
+                    <p class="font-bold text-indigo-950">Lời giải Bài 3:</p>
+                    <p>
+                        Phương trình chuyển động theo hai trục \(Ox\) (ngang) và \(Oy\) (dọc):<br>
+                        - Theo \(Ox\): \(x = v_0 t \implies t = \frac{x}{v_0}\)<br>
+                        - Theo \(Oy\): Gia tốc \(a_y = \frac{qE}{m} = \frac{qU}{md} \implies y = \frac{1}{2}a_y t^2 = \frac{q U x^2}{2 m d v_0^2}\)
+                    </p>
+                    <p>
+                        Để hạt không đụng bản đối diện khi ra khỏi tụ (\(x = L \implies y \le d\)):
+                        \[\frac{q U L^2}{2 m d v_0^2} \le d \implies U \le \frac{2 m d^2 v_0^2}{q L^2}\]
+                    </p>
+                    <p>Thay số tìm giá trị hiệu điện thế giới hạn \(U_{\max}\):</p>
+                    <div class="bg-indigo-50/70 p-3 rounded-lg border border-indigo-200 math-display text-center font-bold text-indigo-950">
+                        \[U_{\max} = \frac{2 \cdot (4.0 \times 10^{-26}) \cdot (0.04)^2 \cdot (2.0 \times 10^5)^2}{(3.2 \times 10^{-19}) \cdot (0.1)^2} = 1600\text{ V}\]
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-center text-xs">
+        <div class="max-w-5xl mx-auto px-4 space-y-2">
+            <p>© Bộ môn Vật Lý Đại Cường - Học phần Vật Lý Đại Cường 2</p>
+            <p class="text-slate-500">Tài liệu học tập được tối ưu hiển thị phông chữ Tiếng Việt & Công thức Toán/Vật Lý chuẩn KaTeX</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript For Toggle Solutions & KaTeX Rendering -->
+    <script>
+        // Render KaTeX when DOM is completely loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError : false
+            });
+        });
+
+        // Function Toggle Show/Hide Solution
+        function toggleSolution(id) {
+            const solutionEl = document.getElementById(id);
+            const iconEl = document.getElementById('icon-' + id);
+            const textEl = document.getElementById('btn-text-' + id);
+
+            if (solutionEl.classList.contains('hidden')) {
+                solutionEl.classList.remove('hidden');
+                iconEl.classList.remove('fa-eye');
+                iconEl.classList.add('fa-eye-slash');
+                textEl.innerText = 'Ẩn lời giải chi tiết';
+            } else {
+                solutionEl.classList.add('hidden');
+                iconEl.classList.remove('fa-eye-slash');
+                iconEl.classList.add('fa-eye');
+                textEl.innerText = 'Hiện lời giải chi tiết';
+            }
+        }
+    </script>
+</body>
+</html>
