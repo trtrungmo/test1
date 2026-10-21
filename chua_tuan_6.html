@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Giải bài tập tuần 6</title>
+    <style type="text/css">
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; color: #333; }
+        h1 { text-align: center; color: #0056b3; }
+        h2 { color: #d9534f; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        h3 { color: #337ab7; }
+        p { margin: 10px 0; }
+        .solution { background-color: #f9f9f9; border-left: 4px solid #5cb85c; padding: 10px; margin-bottom: 20px; }
+        .formula { font-style: italic; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>GIẢI BÀI TẬP TRỌNG TÂM CHƯƠNG 9 VÀ 10</h1>
+
+    <h2>CHƯƠNG 9</h2>
+
+    <h3>Bài 1 (29.7)[cite: 1]</h3>
+    <div class="solution">
+        <p><b>(a)</b> Từ trường B do dòng điện thẳng dài tạo ra tại khoảng cách r là: B = &mu;<sub>0</sub>i / (2&pi;r). Hướng của B là đi vào trong mặt phẳng hình vẽ (theo quy tắc bàn tay phải).</p>
+        <p><b>(b)</b> Từ thông qua dải hẹp có chiều rộng dr và chiều dài L là: d&Phi;<sub>B</sub> = B &middot; dA = [&mu;<sub>0</sub>i / (2&pi;r)] &middot; L &middot; dr.</p>
+        <p><b>(c)</b> Tổng từ thông qua mạch từ r = a đến r = b: &Phi;<sub>B</sub> = &int; d&Phi;<sub>B</sub> = (&mu;<sub>0</sub>iL / 2&pi;) &middot; ln(b/a).</p>
+        <p><b>(d)</b> Suất điện động cảm ứng theo định luật Faraday: |&epsilon;| = d&Phi;<sub>B</sub>/dt = (&mu;<sub>0</sub>L / 2&pi;) &middot; ln(b/a) &middot; (di/dt).</p>
+        <p><b>(e)</b> Thay số: a = 0.12 m, b = 0.24 m, L = 0.36 m, di/dt = 9.60 A/s. Ta có &mu;<sub>0</sub> = 4&pi; &times; 10<sup>-7</sup> T&middot;m/A.<br>
+        |&epsilon;| = [(4&pi; &times; 10<sup>-7</sup>)(0.36) / 2&pi;] &middot; ln(0.24/0.12) &middot; 9.60 = (2 &times; 10<sup>-7</sup>) &times; 0.36 &times; ln(2) &times; 9.60 &approx; 4.79 &times; 10<sup>-7</sup> V.</p>
+    </div>
+
+    <h3>Bài 2 (29.23)[cite: 1, 2]</h3>
+    <div class="solution">
+        <p>Từ trường tăng dần theo công thức B(t) = (0.380)t<sup>3</sup>.<br>
+        Tại thời điểm B = 1.33 T, ta có: 1.33 = 0.380 &times; t<sup>3</sup> &rArr; t<sup>3</sup> = 3.5 &rArr; t &approx; 1.518 s.<br>
+        Từ thông &Phi;<sub>B</sub> = B &middot; A = B &middot; (&pi;r<sup>2</sup>).<br>
+        Suất điện động cảm ứng |&epsilon;| = d&Phi;<sub>B</sub>/dt = A &middot; (dB/dt) = &pi;r<sup>2</sup> &middot; 3(0.380)t<sup>2</sup>.<br>
+        Tại t = 1.518 s, dB/dt = 3 &times; 0.380 &times; (1.518)<sup>2</sup> &approx; 2.628 T/s.<br>
+        |&epsilon;| = &pi; &times; (0.0250)<sup>2</sup> &times; 2.628 &approx; 5.16 &times; 10<sup>-3</sup> V.<br>
+        Dòng điện cảm ứng I = |&epsilon;| / R = (5.16 &times; 10<sup>-3</sup>) / 0.390 &approx; 0.0132 A = 13.2 mA.<br>
+        Chiều dòng điện: Theo định luật Lenz, từ trường cảm ứng sẽ hướng ra ngoài để chống lại sự tăng của từ trường ban đầu, nên dòng điện chạy <b>ngược chiều kim đồng hồ</b>.</p>
+    </div>
+
+    <h3>Bài 3 (29.35)[cite: 2, 3]</h3>
+    <div class="solution">
+        <p>Suất điện động cảm ứng khi đi qua cạnh từ trường: |&epsilon;| = B &middot; l &middot; v = 1.25 &times; 0.50 &times; 3.0 = 1.875 V.<br>
+        Cường độ dòng điện: I = |&epsilon;| / R = 1.875 / 12.5 = 0.15 A.</p>
+        <ul>
+            <li><b>(a) Khi đi vào:</b> Từ thông (hướng ra) tăng. Dòng cảm ứng chống lại sự tăng này (tạo từ trường hướng vào) &rArr; chạy <b>cùng chiều kim đồng hồ</b>.</li>
+            <li><b>(b) Khi nằm hoàn toàn trong từ trường:</b> Từ thông không đổi &rArr; I = <b>0 A</b>.</li>
+            <li><b>(c) Khi đi ra:</b> Từ thông giảm. Dòng cảm ứng chống lại sự giảm (tạo từ trường hướng ra) &rArr; chạy <b>ngược chiều kim đồng hồ</b>.</li>
+        </ul>
+        <p><b>(d) Đồ thị:</b> Có dạng xung chữ nhật. Xung dương (0.15 A) khi vào, bằng 0 khi ở trong, xung âm (-0.15 A) khi đi ra.</p>
+    </div>
+
+    <h3>Bài 4 (29.38)[cite: 3]</h3>
+    <div class="solution">
+        <p>Sử dụng định luật Faraday dạng tích phân: &oint; E &middot; ds = -d&Phi;<sub>B</sub>/dt &rArr; E(2&pi;r) = &pi;r<sup>2</sup> &middot; (dB/dt) (với r < R).<br>
+        Bên trong cuộn cảm: B = &mu;<sub>0</sub>nI &rArr; dB/dt = &mu;<sub>0</sub>n(di/dt).<br>
+        Vậy E = (r/2) &middot; &mu;<sub>0</sub>n(di/dt). Ở đây: n = 900 vòng/m, di/dt = 36.0 A/s.</p>
+        <p><b>(a) r = 0.500 cm = 0.005 m:</b><br>
+        E = (0.005 / 2) &times; (4&pi; &times; 10<sup>-7</sup>) &times; 900 &times; 36.0 &approx; 1.02 &times; 10<sup>-4</sup> V/m.</p>
+        <p><b>(b) r = 1.00 cm = 0.01 m:</b><br>
+        E = (0.01 / 2) &times; (4&pi; &times; 10<sup>-7</sup>) &times; 900 &times; 36.0 &approx; 2.04 &times; 10<sup>-4</sup> V/m.</p>
+    </div>
+
+    <h3>Bài 5 (29.39)[cite: 3]</h3>
+    <div class="solution">
+        <p>Bán kính cuộn cảm R = 1.10 cm. Điểm cách trục r = 3.50 cm > R (nằm ngoài cuộn cảm).<br>
+        Công thức điện trường ngoài cuộn cảm: E(2&pi;r) = &pi;R<sup>2</sup> &middot; (dB/dt) = &pi;R<sup>2</sup> &middot; &mu;<sub>0</sub>n(di/dt).<br>
+        &rArr; di/dt = (E &middot; 2&pi;r) / (&pi;R<sup>2</sup> &middot; &mu;<sub>0</sub>n) = (2Er) / (R<sup>2</sup>&mu;<sub>0</sub>n).<br>
+        Thay số: E = 8.00 &times; 10<sup>-6</sup> V/m, r = 0.035 m, R = 0.011 m, n = 400 vòng/m.<br>
+        di/dt = (2 &times; 8.00 &times; 10<sup>-6</sup> &times; 0.035) / ((0.011)<sup>2</sup> &times; 4&pi; &times; 10<sup>-7</sup> &times; 400) &approx; 9.21 A/s.</p>
+    </div>
+
+    <h3>Bài 6 (29.44)[cite: 3, 4]</h3>
+    <div class="solution">
+        <p><b>(a)</b> Điện tích q = i<sub>C</sub> &times; t = (1.80 &times; 10<sup>-3</sup>) &times; (0.500 &times; 10<sup>-6</sup>) = 9.00 &times; 10<sup>-10</sup> C.<br>
+        Điện trường E = q / (&epsilon;<sub>0</sub>A) = (9.00 &times; 10<sup>-10</sup>) / (8.85 &times; 10<sup>-12</sup> &times; 5.00 &times; 10<sup>-4</sup>) &approx; 2.03 &times; 10<sup>5</sup> V/m.<br>
+        Hiệu điện thế V = E &times; d = 2.03 &times; 10<sup>5</sup> &times; (2.00 &times; 10<sup>-3</sup>) &approx; 407 V.</p>
+        <p><b>(b)</b> dE/dt = i<sub>C</sub> / (&epsilon;<sub>0</sub>A) = (1.80 &times; 10<sup>-3</sup>) / (8.85 &times; 10<sup>-12</sup> &times; 5.00 &times; 10<sup>-4</sup>) &approx; 4.07 &times; 10<sup>11</sup> V/(m&middot;s). Giá trị này không đổi theo thời gian (vì i<sub>C</sub> không đổi).</p>
+        <p><b>(c)</b> Mật độ dòng điện dịch chuyển j<sub>D</sub> = &epsilon;<sub>0</sub>(dE/dt) = i<sub>C</sub> / A = (1.80 &times; 10<sup>-3</sup>) / (5.00 &times; 10<sup>-4</sup>) = 3.60 A/m<sup>2</sup>.<br>
+        Tổng dòng điện dịch chuyển i<sub>D</sub> = j<sub>D</sub> &times; A = 1.80 mA. Nhận xét: i<sub>D</sub> luôn bằng i<sub>C</sub>.</p>
+    </div>
+
+    <h2>CHƯƠNG 10</h2>
+
+    <h3>Bài 1 (30.6)[cite: 4]</h3>
+    <div class="solution">
+        <p><b>(a)</b> Độ hỗ cảm M = (N<sub>2</sub>&Phi;<sub>2</sub>) / i<sub>1</sub>. Từ trường cuộn 1: B<sub>1</sub> = &mu;<sub>0</sub>N<sub>1</sub>i<sub>1</sub> / (2&pi;r).<br>
+        Từ thông qua 1 vòng của cuộn 2: &Phi;<sub>2</sub> = B<sub>1</sub> &middot; A = (&mu;<sub>0</sub>N<sub>1</sub>i<sub>1</sub>A) / (2&pi;r).<br>
+        &rArr; M = (&mu;<sub>0</sub>N<sub>1</sub>N<sub>2</sub>A) / (2&pi;r).</p>
+        <p><b>(b)</b> Thay số: N<sub>1</sub> = 500, N<sub>2</sub> = 300, r = 0.10 m, A = 0.800 &times; 10<sup>-4</sup> m<sup>2</sup>.<br>
+        M = (4&pi; &times; 10<sup>-7</sup> &times; 500 &times; 300 &times; 0.800 &times; 10<sup>-4</sup>) / (2&pi; &times; 0.10) = 2.4 &times; 10<sup>-5</sup> H = 24 &mu;H.</p>
+    </div>
+
+    <h3>Bài 2 (30.10)[cite: 4]</h3>
+    <div class="solution">
+        <p>Suất điện động tự cảm: |&epsilon;| = L(di/dt) &rArr; L = |&epsilon;| / (di/dt) = 0.0126 / 0.0260 &approx; 0.4846 H.<br>
+        Mặt khác, L = N&Phi;<sub>B</sub> / i &rArr; N = L &middot; i / &Phi;<sub>B</sub> = 0.4846 &times; 1.40 / 0.00285 &approx; 238 vòng.</p>
+    </div>
+
+    <h3>Bài 3 (30.19)[cite: 4]</h3>
+    <div class="solution">
+        <p><b>(a)</b> Mật độ vòng dây n = N / l = 400 / 0.25 = 1600 vòng/m.<br>
+        Từ trường B = &mu;<sub>0</sub>nI = (4&pi; &times; 10<sup>-7</sup>) &times; 1600 &times; 80.0 &approx; 0.161 T.</p>
+        <p><b>(b)</b> Mật độ năng lượng u = B<sup>2</sup> / (2&mu;<sub>0</sub>) = (0.161)<sup>2</sup> / (2 &times; 4&pi; &times; 10<sup>-7</sup>) &approx; 1.03 &times; 10<sup>4</sup> J/m<sup>3</sup>.</p>
+        <p><b>(c)</b> Thể tích V = A &middot; l = 0.500 &times; 10<sup>-4</sup> &times; 0.25 = 1.25 &times; 10<sup>-5</sup> m<sup>3</sup>.<br>
+        Tổng năng lượng U = u &middot; V = (1.03 &times; 10<sup>4</sup>) &times; (1.25 &times; 10<sup>-5</sup>) &approx; 0.129 J.</p>
+        <p><b>(d)</b> Năng lượng U = 0.5 &middot; L &middot; I<sup>2</sup> &rArr; L = 2U / I<sup>2</sup> = (2 &times; 0.129) / (80.0)<sup>2</sup> &approx; 4.03 &times; 10<sup>-5</sup> H.</p>
+    </div>
+
+    <h3>Bài 4 (30.34)[cite: 4, 5]</h3>
+    <div class="solution">
+        <p>Tụ điện C = 18.0 &mu;F, Cuộn cảm L = 12.0 mH, V<sub>0</sub> = 22.5 V.<br>
+        Điện tích cực đại ban đầu: Q<sub>max</sub> = C &middot; V<sub>0</sub> = (18.0 &times; 10<sup>-6</sup>) &times; 22.5 = 4.05 &times; 10<sup>-4</sup> C.</p>
+        <p><b>(a)</b> Năng lượng bảo toàn: 0.5 &middot; C &middot; V<sub>0</sub><sup>2</sup> = 0.5 &middot; L &middot; I<sub>max</sub><sup>2</sup>.<br>
+        &rArr; I<sub>max</sub> = V<sub>0</sub> &middot; &radic;(C/L) = 22.5 &times; &radic;(18.0 &times; 10<sup>-6</sup> / 12.0 &times; 10<sup>-3</sup>) = 22.5 &times; &radic;(1.5 &times; 10<sup>-3</sup>) &approx; 0.871 A.<br>
+        Khi dòng điện đạt cực đại, toàn bộ năng lượng ở cuộn cảm nên điện tích trên tụ là <b>0 C</b>.</p>
+        <p><b>(b)</b> Tần số góc &omega; = 1/&radic;(LC) = 1/&radic;(12.0 &times; 10<sup>-3</sup> &times; 18.0 &times; 10<sup>-6</sup>) &approx; 2152 rad/s.<br>
+        Chu kỳ T = 2&pi;/&omega; &approx; 2.92 &times; 10<sup>-3</sup> s (2.92 ms).<br>
+        Tụ xả hoàn toàn (q = 0) lần đầu tiên tại t = T/4 = 2.92 / 4 &approx; 0.730 ms.<br>
+        Tụ xả hoàn toàn lần thứ hai tại t = 3T/4 = 3 &times; 0.730 &approx; 2.19 ms.</p>
+        <p><b>(c)</b> Phương trình điện tích: q(t) = Q<sub>max</sub> &middot; cos(&omega;t). (Hàm cosin bắt đầu từ Q<sub>max</sub>).<br>
+        Phương trình dòng điện: i(t) = -dq/dt = Q<sub>max</sub>&omega; &middot; sin(&omega;t) = I<sub>max</sub> &middot; sin(&omega;t). (Hàm sin bắt đầu từ 0).<br>
+        <i>(Đồ thị q(t) là một đường hình sin cosin; i(t) là một đường hình sin dịch pha &pi;/2 so với q).</i></p>
+    </div>
+
+</body>
+</html>
