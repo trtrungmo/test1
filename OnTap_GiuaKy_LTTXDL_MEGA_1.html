@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn tập Lập trình Xử lý Dữ liệu - UET</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; max-width: 1000px; margin: auto; padding: 20px; background-color: #f4f7f6; color: #333; }
+        h1 { text-align: center; color: #2c3e50; }
+        .question-card { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .lecture-tag { display: inline-block; background: #3498db; color: #fff; padding: 5px 10px; border-radius: 4px; font-size: 0.9em; margin-bottom: 10px; }
+        .knowledge-tag { display: inline-block; background: #2ecc71; color: #fff; padding: 5px 10px; border-radius: 4px; font-size: 0.9em; margin-bottom: 10px; margin-left: 5px; }
+        h3 { color: #2980b9; border-bottom: 2px solid #ecf0f1; padding-bottom: 5px; margin-top: 0; }
+        .extra-question { background: #e8f8f5; padding: 15px; border-left: 4px solid #1abc9c; margin-top: 15px; border-radius: 0 4px 4px 0;}
+        code { background: #eee; padding: 2px 5px; border-radius: 3px; font-family: Consolas, monospace; }
+        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #7f8c8d; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>Hệ thống Ôn tập: Lập trình Xử lý Dữ liệu</h1>
+    <p style="text-align: center; font-size: 1.1em; margin-bottom: 30px;">Tài liệu phân tích chi tiết từng câu hỏi trong đề thi giữa kỳ luyện tập (UET.DSE2049)</p>
+
+        <div class="question-card">
+            <h3>Câu 1</h3>
+            <div>
+                <span class="lecture-tag">Lecture 1: Tổng quan và chính sách AI</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Hiểu chính sách sử dụng AI trong học tập (khai báo, minh bạch, tự chịu trách nhiệm).</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Dù sinh viên tự kiểm thử và tự sửa lại code do AI sinh ra, việc dùng AI viết một nửa logic bài vẫn phải tuân thủ chính sách minh bạch. Người học chịu trách nhiệm cho code cuối cùng nhưng buộc phải khai báo đầy đủ mức độ sử dụng AI.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Nếu sinh viên chỉ dùng AI để sinh boilerplate code (khung dự án cơ bản) và tự viết toàn bộ logic bên trong, theo chính sách môn học, sinh viên có cần khai báo trong AI_USAGE.md không? Vì sao?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 2</h3>
+            <div>
+                <span class="lecture-tag">Lecture 2: Python cơ bản (Môi trường ảo)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Cách hoạt động của venv và pip. Hiểu rằng venv sử dụng phiên bản Python đang gọi nó.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Lệnh <code>python -m venv</code> sẽ tạo môi trường ảo với phiên bản Python của trình thông dịch đang chạy lệnh đó (ở đây là 3.11 của máy). Tệp <code>python-version</code> không tự động cài Python mới nếu không dùng các công cụ quản lý chuyên dụng (như pyenv).</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Lệnh <code>pip freeze > requirements.txt</code> lưu lại thông tin gì? Nếu sang máy khác chạy <code>pip install -r requirements.txt</code> nhưng bỏ quên bước <code>source venv/bin/activate</code> thì chuyện gì xảy ra?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 3</h3>
+            <div>
+                <span class="lecture-tag">Lecture 2: Python cơ bản (Truth value & List Comprehension)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Quy tắc Truthy/Falsy trong Python. Các giá trị None, 0.0, 0, chuỗi rỗng đều được coi là Falsy.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Biểu thức <code>[x for x in v if x]</code> sẽ bỏ qua <code>None</code> và <code>0.0</code> vì chúng được Python nội suy là Falsy. Mảng được tạo ra chỉ còn <code>[1200.0, 600.0]</code>. Trung bình của chúng là 900.0.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Cho đoạn code: <code>a = [x for x in ['', 'Python', 0, 1, []] if x]</code>. Giá trị của lệnh <code>len(a)</code> là bao nhiêu?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 4</h3>
+            <div>
+                <span class="lecture-tag">Lecture 2 & Lecture 6: Xử lý tệp (CSV) & Hàm ẩn (lambda)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Đọc file bằng <code>csv.DictReader</code> (đọc dữ liệu thành kiểu string) và hàm sắp xếp.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> <code>DictReader</code> đọc cột <code>so_dem</code> dưới dạng chuỗi (string). Khi sắp xếp chuỗi (string comparison), ký tự '9' có mã ASCII lớn hơn ký tự '4' của '40', do đó chuỗi '9' lớn hơn '40'. Khi sắp xếp giảm dần, L3 (chứa '9') hoặc L5 ('15' - ký tự '1' rất nhỏ) sẽ bị xếp theo thứ tự từ điển, khiến kết quả sai lệch so với sắp xếp số học.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Cần sửa tham số <code>key</code> trong hàm <code>sorted</code> như thế nào để sắp xếp chính xác danh sách theo giá trị số nguyên của cột <code>so_dem</code> thay vì chuỗi?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 5</h3>
+            <div>
+                <span class="lecture-tag">Lecture 3: NumPy (Slicing và Views vs Copies)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Slicing trong NumPy trả về View, nhưng boolean masking trả về Copy.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Biến <code>h</code> là một view (tạo ra từ slicing), nên phép gán <code>h[1]=6</code> thực chất là sửa mảng gốc <code>G</code>. Biến <code>m</code> là copy (tạo ra từ boolean indexing), nên <code>m[0]=9</code> không hề ảnh hưởng đến mảng gốc.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Cho mảng <code>A = np.array([1, 2, 3])</code>. Khởi tạo <code>B = A[:]</code> và <code>C = A[[0, 1, 2]]</code>. Khi thực hiện <code>B[0] = 9</code> và <code>C[1] = 9</code>, tổng các phần tử của <code>A</code> sau cùng là bao nhiêu?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 6</h3>
+            <div>
+                <span class="lecture-tag">Lecture 3: NumPy (Memory Layout, Shape, Strides)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Cấu trúc bộ nhớ NumPy. Strides là số byte cần nhảy để tới phần tử tiếp theo.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Mảng int32 tốn 4 bytes/phần tử. <code>T.strides</code> gốc là (20, 4). Khi lấy bước nhảy (step) là 2 cho cả hai chiều (<code>1::2</code> và <code>::2</code>), strides mới sẽ nhân đôi: (40, 8). Số lượng hàng giảm từ 6 xuống 3, cột từ 5 xuống 3. Shape mới là (3,3).</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Nếu mảng <code>M</code> có shape (10, 10), strides (80, 8). Lệnh <code>N = M.T</code> (chuyển vị) sẽ làm <code>N.shape</code> và <code>N.strides</code> thay đổi ra sao?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 7</h3>
+            <div>
+                <span class="lecture-tag">Lecture 3: NumPy (Vectorization & Performance)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Lý do NumPy nhanh: Vectorization, SIMD, khối bộ nhớ liên tục.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> NumPy xử lý mảng dữ liệu có kiểu đồng nhất (int64) được lưu trữ liền kề nhau trên RAM (C-contiguous), kết hợp với các tập lệnh SIMD của CPU để tính toán song song, tránh overhead của Python interpreter khi dùng vòng lặp list.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">So sánh sự khác biệt về cấp phát bộ nhớ khi khởi tạo một list Python chứa 10.000 số nguyên so với một mảng NumPy bằng lệnh <code>np.arange(10000)</code>.</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 8</h3>
+            <div>
+                <span class="lecture-tag">Lecture 4: Pandas (Indexing .loc vs .iloc)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Sự khác biệt giữa <code>.loc</code> (label-based, bao gồm đầu mút) và <code>.iloc</code> (position-based, không bao gồm đầu mút).</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Khi lọc <code>df[df['gia'] < 90]</code>, index cũ được bảo toàn. <code>.loc[1:4]</code> lấy các hàng có tên index nằm trong đoạn 1 đến 4. <code>.iloc[1:4]</code> lấy theo thứ tự dòng vật lý hiện tại từ dòng 1 đến dòng 3 của bảng con (bỏ qua tên index).</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Nếu một DataFrame có index là các chuỗi <code>['a', 'b', 'c', 'd']</code>, lệnh <code>.loc['b':'c']</code> trả về bao nhiêu hàng? Lệnh <code>.iloc[1:3]</code> trả về bao nhiêu hàng?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 9</h3>
+            <div>
+                <span class="lecture-tag">Lecture 4 & Lecture 5: Pandas (Groupby, CSV I/O, Indexing)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Hành vi của tham số <code>index=False</code> khi xuất file CSV với bảng có index được tạo ra từ Groupby.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Kết quả của <code>groupby('khu')</code> mặc định sẽ đưa cột 'khu' thành index của DataFrame kết quả. Khi dùng lệnh <code>to_csv(index=False)</code>, cột index này sẽ bị loại bỏ hoàn toàn, chỉ các cột giá trị như <code>trung_vi</code> và <code>so_gia</code> được lưu lại. Do đó mất đi tên khu.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Cần chèn thêm phương thức gì vào luồng xử lý trước khi gọi <code>to_csv</code> để cột 'khu' không bị mất khi vẫn giữ tham số <code>index=False</code>?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 10</h3>
+            <div>
+                <span class="lecture-tag">Lecture 4: Pandas (Index Alignment & Math Operations)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Cộng hai Series trong Pandas sẽ tự động căn chỉnh theo Index. Những index không khớp trả về NaN.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Bảng <code>ks</code> có index ['K1', 'K2', 'K3']. Series <code>thue</code> có index ['K2', 'K4', 'K1']. Phép cộng sinh ra giá trị hợp lệ cho K1 và K2, còn K3 và K4 bị <code>NaN</code>. Khi gọi <code>to_numpy()</code>, Series kết quả loại bỏ index và chuyển về mảng NumPy chứa giá trị (bao gồm cả NaN).</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Làm thế nào để thực hiện phép cộng <code>ks['gia']</code> và <code>thue</code> sao cho các index không trùng khớp được mặc định gán giá trị 0 thay vì trở thành <code>NaN</code>?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 11</h3>
+            <div>
+                <span class="lecture-tag">Lecture 5: Pandas (Map & Missing Data Handling)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Hàm <code>map</code> trong Pandas điền <code>NaN</code> nếu key không tồn tại trong từ điển. Khác biệt giữa <code>sum()</code> và <code>count()</code>.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Hàng 'Nhà nghỉ' không có trong từ điển cấu hình map nên trở thành <code>NaN</code>. Khi tính toán, hàm <code>sum()</code> tự động bỏ qua <code>NaN</code> để cộng dồn phần còn lại. Tuy nhiên, <code>count()</code> chỉ đếm số phần tử không phải NaN, trong khi <code>len()</code> đếm toàn bộ kích thước của DataFrame.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Phương thức nào có thể được kết hợp ngay sau lệnh map để thay thế các giá trị NaN vừa sinh ra bằng giá trị mặc định là 0?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 12</h3>
+            <div>
+                <span class="lecture-tag">Lecture 5: Pandas (Merge / Joins)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Nguyên lý Cartesian product trong quá trình Left Join khi các bảng chứa key trùng lặp.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Bảng gốc <code>dat</code> có 'K2' xuất hiện 2 lần. Bảng tham chiếu <code>km</code> cũng có 'K2' xuất hiện 2 lần. Phép Left Join trên khóa 'K2' sẽ sinh ra 2x2 = 4 dòng chỉ riêng cho 'K2'. Hệ quả là số lượng dòng của bảng kết quả vượt qua số dòng của bảng gốc.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Nếu thay thế tham số <code>how='left'</code> bằng <code>how='inner'</code>, tổng số lượng dòng (len) của bảng kết quả sẽ thay đổi thành bao nhiêu?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 13</h3>
+            <div>
+                <span class="lecture-tag">Lecture 5: Pandas (Binning - qcut vs cut)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Sự khác biệt cốt lõi giữa <code>qcut</code> (chia theo phân vị số lượng) và <code>cut</code> (chia theo ranh giới giá trị tuyệt đối).</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Hàm <code>qcut</code> chia nhóm dựa trên thứ hạng (percentiles) để đảm bảo số lượng phần tử mỗi nhóm gần bằng nhau. Vì mọi phòng đều tăng tịnh tiến đúng 15 USD, thứ tự xếp hạng về giá của chúng không bị thay đổi, dẫn đến không có sự nhảy nhóm.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Nếu dùng hàm <code>pd.cut(gia, bins=3)</code> thay vì qcut, khi tất cả các phòng cùng tăng 15 USD, danh sách thuộc các nhóm có thay đổi không?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 14</h3>
+            <div>
+                <span class="lecture-tag">Lecture 4 & Lecture 6: Pandas (Đọc CSV & Missing Values)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Nhận diện từ khóa khuyết thiếu mặc định trong <code>read_csv</code> (tham số keep_default_na).</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Chuỗi 'NA' (Nghệ An) là một mã vùng hợp lệ, nhưng nó tình cờ trùng với từ khóa nhận diện dữ liệu khuyết thiếu (NaN) mặc định của Pandas. Hệ quả là hàm đọc file biến tất cả chữ 'NA' thành giá trị rỗng.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Cần truyền thiết lập tham số gì (ví dụ: <code>na_values</code>, <code>keep_default_na</code>) vào hàm <code>read_csv</code> để buộc Pandas giữ nguyên chuỗi 'NA' như một dữ liệu bình thường?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 15</h3>
+            <div>
+                <span class="lecture-tag">Lecture 6: DuckDB (SQL trên DataFrame)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Bản chất của mệnh đề WHERE thi hành sau khi LEFT JOIN trong cơ sở dữ liệu quan hệ.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Khi thực hiện LEFT JOIN, những hàng không khớp (khu C) sẽ được giữ lại với phần giá trị bảng bên phải là NULL. Tuy nhiên, mệnh đề điều kiện <code>WHERE khu_phi.phi < 10</code> sẽ loại bỏ các hàng NULL này (vì NULL < 10 trả về false/unknown). Kết quả thực tế bị ép về dạng INNER JOIN.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Cần sửa lại câu lệnh truy vấn SQL như thế nào (dịch chuyển mệnh đề hoặc sử dụng OR) để giữ lại được các khu vực không có phí (NULL) trong kết quả?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 16</h3>
+            <div>
+                <span class="lecture-tag">Lecture 6: Kết nối API (Requests)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Xử lý HTTP Status Codes và parse JSON. Sự khác biệt giữa Exception của thư viện requests và parse lỗi.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Lỗi 400 (Bad Request) báo hiệu tham số sai, nhưng máy chủ API thường xử lý lỗi rất tốt bằng cách trả về một đối tượng JSON mô tả rõ lý do lỗi (như khóa 'error', 'reason'). Gọi <code>r.json()</code> vẫn hoạt động hoàn hảo để đọc cái body báo lỗi này thay vì crash.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Nếu bạn gọi <code>r.raise_for_status()</code> trước lệnh <code>r.json()</code> trong trường hợp mã phản hồi là 400, chương trình sẽ gặp hiện tượng gì?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 17</h3>
+            <div>
+                <span class="lecture-tag">Lecture 7: Xử lý chuỗi (Regex & str.extract)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Kỹ thuật sử dụng biểu thức chính quy (Regular Expressions). Boundary <code>\b</code> và Non-capturing groups.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Mẫu regex sử dụng biên từ <code>\b</code> và bắt số trước chữ 'WC' hoặc 'bath(s)'. Cụm 'Phòng 2 bathroom' bị trượt vì chữ 'bathroom' dài hơn và không thỏa mãn điểm dừng biên từ <code>\b</code> giới hạn đúng tại chữ 'bath' hoặc 'baths'.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Bạn sẽ tinh chỉnh lại pattern regex (r"\b(\d+)\s*(?:WC|baths?)\b") như thế nào để có thể quét trúng luôn cả trường hợp chữ 'bathroom' hay 'bathrooms'?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 18</h3>
+            <div>
+                <span class="lecture-tag">Lecture 7: Xử lý chuỗi (Replace & Tự động ép kiểu coerce)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Hành vi của <code>to_numeric(errors='coerce')</code> khi phát hiện định dạng số hỏng do dư thừa ký tự.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Sau lệnh <code>str.replace</code>, chuỗi '$2,400' chỉ bị xóa dấu '$' và trở thành '2,400'. Dấu phẩy ngăn cách hàng nghìn khiến Pandas từ chối chuyển đổi nó thành số hợp lệ. Khi dùng tùy chọn <code>coerce</code>, chuỗi đó ngay lập tức bị ép thành <code>NaN</code>.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Viết biểu thức regex phù hợp truyền vào phương thức <code>str.replace</code> để có thể dọn dẹp đồng thời cả dấu '$' và dấu ',' chỉ trong một lần gọi hàm.</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 19</h3>
+            <div>
+                <span class="lecture-tag">Lecture 8: Dữ liệu thời gian (Resample & pct_change)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Khái niệm gộp thời gian <code>resample</code>. Khác biệt với groupby là nó tự động chèn đầy đủ (fill) các khung thời gian bị khuyết.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Lệnh <code>resample('D')</code> sinh ra các dòng cho tất cả các ngày liên tiếp từ mùng 1 đến mùng 4. Do ngày mùng 3 không có dữ liệu đánh giá nào, nó được gán giá trị size là 0. Hàm <code>pct_change</code> sau đó sẽ tính toán phần trăm biến động đi qua điểm 0 này.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Hàm nào hoặc kỹ thuật nào thường được ghép chuỗi ngay sau <code>resample</code> nếu muốn điền một giá trị mặc định cho các ngày khuyết thay vì để nó là 0?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 20</h3>
+            <div>
+                <span class="lecture-tag">Lecture 8: Dữ liệu thời gian (Quản lý Timezone)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Chuyển đổi các múi giờ qua hàm <code>tz_convert</code>. Múi giờ Việt Nam lệch +7 so với giờ UTC.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Thời điểm 20:30 (giờ UTC) ngày 31/10/2026 sau khi được cộng thêm 7 tiếng (Asia/Ho_Chi_Minh) sẽ bước sang 03:30 sáng của ngày hôm sau. Do đó, tháng chuyển sang 11 và thứ chuyển sang Chủ Nhật (chỉ số 6 trong quy ước pandas).</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Sự khác biệt cốt lõi giữa hai phương thức <code>tz_localize</code> và <code>tz_convert</code> khi làm việc với Pandas Timestamp là gì?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 21</h3>
+            <div>
+                <span class="lecture-tag">Lecture 3: NumPy (Broadcasting - Tự luận)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Luật Broadcasting trong đại số tuyến tính của NumPy. Các chiều (shape) phải tương thích từ phải sang trái.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Khởi chiếu chiều (axis=1) tính tổng các dòng tạo ra vector 1D shape (3,). Mảng gốc có shape (3, 4). Khi chia (3, 4) cho (3,), Numpy so chiều ngoài cùng (4 và 3) thấy bất đồng và báo lỗi. Để thực hiện đúng, cần set <code>keepdims=True</code> để vector tổng giữ nguyên shape (3, 1).</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Hãy viết cú pháp chuẩn (sử dụng <code>np.newaxis</code> hoặc reshape) để thực hiện phép chia <code>D</code> cho <code>D.sum(axis=1)</code> mà không báo lỗi nếu bỏ quên <code>keepdims</code>.</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 22</h3>
+            <div>
+                <span class="lecture-tag">Lecture 5: Pandas (SettingWithCopyWarning - Tự luận)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Nguy cơ mất dữ liệu khi sử dụng Chained Indexing. Tại sao phải dùng <code>.loc</code> thay thế.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Lệnh <code>ph[ph['hang'] == 'Cao cấp']</code> tạo ra một vùng nhớ tách rời (copy) tạm thời từ bảng gốc. Khi gọi nối <code>['gia'] = 130</code> là ghi đè lên cái vùng copy tạm đó rồi vứt đi, bảng gốc <code>ph</code> không hề suy suyển. Cần thay bằng <code>ph.loc[ph['hang'] == 'Cao cấp', 'gia'] = 130</code>.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Cú pháp sử dụng hàm <code>np.where(condition, x, y)</code> để cập nhật lại toàn bộ nội dung cột 'gia' trong tình huống trên sẽ được viết như thế nào?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 23</h3>
+            <div>
+                <span class="lecture-tag">Lecture 5: Pandas (Transform vs Aggregate - Tự luận)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Cơ chế của hàm <code>transform</code> để broadcast dữ liệu về lại cùng độ dài (shape) với DataFrame gốc sau khi groupby.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Việc dùng <code>dg.groupby('khu')['ma'].nunique() >= 3</code> chỉ sinh ra một chuỗi boolean ngắn có chiều dài bằng đúng số lượng 'khu'. Truyền mảng ngắn này vào ngoặc vuông để filter bảng <code>dg</code> (rất dài) sẽ tạo lỗi IndexingError. Phải sử dụng <code>.transform('nunique') >= 3</code> để mảng điều kiện bung dài tương thích với bảng gốc.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Nếu cần lọc lấy các dòng đánh giá mà chỗ ở đó có điểm trung bình từ người dùng trên 4.0, chuỗi pipeline sử dụng hàm <code>transform</code> sẽ như thế nào?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 24</h3>
+            <div>
+                <span class="lecture-tag">Lecture 6: SQL DuckDB (Tự luận)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Linh hoạt giữa WHERE (lọc trước nhóm) và HAVING (lọc sau nhóm) trong SQL; cơ chế xử lý biến NULL.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Với yêu cầu chỉ đếm các giá trị giá (bỏ qua NULL), hàm <code>COUNT(*)</code> đếm số hàng bất chấp rỗng sẽ được thay bằng <code>COUNT(gia)</code>. Sự kiện lọc giá sẽ chuyển vào mệnh đề sau gom nhóm: <code>HAVING COUNT(gia) >= 2</code>.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Hàm chuẩn nào trong cơ sở dữ liệu DuckDB / SQL được sử dụng để bọc quanh các cột có nguy cơ dính NULL nhằm thay thế nó bằng giá trị mặc định là 0 trong toán tử tính tổng (SUM)?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 25</h3>
+            <div>
+                <span class="lecture-tag">Lecture 6 & 7: Xử lý JSON & Text Cleaning (Tự luận)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Kết hợp List Comprehension, xử lý JSON, và sự phình to không gian bộ nhớ của hàm <code>explode()</code>.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Khi dùng phương thức <code>explode()</code>, mỗi list tiện nghi được bung ra thành các dòng riêng biệt. Bảng từ độ dài 4 có thể phình lên thành 8 dòng. Do đó, nếu tính tỷ lệ wifi bằng cách trung bình các dòng 'bung' này (chia cho 8), kết quả sẽ ra 0,29 (sai lệch) thay vì phải quy về tập gốc là khách sạn (chia cho 4).</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Sau khi thi hành lệnh <code>explode()</code>, lệnh nhóm Pandas nào được dùng để thống kê và lấy ra top 3 tiện nghi phổ biến nhất (sau khi đã chuẩn hóa lowercase) xuất hiện trong khu vực?</div>
+            </div>
+        </div>
+    
+        <div class="question-card">
+            <h3>Câu 26</h3>
+            <div>
+                <span class="lecture-tag">Lecture 8: Dữ liệu thời gian (Datetime parsing & Incomplete periods - Tự luận)</span>
+                <span class="knowledge-tag">Kiến thức trọng tâm: Format chuẩn châu Âu (ngày trước tháng sau). Sự chuyển đổi <code>'M'</code> sang <code>'ME'</code> trong Pandas 3. Cạm bẫy chu kỳ không trọn vẹn.</span>
+            </div>
+            <p style="margin-top: 15px;"><strong>Phân tích & Giải đáp:</strong> Khi tính tỷ lệ biến động (pct_change) theo tháng, sử dụng giá trị của tháng 10 (chỉ có dữ liệu tới mùng 10 - chưa hết tháng) để so sánh với các tháng đầy đủ 30 ngày trước đó sẽ gây ra kết luận sai lệch là 'xu hướng khách sạn đang suy giảm mạnh'. Do đó, các chu kỳ thời gian thiếu trọn vẹn (incomplete periods) phải được loại bỏ trước khi phân tích thống kê xu hướng.</p>
+            <div class="extra-question">
+                <strong>💡 Câu hỏi rèn luyện thêm:</strong><br>
+                <div style="margin-top: 5px;">Làm thế nào để sử dụng boolean indexing nhằm cắt bỏ đi khoảng thời gian chưa hoàn thiện (ví dụ tháng 10 năm 2026) khỏi DataFrame trước khi gọi chuỗi phương thức tính toán biến động?</div>
+            </div>
+        </div>
+    
+        <div class="footer">
+            Hệ thống bài tập biên soạn bởi giảng viên bộ môn.<br>
+            <i>Hãy ôn tập kỹ lưỡng các nội dung về NumPy và Pandas để vững bước vào nghiên cứu khoa học dữ liệu.</i>
+        </div>
+    </body>
+</html>
