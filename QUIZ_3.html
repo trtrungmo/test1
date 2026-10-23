@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lập Trình Xử Lý Dữ Liệu - Python Cơ Bản</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Tùy chỉnh màu sắc radio button */
+        input[type="radio"] {
+            accent-color: #3b82f6;
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+        }
+        input[type="radio"]:disabled {
+            cursor: not-allowed;
+        }
+        /* Hiệu ứng chuyển động mượt mà */
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-gray-800 font-sans leading-relaxed">
+
+    <div class="max-w-4xl mx-auto p-4 md:p-8">
+        
+        <!-- HEADER -->
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-700 mb-2">Lập Trình Xử Lý Dữ Liệu</h1>
+            <p class="text-lg text-gray-600">Bài học: List Comprehension & Bản chất của Truthy/Falsy</p>
+        </header>
+
+        <!-- PHẦN 1: LÝ THUYẾT TRỌNG TÂM -->
+        <section class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-10 border-t-4 border-blue-600">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">📖 PHẦN 1: LÝ THUYẾT TRỌNG TÂM</h2>
+            
+            <div class="space-y-6">
+                <!-- Mục 1 -->
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-600 mb-2">1. List Comprehension là gì?</h3>
+                    <p class="mb-2">Đây là một cú pháp ngắn gọn của Python giúp tạo ra một danh sách (list) mới dựa trên một danh sách đã có. Thay vì phải viết vòng lặp `for` và dùng hàm `append()` dài dòng, ta có thể viết trên 1 dòng.</p>
+                    <div class="bg-slate-800 text-gray-100 rounded p-4 font-mono text-sm overflow-x-auto">
+                        <span class="text-green-400"># Cú pháp cơ bản:</span><br>
+                        [biểu_thức <span class="text-blue-400">for</span> phần_tử <span class="text-blue-400">in</span> danh_sách_gốc <span class="text-blue-400">if</span> điều_kiện]
+                    </div>
+                </div>
+
+                <!-- Mục 2 -->
+                <div>
+                    <h3 class="text-xl font-semibold text-blue-600 mb-2">2. Truthy và Falsy trong Python</h3>
+                    <p class="mb-2">Trong Python, khi em đặt một biến hoặc giá trị vào cấu trúc điều kiện (như `if x:`), Python sẽ tự động ép kiểu giá trị đó về True (Đúng) hoặc False (Sai). Khái niệm này gọi là Truthy và Falsy.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                            <h4 class="font-bold text-red-700 mb-2">Các giá trị bị coi là False (Falsy):</h4>
+                            <ul class="list-disc list-inside text-red-600 space-y-1">
+                                <li><code>None</code> (Không có giá trị)</li>
+                                <li><code>False</code> (Giá trị boolean)</li>
+                                <li>Các số 0: <code>0</code>, <code>0.0</code></li>
+                                <li>Chuỗi rỗng: <code>""</code> hoặc <code>''</code></li>
+                                <li>Cấu trúc rỗng: <code>[]</code>, <code>()</code>, <code>{}</code>, <code>set()</code></li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                            <h4 class="font-bold text-green-700 mb-2">Các giá trị coi là True (Truthy):</h4>
+                            <p class="text-green-600">Gần như <strong>tất cả các giá trị còn lại</strong> không nằm trong danh sách Falsy bên cạnh. Bao gồm cả chuỗi chứa dấu cách <code>" "</code>, chuỗi <code>"0"</code>, danh sách <code>[0]</code>, số âm <code>-1</code>...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mục 3: Cạm bẫy -->
+                <div class="bg-yellow-50 border-l-4 border-yellow-500 p-5 rounded">
+                    <h3 class="text-lg font-bold text-yellow-800 mb-2">⚠️ Sai lầm "chết người" trong xử lý dữ liệu giá cả</h3>
+                    <p class="mb-3">Khi làm sạch dữ liệu, sinh viên thường dùng <code>if x</code> để loại bỏ các giá trị <code>None</code>. <strong>Đây là một cái bẫy!</strong></p>
+                    <p class="mb-3">Nếu tập dữ liệu của em là Giá cả, giá trị <code>0.0</code> có thể mang ý nghĩa là "Hàng khuyến mãi miễn phí" (Dữ liệu HỢP LỆ). Nhưng nếu em dùng <code>if x:</code>, Python sẽ thấy <code>0.0</code> là Falsy và <strong>xóa nhầm</strong> luôn dữ liệu quý giá này.</p>
+                    
+                    <div class="bg-slate-800 text-gray-100 rounded p-4 font-mono text-sm">
+                        <span class="text-red-400"># Cách SAI (Lọc mất luôn số 0.0):</span><br>
+                        da_biet = [x for x in v <span class="font-bold text-red-500 bg-red-900 px-1 rounded">if x</span>]<br><br>
+                        <span class="text-green-400"># Cách ĐÚNG (Chỉ lọc đích danh None):</span><br>
+                        da_biet = [x for x in v <span class="font-bold text-green-400 bg-green-900 px-1 rounded">if x is not None</span>]
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHẦN 2: TRẮC NGHIỆM -->
+        <section class="bg-white rounded-xl shadow-md p-6 md:p-8 border-t-4 border-emerald-500">
+            <div class="flex justify-between items-center mb-6 border-b pb-2">
+                <h2 class="text-2xl font-bold text-gray-800">📝 PHẦN 2: BÀI TẬP KIỂM TRA</h2>
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-blue-400">20 Câu hỏi</span>
+            </div>
+            
+            <p class="mb-6 text-gray-600 italic text-sm">Hãy chọn đáp án đúng nhất. Giải thích chi tiết sẽ hiện ra sau khi em bấm "Nộp Bài".</p>
+
+            <div id="quiz-container" class="space-y-6">
+                <!-- JS sẽ render câu hỏi vào đây -->
+            </div>
+
+            <!-- Khu vực hiển thị kết quả và nút nộp bài -->
+            <div class="mt-10 p-6 bg-slate-50 rounded-lg border border-slate-200 text-center">
+                <h3 id="score-display" class="text-2xl font-bold text-blue-700 hidden mb-4">Điểm của bạn: <span id="score">0</span>/20</h3>
+                <p id="feedback-msg" class="text-gray-600 mb-6 hidden"></p>
+                <button id="submit-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">
+                    Nộp Bài & Xem Giải Thích
+                </button>
+            </div>
+        </section>
+
+        <footer class="text-center text-gray-400 text-sm mt-8">
+            &copy; 2026 Bài giảng Lập trình Xử lý Dữ liệu
+        </footer>
+    </div>
+
+    <!-- JAVASCRIPT XỬ LÝ LOGIC -->
+    <script>
+        const quizData = [
+            {
+                question: "1. Cho đoạn code: v=[1200.0, None, 0.0, 600.0]; da_biet = [x for x in v if x]; print(sum(da_biet)/len(da_biet)). Kết quả in ra là gì?",
+                options: ["A. Báo lỗi TypeError", "B. 900.0", "C. 450.0", "D. 600.0"],
+                answer: 1, // Index của đáp án đúng (B)
+                explanation: "Vì dùng điều kiện 'if x', các giá trị Falsy trong mảng sẽ bị loại bỏ. Trong mảng v, có 2 giá trị Falsy là None và 0.0. Vậy mảng da_biet chỉ còn [1200.0, 600.0]. Tổng = 1800.0, số phần tử = 2. Trung bình = 900.0."
+            },
+            {
+                question: "2. Tiếp tục với mảng v=[1200.0, None, 0.0, 600.0]. Nếu sửa code thành da_biet = [x for x in v if x is not None], kết quả trung bình sẽ là bao nhiêu?",
+                options: ["A. 900.0", "B. 450.0", "C. 600.0", "D. Báo lỗi do không thể cộng 0.0"],
+                answer: 2, 
+                explanation: "Lúc này, ta chỉ lọc đích danh giá trị None. Giá trị 0.0 (hợp lệ) được giữ lại. Mảng da_biet là [1200.0, 0.0, 600.0]. Tổng = 1800.0, số phần tử = 3. Trung bình = 1800.0 / 3 = 600.0."
+            },
+            {
+                question: "3. Trong Python, biểu thức bool(None) sẽ trả về giá trị gì?",
+                options: ["A. True", "B. False", "C. NoneType", "D. Báo lỗi"],
+                answer: 1,
+                explanation: "None đại diện cho việc 'không có giá trị nào cả'. Theo quy ước của Python, nó luôn được đánh giá là False (Falsy) khi ép kiểu sang boolean."
+            },
+            {
+                question: "4. Biểu thức bool(0.0) sẽ trả về giá trị gì?",
+                options: ["A. True", "B. False", "C. 0", "D. Báo lỗi"],
+                answer: 1,
+                explanation: "Bất kỳ số nào mang giá trị bằng không (0, 0.0, 0j) đều được Python quy định là Falsy, trả về False."
+            },
+            {
+                question: "5. Biểu thức bool(\"0\") sẽ trả về giá trị gì?",
+                options: ["A. True", "B. False", "C. 0", "D. Báo lỗi"],
+                answer: 0,
+                explanation: "Chú ý dấu ngoặc kép! Đây là một chuỗi (string). Trong Python, chuỗi rỗng '' là False, nhưng chuỗi chứa bất kỳ ký tự nào (kể cả số 0 hay khoảng trắng) đều là Truthy, trả về True."
+            },
+            {
+                question: "6. Giá trị của lệnh len([x for x in [1, 2, None, 0] if x]) bằng bao nhiêu?",
+                options: ["A. 4", "B. 3", "C. 2", "D. 1"],
+                answer: 2,
+                explanation: "Điều kiện 'if x' sẽ giữ lại các giá trị Truthy (1 và 2), loại bỏ các giá trị Falsy (None và 0). Mảng kết quả là [1, 2]. Độ dài (len) của mảng này là 2."
+            },
+            {
+                question: "7. Trong Python, cấu trúc dữ liệu nào sau đây KHÔNG bị đánh giá là False trong biểu thức điều kiện?",
+                options: ["A. [] (List rỗng)", "B. () (Tuple rỗng)", "C. [0] (List chứa số 0)", "D. {} (Dict rỗng)"],
+                answer: 2,
+                explanation: "Các cấu trúc dữ liệu rỗng (không chứa phần tử nào) đều là Falsy. List [0] chứa 1 phần tử (là số 0), do nó không rỗng nên nó là Truthy."
+            },
+            {
+                question: "8. Cách an toàn và chuẩn xác nhất để lọc bỏ các giá trị None ra khỏi một danh sách 'lst' mà không làm mất đi số 0 là gì?",
+                options: ["A. [x for x in lst if x]", "B. [x for x in lst if x != 0]", "C. [x for x in lst if x != 'None']", "D. [x for x in lst if x is not None]"],
+                answer: 3,
+                explanation: "Toán tử 'is' (identity operator) dùng để so sánh thẳng với object None trong bộ nhớ là cách Pythonic và chính xác nhất để kiểm tra None."
+            },
+            {
+                question: "9. Kết quả của đoạn code: sum([True, False, True]) trả về bao nhiêu?",
+                options: ["A. True", "B. 2", "C. 1", "D. Báo lỗi"],
+                answer: 1,
+                explanation: "Khi thực hiện phép toán số học, Python tự động coi True là 1 và False là 0. Vậy phép tính tương đương với sum([1, 0, 1]) = 2."
+            },
+            {
+                question: "10. Đoạn code v = []; print(sum(v)/len(v)) sẽ gây ra lỗi (Exception) gì?",
+                options: ["A. TypeError", "B. ValueError", "C. ZeroDivisionError", "D. Không lỗi, in ra 0"],
+                answer: 2,
+                explanation: "Vì v là mảng rỗng, len(v) = 0. Phép chia cho 0 không hợp lệ trong toán học, Python sẽ bắn ra lỗi ZeroDivisionError."
+            },
+            {
+                question: "11. Biểu thức bool([]) trả về giá trị gì?",
+                options: ["A. True", "B. False", "C. Báo lỗi", "D. None"],
+                answer: 1,
+                explanation: "Một danh sách trống không có phần tử nào nên được đánh giá là Falsy (False)."
+            },
+            {
+                question: "12. Kết quả của đoạn code: [x * 2 for x in [1, 2, 3]] là gì?",
+                options: ["A. [1, 2, 3]", "B. [2, 4, 6]", "C. [1, 4, 9]", "D. Báo lỗi"],
+                answer: 1,
+                explanation: "List Comprehension này lặp qua từng phần tử, nhân giá trị đó với 2 và đưa vào mảng mới. Kết quả: 1*2=2, 2*2=4, 3*2=6."
+            },
+            {
+                question: "13. Kết quả của đoạn code: [x for x in [1, -1, 0, 2] if x > 0] là gì?",
+                options: ["A. [1, -1, 0, 2]", "B. [1, 2]", "C. [1, 0, 2]", "D. [0]"],
+                answer: 1,
+                explanation: "Điều kiện if x > 0 chỉ giữ lại các số thực sự lớn hơn 0 (số dương). Số 1 và 2 thỏa mãn, -1 và 0 bị loại."
+            },
+            {
+                question: "14. Biểu thức bool(\" \") (chuỗi chứa một dấu cách/space) trả về gì?",
+                options: ["A. True", "B. False", "C. Trống", "D. Báo lỗi"],
+                answer: 0,
+                explanation: "Mặc dù người dùng nhìn thấy nó trống, nhưng chuỗi này có độ dài là 1 (chứa ký tự space). Do không phải chuỗi rỗng '' nên nó là Truthy."
+            },
+            {
+                question: "15. Để kiểm tra biến 'a' có phải là list rỗng hay không, cách nào được coi là chuẩn 'Pythonic' (đẹp và đúng phong cách Python) nhất?",
+                options: ["A. if a == []:", "B. if len(a) == 0:", "C. if not a:", "D. if a is []:"],
+                answer: 2,
+                explanation: "Tận dụng tính chất Truthy/Falsy. Nếu 'a' là list rỗng, nó là Falsy. Phủ định 'not a' sẽ thành True, giúp thực thi câu lệnh if một cách ngắn gọn và tự nhiên nhất."
+            },
+            {
+                question: "16. Cú pháp `res = 'Chẵn' if x % 2 == 0 else 'Lẻ'` được gọi là gì trong Python?",
+                options: ["A. List Comprehension", "B. Vòng lặp For", "C. Toán tử ba ngôi (Ternary Operator)", "D. Lambda function"],
+                answer: 2,
+                explanation: "Đây là cấu trúc toán tử ba ngôi (Conditional Expression) cho phép viết câu lệnh if-else ngắn gọn trên một dòng để gán giá trị cho biến."
+            },
+            {
+                question: "17. Đoạn code `lst = [1, 2, 3]; lst.append([4, 5]); print(len(lst))` in ra bao nhiêu?",
+                options: ["A. 5", "B. 4", "C. 3", "D. Lỗi"],
+                answer: 1,
+                explanation: "Phương thức append() sẽ chèn TOÀN BỘ object được truyền vào như MỘT phần tử duy nhất ở cuối mảng. Mảng trở thành [1, 2, 3, [4, 5]]. Tổng số phần tử cấp 1 là 4."
+            },
+            {
+                question: "18. Mảng tạo ra bởi `[x for x in range(5) if x % 2 == 0]` là gì?",
+                options: ["A. [1, 3, 5]", "B. [0, 2, 4]", "C. [2, 4]", "D. [0, 2, 4, 6]"],
+                answer: 1,
+                explanation: "range(5) sinh ra các số 0, 1, 2, 3, 4. Điều kiện x % 2 == 0 lọc ra các số chẵn (chia hết cho 2 dư 0). Đó là 0, 2 và 4."
+            },
+            {
+                question: "19. Đoạn code `v = [10, 20, None]; v_clean = [x if x is not None else 0 for x in v]` trả về v_clean là gì?",
+                options: ["A. [10, 20]", "B. [10, 20, None]", "C. [10, 20, 0]", "D. Lỗi cú pháp"],
+                answer: 2,
+                explanation: "Đây là List Comprehension kết hợp Toán tử 3 ngôi ở phần biểu thức. Với mỗi phần tử x, nếu x không phải None thì lấy x, nếu là None thì thay bằng 0."
+            },
+            {
+                question: "20. Biểu thức bool(False) trả về gì?",
+                options: ["A. True", "B. False", "C. None", "D. 0"],
+                answer: 1,
+                explanation: "Bản thân hằng số boolean False đại diện cho trạng thái sai, nên rõ ràng nó là Falsy và trả về False."
+            }
+        ];
+
+        const quizContainer = document.getElementById('quiz-container');
+        const submitBtn = document.getElementById('submit-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const scoreSpan = document.getElementById('score');
+        const feedbackMsg = document.getElementById('feedback-msg');
+
+        // Hàm render câu hỏi ra HTML
+        function renderQuiz() {
+            quizData.forEach((item, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = "p-5 border rounded-lg bg-gray-50 shadow-sm relative";
+                
+                // Khối câu hỏi
+                let html = `<p class="font-bold text-lg mb-3 text-gray-800">${item.question}</p><div class="space-y-2">`;
+                
+                // Các lựa chọn (Radio buttons)
+                item.options.forEach((option, optIndex) => {
+                    const id = `q${index}_opt${optIndex}`;
+                    html += `
+                        <label for="${id}" id="label_${id}" class="flex items-start p-3 rounded-md border border-gray-200 cursor-pointer hover:bg-blue-50 transition-all">
+                            <input type="radio" name="q${index}" id="${id}" value="${optIndex}" class="mt-1 mr-3">
+                            <span class="text-gray-700 font-medium">${option}</span>
+                        </label>
+                    `;
+                });
+
+                html += `</div>`;
+                
+                // Khối giải thích (ẩn đi lúc đầu)
+                html += `
+                    <div id="explanation_q${index}" class="mt-4 p-4 bg-blue-100/50 border-l-4 border-blue-500 rounded text-sm text-gray-700 hidden">
+                        <span class="font-bold text-blue-700 block mb-1">💡 Giải thích:</span>
+                        ${item.explanation}
+                    </div>
+                `;
+
+                questionDiv.innerHTML = html;
+                quizContainer.appendChild(questionDiv);
+            });
+        }
+
+        // Hàm xử lý khi nộp bài
+        function submitQuiz() {
+            let score = 0;
+            let answeredAll = true;
+
+            // Kiểm tra xem đã làm hết chưa (Optional - ở đây chấm luôn)
+            
+            // Xử lý từng câu hỏi
+            quizData.forEach((item, index) => {
+                const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                const explanationDiv = document.getElementById(`explanation_q${index}`);
+                
+                // Hiển thị khung giải thích
+                explanationDiv.classList.remove('hidden');
+
+                if (selectedOption) {
+                    const selectedVal = parseInt(selectedOption.value);
+                    const selectedLabel = document.getElementById(`label_q${index}_opt${selectedVal}`);
+                    const correctLabel = document.getElementById(`label_q${index}_opt${item.answer}`);
+
+                    if (selectedVal === item.answer) {
+                        // Trả lời đúng: Label xanh lục
+                        score++;
+                        selectedLabel.classList.remove('border-gray-200', 'hover:bg-blue-50');
+                        selectedLabel.classList.add('bg-green-100', 'border-green-500');
+                    } else {
+                        // Trả lời sai: Label được chọn đỏ, Label đúng xanh lục
+                        selectedLabel.classList.remove('border-gray-200', 'hover:bg-blue-50');
+                        selectedLabel.classList.add('bg-red-100', 'border-red-500');
+                        
+                        correctLabel.classList.remove('border-gray-200', 'hover:bg-blue-50');
+                        correctLabel.classList.add('bg-green-100', 'border-green-500', 'font-bold');
+                    }
+                } else {
+                    answeredAll = false;
+                    // Nếu chưa chọn, làm nổi bật đáp án đúng
+                    const correctLabel = document.getElementById(`label_q${index}_opt${item.answer}`);
+                    correctLabel.classList.remove('border-gray-200', 'hover:bg-blue-50');
+                    correctLabel.classList.add('bg-green-100', 'border-green-500', 'border-dashed');
+                }
+
+                // Khóa tất cả radio buttons
+                const allRadios = document.querySelectorAll(`input[name="q${index}"]`);
+                allRadios.forEach(radio => radio.disabled = true);
+            });
+
+            // Cập nhật UI kết quả
+            scoreSpan.innerText = score;
+            scoreDisplay.classList.remove('hidden');
+            feedbackMsg.classList.remove('hidden');
+            
+            if(score === 20) {
+                feedbackMsg.innerText = "Tuyệt vời! Em đã nắm rất vững kiến thức phần này!";
+                feedbackMsg.classList.add('text-green-600', 'font-bold');
+            } else if (score >= 15) {
+                feedbackMsg.innerText = "Làm tốt lắm, nhưng hãy đọc kỹ lại phần giải thích những câu làm sai nhé.";
+            } else {
+                feedbackMsg.innerText = "Đừng nản chí! Hãy đọc kỹ lại phần Lý thuyết và phần Giải thích để hiểu rõ bản chất hơn.";
+                feedbackMsg.classList.add('text-orange-600');
+            }
+
+            // Đổi trạng thái nút
+            submitBtn.innerText = "Đã Nộp Bài";
+            submitBtn.disabled = true;
+            submitBtn.classList.remove('hover:scale-105', 'hover:bg-blue-700');
+            submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+
+            // Cuộn lên chỗ xem điểm (nếu màn hình nhỏ)
+            scoreDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Khởi tạo
+        renderQuiz();
+        submitBtn.addEventListener('click', submitQuiz);
+
+    </script>
+</body>
+</html>

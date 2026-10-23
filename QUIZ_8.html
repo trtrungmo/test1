@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn tập Pandas cơ bản</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #f0f2f5; color: #333; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        h1 { color: #1a73e8; text-align: center; margin-bottom: 30px;}
+        h2 { color: #202124; border-bottom: 2px solid #e8eaed; padding-bottom: 10px;}
+        h3 { color: #d93025; }
+        .theory-section { background: #e8f0fe; padding: 25px; border-radius: 8px; margin-bottom: 30px; border-left: 5px solid #1a73e8; }
+        .code-block { background: #282a36; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; overflow-x: auto; font-size: 15px; margin: 10px 0; }
+        .quiz-container { margin-top: 20px; }
+        .question-card { border: 1px solid #dadce0; padding: 20px; margin-bottom: 25px; border-radius: 8px; background: #fff; transition: box-shadow 0.3s; }
+        .question-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        .options-list { list-style-type: none; padding: 0; }
+        .options-list li { margin: 12px 0; }
+        .option-btn { width: 100%; text-align: left; padding: 15px; font-size: 16px; cursor: pointer; border: 2px solid #dadce0; border-radius: 8px; background: #fff; transition: all 0.2s; font-family: inherit; }
+        .option-btn:hover:not(:disabled) { background: #f1f3f4; border-color: #bdc1c6; }
+        .option-btn:disabled { color: #3c4043; }
+        .option-btn.correct { background: #ceead6; border-color: #34a853; color: #137333; font-weight: bold; }
+        .option-btn.wrong { background: #fce8e6; border-color: #ea4335; color: #c5221f; }
+        .explanation { margin-top: 20px; padding: 20px; background: #fff3e0; border-left: 5px solid #f9ab00; border-radius: 8px; display: none; font-size: 15px;}
+        .explanation strong { color: #e65100; }
+        .highlight { font-weight: bold; color: #d93025; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bí kíp Luyện thi Pandas: <code>.loc</code> và <code>.iloc</code></h1>
+        <div class="theory-section">
+            <h2>📚 Phần 1: Lý thuyết Trọng tâm (Dành cho người mất gốc)</h2>
+            <p>Chào em! Đừng lo lắng nếu đang thấy mông lung về Pandas. Để "xử đẹp" dạng bài tập trong ảnh, em chỉ cần nắm chắc 4 khái niệm "cứu mạng" sau đây:</p>
+            
+            <h3>1. Tạo DataFrame từ Dictionary</h3>
+            <p>DataFrame là một bảng dữ liệu. Em có thể tạo nó bằng cách ghép các cột lại (giống như từ điển, mỗi khóa là tên cột).</p>
+            <div class="code-block">df = pd.DataFrame({"gia": [100, 50, 80, 120, 60]})</div>
+            <p>Khi đó, bảng sẽ tự động được đánh số thứ tự từ 0 (gọi là <strong>Index</strong> mặc định): 0, 1, 2, 3, 4.</p>
+
+            <h3>2. Lọc dữ liệu (Boolean Indexing)</h3>
+            <p>Để lọc các hàng thỏa mãn một điều kiện, em viết điều kiện vào trong ngoặc vuông.</p>
+            <div class="code-block">r = df[df["gia"] < 90]</div>
+            <p>Code này giữ lại các hàng có giá < 90. Các giá trị thỏa mãn là 50, 80, 60. <br>
+            ⚠️ <strong>RẤT QUAN TRỌNG:</strong> Khi lọc, các hàng này <strong>VẪN GIỮ NGUYÊN INDEX BAN ĐẦU</strong>. Nghĩa là biến `r` sẽ có các hàng với index lần lượt là <strong>1, 2, và 4</strong>.</p>
+
+            <h3>3. Sự khác nhau chí mạng giữa <code>.loc</code> và <code>.iloc</code></h3>
+            <p>Đây là phần 99% sinh viên hay sai:</p>
+            <ul>
+                <li><span class="highlight">.loc[a:b] (Định vị theo TÊN NHÃN - Label):</span> Nó sẽ tìm các hàng có <strong>tên index</strong> nằm trong đoạn từ a đến b. Đặc biệt: <strong>LẤY CẢ B</strong> (inclusive).<br>
+                <em>Ví dụ với `r` (có index là 1, 2, 4): `r.loc[1:4]` sẽ lấy tất cả các hàng có nhãn index là 1, 2, 3, 4. Kết quả là lấy được hàng 1, 2 và 4 (bỏ qua 3 vì không tồn tại trong `r`).</em></li>
+                <li style="margin-top: 10px;"><span class="highlight">.iloc[a:b] (Định vị theo VỊ TRÍ - Vị trí ngầm định đếm từ 0):</span> Nó lờ đi tên index, chỉ quan tâm hàng đó đang đứng thứ mấy trong bảng `r` hiện tại. Đặc biệt: <strong>KHÔNG LẤY B</strong> (exclusive).<br>
+                <em>Ví dụ với `r`: Vị trí số 0 là hàng giá 50 (index 1), vị trí số 1 là hàng giá 80 (index 2), vị trí số 2 là hàng giá 60 (index 4). <br>`r.iloc[1:4]` sẽ lấy các hàng ở vị trí 1, 2, và 3. Ở đây lấy được giá trị 80 và 60.</em></li>
+            </ul>
+
+            <h3>4. Hàm <code>.sum()</code></h3>
+            <p>Cộng dồn tất cả các giá trị trong chuỗi (Series) lại với nhau.</p>
+        </div>
+
+        <h2>🧠 Phần 2: 20 Bài Tập Tương Tác Chống Liệt</h2>
+        <p><em>Hãy click vào đáp án em cho là đúng. Giải thích chi tiết sẽ hiện ra ngay sau đó!</em></p>
+        <div id="quiz-app" class="quiz-container">
+            <!-- JavaScript sẽ tự động chèn 20 câu hỏi vào đây -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: 'Đoạn code trong đề bài gốc in ra gì?<br><div class="code-block">df = pd.DataFrame({"gia": [100, 50, 80, 120, 60]})<br>r = df[df["gia"] < 90]<br>print(r.loc[1:4, "gia"].sum(), r.iloc[1:4, 0].sum())</div>',
+                options: ["A. 190 140", "B. 130 190", "C. 130 140", "D. 190 190"],
+                answer: 0,
+                explanation: 'Sau khi lọc `r = df[df["gia"] < 90]`, bảng `r` gồm các giá trị <strong>[50, 80, 60]</strong> với index tương ứng là <strong>[1, 2, 4]</strong>.<br><br>1. <code>r.loc[1:4]</code>: Lấy theo TÊN INDEX từ 1 đến 4 (lấy cả 4). Trong `r`, các index nằm trong khoảng này là 1 (giá 50), 2 (giá 80), 4 (giá 60). Tổng = 50 + 80 + 60 = <strong>190</strong>.<br><br>2. <code>r.iloc[1:4]</code>: Lấy theo VỊ TRÍ từ 1 đến 3 (không lấy 4). Hiện tại trong `r`, vị trí 0 là 50, vị trí 1 là 80, vị trí 2 là 60. Lấy từ vị trí 1 đến 3 tức là lấy vị trí 1 và 2 (vị trí 3 không có kệ nó). Tổng = 80 + 60 = <strong>140</strong>.<br>=> Đáp án A: 190 140.'
+            },
+            {
+                q: 'Chỉ test `.loc` cơ bản. Đoạn code sau in ra gì?<br><div class="code-block">df = pd.DataFrame({"A": [10, 20, 30, 40, 50]})<br>print(df.loc[1:3, "A"].sum())</div>',
+                options: ["A. 50", "B. 90", "C. 60", "D. 100"],
+                answer: 1,
+                explanation: 'Bảng chưa lọc nên index mặc định là 0, 1, 2, 3, 4.<br><code>df.loc[1:3]</code> lấy theo TÊN INDEX từ 1 đến 3 (lấy cả 3).<br>Giá trị tại index 1, 2, 3 lần lượt là 20, 30, 40. Tổng = 20 + 30 + 40 = <strong>90</strong>.'
+            },
+            {
+                q: 'Chỉ test `.iloc` cơ bản. Đoạn code sau in ra gì?<br><div class="code-block">df = pd.DataFrame({"B": [10, 20, 30, 40, 50]})<br>print(df.iloc[1:3, 0].sum())</div>',
+                options: ["A. 50", "B. 90", "C. 60", "D. 100"],
+                answer: 0,
+                explanation: '<code>df.iloc[1:3]</code> lấy theo VỊ TRÍ 1 và 2 (không lấy vị trí 3).<br>Giá trị tại vị trí 1 là 20, vị trí 2 là 30. Tổng = 20 + 30 = <strong>50</strong>.'
+            },
+            {
+                q: 'Lọc điều kiện > 10. In ra tổng dùng `.loc`.<br><div class="code-block">df = pd.DataFrame({"X": [5, 10, 15, 20, 25]})<br>r = df[df["X"] > 10]<br>print(r.loc[1:3, "X"].sum())</div>',
+                options: ["A. 0", "B. 15", "C. 35", "D. 60"],
+                answer: 2,
+                explanation: '<code>r</code> là các giá trị > 10: [15, 20, 25] với index tương ứng là <strong>[2, 3, 4]</strong>.<br><code>r.loc[1:3]</code> tìm các TÊN INDEX từ 1 đến 3. Trong `r`, chỉ có index 2 (giá trị 15) và index 3 (giá trị 20) thỏa mãn.<br>Tổng = 15 + 20 = <strong>35</strong>.'
+            }
+        ];
+
+        // Tự động sinh thêm 16 câu hỏi để đủ 20 câu
+        const extraData = [
+            { cond: 'df["A"] >= 20', df: [10, 20, 30, 40, 50], loc: '1:3', iloc: '1:2', ans_loc: 50, ans_iloc: 30, exp_r_idx: '[1, 2, 3, 4]', exp_r_val: '[20, 30, 40, 50]' },
+            { cond: 'df["A"] < 40', df: [15, 25, 35, 45, 55], loc: '0:2', iloc: '0:2', ans_loc: 75, ans_iloc: 40, exp_r_idx: '[0, 1, 2]', exp_r_val: '[15, 25, 35]' },
+            { cond: 'df["A"] == 30', df: [30, 10, 30, 20, 30], loc: '0:3', iloc: '0:2', ans_loc: 60, ans_iloc: 60, exp_r_idx: '[0, 2, 4]', exp_r_val: '[30, 30, 30]' },
+            { cond: 'df["A"] % 2 == 0', df: [1, 2, 3, 4, 5], loc: '1:4', iloc: '0:1', ans_loc: 6, ans_iloc: 2, exp_r_idx: '[1, 3]', exp_r_val: '[2, 4]' },
+            { cond: 'df["A"] > 5', df: [1, 3, 5, 7, 9], loc: '2:4', iloc: '0:2', ans_loc: 16, ans_iloc: 16, exp_r_idx: '[3, 4]', exp_r_val: '[7, 9]' },
+            { cond: 'df["A"] <= 15', df: [5, 10, 15, 20, 25], loc: '1:2', iloc: '1:3', ans_loc: 25, ans_iloc: 25, exp_r_idx: '[0, 1, 2]', exp_r_val: '[5, 10, 15]' },
+            { cond: 'df["A"] != 10', df: [10, 20, 10, 40, 10], loc: '1:4', iloc: '0:1', ans_loc: 60, ans_iloc: 20, exp_r_idx: '[1, 3]', exp_r_val: '[20, 40]' },
+            { cond: 'df["A"] < 100', df: [50, 150, 80, 90, 200], loc: '1:4', iloc: '1:3', ans_loc: 170, ans_iloc: 170, exp_r_idx: '[0, 2, 3]', exp_r_val: '[50, 80, 90]' },
+            { cond: 'df["A"] > 0', df: [-1, 2, -3, 4, -5], loc: '0:4', iloc: '0:2', ans_loc: 6, ans_iloc: 6, exp_r_idx: '[1, 3]', exp_r_val: '[2, 4]' },
+            { cond: 'df["A"] >= 3', df: [1, 2, 3, 4, 5], loc: '3:4', iloc: '1:3', ans_loc: 9, ans_iloc: 9, exp_r_idx: '[2, 3, 4]', exp_r_val: '[3, 4, 5]' },
+            { cond: 'df["A"] < 6', df: [2, 4, 6, 8, 10], loc: '0:2', iloc: '0:1', ans_loc: 6, ans_iloc: 2, exp_r_idx: '[0, 1]', exp_r_val: '[2, 4]' },
+            { cond: 'df["A"] == 5', df: [5, 5, 1, 2, 5], loc: '1:4', iloc: '1:3', ans_loc: 10, ans_iloc: 10, exp_r_idx: '[0, 1, 4]', exp_r_val: '[5, 5, 5]' },
+            { cond: 'df["A"] != 0', df: [0, 1, 0, 2, 0], loc: '0:3', iloc: '0:2', ans_loc: 3, ans_iloc: 3, exp_r_idx: '[1, 3]', exp_r_val: '[1, 2]' },
+            { cond: 'df["A"] > 10', df: [5, 15, 25, 35, 45], loc: '2:4', iloc: '1:3', ans_loc: 105, ans_iloc: 60, exp_r_idx: '[1, 2, 3, 4]', exp_r_val: '[15, 25, 35, 45]' },
+            { cond: 'df["A"] < 25', df: [10, 20, 30, 40, 50], loc: '0:3', iloc: '0:2', ans_loc: 30, ans_iloc: 30, exp_r_idx: '[0, 1]', exp_r_val: '[10, 20]' },
+            { cond: 'df["A"] >= 10', df: [0, 5, 10, 15, 20], loc: '1:3', iloc: '0:2', ans_loc: 25, ans_iloc: 25, exp_r_idx: '[2, 3, 4]', exp_r_val: '[10, 15, 20]' }
+        ];
+
+        extraData.forEach((eq, index) => {
+            let q_text = `Đoạn code sau in ra gì?<br><div class="code-block">df = pd.DataFrame({"A": [${eq.df.join(', ')}കൊ]})<br>r = df[${eq.cond}]<br>print(r.loc[${eq.loc}, "A"].sum(), r.iloc[${eq.iloc}, 0].sum())</div>`;
+            // Remove the zero width char artifact if present
+            q_text = q_text.replace('കൊ', '');
+            
+            let correct = `${eq.ans_loc} ${eq.ans_iloc}`;
+            let wrong1 = `${eq.ans_loc + 10} ${eq.ans_iloc}`;
+            let wrong2 = `${eq.ans_loc} ${eq.ans_iloc - 10}`;
+            let wrong3 = `${eq.ans_iloc} ${eq.ans_loc}`;
+            
+            let opts_raw = [correct, wrong1, wrong2, wrong3];
+            // Xáo trộn đáp án
+            for (let i = opts_raw.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [opts_raw[i], opts_raw[j]] = [opts_raw[j], opts_raw[i]];
+            }
+            
+            let ans_idx = opts_raw.indexOf(correct);
+            
+            let explanation = `Sau khi lọc <code>r = df[${eq.cond}]</code>, biến <code>r</code> chứa các giá trị <strong>${eq.exp_r_val}</strong> với index tương ứng là <strong>${eq.exp_r_idx}</strong>.<br><br>
+            1. <code>r.loc[${eq.loc}]</code> quét theo TÊN NHÃN index, tổng tìm được là <strong>${eq.ans_loc}</strong>.<br>
+            2. <code>r.iloc[${eq.iloc}]</code> quét theo VỊ TRÍ, tổng tìm được là <strong>${eq.ans_iloc}</strong>.`;
+            
+            questions.push({
+                q: q_text,
+                options: opts_raw.map((opt, i) => String.fromCharCode(65 + i) + '. ' + opt),
+                answer: ans_idx,
+                explanation: explanation
+            });
+        });
+
+        // Render ra giao diện
+        const quizContainer = document.getElementById('quiz-app');
+        questions.forEach((item, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-card';
+            
+            const qHeader = document.createElement('h3');
+            qHeader.innerHTML = `Câu ${index + 1}/20`;
+            qDiv.appendChild(qHeader);
+            
+            const qText = document.createElement('p');
+            qText.innerHTML = item.q;
+            qDiv.appendChild(qText);
+
+            const optionsList = document.createElement('ul');
+            optionsList.className = 'options-list';
+            
+            const expDiv = document.createElement('div');
+            expDiv.className = 'explanation';
+            expDiv.innerHTML = `<strong>💡 Giải thích chi tiết:</strong><br><p style="margin-top: 8px;">${item.explanation}</p>`;
+
+            item.options.forEach((opt, optIndex) => {
+                const li = document.createElement('li');
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = opt;
+                btn.onclick = () => {
+                    const allBtns = optionsList.querySelectorAll('button');
+                    allBtns.forEach(b => b.disabled = true);
+                    
+                    if (optIndex === item.answer) {
+                        btn.classList.add('correct');
+                    } else {
+                        btn.classList.add('wrong');
+                        allBtns[item.answer].classList.add('correct');
+                    }
+                    expDiv.style.display = 'block';
+                };
+                li.appendChild(btn);
+                optionsList.appendChild(li);
+            });
+
+            qDiv.appendChild(optionsList);
+            qDiv.appendChild(expDiv);
+            quizContainer.appendChild(qDiv);
+        });
+    </script>
+</body>
+</html>

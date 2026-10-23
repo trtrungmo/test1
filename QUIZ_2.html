@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Tập Python: Quản Lý Môi Trường</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; }
+        h1, h2, h3 { color: #2c3e50; }
+        .theory-box { background: #e8f4f8; padding: 20px; border-left: 5px solid #3498db; border-radius: 5px; margin-bottom: 30px; }
+        .question-card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-left: 5px solid #bdc3c7; transition: all 0.3s; }
+        .question-title { font-weight: bold; margin-bottom: 15px; font-size: 1.1em; }
+        .option { display: block; margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; transition: background 0.2s; }
+        .option:hover { background: #f1f1f1; }
+        .option input { margin-right: 10px; }
+        .explanation { display: none; margin-top: 15px; padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px; font-size: 0.95em; }
+        .btn-submit { display: block; width: 100%; padding: 15px; font-size: 1.2em; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; transition: background 0.3s; }
+        .btn-submit:hover { background: #219653; }
+        .correct-ans { background-color: #d4edda !important; border-color: #c3e6cb !important; font-weight: bold; }
+        .wrong-ans { background-color: #f8d7da !important; border-color: #f5c6cb !important; }
+        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: Consolas, monospace; color: #d63031; }
+    </style>
+</head>
+<body>
+
+    <h1>Lý thuyết & Bài tập: Quản lý môi trường Python</h1>
+    <p>Chào em, thầy đã nhận được yêu cầu. Dành cho các bạn "mất gốc", việc hiểu rõ cách Python quản lý môi trường ảo (virtual environment) và các thư viện (packages) là nền tảng cực kỳ quan trọng để code không bị lỗi vặt. Em hãy đọc kỹ lý thuyết thầy tóm tắt dưới đây nhé!</p>
+
+    <div class="theory-box">
+        <h2>Tóm tắt Lý thuyết Trọng tâm</h2>
+        <ul>
+            <li><b>Môi trường ảo (<code>venv</code>)</b>: Giúp cô lập các thư viện của từng dự án. Lệnh <code>python -m venv .venv</code> sẽ tạo môi trường ảo bằng <b>chính phiên bản Python đang chạy lệnh đó</b>. Công cụ này <b>không</b> biết tự tải hay tự đổi phiên bản Python.</li>
+            <li><b>File <code>requirements.txt</code></b>: Chứa danh sách các thư viện (packages) và phiên bản của chúng (tạo bằng <code>pip freeze > requirements.txt</code>). File này <b>không lưu phiên bản Python</b>.</li>
+            <li><b>File <code>.python-version</code></b>: Là file text chỉ định phiên bản Python cần dùng, thường được đọc bởi các công cụ quản lý phiên bản (như <code>pyenv</code>). Công cụ <code>pip</code> hay <code>venv</code> mặc định <b>không quan tâm</b> đến file này.</li>
+            <li><b><code>pip</code></b>: Là công cụ cài đặt thư viện (packages). Khi em chạy <code>pip install</code>, nó chỉ cài thư viện vào môi trường hiện tại đang được kích hoạt (activate). Nếu em quên activate, thư viện sẽ bị cài vào Python hệ thống. Cài thư viện không đồng nghĩa với việc nâng cấp phiên bản Python.</li>
+            <li><b><code>pyenv</code></b>: Dùng để tải và quản lý nhiều phiên bản Python trên cùng một máy tính. Nó khác với <code>venv</code> (chỉ quản lý thư viện của một dự án).</li>
+        </ul>
+    </div>
+
+    <h2>Bài tập Trắc nghiệm (10 câu)</h2>
+    <p><i>Hãy làm thử rồi bấm <b>"Nộp bài & Xem giải thích"</b> ở cuối trang nhé.</i></p>
+    
+    <div id="quiz-container"></div>
+    
+    <button class="btn-submit" id="submitBtn" onclick="checkAnswers()">Nộp bài & Xem giải thích</button>
+
+    <script>
+        const questions = [
+            {
+                q: "Câu 1. Repo bài tập lớn có requirements.txt (tạo bằng pip freeze) và tệp .python-version ghi 3.12.3. Máy của Hà chỉ cài Python 3.11 và không dùng công cụ quản lý phiên bản Python nào. Hà chạy các lệnh tạo venv và pip install. Nhận định nào đúng?",
+                options: [
+                    "Nhờ có .python-version, lệnh tạo venv tự tải và dùng Python 3.12.3.",
+                    "Không cần quan tâm phiên bản Python, vì requirements.txt đã ghi đủ phiên bản thư viện.",
+                    "Venv dùng Python 3.11 sẵn có; cần cài Python 3.12.3 rồi tạo lại venv để khớp.",
+                    "Lệnh pip install -r sẽ tự cài Python 3.12.3 trước, rồi mới cài các thư viện."
+                ],
+                ans: 2,
+                exp: "Lệnh venv dùng chính interpreter đang gọi (Python 3.11). Tệp .python-version không có tác dụng với venv/pip. Để có 3.12.3, Hà phải tự cài bản đó rồi mới tạo môi trường."
+            },
+            {
+                q: "Câu 2. Máy của Nam cài sẵn Python 3.13. Repo bài tập có tệp .python-version ghi 3.10.9, nhưng máy không cài pyenv. Nam chạy python -m venv .venv. Nhận định nào đúng?",
+                options: [
+                    "venv tự đọc .python-version và tải Python 3.10.9 về dùng.",
+                    "Môi trường ảo được tạo bằng Python 3.13 đang gọi lệnh; muốn đúng 3.10.9 phải cài Python đó rồi tạo lại venv.",
+                    "Môi trường ảo không gắn với phiên bản Python nên chạy bằng bản nào cũng như nhau.",
+                    "Chỉ cần sửa .python-version thành 3.13 rồi chạy lại lệnh là venv tự cập nhật."
+                ],
+                ans: 1,
+                exp: "Tương tự câu 1, venv dùng đúng interpreter đang gọi lệnh (Python 3.13). Tệp .python-version chỉ dành cho pyenv/asdf đọc."
+            },
+            {
+                q: "Câu 3. Trước khi bàn giao code, Hà chạy <code>pip freeze > requirements.txt</code> trên máy mình và khẳng định: 'Chỉ cần tệp này là máy khác tái lập được chính xác môi trường chạy'. Nhận định nào đúng?",
+                options: [
+                    "Đúng, vì pip freeze ghi lại toàn bộ gói kèm phiên bản chính xác.",
+                    "Sai, vì pip freeze không ghi phiên bản Python; máy khác dùng Python khác thì môi trường vẫn lệch.",
+                    "Sai, vì pip freeze không ghi phiên bản của gói nào.",
+                    "Đúng, vì khi chạy pip install thì pip tự chọn phiên bản Python phù hợp."
+                ],
+                ans: 1,
+                exp: "pip freeze chỉ liệt kê các gói cài qua pip, không lưu phiên bản Python đang dùng. Nếu máy khác dùng Python chênh lệch phiên bản, ứng dụng vẫn có thể bị lỗi."
+            },
+            {
+                q: "Câu 4. Trên máy ĐÃ cài pyenv, trong thư mục dự án có .python-version ghi 3.12.3, nhưng trước đó chưa chạy <code>pyenv install 3.12.3</code>. Khi gõ python -V, điều gì xảy ra?",
+                options: [
+                    "pyenv báo không tìm thấy phiên bản 3.12.3; phải chạy pyenv install trước.",
+                    "pyenv tự tải và cài Python 3.12.3 rồi chạy luôn.",
+                    "Python hệ thống vẫn chạy bình thường và tệp .python-version bị bỏ qua.",
+                    "pip tự cài Python 3.12.3 trong lần chạy đầu tiên."
+                ],
+                ans: 0,
+                exp: "pyenv sẽ đọc file .python-version để chọn phiên bản. Nhưng nếu phiên bản đó chưa được tải (install) về máy, pyenv sẽ báo lỗi thiếu và yêu cầu cài đặt chứ không tự động tải."
+            },
+            {
+                q: "Câu 5. Máy chỉ có Python 3.9, trong khi requirements.txt có dòng numpy==2.1.0 (bản này yêu cầu Python 3.10 trở lên). Chạy lệnh cài đặt thì kết quả thế nào?",
+                options: [
+                    "pip tự nâng cấp Python lên 3.10 rồi cài tiếp.",
+                    "pip vẫn cài được numpy 2.1.0, chỉ lỗi khi chương trình import thư viện này.",
+                    "pip bỏ qua dòng đó và cài các gói còn lại mà không thông báo gì.",
+                    "pip báo không tìm được bản phân phối phù hợp; phải cài Python mới hơn hoặc hạ phiên bản gói."
+                ],
+                ans: 3,
+                exp: "pip kiểm tra điều kiện (Requires-Python) của gói. Nếu bản Python đang chạy quá cũ, nó sẽ báo lỗi (không tìm thấy bản phân phối tương thích) và dừng lại, pip không có chức năng nâng cấp Python."
+            },
+            {
+                q: "Câu 6. Hà tạo .venv nhưng quên kích hoạt (activate), gõ luôn lệnh <code>python -m pip install requests</code>. Hệ quả là gì?",
+                options: [
+                    "pip báo lỗi vì chưa kích hoạt môi trường ảo.",
+                    "requests được cài vào Python hệ thống, không vào .venv.",
+                    "requests vẫn vào .venv vì pip tự nhận ra thư mục .venv trong dự án.",
+                    "requests được cài đồng thời vào cả Python hệ thống và .venv."
+                ],
+                ans: 1,
+                exp: "Nếu chưa activate, biến môi trường của hệ điều hành vẫn trỏ tới bản Python hệ thống. Khi đó, pip cài thư viện trực tiếp vào Python gốc của máy."
+            },
+            {
+                q: "Câu 7. Lệnh nào sau đây dùng để kích hoạt (activate) môi trường ảo tên là .venv trên hệ điều hành Linux hoặc macOS?",
+                options: [
+                    "source .venv/bin/activate",
+                    ".venv\\Scripts\\activate",
+                    "activate .venv",
+                    "start .venv"
+                ],
+                ans: 0,
+                exp: "Trên Linux/macOS, ta dùng lệnh `source .venv/bin/activate`. (Phương án B là dùng cho Windows CMD/PowerShell)."
+            },
+            {
+                q: "Câu 8. Công dụng chính của môi trường ảo (virtual environment) trong Python là gì?",
+                options: [
+                    "Tăng tốc độ thực thi code Python.",
+                    "Cô lập các thư viện (dependencies) để tránh xung đột phiên bản giữa các dự án khác nhau.",
+                    "Chạy mã Python không cần cài đặt trình biên dịch.",
+                    "Tự động sửa lỗi cú pháp trong code."
+                ],
+                ans: 1,
+                exp: "Lý do lớn nhất để dùng venv là để cô lập. Ví dụ dự án A cần Django 2.0, dự án B cần Django 4.0; môi trường ảo sẽ tách biệt chúng ra."
+            },
+            {
+                q: "Câu 9. Sự khác biệt chính giữa `venv` và `pyenv` là gì?",
+                options: [
+                    "venv quản lý phiên bản Python, còn pyenv quản lý các thư viện.",
+                    "venv quản lý môi trường ảo của một dự án (các thư viện), còn pyenv quản lý các phiên bản Python khác nhau trên máy.",
+                    "Cả hai công cụ này hoàn toàn giống nhau, chỉ khác hệ điều hành.",
+                    "venv cần internet để hoạt động, pyenv thì không."
+                ],
+                ans: 1,
+                exp: "pyenv là công cụ để máy em có thể cài nhiều phiên bản Python (3.9, 3.10, 3.12...). venv là công cụ tạo hộp chứa các thư viện riêng lẻ cho từng dự án."
+            },
+            {
+                q: "Câu 10. Khi clone một project Python từ Github về máy, quy trình làm việc chuẩn nhất (Best Practice) là gì?",
+                options: [
+                    "Chạy ngay file main.py để xem có lỗi không.",
+                    "Cài thư viện thẳng vào máy bằng lệnh pip install -r requirements.txt.",
+                    "Tạo môi trường ảo, kích hoạt nó, rồi mới chạy pip install -r requirements.txt.",
+                    "Copy các file thư viện từ dự án cũ sang dự án mới."
+                ],
+                ans: 2,
+                exp: "Quy trình chuẩn: Clone code -> Tạo venv -> Kích hoạt (activate) venv -> Cài requirements.txt. Điều này đảm bảo dự án chạy ổn định và không làm bẩn môi trường máy tính."
+            }
+        ];
+
+        const container = document.getElementById('quiz-container');
+        
+        // Render quiz
+        questions.forEach((qObj, index) => {
+            let html = `<div class="question-card" id="q-card-${index}">`;
+            html += `<div class="question-title">${qObj.q}</div>`;
+            qObj.options.forEach((opt, optIndex) => {
+                html += `<label class="option" id="opt-lbl-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}">
+                            ${opt}
+                         </label>`;
+            });
+            html += `<div class="explanation" id="exp-${index}"><b>Giải thích:</b> ${qObj.exp}</div>`;
+            html += `</div>`;
+            container.innerHTML += html;
+        });
+
+        function checkAnswers() {
+            let score = 0;
+            questions.forEach((qObj, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const card = document.getElementById(`q-card-${index}`);
+                const expDiv = document.getElementById(`exp-${index}`);
+                const correctLabel = document.getElementById(`opt-lbl-${index}-${qObj.ans}`);
+                
+                // Reset colors if user clicks submit multiple times
+                const allLabels = card.querySelectorAll('.option');
+                allLabels.forEach(lbl => {
+                    lbl.classList.remove('correct-ans', 'wrong-ans');
+                });
+
+                if (selected) {
+                    const userAns = parseInt(selected.value);
+                    if (userAns === qObj.ans) {
+                        score++;
+                        document.getElementById(`opt-lbl-${index}-${userAns}`).classList.add('correct-ans');
+                        card.style.borderLeftColor = '#27ae60';
+                    } else {
+                        document.getElementById(`opt-lbl-${index}-${userAns}`).classList.add('wrong-ans');
+                        correctLabel.classList.add('correct-ans');
+                        card.style.borderLeftColor = '#e74c3c';
+                    }
+                } else {
+                    correctLabel.classList.add('correct-ans');
+                    card.style.borderLeftColor = '#e74c3c';
+                }
+                
+                // Show explanation
+                expDiv.style.display = 'block';
+                
+                // Disable inputs
+                const inputs = card.querySelectorAll('input');
+                inputs.forEach(input => input.disabled = true);
+            });
+
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = `Đã nộp bài! Điểm của em: ${score}/${questions.length}`;
+            btn.disabled = true;
+            btn.style.background = '#2c3e50';
+            
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

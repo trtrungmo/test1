@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Giảng: Xử Lý Dữ Liệu Thời Gian Với Pandas</title>
+    <!-- Nhúng Tailwind CSS để giao diện đẹp và hiện đại -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Xám nhạt */
+        }
+        .code-block {
+            background-color: #1e293b; /* Xanh đen */
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            overflow-x: auto;
+            margin: 0.5rem 0;
+        }
+        .correct-ans {
+            background-color: #dcfce7 !important; /* Xanh lá nhạt */
+            border-color: #22c55e !important;
+            color: #166534;
+        }
+        .wrong-ans {
+            background-color: #fee2e2 !important; /* Đỏ nhạt */
+            border-color: #ef4444 !important;
+            color: #991b1b;
+        }
+        .option-label {
+            transition: all 0.2s ease-in-out;
+        }
+        .option-label:hover {
+            background-color: #f1f5f9;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <div class="max-w-4xl mx-auto p-4 md:p-8">
+        
+        <!-- Header -->
+        <header class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-8 border-t-4 border-blue-600">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Bài Giảng: Dữ Liệu Thời Gian (Time-series) trong Pandas</h1>
+            <p class="text-lg text-gray-600 mb-2"><strong>Giảng viên:</strong> Trợ lý AI (Môn Lập trình Xử lý Dữ liệu)</p>
+            <p class="text-gray-600">Chào em, thầy đã chuẩn bị tài liệu này dành riêng cho các bạn muốn nắm chắc kiến thức từ con số 0. Hãy đọc kỹ phần lý thuyết, đặc biệt là cách tính múi giờ, sau đó thử sức với 20 câu bài tập nhé!</p>
+        </header>
+
+        <!-- Lý thuyết -->
+        <section class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-8">
+            <h2 class="text-2xl font-bold text-blue-700 mb-6 border-b pb-2">Phần 1: Lý Thuyết Trọng Tâm</h2>
+            
+            <div class="space-y-4">
+                <p>Để xử lý bài toán thời gian trong bài thi (như hình em đã gửi), em cần nắm chắc 5 quy tắc vàng sau:</p>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-lg text-blue-800 mb-2">1. Khởi tạo mốc thời gian (Timestamp)</h3>
+                    <p>Sử dụng <code>pd.Timestamp("Năm-Tháng-Ngày Giờ:Phút")</code> để tạo một đối tượng thời gian.</p>
+                </div>
+
+                <div class="bg-indigo-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-lg text-indigo-800 mb-2">2. Múi giờ (Timezone - tz)</h3>
+                    <p>Giờ trên máy tính thường dùng chuẩn quốc tế <strong>UTC</strong>. Giờ Việt Nam (Asia/Ho_Chi_Minh) chạy nhanh hơn UTC 7 tiếng <strong>(UTC + 7)</strong>.</p>
+                    <ul class="list-disc ml-6 mt-2">
+                        <li><code>tz="UTC"</code>: Đánh dấu thời gian này là giờ quốc tế.</li>
+                        <li><code>tz_convert("Asia/Ho_Chi_Minh")</code>: Đổi sang giờ Việt Nam (bằng cách <strong>cộng thêm 7 tiếng</strong> vào giờ UTC).</li>
+                    </ul>
+                </div>
+
+                <div class="bg-emerald-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-lg text-emerald-800 mb-2">3. Trích xuất thông tin</h3>
+                    <p>Từ một biến thời gian (VD: <code>vn</code>), ta có thể lấy:</p>
+                    <ul class="list-disc ml-6 mt-2 font-mono text-sm">
+                        <li>vn.year (Năm)</li>
+                        <li>vn.month (Tháng)</li>
+                        <li>vn.day (Ngày)</li>
+                        <li>vn.hour (Giờ)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-amber-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-lg text-amber-800 mb-2">4. Ngày trong tuần (.dayofweek)</h3>
+                    <p>Pandas đánh số ngày trong tuần bắt đầu từ 0 là Thứ Hai:</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2 text-sm text-center">
+                        <div class="bg-white p-2 border rounded">Thứ 2: <strong>0</strong></div>
+                        <div class="bg-white p-2 border rounded">Thứ 3: <strong>1</strong></div>
+                        <div class="bg-white p-2 border rounded">Thứ 4: <strong>2</strong></div>
+                        <div class="bg-white p-2 border rounded">Thứ 5: <strong>3</strong></div>
+                        <div class="bg-white p-2 border rounded">Thứ 6: <strong>4</strong></div>
+                        <div class="bg-white p-2 border rounded">Thứ 7: <strong>5</strong></div>
+                        <div class="bg-white p-2 border rounded text-red-600">Chủ Nhật: <strong>6</strong></div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-100 p-6 rounded-lg mt-6 border border-gray-300">
+                    <h3 class="font-bold text-xl text-gray-800 mb-4">5. Phân tích bài toán mẫu (Câu 20 trong ảnh)</h3>
+                    <div class="code-block">
+t = pd.Timestamp("2026-10-31 20:30", tz="UTC")
+vn = t.tz_convert("Asia/Ho_Chi_Minh")
+print(vn.month, vn.dayofweek)
+                    </div>
+                    <p class="mt-4 font-bold">Giải thích từng bước:</p>
+                    <ol class="list-decimal ml-6 space-y-2 mt-2">
+                        <li><code>t</code> đang là <strong>20:30, ngày 31/10/2026</strong> (giờ UTC).</li>
+                        <li>Chuyển sang giờ Việt Nam (<code>vn</code>): Cộng thêm 7 tiếng.<br>
+                            <em>Toán học: 20:30 + 7 tiếng = 27:30. Vì một ngày chỉ có 24 tiếng, nên ta trừ đi 24: 27:30 - 24 = 03:30 sáng ngày hôm sau!</em>
+                        </li>
+                        <li>Vậy thời gian <code>vn</code> lúc này là: <strong>03:30, ngày 01/11/2026</strong> (đã sang tháng mới).
+                            <br> => <code>vn.month</code> sẽ là <strong>11</strong>.
+                        </li>
+                        <li>Đề bài cho biết ngày 31/10/2026 là Thứ Bảy. Vậy ngày hôm sau (01/11/2026) là <strong>Chủ Nhật</strong>.<br>
+                            => Tra bảng quy tắc ở trên, Chủ Nhật tương ứng với <strong>6</strong>. => <code>vn.dayofweek</code> là <strong>6</strong>.
+                        </li>
+                        <li class="text-green-700 font-bold">Kết quả in ra là: 11 và 6 (Đáp án D).</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trắc nghiệm -->
+        <section class="bg-white rounded-xl shadow-md p-6 md:p-8" id="quiz-section">
+            <h2 class="text-2xl font-bold text-blue-700 mb-2 border-b pb-2">Phần 2: Trắc Nghiệm Tương Tác</h2>
+            <p class="text-gray-600 mb-6 italic">Hãy làm cẩn thận từng câu, tự nhẩm tính cộng trừ giờ trước khi chọn đáp án nhé. Em phải bấm "Nộp bài" ở cuối trang thì thầy mới chấm và hiện giải thích.</p>
+            
+            <div id="quiz-container" class="space-y-8">
+                <!-- Nội dung quiz sẽ được chèn bằng JS vào đây -->
+            </div>
+
+            <div class="mt-10 flex flex-col items-center">
+                <button id="submit-btn" onclick="submitQuiz()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-transform transform hover:scale-105 text-lg">
+                    Nộp Bài & Xem Giải Thích
+                </button>
+                <div id="score-display" class="hidden mt-6 text-2xl font-bold text-center p-4 rounded-lg w-full max-w-md"></div>
+                <button id="retry-btn" onclick="location.reload()" class="hidden mt-4 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                    Làm lại bài
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- JavaScript Xử lý Quiz -->
+    <script>
+        // Mảng chứa 20 câu hỏi
+        const quizData = [
+            {
+                question: 'Câu 1 (Câu hỏi mẫu): Biết ngày 31/10/2026 là Thứ Bảy. Dòng cuối in ra kết quả gì?<div class="code-block">t = pd.Timestamp("2026-10-31 20:30", tz="UTC")\nvn = t.tz_convert("Asia/Ho_Chi_Minh")\nprint(vn.month, vn.dayofweek)</div>',
+                options: ['10 và 6', '11 và 7', '10 và 5', '11 và 6'],
+                correct: 3,
+                explanation: 'Giờ VN = UTC + 7. 20:30 + 7h = 03:30 sáng hôm sau. Ngày đổi từ 31/10 sang 01/11 (Tháng 11). 31/10 là Thứ 7, nên 01/11 là Chủ Nhật. Thuộc tính dayofweek của Chủ Nhật là 6. Đáp án: 11 và 6.'
+            },
+            {
+                question: 'Câu 2: Đoạn code sau in ra giờ (hour) là bao nhiêu?<div class="code-block">t = pd.Timestamp("2024-01-01 02:00", tz="UTC")\nvn = t.tz_convert("Asia/Ho_Chi_Minh")\nprint(vn.hour)</div>',
+                options: ['2', '9', '7', '11'],
+                correct: 1,
+                explanation: 'Giờ VN nhanh hơn UTC 7 tiếng. Lấy 02:00 + 7 tiếng = 09:00. Vậy vn.hour là 9.'
+            },
+            {
+                question: 'Câu 3: Lưu ý chiều chuyển đổi múi giờ. Kết quả in ra ngày (day) nào?<div class="code-block">t = pd.Timestamp("2024-05-15 05:00", tz="Asia/Ho_Chi_Minh")\nutc = t.tz_convert("UTC")\nprint(utc.day)</div>',
+                options: ['15', '16', '14', '5'],
+                correct: 2,
+                explanation: 'Lúc này thời gian gốc đang là giờ VN. Đổi từ VN sang UTC thì phải TRỪ đi 7 tiếng. 05:00 sáng - 7 tiếng = 22:00 đêm của NGÀY HÔM TRƯỚC. Do đó ngày lùi từ 15 về 14.'
+            },
+            {
+                question: 'Câu 4: Theo quy ước của Pandas, Thứ Tư (Wednesday) có thuộc tính <code>.dayofweek</code> bằng mấy?',
+                options: ['2', '3', '4', '1'],
+                correct: 0,
+                explanation: 'Thứ 2 = 0, Thứ 3 = 1, Thứ 4 = 2. Hãy nhớ luôn trừ đi 2 so với tên gọi thông thường ở Việt Nam nhé.'
+            },
+            {
+                question: 'Câu 5: Đoạn code sau sẽ in ra năm (year) nào?<div class="code-block">t = pd.Timestamp("2023-12-31 22:00", tz="UTC")\nvn = t.tz_convert("Asia/Ho_Chi_Minh")\nprint(vn.year)</div>',
+                options: ['2023', '2024', 'Lỗi code', '2022'],
+                correct: 1,
+                explanation: '22:00 (UTC) cộng thêm 7 tiếng = 29:00. Suy ra là 05:00 sáng ngày hôm sau. Ngày hôm sau của 31/12/2023 là 01/01/2024. Vậy năm đã chuyển sang 2024.'
+            },
+            {
+                question: 'Câu 6: Thuộc tính <code>.is_leap_year</code> kiểm tra năm nhuận. Cho biến <code>t = pd.Timestamp("2024-05-10")</code>. <code>t.is_leap_year</code> trả về gì?',
+                options: ['True', 'False', '1', '0'],
+                correct: 0,
+                explanation: 'Năm 2024 chia hết cho 4, là năm nhuận. Nên thuộc tính trả về True (kiểu Boolean).'
+            },
+            {
+                question: 'Câu 7: Thuộc tính <code>.quarter</code> trả về quý trong năm. Nếu <code>t = pd.Timestamp("2024-08-15")</code>, kết quả của <code>t.quarter</code> là?',
+                options: ['1', '2', '3', '4'],
+                correct: 2,
+                explanation: 'Tháng 8 thuộc Quý 3 (Quý 1: T1-T3, Quý 2: T4-T6, Quý 3: T7-T9, Quý 4: T10-T12). Đáp án là 3.'
+            },
+            {
+                question: 'Câu 8: Cộng trừ thời gian (Timedelta). Kết quả in ra là tháng mấy?<div class="code-block">t = pd.Timestamp("2023-10-30")\nnew_t = t + pd.Timedelta(days=3)\nprint(new_t.month)</div>',
+                options: ['10', '11', '12', '1'],
+                correct: 1,
+                explanation: 'Ngày 30/10 + 3 ngày: 31/10 (1 ngày), 01/11 (2 ngày), 02/11 (3 ngày). Vậy nó rơi vào tháng 11.'
+            },
+            {
+                question: 'Câu 9: Hàm <code>.day_name()</code> trả về tên tiếng Anh của ngày. Nếu <code>t.dayofweek == 4</code>, <code>t.day_name()</code> trả về gì?',
+                options: ['Thursday', 'Friday', 'Saturday', 'Wednesday'],
+                correct: 1,
+                explanation: 'dayofweek = 0 (Thứ 2), 1 (Thứ 3), 2 (Thứ 4), 3 (Thứ 5), 4 (Thứ 6). Thứ 6 tiếng Anh là Friday.'
+            },
+            {
+                question: 'Câu 10: Thuộc tính <code>.is_month_end</code> kiểm tra xem có phải ngày cuối tháng không. Ngày 28/02/2024 trả về kết quả gì?',
+                options: ['True', 'False', 'Báo lỗi', 'None'],
+                correct: 1,
+                explanation: '2024 là năm nhuận, nên tháng 2 có 29 ngày. Ngày 28/02 chưa phải ngày cuối tháng, nên trả về False.'
+            },
+            {
+                question: 'Câu 11: Sự khác biệt giữa <code>tz_localize</code> và <code>tz_convert</code>. Code sau in ra gì?<div class="code-block">t = pd.Timestamp("2024-01-01 10:00")\nt = t.tz_localize("UTC")\nprint(t.hour)</div>',
+                options: ['17', '3', '10', 'Lỗi'],
+                correct: 2,
+                explanation: 'tz_localize("UTC") chỉ DÁN NHÃN múi giờ cho một thời gian chưa có múi giờ (naive time), nó KHÔNG làm thay đổi con số giờ. Nên giờ vẫn giữ nguyên là 10.'
+            },
+            {
+                question: 'Câu 12: Múi giờ Nhật Bản (Asia/Tokyo) là UTC + 9. Tính ngày xuất ra:<div class="code-block">t = pd.Timestamp("2024-10-15 16:00", tz="UTC")\njp = t.tz_convert("Asia/Tokyo")\nprint(jp.day)</div>',
+                options: ['14', '15', '16', '17'],
+                correct: 2,
+                explanation: 'UTC 16:00 + 9 tiếng = 25:00. Tức là 01:00 sáng ngày hôm sau. Ngày gốc là 15, chuyển sang ngày hôm sau là 16.'
+            },
+            {
+                question: 'Câu 13: Trừ thời gian xuyên năm. Code sau in ra năm nào?<div class="code-block">t = pd.Timestamp("2024-01-01 00:00")\nnew_t = t - pd.Timedelta(hours=1)\nprint(new_t.year)</div>',
+                options: ['2023', '2024', '2025', '0'],
+                correct: 0,
+                explanation: 'Trừ đi 1 tiếng từ lúc 00:00 ngày 1/1/2024 sẽ lùi về 23:00 ngày 31/12/2023. Năm là 2023.'
+            },
+            {
+                question: 'Câu 14: <code>.dayofyear</code> đếm số thứ tự ngày trong năm (từ 1 đến 365/366). Ngày 01/02/2024 có <code>.dayofyear</code> bằng bao nhiêu?',
+                options: ['31', '32', '33', '1'],
+                correct: 1,
+                explanation: 'Tháng 1 có 31 ngày. Sang ngày 1 của tháng 2 thì đếm tiếp là: 31 + 1 = 32.'
+            },
+            {
+                question: 'Câu 15: Chênh lệch múi giờ. Nếu ở Châu Âu (Europe/London) đang là mùa đông (UTC + 0). Biến <code>t</code> giờ UTC là 15:00. Đổi sang London thì giờ là?',
+                options: ['15', '16', '14', '0'],
+                correct: 0,
+                explanation: 'Vào mùa đông, London có múi giờ giống hệt UTC (UTC+0). Nên 15:00 UTC đổi sang London vẫn là 15:00.'
+            },
+            {
+                question: 'Câu 16: Hàm <code>pd.date_range()</code> tạo chuỗi thời gian. Kết quả trả về chứa bao nhiêu phần tử?<div class="code-block">dr = pd.date_range(start="2024-01-01", periods=3, freq="D")\nprint(len(dr))</div>',
+                options: ['1', '2', '3', '4'],
+                correct: 2,
+                explanation: 'Tham số periods=3 báo cho Pandas biết hãy tạo ra chính xác 3 mốc thời gian (cách nhau 1 ngày do freq="D").'
+            },
+            {
+                question: 'Câu 17: Tham số <code>freq="M"</code> trong <code>date_range</code> mang ý nghĩa là "Ngày cuối cùng của tháng". Giá trị đầu tiên của code sau là ngày mấy?<div class="code-block">dr = pd.date_range(start="2024-01-15", periods=2, freq="M")</div>',
+                options: ['2024-01-15', '2024-01-31', '2024-02-15', '2024-02-29'],
+                correct: 1,
+                explanation: 'Dù start là 15/01, nhưng tần suất "M" (Month end) sẽ tìm ngày cuối cùng của tháng đó làm điểm xuất phát. Tháng 1 có 31 ngày, nên ngày đầu tiên trong mảng là 2024-01-31.'
+            },
+            {
+                question: 'Câu 18: Tính giờ quốc tế (UTC) từ giờ Việt Nam. Code sau in ra giờ (hour) nào?<div class="code-block">vn = pd.Timestamp("2024-11-20 20:00", tz="Asia/Ho_Chi_Minh")\nutc = vn.tz_convert("UTC")\nprint(utc.hour)</div>',
+                options: ['20', '3', '13', '27'],
+                correct: 2,
+                explanation: 'VN = UTC + 7. => UTC = VN - 7. Lấy 20:00 - 7 tiếng = 13:00.'
+            },
+            {
+                question: 'Câu 19: Toán tử cộng Timedelta: <code>pd.Timestamp("2024-03-10 15:00") + pd.Timedelta(hours=12)</code>. Ngày sinh ra là ngày mấy?',
+                options: ['10', '11', '12', '9'],
+                correct: 1,
+                explanation: '15:00 + 12 tiếng = 27:00. Quá 24h nên qua ngày hôm sau (10 -> 11), giờ là 03:00 sáng.'
+            },
+            {
+                question: 'Câu 20: Tổng hợp toàn diện: Kết quả in ra là gì?<div class="code-block">t = pd.Timestamp("2023-12-31 18:00", tz="UTC")\nvn = t.tz_convert("Asia/Ho_Chi_Minh")\nprint(vn.month, vn.hour)</div>',
+                options: ['12 và 1', '1 và 1', '12 và 25', '1 và 25'],
+                correct: 1,
+                explanation: 'Giờ VN = 18:00 (UTC) + 7 tiếng = 25:00 = 01:00 sáng hôm sau. Ngày chuyển từ 31/12/2023 sang 01/01/2024. Tháng mới là 1 (month=1). Giờ mới là 1 (hour=1). Đáp án 1 và 1.'
+            }
+        ];
+
+        const quizContainer = document.getElementById('quiz-container');
+        let hasSubmitted = false;
+
+        // Render câu hỏi khi tải trang
+        function renderQuiz() {
+            quizData.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'bg-white border-2 border-gray-100 p-5 rounded-lg shadow-sm mb-6';
+                questionDiv.id = `q-block-${index}`;
+                
+                // Render Câu hỏi
+                const qTitle = document.createElement('h3');
+                qTitle.className = 'text-lg font-semibold text-gray-800 mb-3';
+                qTitle.innerHTML = q.question;
+                questionDiv.appendChild(qTitle);
+
+                // Render Đáp án
+                const optionsGrid = document.createElement('div');
+                optionsGrid.className = 'grid grid-cols-1 md:grid-cols-2 gap-3 mt-4';
+
+                q.options.forEach((opt, optIndex) => {
+                    const label = document.createElement('label');
+                    label.className = 'option-label flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer text-gray-700';
+                    label.id = `label-${index}-${optIndex}`;
+                    
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `q${index}`;
+                    radio.value = optIndex;
+                    radio.className = 'w-5 h-5 mr-3 accent-blue-600';
+                    
+                    const span = document.createElement('span');
+                    span.innerText = String.fromCharCode(65 + optIndex) + '. ' + opt; // A, B, C, D
+
+                    label.appendChild(radio);
+                    label.appendChild(span);
+                    optionsGrid.appendChild(label);
+                });
+                questionDiv.appendChild(optionsGrid);
+
+                // Khu vực Giải thích (ẩn mặc định)
+                const expDiv = document.createElement('div');
+                expDiv.id = `exp-${index}`;
+                expDiv.className = 'hidden mt-4 p-4 bg-blue-50 border-l-4 border-blue-500 text-blue-900 rounded-r-lg text-sm font-medium';
+                expDiv.innerHTML = `<strong>Giải thích:</strong> ${q.explanation}`;
+                questionDiv.appendChild(expDiv);
+
+                quizContainer.appendChild(questionDiv);
+            });
+        }
+
+        // Chấm điểm khi bấm nộp bài
+        function submitQuiz() {
+            if (hasSubmitted) return; // Không cho chấm lại nếu chưa làm lại
+
+            let score = 0;
+            let allAnswered = true;
+
+            // Kiểm tra xem đã làm đủ chưa (tùy chọn, ở đây cho phép làm thiếu tính sai)
+            
+            quizData.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                
+                // Hiện giải thích
+                document.getElementById(`exp-${index}`).classList.remove('hidden');
+
+                if (selectedOption) {
+                    const selectedValue = parseInt(selectedOption.value);
+                    const labelSelected = document.getElementById(`label-${index}-${selectedValue}`);
+                    
+                    if (selectedValue === q.correct) {
+                        score++;
+                        labelSelected.classList.add('correct-ans');
+                    } else {
+                        labelSelected.classList.add('wrong-ans');
+                        // Highlight đáp án đúng nếu chọn sai
+                        document.getElementById(`label-${index}-${q.correct}`).classList.add('correct-ans');
+                    }
+                } else {
+                    // Nếu không chọn, tô sáng đáp án đúng
+                    document.getElementById(`label-${index}-${q.correct}`).classList.add('correct-ans');
+                }
+
+                // Vô hiệu hóa radio buttons
+                const radios = document.querySelectorAll(`input[name="q${index}"]`);
+                radios.forEach(r => r.disabled = true);
+            });
+
+            // Hiển thị điểm
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.innerHTML = `Điểm của em: <span class="text-blue-700 text-3xl">${score}/${quizData.length}</span>`;
+            
+            if (score >= 15) {
+                scoreDisplay.className = "mt-6 text-2xl font-bold text-center p-4 rounded-lg w-full max-w-md bg-green-100 text-green-800 border-2 border-green-500 block";
+                scoreDisplay.innerHTML += "<br><span class='text-lg font-normal block mt-2'>Tuyệt vời! Em đã nắm rất chắc nền tảng.</span>";
+            } else if (score >= 10) {
+                scoreDisplay.className = "mt-6 text-2xl font-bold text-center p-4 rounded-lg w-full max-w-md bg-yellow-100 text-yellow-800 border-2 border-yellow-500 block";
+                scoreDisplay.innerHTML += "<br><span class='text-lg font-normal block mt-2'>Tốt lắm, nhưng hãy đọc kỹ lại giải thích các câu sai nhé.</span>";
+            } else {
+                scoreDisplay.className = "mt-6 text-2xl font-bold text-center p-4 rounded-lg w-full max-w-md bg-red-100 text-red-800 border-2 border-red-500 block";
+                scoreDisplay.innerHTML += "<br><span class='text-lg font-normal block mt-2'>Không sao, mới học ai cũng nhầm! Đọc lại lý thuyết phần 1 và giải thích nhé.</span>";
+            }
+            
+            document.getElementById('submit-btn').classList.add('hidden');
+            document.getElementById('retry-btn').classList.remove('hidden');
+            hasSubmitted = true;
+
+            // Cuộn xuống xem điểm
+            scoreDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Chạy hàm render khi web load xong
+        window.onload = renderQuiz;
+    </script>
+</body>
+</html>

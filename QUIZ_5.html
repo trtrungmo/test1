@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lập Trình Xử Lý Dữ Liệu - Vượt Qua Nỗi Sợ NumPy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .code-block {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            font-family: monospace;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .question-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #3b82f6;
+        }
+        .explanation {
+            display: none;
+            background-color: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.25rem;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="max-w-4xl mx-auto py-10 px-5">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-blue-700 mb-3">Lấy Lại Căn Bản Python: NumPy</h1>
+            <p class="text-lg text-gray-600">Bài giảng & Thực hành: Phân biệt View (Góc nhìn) và Copy (Bản sao)</p>
+        </header>
+
+        <!-- Lý thuyết -->
+        <section class="bg-white rounded-xl shadow-md p-8 mb-12">
+            <h2 class="text-2xl font-bold text-blue-600 mb-4 border-b pb-2">📚 1. Lý Thuyết Trọng Tâm: View vs Copy</h2>
+            <p class="mb-4">Chào em, chìa khóa để giải quyết dạng bài tập này (như câu 5 trong đề của em) nằm ở việc hiểu khi nào NumPy tạo ra một <b>Góc nhìn (View)</b> và khi nào nó tạo ra một <b>Bản sao (Copy)</b> độc lập.</p>
+            
+            <div class="grid md:grid-cols-2 gap-6 mt-6">
+                <!-- Slicing (View) -->
+                <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                    <h3 class="font-bold text-lg text-blue-800 mb-2">🔍 Slicing tạo ra VIEW</h3>
+                    <p class="text-sm mb-3">Khi em dùng dấu hai chấm <code>:</code> để cắt mảng (Slicing), NumPy KHÔNG tạo ra mảng mới mà chỉ đưa cho em một "góc nhìn" vào mảng cũ.</p>
+                    <div class="code-block text-sm mb-3">a = np.array([1, 2, 3])
+b = a[1:]  # Lấy từ index 1 đến hết -> View
+b[0] = 99  # Sửa View</div>
+                    <p class="text-sm font-semibold text-red-600">⚠️ Hậu quả: Mảng gốc `a` bị thay đổi thành `[1, 99, 3]`.</p>
+                </div>
+
+                <!-- Boolean Indexing (Copy) -->
+                <div class="bg-orange-50 p-5 rounded-lg border border-orange-200">
+                    <h3 class="font-bold text-lg text-orange-800 mb-2">📑 Boolean Indexing tạo ra COPY</h3>
+                    <p class="text-sm mb-3">Khi em lọc mảng bằng điều kiện (VD: <code>G &lt; 5</code>) hoặc dùng mảng chỉ số (Fancy Indexing), NumPy TẠO RA một mảng mới hoàn toàn độc lập.</p>
+                    <div class="code-block text-sm mb-3">a = np.array([1, 2, 3])
+c = a[a > 1]  # Lọc có điều kiện -> Copy
+c[0] = 99     # Sửa Copy</div>
+                    <p class="text-sm font-semibold text-green-600">✅ Hậu quả: Mảng gốc `a` KHÔNG thay đổi, vẫn là `[1, 2, 3]`.</p>
+                </div>
+            </div>
+            
+            <div class="mt-6 bg-yellow-100 p-4 rounded text-yellow-800 border-l-4 border-yellow-500 font-medium">
+                💡 Tóm lại câu thần chú: <b>Slicing (dấu :) sửa mảng gốc. Lọc điều kiện (Boolean) KHÔNG sửa mảng gốc.</b>
+            </div>
+        </section>
+
+        <!-- Trắc nghiệm -->
+        <section>
+            <h2 class="text-2xl font-bold text-blue-600 mb-4">✍️ 2. Bài Tập Thực Hành</h2>
+            <p class="mb-6 text-gray-600">Hãy áp dụng thần chú phía trên để làm 10 câu trắc nghiệm này nhé. Làm xong em hãy bấm nút <b>"Nộp bài"</b> ở cuối để xem giải thích chi tiết cho từng câu.</p>
+            
+            <form id="quiz-form">
+                <div id="questions-container">
+                    <!-- Questions will be injected here by JS -->
+                </div>
+
+                <!-- Score and Submit -->
+                <div class="mt-8 bg-white p-6 rounded-xl shadow-md text-center">
+                    <p id="score-display" class="text-2xl font-bold text-blue-600 mb-4 hidden"></p>
+                    <button type="button" onclick="submitQuiz()" id="submit-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105 shadow-lg">
+                        🚀 Nộp Bài & Xem Điểm
+                    </button>
+                </div>
+            </form>
+        </section>
+
+    </div>
+
+    <script>
+        // Quiz Data
+        const questions = [
+            {
+                id: 1,
+                title: "Câu 1 (Câu hỏi gốc trong đề của em): Đoạn code sau in ra gì?",
+                code: `G = np.array([[4, 7, 1],
+              [6, 2, 8]])
+h = G[1, 1:]
+m = G[G < 5]
+h[1] = 6
+m[0] = 9
+print(G.sum())`,
+                options: ["A. 33", "B. 31", "C. 28", "D. 26"],
+                correctAnswer: 3, // D (index 3)
+                explanation: "<b>Giải thích chi tiết:</b><br>- Tổng ban đầu của G là 4+7+1+6+2+8 = 28.<br>- <code>h = G[1, 1:]</code> dùng Slicing, nên <code>h</code> là <b>View</b> chỉ vào mảng con <code>[2, 8]</code> ở hàng 1.<br>- <code>m = G[G < 5]</code> là lọc điều kiện, tạo ra <b>Copy</b> mới tinh.<br>- <code>h[1] = 6</code>: Vì h là View, nó thay đổi phần tử thứ 1 của h (tức là số 8 trong G) thành 6. Mảng G giờ là <code>[[4, 7, 1], [6, 2, 6]]</code>.<br>- <code>m[0] = 9</code>: Thay đổi Bản sao (Copy), KHÔNG ảnh hưởng tới G.<br>- <code>G.sum()</code> lúc này là 4+7+1+6+2+6 = <b>26</b>."
+            },
+            {
+                id: 2,
+                title: "Câu 2: Slicing mảng 1 chiều",
+                code: `A = np.array([10, 20, 30])
+b = A[1:]
+b[0] = 99
+print(A[1])`,
+                options: ["A. 20", "B. 99", "C. 30", "D. Lỗi chương trình"],
+                correctAnswer: 1, // B
+                explanation: "<code>b = A[1:]</code> tạo ra một View. <code>b</code> bao gồm <code>[20, 30]</code>. Khi gán <code>b[0] = 99</code>, nó thay đổi số 20 thành 99 trên mảng gốc <code>A</code>. Do đó <code>A[1]</code> bằng 99."
+            },
+            {
+                id: 3,
+                title: "Câu 3: Lọc có điều kiện (Boolean Indexing)",
+                code: `C = np.array([5, 6, 7])
+d = C[C > 5]
+d[0] = 0
+print(C[1])`,
+                options: ["A. 6", "B. 0", "C. 7", "D. 5"],
+                correctAnswer: 0, // A
+                explanation: "<code>C > 5</code> tạo ra Boolean Indexing, do đó <code>d</code> là một <b>Copy</b>. Việc đổi <code>d[0] = 0</code> hoàn toàn không ảnh hưởng đến mảng gốc <code>C</code>. Vì vậy <code>C[1]</code> vẫn là giá trị nguyên bản: 6."
+            },
+            {
+                id: 4,
+                title: "Câu 4: Truy xuất hàng trong mảng 2 chiều",
+                code: `X = np.array([[1, 2], [3, 4]])
+y = X[0]
+y[1] = 9
+print(X.sum())`,
+                options: ["A. 10", "B. 19", "C. 17", "D. 12"],
+                correctAnswer: 2, // C
+                explanation: "Lấy cả một hàng <code>X[0]</code> cũng là một dạng <b>View</b>. <code>y</code> là <code>[1, 2]</code>. <code>y[1] = 9</code> làm cho số 2 biến thành 9. Mảng X trở thành <code>[[1, 9], [3, 4]]</code>. Tổng là 1 + 9 + 3 + 4 = 17."
+            },
+            {
+                id: 5,
+                title: "Câu 5: Sử dụng hàm copy() tường minh",
+                code: `arr = np.array([10, 20, 30])
+v = arr.copy()
+v[0] = 99
+print(arr[0])`,
+                options: ["A. 10", "B. 99", "C. 20", "D. 30"],
+                correctAnswer: 0, // A
+                explanation: "Hàm <code>.copy()</code> ép buộc tạo ra một <b>Bản sao</b>. Do đó dù có thay đổi <code>v</code> như thế nào thì mảng gốc <code>arr</code> vẫn giữ nguyên. <code>arr[0]</code> vẫn là 10."
+            },
+            {
+                id: 6,
+                title: "Câu 6: Fancy Indexing (Lọc bằng mảng chỉ số)",
+                code: `M = np.array([1, 2, 3, 4])
+idx = [0, 2]
+sub = M[idx]
+sub[1] = 9
+print(M[2])`,
+                options: ["A. 3", "B. 9", "C. 2", "D. 4"],
+                correctAnswer: 0, // A
+                explanation: "Khi truyền vào một danh sách các chỉ số (gọi là Fancy Indexing), NumPy luôn trả về một <b>Copy</b>. Vậy <code>sub</code> là một mảng độc lập. Việc thay đổi <code>sub</code> không làm thay đổi <code>M</code>. Giá trị <code>M[2]</code> vẫn là 3."
+            },
+            {
+                id: 7,
+                title: "Câu 7: Slicing trên cột của mảng 2 chiều",
+                code: `P = np.array([[2, 4], 
+              [6, 8]])
+q = P[:, 1]
+q[0] = 0
+print(P.sum())`,
+                options: ["A. 20", "B. 16", "C. 18", "D. 14"],
+                correctAnswer: 1, // B
+                explanation: "<code>P[:, 1]</code> là Slicing để lấy cột thứ 2. Slicing luôn tạo <b>View</b>. <code>q</code> chỉ tới cột <code>[4, 8]</code>. Khi gán <code>q[0] = 0</code>, số 4 trong mảng gốc P bị đổi thành 0. P mới là <code>[[2, 0], [6, 8]]</code>. Tổng là 2 + 0 + 6 + 8 = 16."
+            },
+            {
+                id: 8,
+                title: "Câu 8: Slicing trong khoảng",
+                code: `A = np.array([1, 2, 3, 4, 5])
+b = A[1:4]
+b[1] = 10
+print(A.sum())`,
+                options: ["A. 15", "B. 25", "C. 22", "D. 18"],
+                correctAnswer: 2, // C
+                explanation: "<code>b = A[1:4]</code> lấy các phần tử index 1,2,3 tức là <code>[2, 3, 4]</code> (Tạo View). <code>b[1] = 10</code> tức là đổi số 3 thành 10 trên mảng gốc. A trở thành <code>[1, 2, 10, 4, 5]</code>. Tổng = 22."
+            },
+            {
+                id: 9,
+                title: "Câu 9: Lọc mảng 2 chiều toàn số giống nhau",
+                code: `K = np.array([[1, 1], [1, 1]])
+h = K[K == 1]
+h[0] = 5
+print(K.sum())`,
+                options: ["A. 4", "B. 8", "C. 9", "D. 5"],
+                correctAnswer: 0, // A
+                explanation: "<code>K[K == 1]</code> là lọc bằng điều kiện (Boolean Indexing), nên tạo <b>Copy</b>. Do đó <code>h[0] = 5</code> không tác động gì đến mảng K. Tổng các phần tử của K vẫn là 1+1+1+1 = 4."
+            },
+            {
+                id: 10,
+                title: "Câu 10: Tổ hợp View và Copy",
+                code: `Z = np.array([[0, 1, 2], 
+              [3, 4, 5]])
+v1 = Z[0, :]
+v2 = Z[Z > 2]
+v1[2] = 9
+v2[0] = 9
+print(Z.sum())`,
+                options: ["A. 15", "B. 22", "C. 28", "D. 19"],
+                correctAnswer: 1, // B
+                explanation: "Tổng Z ban đầu là 15. <code>v1</code> dùng slicing nên là <b>View</b> (hàng 0: <code>[0, 1, 2]</code>). <code>v2</code> dùng boolean nên là <b>Copy</b>. <br><code>v1[2] = 9</code> làm số 2 biến thành 9. Z tăng lên 7 đơn vị (thành 22).<br><code>v2[0] = 9</code> không làm ảnh hưởng Z. Tổng cuối cùng là 22."
+            }
+        ];
+
+        const container = document.getElementById('questions-container');
+
+        // Render questions
+        questions.forEach((q, index) => {
+            let optionsHtml = '';
+            q.options.forEach((opt, i) => {
+                optionsHtml += `
+                    <label class="block p-3 rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer transition mb-2 option-label" id="label-${index}-${i}">
+                        <input type="radio" name="q${index}" value="${i}" class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500">
+                        ${opt}
+                    </label>
+                `;
+            });
+
+            container.innerHTML += `
+                <div class="question-card" id="qcard-${index}">
+                    <h3 class="font-bold text-lg mb-3">${q.title}</h3>
+                    <div class="code-block mb-4">${q.code}</div>
+                    <div class="space-y-2">
+                        ${optionsHtml}
+                    </div>
+                    <div class="explanation text-sm" id="exp-${index}">
+                        ${q.explanation}
+                    </div>
+                </div>
+            `;
+        });
+
+        function submitQuiz() {
+            let score = 0;
+            let answeredAll = true;
+
+            // Check if all answered
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (!selected) {
+                    answeredAll = false;
+                }
+            });
+
+            if (!answeredAll) {
+                alert("Em ơi, hãy làm hết các câu trước khi nộp bài nhé!");
+                return; // Remove strictly alert constraint only meant for game rules logic if it overrides standard validations, but wait, the prompt says "Thật sự lưu ý: đừng lỗi font, các nút tương tác luôn phải hoạt động" and System Prompt says "Never use alert() under any circumstances. Use a message box instead." 
+            }
+            // Oh, fixing alert issue based on system prompt.
+        }
+        
+        // Let's rewrite submitQuiz to avoid alert().
+    </script>
+    <script>
+        // Overwriting script to comply strictly with NO ALERT rule.
+        function submitQuiz() {
+            let score = 0;
+            let missing = false;
+
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (!selected) missing = true;
+            });
+
+            if (missing) {
+                // Custom message box instead of alert
+                const scoreDisplay = document.getElementById('score-display');
+                scoreDisplay.innerHTML = `<span class="text-red-500">Em chưa chọn đủ đáp án kìa! Hãy rà soát lại các câu chưa làm nhé.</span>`;
+                scoreDisplay.classList.remove('hidden');
+                return;
+            }
+
+            // Calculate score and show explanations
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const selectedVal = parseInt(selected.value);
+                const isCorrect = (selectedVal === q.correctAnswer);
+                
+                if (isCorrect) score++;
+
+                // Highlight options
+                q.options.forEach((opt, i) => {
+                    const label = document.getElementById(`label-${index}-${i}`);
+                    const radioBtn = label.querySelector('input');
+                    
+                    // Disable inputs after submit
+                    radioBtn.disabled = true;
+                    
+                    if (i === q.correctAnswer) {
+                        label.classList.add('bg-green-100', 'border-green-500', 'font-semibold', 'text-green-800');
+                        label.classList.remove('hover:bg-gray-50');
+                    } else if (i === selectedVal && !isCorrect) {
+                        label.classList.add('bg-red-100', 'border-red-500', 'text-red-800');
+                        label.classList.remove('hover:bg-gray-50');
+                    }
+                });
+
+                // Show Explanation
+                const expDiv = document.getElementById(`exp-${index}`);
+                expDiv.style.display = "block";
+            });
+
+            // Display Score
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.classList.remove('hidden');
+            let encouragement = "";
+            if (score === 10) encouragement = "Xuất sắc! Em đã hoàn toàn làm chủ NumPy Views và Copies! 🎉";
+            else if (score >= 7) encouragement = "Rất tốt! Em đã nắm bài khá vững. Cố gắng ôn thêm chút xíu nữa thôi! 🌟";
+            else encouragement = "Đừng nản nhé! Phần này hơi lắt léo lúc đầu. Em hãy đọc kỹ lại giải thích từng câu là sẽ hiểu ngay! 💪";
+
+            scoreDisplay.innerHTML = `Điểm của em: <span class="text-4xl text-blue-700">${score}/10</span><br><p class="text-base text-gray-700 font-normal mt-2">${encouragement}</p>`;
+
+            // Hide submit button to prevent resubmission
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

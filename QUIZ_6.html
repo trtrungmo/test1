@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn tập NumPy: Shape và Strides - Lập trình Xử lý Dữ liệu</title>
+    <!-- Nhúng Tailwind CSS để thiết kế giao diện -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Tùy chỉnh thêm font chữ và giao diện để đảm bảo không lỗi tiếng Việt */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        .correct-answer {
+            background-color: #dcfce7 !important; /* bg-green-100 */
+            border-color: #22c55e !important; /* border-green-500 */
+            color: #15803d !important; /* text-green-700 */
+            font-weight: 600;
+        }
+
+        .wrong-answer {
+            background-color: #fee2e2 !important; /* bg-red-100 */
+            border-color: #ef4444 !important; /* border-red-500 */
+            color: #b91c1c !important; /* text-red-700 */
+        }
+        
+        .radio-label {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .radio-label:hover:not(.disabled) {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased pb-20">
+
+    <div class="max-w-4xl mx-auto pt-10 px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-blue-800 mb-2">Ôn tập NumPy: Trắc nghiệm Shape & Strides</h1>
+            <p class="text-gray-600">Môn: Lập trình xử lý dữ liệu - Dành cho người mới bắt đầu</p>
+        </header>
+
+        <!-- Lý thuyết trọng tâm -->
+        <section class="bg-white rounded-xl shadow-md p-6 mb-10 border-l-4 border-blue-500">
+            <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                Lý thuyết trọng tâm
+            </h2>
+            <div class="space-y-3 text-gray-700">
+                <p>Khi thực hiện Slicing trên một mảng 2D (Ma trận) trong NumPy, ta cần nhớ các quy tắc sau:</p>
+                <ul class="list-disc list-inside space-y-2 ml-2">
+                    <li><strong>1. Kích thước kiểu dữ liệu (dtype):</strong> 
+                        <code>int8</code> = 1 byte, <code>int16</code> = 2 bytes, <code>int32/float32</code> = 4 bytes, <code>int64/float64</code> = 8 bytes.
+                    </li>
+                    <li><strong>2. Tính Strides mảng gốc:</strong> Với mảng kích thước <code>(số_dòng, số_cột)</code>:
+                        <br> - Strides dòng = <code>số_cột × kích_thước_byte</code>
+                        <br> - Strides cột = <code>kích_thước_byte</code>
+                    </li>
+                    <li><strong>3. Tính Shape khi Slicing <code>[start:stop:step]</code>:</strong> 
+                        <br> - Kích thước chiều mới = <code>Math.ceil((stop - start) / step)</code>.
+                        <br> <span class="text-sm italic text-gray-500">*Nếu không có stop, thay bằng kích thước tối đa của chiều đó. Nếu không có start, mặc định là 0.</span>
+                    </li>
+                    <li><strong>4. Tính Strides mới:</strong> 
+                        <br> - Strides mới = <code>(Strides_dòng_gốc × step_dòng, Strides_cột_gốc × step_cột)</code>.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Quiz Container -->
+        <form id="quiz-form" onsubmit="return false;">
+            <div id="questions-container" class="space-y-8">
+                <!-- Javascript sẽ render câu hỏi vào đây -->
+            </div>
+
+            <!-- Submit Section -->
+            <div class="mt-12 bg-white rounded-xl shadow-md p-6 text-center border-t-4 border-indigo-500">
+                <div id="result-display" class="hidden mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">Kết quả của em: <span id="score" class="text-blue-600"></span>/20</h3>
+                    <p id="feedback-message" class="text-gray-600 mt-2"></p>
+                </div>
+                
+                <button id="submit-btn" onclick="gradeQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transform transition hover:-translate-y-1 text-lg">
+                    Nộp bài & Chấm điểm
+                </button>
+                <button id="retry-btn" onclick="location.reload()" class="hidden bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg text-lg ml-4">
+                    Làm lại
+                </button>
+            </div>
+        </form>
+
+    </div>
+
+    <!-- Data và Logic xử lý -->
+    <script>
+        const quizData = [{"id": 1, "question": "Mảng T có dtype int32, T.shape là (6, 5) và T.strides là (20, 4). Xét: <br><br><code>V = T[1::2, ::2]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(3, 3) và (40, 8)", "(2, 3) và (40, 8)", "(3, 3) và (20, 8)", "(3, 3) và (40, 4)"], "answer": 0, "explanation": "Bước 1: dtype là int32 -> kích thước 1 phần tử = 4 bytes. <br>Bước 2: Mảng gốc (6, 5) -> strides gốc là (5 * 4, 4) = (20, 4). <br>Bước 3: Slicing `1::2, ::2` -> bước nhảy dòng (row step) = 2, bước nhảy cột (col step) = 2. <br>Bước 4: Shape mới: dòng = ceil((6 - 1) / 2) = 3, cột = ceil((5 - 0) / 2) = 3 -> (3, 3). <br>Bước 5: Strides mới = (20 * 2, 4 * 2) = (40, 8)."}, {"id": 2, "question": "Mảng T có dtype float64, T.shape là (10, 10) và T.strides là (80, 8). Xét: <br><br><code>V = T[::3, 1:8:2]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(3, 4) và (240, 16)", "(4, 4) và (80, 16)", "(4, 4) và (240, 8)", "(4, 4) và (240, 16)"], "answer": 3, "explanation": "Bước 1: dtype là float64 -> kích thước 1 phần tử = 8 bytes. <br>Bước 2: Mảng gốc (10, 10) -> strides gốc là (10 * 8, 8) = (80, 8). <br>Bước 3: Slicing `::3, 1:8:2` -> bước nhảy dòng (row step) = 3, bước nhảy cột (col step) = 2. <br>Bước 4: Shape mới: dòng = ceil((10 - 0) / 3) = 4, cột = ceil((8 - 1) / 2) = 4 -> (4, 4). <br>Bước 5: Strides mới = (80 * 3, 8 * 2) = (240, 16)."}, {"id": 3, "question": "Mảng T có dtype int16, T.shape là (8, 6) và T.strides là (12, 2). Xét: <br><br><code>V = T[2::2, ::3]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(3, 2) và (12, 6)", "(3, 2) và (24, 6)", "(3, 2) và (24, 2)", "(2, 2) và (24, 6)"], "answer": 1, "explanation": "Bước 1: dtype là int16 -> kích thước 1 phần tử = 2 bytes. <br>Bước 2: Mảng gốc (8, 6) -> strides gốc là (6 * 2, 2) = (12, 2). <br>Bước 3: Slicing `2::2, ::3` -> bước nhảy dòng (row step) = 2, bước nhảy cột (col step) = 3. <br>Bước 4: Shape mới: dòng = ceil((8 - 2) / 2) = 3, cột = ceil((6 - 0) / 3) = 2 -> (3, 2). <br>Bước 5: Strides mới = (12 * 2, 2 * 3) = (24, 6)."}, {"id": 4, "question": "Mảng T có dtype int8, T.shape là (5, 5) và T.strides là (5, 1). Xét: <br><br><code>V = T[1:4:1, 2::2]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(3, 2) và (5, 2)", "(2, 2) và (5, 2)", "(4, 2) và (5, 3)", "(3, 2) và (5, 1)"], "answer": 0, "explanation": "Bước 1: dtype là int8 -> kích thước 1 phần tử = 1 bytes. <br>Bước 2: Mảng gốc (5, 5) -> strides gốc là (5 * 1, 1) = (5, 1). <br>Bước 3: Slicing `1:4:1, 2::2` -> bước nhảy dòng (row step) = 1, bước nhảy cột (col step) = 2. <br>Bước 4: Shape mới: dòng = ceil((4 - 1) / 1) = 3, cột = ceil((5 - 2) / 2) = 2 -> (3, 2). <br>Bước 5: Strides mới = (5 * 1, 1 * 2) = (5, 2)."}, {"id": 5, "question": "Mảng T có dtype float32, T.shape là (12, 8) và T.strides là (32, 4). Xét: <br><br><code>V = T[::4, 1::3]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(3, 3) và (128, 4)", "(3, 3) và (32, 12)", "(2, 3) và (128, 12)", "(3, 3) và (128, 12)"], "answer": 3, "explanation": "Bước 1: dtype là float32 -> kích thước 1 phần tử = 4 bytes. <br>Bước 2: Mảng gốc (12, 8) -> strides gốc là (8 * 4, 4) = (32, 4). <br>Bước 3: Slicing `::4, 1::3` -> bước nhảy dòng (row step) = 4, bước nhảy cột (col step) = 3. <br>Bước 4: Shape mới: dòng = ceil((12 - 0) / 4) = 3, cột = ceil((8 - 1) / 3) = 3 -> (3, 3). <br>Bước 5: Strides mới = (32 * 4, 4 * 3) = (128, 12)."}, {"id": 6, "question": "Mảng T có dtype int64, T.shape là (4, 7) và T.strides là (56, 8). Xét: <br><br><code>V = T[::2, ::2]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(1, 4) và (112, 16)", "(2, 4) và (56, 16)", "(2, 4) và (112, 16)", "(2, 4) và (112, 8)"], "answer": 2, "explanation": "Bước 1: dtype là int64 -> kích thước 1 phần tử = 8 bytes. <br>Bước 2: Mảng gốc (4, 7) -> strides gốc là (7 * 8, 8) = (56, 8). <br>Bước 3: Slicing `::2, ::2` -> bước nhảy dòng (row step) = 2, bước nhảy cột (col step) = 2. <br>Bước 4: Shape mới: dòng = ceil((4 - 0) / 2) = 2, cột = ceil((7 - 0) / 2) = 4 -> (2, 4). <br>Bước 5: Strides mới = (56 * 2, 8 * 2) = (112, 16)."}, {"id": 7, "question": "Mảng T có dtype int32, T.shape là (9, 9) và T.strides là (36, 4). Xét: <br><br><code>V = T[2:7:3, 1:6:2]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(2, 3) và (36, 8)", "(2, 3) và (108, 8)", "(2, 3) và (108, 4)", "(1, 3) và (108, 8)"], "answer": 1, "explanation": "Bước 1: dtype là int32 -> kích thước 1 phần tử = 4 bytes. <br>Bước 2: Mảng gốc (9, 9) -> strides gốc là (9 * 4, 4) = (36, 4). <br>Bước 3: Slicing `2:7:3, 1:6:2` -> bước nhảy dòng (row step) = 3, bước nhảy cột (col step) = 2. <br>Bước 4: Shape mới: dòng = ceil((7 - 2) / 3) = 2, cột = ceil((6 - 1) / 2) = 3 -> (2, 3). <br>Bước 5: Strides mới = (36 * 3, 4 * 2) = (108, 8)."}, {"id": 8, "question": "Mảng T có dtype float64, T.shape là (7, 4) và T.strides là (32, 8). Xét: <br><br><code>V = T[1::2, 0::1]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(2, 4) và (64, 8)", "(4, 4) và (64, 16)", "(3, 4) và (64, 8)", "(3, 4) và (32, 8)"], "answer": 2, "explanation": "Bước 1: dtype là float64 -> kích thước 1 phần tử = 8 bytes. <br>Bước 2: Mảng gốc (7, 4) -> strides gốc là (4 * 8, 8) = (32, 8). <br>Bước 3: Slicing `1::2, 0::1` -> bước nhảy dòng (row step) = 2, bước nhảy cột (col step) = 1. <br>Bước 4: Shape mới: dòng = ceil((7 - 1) / 2) = 3, cột = ceil((4 - 0) / 1) = 4 -> (3, 4). <br>Bước 5: Strides mới = (32 * 2, 8 * 1) = (64, 8)."}, {"id": 9, "question": "Mảng T có dtype int16, T.shape là (15, 10) và T.strides là (20, 2). Xét: <br><br><code>V = T[3::4, 2::3]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(3, 3) và (80, 6)", "(3, 3) và (20, 6)", "(3, 3) và (80, 2)", "(2, 3) và (80, 6)"], "answer": 0, "explanation": "Bước 1: dtype là int16 -> kích thước 1 phần tử = 2 bytes. <br>Bước 2: Mảng gốc (15, 10) -> strides gốc là (10 * 2, 2) = (20, 2). <br>Bước 3: Slicing `3::4, 2::3` -> bước nhảy dòng (row step) = 4, bước nhảy cột (col step) = 3. <br>Bước 4: Shape mới: dòng = ceil((15 - 3) / 4) = 3, cột = ceil((10 - 2) / 3) = 3 -> (3, 3). <br>Bước 5: Strides mới = (20 * 4, 2 * 3) = (80, 6)."}, {"id": 10, "question": "Mảng T có dtype int8, T.shape là (6, 8) và T.strides là (8, 1). Xét: <br><br><code>V = T[::3, 1:7:2]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(1, 3) và (24, 2)", "(2, 3) và (8, 2)", "(2, 3) và (24, 2)", "(2, 3) và (24, 1)"], "answer": 2, "explanation": "Bước 1: dtype là int8 -> kích thước 1 phần tử = 1 bytes. <br>Bước 2: Mảng gốc (6, 8) -> strides gốc là (8 * 1, 1) = (8, 1). <br>Bước 3: Slicing `::3, 1:7:2` -> bước nhảy dòng (row step) = 3, bước nhảy cột (col step) = 2. <br>Bước 4: Shape mới: dòng = ceil((6 - 0) / 3) = 2, cột = ceil((7 - 1) / 2) = 3 -> (2, 3). <br>Bước 5: Strides mới = (8 * 3, 1 * 2) = (24, 2)."}, {"id": 11, "question": "Mảng T có dtype float32, T.shape là (11, 5) và T.strides là (20, 4). Xét: <br><br><code>V = T[2::3, ::2]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(3, 3) và (60, 8)", "(2, 3) và (60, 8)", "(3, 3) và (60, 4)", "(3, 3) và (20, 8)"], "answer": 0, "explanation": "Bước 1: dtype là float32 -> kích thước 1 phần tử = 4 bytes. <br>Bước 2: Mảng gốc (11, 5) -> strides gốc là (5 * 4, 4) = (20, 4). <br>Bước 3: Slicing `2::3, ::2` -> bước nhảy dòng (row step) = 3, bước nhảy cột (col step) = 2. <br>Bước 4: Shape mới: dòng = ceil((11 - 2) / 3) = 3, cột = ceil((5 - 0) / 2) = 3 -> (3, 3). <br>Bước 5: Strides mới = (20 * 3, 4 * 2) = (60, 8)."}, {"id": 12, "question": "Mảng T có dtype int64, T.shape là (8, 8) và T.strides là (64, 8). Xét: <br><br><code>V = T[1:6:2, 2:7:2]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(3, 3) và (128, 16)", "(3, 3) và (128, 8)", "(3, 3) và (64, 16)", "(2, 3) và (128, 16)"], "answer": 0, "explanation": "Bước 1: dtype là int64 -> kích thước 1 phần tử = 8 bytes. <br>Bước 2: Mảng gốc (8, 8) -> strides gốc là (8 * 8, 8) = (64, 8). <br>Bước 3: Slicing `1:6:2, 2:7:2` -> bước nhảy dòng (row step) = 2, bước nhảy cột (col step) = 2. <br>Bước 4: Shape mới: dòng = ceil((6 - 1) / 2) = 3, cột = ceil((7 - 2) / 2) = 3 -> (3, 3). <br>Bước 5: Strides mới = (64 * 2, 8 * 2) = (128, 16)."}, {"id": 13, "question": "Mảng T có dtype int32, T.shape là (5, 9) và T.strides là (36, 4). Xét: <br><br><code>V = T[::2, 1::4]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(3, 2) và (72, 4)", "(2, 2) và (72, 16)", "(3, 2) và (36, 16)", "(3, 2) và (72, 16)"], "answer": 3, "explanation": "Bước 1: dtype là int32 -> kích thước 1 phần tử = 4 bytes. <br>Bước 2: Mảng gốc (5, 9) -> strides gốc là (9 * 4, 4) = (36, 4). <br>Bước 3: Slicing `::2, 1::4` -> bước nhảy dòng (row step) = 2, bước nhảy cột (col step) = 4. <br>Bước 4: Shape mới: dòng = ceil((5 - 0) / 2) = 3, cột = ceil((9 - 1) / 4) = 2 -> (3, 2). <br>Bước 5: Strides mới = (36 * 2, 4 * 4) = (72, 16)."}, {"id": 14, "question": "Mảng T có dtype float64, T.shape là (10, 6) và T.strides là (48, 8). Xét: <br><br><code>V = T[2::3, ::3]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(3, 2) và (144, 24)", "(2, 2) và (144, 24)", "(3, 2) và (144, 8)", "(3, 2) và (48, 24)"], "answer": 0, "explanation": "Bước 1: dtype là float64 -> kích thước 1 phần tử = 8 bytes. <br>Bước 2: Mảng gốc (10, 6) -> strides gốc là (6 * 8, 8) = (48, 8). <br>Bước 3: Slicing `2::3, ::3` -> bước nhảy dòng (row step) = 3, bước nhảy cột (col step) = 3. <br>Bước 4: Shape mới: dòng = ceil((10 - 2) / 3) = 3, cột = ceil((6 - 0) / 3) = 2 -> (3, 2). <br>Bước 5: Strides mới = (48 * 3, 8 * 3) = (144, 24)."}, {"id": 15, "question": "Mảng T có dtype int16, T.shape là (7, 7) và T.strides là (14, 2). Xét: <br><br><code>V = T[1:5:2, 1:5:2]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(2, 2) và (14, 4)", "(2, 2) và (28, 2)", "(2, 2) và (28, 4)", "(1, 2) và (28, 4)"], "answer": 2, "explanation": "Bước 1: dtype là int16 -> kích thước 1 phần tử = 2 bytes. <br>Bước 2: Mảng gốc (7, 7) -> strides gốc là (7 * 2, 2) = (14, 2). <br>Bước 3: Slicing `1:5:2, 1:5:2` -> bước nhảy dòng (row step) = 2, bước nhảy cột (col step) = 2. <br>Bước 4: Shape mới: dòng = ceil((5 - 1) / 2) = 2, cột = ceil((5 - 1) / 2) = 2 -> (2, 2). <br>Bước 5: Strides mới = (14 * 2, 2 * 2) = (28, 4)."}, {"id": 16, "question": "Mảng T có dtype int8, T.shape là (14, 12) và T.strides là (12, 1). Xét: <br><br><code>V = T[::5, 2::4]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(3, 3) và (12, 4)", "(2, 3) và (60, 4)", "(3, 3) và (60, 1)", "(3, 3) và (60, 4)"], "answer": 3, "explanation": "Bước 1: dtype là int8 -> kích thước 1 phần tử = 1 bytes. <br>Bước 2: Mảng gốc (14, 12) -> strides gốc là (12 * 1, 1) = (12, 1). <br>Bước 3: Slicing `::5, 2::4` -> bước nhảy dòng (row step) = 5, bước nhảy cột (col step) = 4. <br>Bước 4: Shape mới: dòng = ceil((14 - 0) / 5) = 3, cột = ceil((12 - 2) / 4) = 3 -> (3, 3). <br>Bước 5: Strides mới = (12 * 5, 1 * 4) = (60, 4)."}, {"id": 17, "question": "Mảng T có dtype float32, T.shape là (9, 6) và T.strides là (24, 4). Xét: <br><br><code>V = T[3::2, 1:5:2]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(2, 2) và (48, 8)", "(3, 2) và (48, 4)", "(3, 2) và (24, 8)", "(3, 2) và (48, 8)"], "answer": 3, "explanation": "Bước 1: dtype là float32 -> kích thước 1 phần tử = 4 bytes. <br>Bước 2: Mảng gốc (9, 6) -> strides gốc là (6 * 4, 4) = (24, 4). <br>Bước 3: Slicing `3::2, 1:5:2` -> bước nhảy dòng (row step) = 2, bước nhảy cột (col step) = 2. <br>Bước 4: Shape mới: dòng = ceil((9 - 3) / 2) = 3, cột = ceil((5 - 1) / 2) = 2 -> (3, 2). <br>Bước 5: Strides mới = (24 * 2, 4 * 2) = (48, 8)."}, {"id": 18, "question": "Mảng T có dtype int64, T.shape là (6, 6) và T.strides là (48, 8). Xét: <br><br><code>V = T[1::3, 0::2]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(2, 3) và (144, 16)", "(2, 3) và (144, 8)", "(2, 3) và (48, 16)", "(1, 3) và (144, 16)"], "answer": 0, "explanation": "Bước 1: dtype là int64 -> kích thước 1 phần tử = 8 bytes. <br>Bước 2: Mảng gốc (6, 6) -> strides gốc là (6 * 8, 8) = (48, 8). <br>Bước 3: Slicing `1::3, 0::2` -> bước nhảy dòng (row step) = 3, bước nhảy cột (col step) = 2. <br>Bước 4: Shape mới: dòng = ceil((6 - 1) / 3) = 2, cột = ceil((6 - 0) / 2) = 3 -> (2, 3). <br>Bước 5: Strides mới = (48 * 3, 8 * 2) = (144, 16)."}, {"id": 19, "question": "Mảng T có dtype int32, T.shape là (12, 10) và T.strides là (40, 4). Xét: <br><br><code>V = T[4::3, 3::3]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(2, 3) và (120, 12)", "(3, 3) và (120, 12)", "(3, 3) và (120, 4)", "(3, 3) và (40, 12)"], "answer": 1, "explanation": "Bước 1: dtype là int32 -> kích thước 1 phần tử = 4 bytes. <br>Bước 2: Mảng gốc (12, 10) -> strides gốc là (10 * 4, 4) = (40, 4). <br>Bước 3: Slicing `4::3, 3::3` -> bước nhảy dòng (row step) = 3, bước nhảy cột (col step) = 3. <br>Bước 4: Shape mới: dòng = ceil((12 - 4) / 3) = 3, cột = ceil((10 - 3) / 3) = 3 -> (3, 3). <br>Bước 5: Strides mới = (40 * 3, 4 * 3) = (120, 12)."}, {"id": 20, "question": "Mảng T có dtype float64, T.shape là (8, 5) và T.strides là (40, 8). Xét: <br><br><code>V = T[::2, 1::2]</code><br><br>V.shape và V.strides lần lượt là gì?", "options": ["(4, 2) và (40, 16)", "(4, 2) và (80, 16)", "(4, 2) và (80, 8)", "(3, 2) và (80, 16)"], "answer": 1, "explanation": "Bước 1: dtype là float64 -> kích thước 1 phần tử = 8 bytes. <br>Bước 2: Mảng gốc (8, 5) -> strides gốc là (5 * 8, 8) = (40, 8). <br>Bước 3: Slicing `::2, 1::2` -> bước nhảy dòng (row step) = 2, bước nhảy cột (col step) = 2. <br>Bước 4: Shape mới: dòng = ceil((8 - 0) / 2) = 4, cột = ceil((5 - 1) / 2) = 2 -> (4, 2). <br>Bước 5: Strides mới = (40 * 2, 8 * 2) = (80, 16)."}];
+
+        const charLabels = ['A', 'B', 'C', 'D'];
+
+        // Hàm render giao diện câu hỏi
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            
+            quizData.forEach((q, index) => {
+                // Tạo một card cho mỗi câu hỏi
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'bg-white rounded-xl shadow-sm p-6 border border-gray-200';
+                
+                // Tiêu đề câu hỏi
+                const qHeader = document.createElement('h3');
+                qHeader.className = 'font-bold text-lg mb-4 text-gray-800 border-b pb-2';
+                // Xử lý chuỗi câu hỏi: đổi code tags thành UI đẹp hơn
+                let formattedQuestion = q.question.replace(/<code>/g, '<code class="bg-gray-100 text-red-600 px-2 py-1 rounded font-mono text-sm">');
+                qHeader.innerHTML = `Câu ${index + 1}: ${formattedQuestion}`;
+                questionDiv.appendChild(qHeader);
+
+                // Khung chứa đáp án
+                const optionsGrid = document.createElement('div');
+                optionsGrid.className = 'grid grid-cols-1 md:grid-cols-2 gap-4 mb-4';
+
+                q.options.forEach((option, optIdx) => {
+                    const label = document.createElement('label');
+                    // ID duy nhất cho label và input
+                    const inputId = `q${index}_opt${optIdx}`;
+                    label.id = `label_${inputId}`;
+                    label.className = 'radio-label flex items-center p-4 border rounded-lg cursor-pointer text-gray-700';
+                    
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `question_${index}`;
+                    input.value = optIdx;
+                    input.id = inputId;
+                    input.className = 'w-5 h-5 text-indigo-600 focus:ring-indigo-500 mr-3';
+                    
+                    const span = document.createElement('span');
+                    span.innerHTML = `<strong>${charLabels[optIdx]}.</strong> ${option}`;
+
+                    label.appendChild(input);
+                    label.appendChild(span);
+                    optionsGrid.appendChild(label);
+                });
+                
+                questionDiv.appendChild(optionsGrid);
+
+                // Khung giải thích (ẩn đi mặc định)
+                const expDiv = document.createElement('div');
+                expDiv.id = `explanation_${index}`;
+                expDiv.className = 'hidden mt-4 p-4 bg-yellow-50 rounded-lg text-sm text-yellow-900 border-l-4 border-yellow-400';
+                
+                // Format lại giải thích cho dễ nhìn (nếu có <br>)
+                let formattedExp = q.explanation.replace(/<code>/g, '<code class="font-bold">');
+                expDiv.innerHTML = `<strong>Giải thích chi tiết:</strong><br><div class="mt-2 space-y-1">${formattedExp}</div>`;
+                
+                questionDiv.appendChild(expDiv);
+                
+                container.appendChild(questionDiv);
+            });
+        }
+
+        // Chấm điểm
+        function gradeQuiz() {
+            let score = 0;
+            let answered = 0;
+
+            quizData.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question_${index}"]:checked`);
+                
+                // Hiện phần giải thích
+                document.getElementById(`explanation_${index}`).classList.remove('hidden');
+
+                // Khóa tất cả các nút radio của câu này để tránh click lại
+                const allRadios = document.querySelectorAll(`input[name="question_${index}"]`);
+                allRadios.forEach(radio => {
+                    radio.disabled = true;
+                    document.getElementById(`label_${radio.id}`).classList.add('disabled', 'cursor-not-allowed', 'opacity-70');
+                });
+
+                if (selectedOption) {
+                    answered++;
+                    const selectedVal = parseInt(selectedOption.value);
+                    const selectedLabel = document.getElementById(`label_${selectedOption.id}`);
+                    
+                    if (selectedVal === q.answer) {
+                        score++;
+                        selectedLabel.classList.add('correct-answer');
+                    } else {
+                        selectedLabel.classList.add('wrong-answer');
+                        // Bôi xanh đáp án đúng mà user không chọn
+                        const correctLabel = document.getElementById(`label_q${index}_opt${q.answer}`);
+                        correctLabel.classList.add('correct-answer');
+                    }
+                } else {
+                    // Nếu user bỏ trống, chỉ bôi xanh đáp án đúng
+                    const correctLabel = document.getElementById(`label_q${index}_opt${q.answer}`);
+                    correctLabel.classList.add('correct-answer');
+                }
+            });
+
+            // Hiển thị kết quả
+            const resDiv = document.getElementById('result-display');
+            const scoreSpan = document.getElementById('score');
+            const feedbackP = document.getElementById('feedback-message');
+            
+            resDiv.classList.remove('hidden');
+            scoreSpan.innerText = score;
+
+            if (score === 20) {
+                feedbackP.innerText = "Tuyệt vời! Em đã nắm rất vững kiến thức NumPy.";
+            } else if (score >= 15) {
+                feedbackP.innerText = "Rất tốt! Cố gắng ôn lại một chút ở các câu sai nhé.";
+            } else if (score >= 10) {
+                feedbackP.innerText = "Khá lắm, nhưng em cần đọc lại phần lý thuyết trọng tâm ở trên.";
+            } else {
+                feedbackP.innerText = "Đừng nản chí! Hãy đọc thật kỹ hướng dẫn ở phần Lý thuyết và xem lại lời giải bên dưới từng câu nhé.";
+            }
+
+            // Đổi nút button
+            document.getElementById('submit-btn').classList.add('hidden');
+            document.getElementById('retry-btn').classList.remove('hidden');
+            
+            // Tự cuộn xuống dưới
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Khởi tạo ngay khi tải trang
+        window.onload = function() {
+            renderQuestions();
+        };
+    </script>
+</body>
+</html>
