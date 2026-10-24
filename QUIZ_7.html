@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn tập NumPy - Lập trình Xử lý Dữ liệu</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+            --success: #16a34a;
+            --error: #dc2626;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2.2rem;
+        }
+        header p {
+            margin: 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .intro-card, .quiz-card, .score-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+        .intro-card h2 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+        .theory-summary {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .question-item {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .question-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .question-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1rem 0;
+        }
+        .options-list li {
+            margin-bottom: 0.75rem;
+        }
+        .options-list label {
+            display: flex;
+            align-items: flex-start;
+            padding: 0.75rem 1rem;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .options-list label:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        .options-list input[type="radio"] {
+            margin-top: 0.3rem;
+            margin-right: 0.75rem;
+        }
+        .explanation {
+            display: none;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-left: 4px solid var(--success);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+        .explanation.incorrect-expl {
+            background: #fef2f2;
+            border-color: #fecaca;
+            border-left-color: var(--error);
+        }
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: inline-block;
+        }
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+        .score-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        code {
+            background: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #e11d48;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Lập Trình Xử Lý Dữ Liệu - NumPy Masterclass</h1>
+    <p>Dành riêng cho sinh viên mất gốc Python - Giảng viên AI hỗ trợ 24/7</p>
+</header>
+
+<div class="container">
+    <!-- Phần 1: Tóm tắt lý thuyết trọng tâm -->
+    <div class="intro-card">
+        <h2>Chào em, học trò mất gốc của thầy!</h2>
+        <p>Đừng lo lắng, hôm nay chúng ta sẽ chinh phục <strong>NumPy (Numerical Python)</strong> - thư viện cốt lõi giúp Python xử lý dữ liệu số cực nhanh. Dưới đây là tóm tắt nhanh lý thuyết cốt lõi trước khi vào 20 câu hỏi luyện tập:</p>
+        
+        <div class="theory-summary">
+            <strong>1. Tại sao NumPy lại nhanh hơn List thuần của Python?</strong>
+            <ul>
+                <li><strong>List Python:</strong> Lưu danh sách các <em>con trỏ</em> trỏ tới các đối tượng nằm rải rác trong bộ nhớ (mỗi số là một Python object riêng biệt, tốn bộ nhớ và mất thời gian nhảy cóc).</li>
+                <li><strong>NumPy Array (ndarray):</strong> Lưu trữ các giá trị có cùng kiểu dữ liệu (<code>dtype</code>) nằm <strong>liên tiếp nhau trong bộ nhớ RAM</strong> (contiguous memory). CPU có thể đọc một mạch bằng mã máy tối ưu, tận dụng các tập lệnh phần cứng (vectorization).</li>
+            </ul>
+        </div>
+
+        <div class="theory-summary">
+            <strong>2. Các thao tác cơ bản cần nhớ:</strong>
+            <ul>
+                <li>Khởi tạo: <code>np.array([1, 2, 3])</code>, <code>np.arange(start, stop, step)</code>, <code>np.zeros((3, 3))</code>, <code>np.linspace(0, 1, 5)</code>.</li>
+                <li>Thuộc tính: <code>shape</code> (kích thước mảng), <code>dtype</code> (kiểu dữ liệu), <code>ndim</code> (số chiều).</li>
+                <li>Phép toán theo phần tử (Element-wise): <code>x * 2</code>, <code>x + y</code>, <code>np.sin(x)</code> chạy cực nhanh mà không cần dùng vòng lặp <code>for</code>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Phần 2: Quiz 20 câu hỏi -->
+    <div class="quiz-card">
+        <h2>Bài tập Quiz Trắc nghiệm NumPy (20 Câu)</h2>
+        <p>Hãy làm từng câu bên dưới. Sau khi nộp bài, hệ thống sẽ hiện điểm số, đáp án đúng và lời giải thích chi tiết cho từng câu.</p>
+        
+        <form id="quizForm">
+            <div id="questionsContainer"></div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <button type="button" class="btn" onclick="submitQuiz()">Nộp bài & Xem giải thích</button>
+            </div>
+        </form>
+
+        <div id="resultSection" style="display: none; margin-top: 2rem; text-align: center;">
+            <div class="score-display" id="scoreText"></div>
+            <button type="button" class="btn" onclick="resetQuiz làm-lại">Làm lại từ đầu</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Dữ liệu 20 câu hỏi ôn tập NumPy chuẩn sát nội dung trọng tâm
+const quizData = [
+    {
+        id: 1,
+        question: "Với x = np.arange(1_000_000) (kiểu int64) và ds = list(range(1_000_000)), phép x * 2 thường nhanh hơn nhiều so với [v * 2 for v in ds]. Giải thích nào đúng?",
+        options: [
+            "A. NumPy lưu mỗi số thành một đối tượng riêng, nhờ vậy Python truy cập từng số nhanh hơn.",
+            "B. NumPy dùng SIMD để chia một triệu phép nhân cho nhiều lõi CPU chạy song song.",
+            "C. NumPy nén các số theo dtype, nên thực tế chỉ phải nhân ít hơn một triệu số.",
+            "D. Phần lặp chạy bằng mã máy đã biên dịch sẵn cho int64, đọc các số nằm liền nhau."
+        ],
+        correct: 3, // D (index 3)
+        explanation: "Đáp án đúng là D. NumPy lưu các phần tử nằm liên tiếp (contiguous) trong bộ nhớ RAM với cùng một kiểu dữ liệu cố định (dtype), giúp vòng lặp thực thi bằng mã máy C đã biên dịch sẵn cực nhanh thay vì kiểm tra kiểu dữ liệu động như List trong Python."
+    },
+    {
+        id: 2,
+        question: "Hàm nào trong NumPy dùng để tạo một mảng chứa các số cách đều nhau trong một khoảng cho trước [start, stop] với số lượng phần tử cố định?",
+        options: [
+            "A. np.arange()",
+            "B. np.linspace()",
+            "C. np.zeros()",
+            "D. np.random.rand()"
+        ],
+        correct: 1, // B
+        explanation: "Đáp án đúng là B. np.linspace(start, stop, num) tạo ra một mảng gồm num phần tử cách đều nhau trong đoạn [start, stop]. Trong khi np.arange() dựa vào bước nhảy (step)."
+    },
+    {
+        id: 3,
+        question: "Thuộc tính nào của mảng NumPy cho biết kích thước (số lượng phần tử trên mỗi chiều) của mảng?",
+        options: [
+            "A. ndim",
+            "B. size",
+            "C. shape",
+            "D. dtype"
+        ],
+        correct: 2, // C
+        explanation: "Đáp án đúng là C. Thuộc tính shape trả về một tuple biểu diễn kích thước của mảng theo từng chiều (ví dụ: (3, 4)). ndim là số chiều, size là tổng số phần tử, dtype là kiểu dữ liệu."
+    },
+    {
+        id: 4,
+        question: "Kết quả của đoạn code: `np.array([1, 2, 3.5])` sẽ có dtype là gì?",
+        options: [
+            "A. int64",
+            "B. int32",
+            "C. float64",
+            "D. object"
+        ],
+        correct: 2, // C
+        explanation: "Đáp án đúng là C. NumPy yêu cầu tất cả phần tử trong mảng phải có cùng kiểu dữ liệu. Khi có sự kết hợp giữa số nguyên và số thực (3.5), NumPy sẽ tự động ép kiểu toàn bộ mảng lên kiểu số thực (float64)."
+    },
+    {
+        id: 5,
+        question: "Phát biểu nào sau đây đúng về khái niệm 'Vectorization' (Véc-tơ hóa) trong NumPy?",
+        options: [
+            "A. Bắt buộc phải viết vòng lặp for tường minh để tối ưu hóa tốc độ tính toán.",
+            "B. Cho phép thực hiện các phép toán trên toàn bộ mảng mà không cần dùng vòng lặp for ở cấp độ Python.",
+            "C. Chỉ áp dụng được cho mảng 1 chiều (vector), không áp dụng được cho ma trận 2 chiều.",
+            "D. Chuyển đổi mảng NumPy thành danh sách Python (list) để xử lý nhanh hơn."
+        ],
+        correct: 1, // B
+        explanation: "Đáp án đúng là B. Vectorization giúp ẩn các vòng lặp dưới tầng mã máy C, giúp code ngắn gọn, dễ đọc và tốc độ thực thi vượt trội."
+    },
+    {
+        id: 6,
+        question: "Để tạo một mảng 2 chiều kích thước 3x3 chứa toàn số 0, ta dùng hàm nào?",
+        options: [
+            "A. np.empty((3, 3))",
+            "B. np.ones((3, 3))",
+            "C. np.zeros((3, 3))",
+            "D. np.eye(3)"
+        ],
+        correct: 2, // C
+        explanation: "Đáp án đúng là C. np.zeros() tạo mảng toàn số 0, np.ones() tạo mảng toàn số 1, np.eye() tạo ma trận đơn vị."
+    },
+    {
+        id: 7,
+        question: "Cho mảng `x = np.array([10, 20, 30, 40, 50])`. Kết quả của `x[1:4]` là gì?",
+        options: [
+            "A. array([20, 30, 40])",
+            "B. array([10, 20, 30])",
+            "C. array([20, 30, 40, 50])",
+            "D. array([30, 40, 50])"
+        ],
+        correct: 0, // A
+        explanation: "Đáp án đúng là A. Cắt mảng (slicing) `x[1:4]` lấy từ chỉ số 1 (bao gồm: 20) đến trước chỉ số 4 (tức là chỉ số 3: 40)."
+    },
+    {
+        id: 8,
+        question: "Hiện tượng 'Broadcasting' trong NumPy xảy ra khi nào?",
+        options: [
+            "A. Khi hai mảng có kích thước hoàn toàn giống hệt nhau.",
+            "B. Khi thực hiện phép toán giữa các mảng có kích thước khác nhau nhưng tương thích theo quy tắc mở rộng kích thước.",
+            "C. Khi phát sóng truyền hình dữ liệu qua mạng internet.",
+            "D. Khi chuyển đổi mảng NumPy thành file CSV."
+        ],
+        correct: 1, // B
+        explanation: "Đáp án đúng là B. Broadcasting cho phép NumPy thực hiện các phép toán số học giữa các mảng có kích thước khác nhau bằng cách tự động 'co giãn' mảng nhỏ hơn cho khớp với mảng lớn hơn."
+    },
+    {
+        id: 9,
+        question: "Cho `a = np.array([1, 2, 3])` và `b = np.array([4, 5, 6])`. Phép tính `a * b` sẽ trả về kết quả gì?",
+        options: [
+            "A. 32 (Tích vô hướng - dot product)",
+            "B. array([4, 10, 18]) (Nhân theo từng phần tử - element-wise)",
+            "C. Lỗi vì hai mảng không cùng kích thước nhân ma trận",
+            "D. array([1, 2, 3, 4, 5, 6])"
+        ],
+        correct: 1, // B
+        explanation: "Đáp án đúng là B. Toán tử `*` trong NumPy thực hiện nhân theo từng phần tử (element-wise multiplication). Để tính tích vô hướng, ta dùng `np.dot(a, b)` hoặc `a @ b`."
+    },
+    {
+        id: 10,
+        question: "Hàm nào dùng để thay đổi hình dạng (shape) của mảng mà không làm thay đổi dữ liệu bên trong?",
+        options: [
+            "A. resize()",
+            "B. reshape()",
+            "C. transform()",
+            "D. convert()"
+        ],
+        correct: 1, // B
+        explanation: "Đáp án đúng là B. `reshape(new_shape)` trả về một mảng mới có cùng dữ liệu nhưng được sắp xếp theo hình dạng mới (với điều kiện tổng số phần tử phải giữ nguyên)."
+    },
+    {
+        id: 11,
+        question: "Cho ma trận 2 chiều `mat = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])`. Lệnh nào để lấy ra số 6?",
+        options: [
+            "A. mat[1, 2]",
+            "B. mat[2, 1]",
+            "C. mat[1][1]",
+            "D. mat.get(5)"
+        ],
+        correct: 0, // A
+        explanation: "Đáp án đúng là A. Số 6 nằm ở hàng có chỉ số 1 (hàng thứ hai) và cột có chỉ số 2 (cột thứ ba). Cú pháp 2 chiều trong NumPy là `mat[row, col]`."
+    },
+    {
+        id: 12,
+        question: "Phương thức hoặc hàm nào dùng để tính tổng toàn bộ các phần tử trong mảng NumPy `x`?",
+        options: [
+            "A. x.sum()",
+            "B. sum(x)",
+            "C. Cả A và B đều đúng",
+            "D. x.total()"
+        ],
+        correct: 2, // C
+        explanation: "Đáp án đúng là C. Cả phương thức `x.sum()` và hàm tích hợp `sum(x)` đều tính tổng được, tuy nhiên sử dụng phương thức `x.sum()` được tối ưu tốt hơn cho mảng lớn."
+    },
+    {
+        id: 13,
+        question: "Kết quả của `np.array([True, False]) + np.array([True, True])` trong NumPy là gì?",
+        options: [
+            "A. array([True, True])",
+            "B. array([2, 1])",
+            "C. Lỗi kiểu dữ liệu",
+            "D. array([1, 0])"
+        ],
+        correct: 1, // B
+        explanation: "Đáp án đúng là B. Khi thực hiện phép toán số học (`+`), kiểu boolean được ép ngầm thành số nguyên (`True = 1`, `False = 0`), do đó `[1, 0] + [1, 1] = [2, 1]`."
+    },
+    {
+        id: 14,
+        question: "Mục đích của việc sử dụng mặt nạ Boolean (Boolean Indexing / Masking) như `x[x > 5]` là gì?",
+        options: [
+            "A. Để ẩn các số lớn hơn 5 khỏi màn hình.",
+            "B. Để lọc ra các phần tử trong mảng thỏa mãn điều kiện lớn hơn 5.",
+            "C. Để đổi tất cả số lớn hơn 5 thành số 5.",
+            "D. Để mã hóa bảo mật mảng dữ liệu."
+        ],
+        correct: 1, // B
+        explanation: "Đáp án đúng là B. `x > 5` tạo ra một mảng boolean `[False, True, ...]`, khi truyền lại vào `x[x > 5]`, NumPy chỉ trả về các phần tử ứng với giá trị `True`."
+    },
+    {
+        id: 15,
+        question: "Hàm `np.unique(arr)` có công dụng gì?",
+        options: [
+            "A. Sắp xếp các phần tử tăng dần.",
+            "B. Đếm số lượng phần tử xuất hiện trong mảng.",
+            "C. Trả về các phần tử duy nhất (không trùng lặp) đã được sắp xếp tăng dần.",
+            "D. Xóa bỏ các giá trị thiếu (NaN) trong mảng."
+        ],
+        correct: 2, // C
+        explanation: "Đáp án đúng là C. `np.unique()` lọc bỏ các giá trị trùng lặp và trả về danh sách các giá trị duy nhất theo thứ tự tăng dần."
+    },
+    {
+        id: 16,
+        question: "Phép toán `np.dot(A, B)` hoặc `A @ B` giữa hai ma trận A và B đòi hỏi điều kiện gì về kích thước?",
+        options: [
+            "A. A và B phải có shape hoàn toàn giống nhau.",
+            "B. Số cột của ma trận A phải bằng số hàng của ma trận B.",
+            "C. A và B phải là mảng 1 chiều.",
+            "D. Số hàng của ma trận A phải bằng số cột của ma trận B."
+        ],
+        correct: 1, // B
+        explanation: "Đáp án đúng là B. Đây là quy tắc nhân ma trận đại số tuyến tính: Số cột của ma trận trái phải khớp với số hàng của ma trận phải."
+    },
+    {
+        id: 17,
+        question: "Hàm nào dùng để tạo một mảng các giá trị số nguyên ngẫu nhiên trong khoảng [low, high)?",
+        options: [
+            "A. np.random.rand()",
+            "B. np.random.randn()",
+            "C. np.random.randint(low, high, size)",
+            "D. np.random.choice()"
+        ],
+        correct: 2, // C
+        explanation: "Đáp án đúng là C. `np.random.randint()` sinh số nguyên ngẫu nhiên. `rand()` sinh số thực từ [0, 1), `randn()` sinh theo phân phối chuẩn."
+    },
+    {
+        id: 18,
+        question: "Khi thực hiện `y = x` với `x` là một mảng NumPy, sau đó thay đổi giá trị của `y`, mảng `x` có bị thay đổi theo không?",
+        options: [
+            "A. Không, vì y là một bản sao hoàn toàn độc lập (copy).",
+            "B. Có, vì `y = x` chỉ tạo ra một tham chiếu (view/reference) trỏ cùng đến một vùng nhớ trừ khi dùng `.copy()`.",
+            "C. Python sẽ báo lỗi vì không cho phép gán trực tiếp.",
+            "D. Chỉ thay đổi nếu x là mảng 2 chiều."
+        ],
+        correct: 1, // B
+        explanation: "Đáp án đúng là B. Khác với list Python (thường tạo list mới khi cắt hoặc gán), trong NumPy phép gán đơn giản `y = x` tạo view. Muốn độc lập ta phải dùng `y = x.copy()`."
+    },
+    {
+        id: 19,
+        question: "Hàm nào dùng để tính giá trị trung bình (mean) của các phần tử trong mảng NumPy?",
+        options: [
+            "A. np.average_value(x)",
+            "B. np.mean(x) hoặc x.mean()",
+            "C. np.median(x)",
+            "D. np.centter(x)"
+        ],
+        correct: 1, // B
+        explanation: "Đáp án đúng là B. `np.mean(x)` hoặc `x.mean()` tính giá trị trung bình cộng. `np.median` tính trung vị."
+    },
+    {
+        id: 20,
+        question: "Để nối (concatenate) hai mảng 1 chiều `a` và `b` thành một mảng dài hơn, ta dùng hàm nào?",
+        options: [
+            "A. np.concatenate([a, b])",
+            "B. np.join(a, b)",
+            "C. np.merge(a, b)",
+            "D. a.append(b)"
+        ],
+        correct: 0, // A
+        explanation: "Đáp án đúng là A. `np.concatenate()` dùng để nối các mảng theo trục chỉ định (mặc định axis=0). List Python dùng `.append()`, nhưng NumPy ndarray có kích thước cố định nên dùng concatenate."
+    }
+];
+
+// Render các câu hỏi ra HTML
+function renderQuiz() {
+    const container = document.getElementById('questionsContainer');
+    let html = '';
+    
+    quizData.forEach((q, index) => {
+        html += `
+            <div class="question-item" id="q-item-${q.id}">
+                <div class="question-title">Câu ${index + 1} (${q.id === 1 ? 'Câu trọng tâm từ đề' : 'Luyện tập'}): ${q.question}</div>
+                <ul class="options-list">
+        `;
+        
+        q.options.forEach((opt, optIndex) => {
+            html += `
+                <li>
+                    <label>
+                        <input type="radio" name="question_${q.id}" value="${optIndex}">
+                        <span>${opt}</span>
+                    </label>
+                </li>
+            `;
+        });
+        
+        html += `
+                </ul>
+                <div class="explanation" id="expl_${q.id}">
+                    <strong>Giải thích:</strong> ${q.explanation}
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// Xử lý nộp bài và chấm điểm
+function submitQuiz() {
+    let score = 0;
+    
+    quizData.forEach((q) => {
+        const selected = document.querySelector(`input[name="question_${q.id}"]:checked`);
+        const explDiv = document.getElementById(`expl_${q.id}`);
+        
+        // Hiện khung giải thích
+        explDiv.style.display = 'block';
+        
+        if (selected) {
+            const val = parseInt(selected.value);
+            if (val === q.correct) {
+                score++;
+                explDiv.className = 'explanation'; // Màu xanh thành công
+                explDiv.innerHTML = `<strong>Chính xác! (+1 điểm)</strong><br>${q.explanation}`;
+            } else {
+                explDiv.className = 'explanation incorrect-expl'; // Màu đỏ sai
+                explDiv.innerHTML = `<strong>Chưa chính xác.</strong> Đáp án đúng là <strong>${q.options[q.correct]}</strong>.<br>${q.explanation}`;
+            }
+        } else {
+            explDiv.className = 'explanation incorrect-expl';
+            explDiv.innerHTML = `<strong>Em chưa chọn đáp án này!</strong> Đáp án đúng là <strong>${q.options[q.correct]}</strong>.<br>${q.explanation}`;
+        }
+    });
+    
+    // Hiển thị tổng điểm
+    const resultSection = document.getElementById('resultSection');
+    const scoreText = document.getElementById('scoreText');
+    scoreText.innerHTML = `Kết quả của em: ${score} / ${quizData.length} câu đúng (${(score/quizData.length*10).toFixed(1)} điểm)`;
+    resultSection.style.display = 'block';
+    
+    // Cuộn xuống phần kết quả
+    resultSection.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Khởi tạo render khi tải trang
+window.onload = renderQuiz;
+</script>
+
+</body>
+</html>

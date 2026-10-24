@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Lập Trình Xử Lý Dữ Liệu - Pandas & DuckDB (Bài 4, 5, 6)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-xl font-bold text-xl shadow">🐼</div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight">Lập Trình Xử Lý Dữ Liệu (Python)</h1>
+                    <p class="text-xs text-slate-400">Giảng viên đồng hành cùng sinh viên mất gốc (Bài 4, 5, 6)</p>
+                </div>
+            </div>
+            <nav class="flex space-x-2 sm:space-x-4 text-sm font-medium">
+                <a href="#theory" class="px-3 py-2 rounded-lg hover:bg-slate-800 transition">📚 Tóm tắt Lý thuyết</a>
+                <a href="#quiz" class="px-3 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition text-white shadow">✍️ Quiz 20 Câu Hỏi</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full space-y-12">
+
+        <!-- Welcome Banner for Beginner -->
+        <section class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-blue-900 text-white rounded-2xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 text-indigo-700/20 text-9xl font-extrabold select-none pointer-events-none">🐼</div>
+            <div class="max-w-3xl relative z-10 space-y-4">
+                <span class="bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full border border-indigo-400/30">Dành riêng cho bạn mất gốc Python</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Chinh phục Pandas & DuckDB từ con số 0</h2>
+                <p class="text-indigo-100 text-sm sm:text-base leading-relaxed">
+                    Chào em! Đừng lo lắng nếu em từng mất gốc lập trình. Trang này được thiết kế cực kỳ trực quan, tóm tắt trọng tâm từ <strong class="text-white">Bài 4 (Làm quen Pandas)</strong>, <strong class="text-white">Bài 5 (Series, DataFrame chuyên sâu)</strong> đến <strong class="text-white">Bài 6 (Kết nối & Truy xuất dữ liệu với DuckDB)</strong>, kèm theo bộ 20 câu hỏi sát đề thi thật giúp em luyện tập và giải thích cặn kẽ từng chi tiết!
+                </p>
+                <div class="pt-2 flex flex-wrap gap-3">
+                    <a href="#theory" class="bg-white text-indigo-900 font-semibold px-5 py-2.5 rounded-xl text-sm shadow hover:bg-indigo-50 transition">Xem Tóm Tắt Lý Thuyết</a>
+                    <a href="#quiz" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-5 py-2.5 rounded-xl text-sm shadow transition border border-indigo-400/40">Làm Quiz Ngay (20 câu)</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Theory Section -->
+        <section id="theory" class="space-y-8">
+            <div class="border-b border-slate-200 pb-4">
+                <h2 class="text-2xl font-bold text-slate-900">📚 Tóm Tắt Lý Thuyết Trọng Tâm (Bài 4, 5, 6)</h2>
+                <p class="text-sm text-slate-500 mt-1">Nắm vững cốt lõi để giải quyết mọi câu hỏi trắc nghiệm và thực hành.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Lecture 4 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="space-y-4">
+                        <div class="inline-block bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-lg">Bài 4</div>
+                        <h3 class="text-lg font-bold text-slate-900">Làm quen với Pandas</h3>
+                        <ul class="space-y-2 text-sm text-slate-600 list-disc list-inside">
+                            <li><strong class="text-slate-800">Series:</strong> Mảng 1 chiều có gắn nhãn (index).</li>
+                            <li><strong class="text-slate-800">DataFrame:</strong> Bảng 2 chiều gồm các cột (Series) và hàng.</li>
+                            <li><strong class="text-slate-800">Đọc/Ghi file:</strong> `pd.read_csv()`, `pd.read_excel()`.</li>
+                            <li><strong class="text-slate-800">Khám phá nhanh:</strong> `df.head()`, `df.tail()`, `df.info()`, `df.describe()`.</li>
+                        </ul>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-400">
+                        💡 Mẹo nhớ: Series giống cột trong Excel, DataFrame giống cả bảng Excel.
+                    </div>
+                </div>
+
+                <!-- Lecture 5 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="space-y-4">
+                        <div class="inline-block bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-lg">Bài 5</div>
+                        <h3 class="text-lg font-bold text-slate-900">Series & DataFrame Chuyên Sâu</h3>
+                        <ul class="space-y-2 text-sm text-slate-600 list-disc list-inside">
+                            <li><strong class="text-slate-800">Truy xuất vị trí:</strong> `iloc[]` theo số nguyên (vị trí dòng/cột).</li>
+                            <li><strong class="text-slate-800">Truy xuất nhãn:</strong> `loc[]` theo tên nhãn/chỉ mục index.</li>
+                            <li><strong class="text-slate-800">Lọc dữ liệu:</strong> Dùng điều kiện boolean (`df[df['col'] > 5]`).</li>
+                            <li><strong class="text-slate-800">Nhóm & Tổng hợp:</strong> `groupby()`, kết hợp `.mean()`, `.sum()`, `.agg()`.</li>
+                            <li><strong class="text-slate-800">Xử lý thiếu:</strong> `dropna()`, `fillna()`.</li>
+                        </ul>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-400">
+                        💡 Mẹo nhớ: <code class="bg-slate-100 px-1 rounded">iloc</code> = *integer location*, <code class="bg-slate-100 px-1 rounded">loc</code> = *label location*.
+                    </div>
+                </div>
+
+                <!-- Lecture 6 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                    <div class="space-y-4">
+                        <div class="inline-block bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-lg">Bài 6</div>
+                        <h3 class="text-lg font-bold text-slate-900">Kết Nối & Truy Xuất (DuckDB & JOIN)</h3>
+                        <ul class="space-y-2 text-sm text-slate-600 list-disc list-inside">
+                            <li><strong class="text-slate-800">DuckDB SQL:</strong> Dùng `duckdb.sql("...").df()` để truy vấn DataFrame bằng SQL.</li>
+                            <li><strong class="text-slate-800">LEFT JOIN:</strong> Giữ toàn bộ bảng trái, khớp bảng phải. Giá trị không khớp thành `NULL`.</li>
+                            <li><strong class="text-slate-800">Cạm bẫy WHERE trên LEFT JOIN:</strong> Dùng `WHERE phi < 10` trên cột bảng phải có thể biến LEFT JOIN thành INNER JOIN (vì `NULL < 10` là sai).</li>
+                        </ul>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-400">
+                        💡 Chú ý tối quan trọng: Câu 15 trong ảnh của em chính là cái bẫy này!
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="quiz" class="space-y-8 bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 pb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">✍️ Bài Tập Trắc Nghiệm Ôn Tập (20 Câu)</h2>
+                    <p class="text-sm text-slate-500 mt-1">Chọn đáp án cho từng câu. Đáp án đúng và giải thích chi tiết sẽ hiện ra sau khi em bấm nút nộp bài ở cuối trang.</p>
+                </div>
+                <div id="score-badge" class="hidden bg-indigo-50 border border-indigo-200 px-4 py-2 rounded-xl text-indigo-900 font-bold text-lg">
+                    Điểm số: <span id="score-val">0</span> / 20
+                </div>
+            </div>
+
+            <!-- Quiz Form -->
+            <form id="quiz-form" class="space-y-8">
+                <!-- Questions will be injected or listed via HTML structure -->
+                <div id="questions-container" class="space-y-8">
+                    <!-- Javascript will render 20 questions here for clean maintainability -->
+                </div>
+
+                <!-- Submit / Reset Buttons -->
+                <div class="pt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
+                    <button type="button" id="submit-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition duration-200 flex items-center space-x-2">
+                        <span>🚀 Nộp Bài & Xem Giải Thích</span>
+                    </button>
+                    <button type="button" id="reset-btn" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-6 py-3 rounded-xl transition duration-200">
+                        🔄 Làm Lại Từ Đầu
+                    </button>
+                </div>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-sm py-8 mt-16 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+            <p>Hệ thống hỗ trợ học tập Lập Trình Xử Lý Dữ Liệu - UET IAI Course.</p>
+            <p class="text-xs text-slate-500">Chúc em ôn tập thật tốt và đạt kết quả cao!</p>
+        </div>
+    </footer>
+
+    <!-- Quiz Data & Logic Script -->
+    <script>
+        // Array of 20 questions tailored to Lectures 4, 5, 6 and sample question 15
+        const quizData = [
+            {
+                id: 1,
+                question: "Câu 1. Cấu trúc dữ liệu nào trong Pandas đại diện cho một bảng dữ liệu 2 chiều có các hàng và cột?",
+                options: {
+                    A: "Series",
+                    B: "DataFrame",
+                    C: "Index",
+                    D: "Panel"
+                },
+                correct: "B",
+                explanation: "DataFrame là cấu trúc dữ liệu 2 chiều dạng bảng gồm các hàng và cột (tương tự bảng Excel hoặc bảng SQL)."
+            },
+            {
+                id: 2,
+                question: "Câu 2. Để đọc một tệp tin định dạng CSV vào trong Pandas DataFrame, ta dùng hàm nào?",
+                options: {
+                    A: "pd.read_excel()",
+                    B: "pd.load_csv()",
+                    C: "pd.read_csv()",
+                    D: "pd.open_csv()"
+                },
+                correct: "C",
+                explanation: "Hàm chuẩn trong Pandas để đọc file CSV là `pd.read_csv('filename.csv')`."
+            },
+            {
+                id: 3,
+                question: "Câu 3. Phương thức nào giúp hiển thị 5 dòng đầu tiên của một DataFrame df?",
+                options: {
+                    A: "df.tail()",
+                    B: "df.head()",
+                    C: "df.info()",
+                    D: "df.first()"
+                },
+                correct: "B",
+                explanation: "`df.head()` mặc định trả về 5 dòng đầu tiên của DataFrame."
+            },
+            {
+                id: 4,
+                question: "Câu 4. Phương thức `df.info()` dùng để làm gì?",
+                options: {
+                    A: "Xem kiểu dữ liệu của từng cột và số lượng giá trị không null",
+                    B: "Tính tổng giá trị các cột số",
+                    C: "Hiển thị 5 dòng cuối cùng",
+                    D: "Sắp xếp dữ liệu theo thứ tự tăng dần"
+                },
+                correct: "A",
+                explanation: "`df.info()` cung cấp thông tin tổng quan: số hàng, số cột, tên cột, kiểu dữ liệu (dtype) và số lượng non-null values."
+            },
+            {
+                id: 5,
+                question: "Câu 5. Sự khác biệt cơ bản giữa `df.loc[]` và `df.iloc[]` là gì?",
+                options: {
+                    A: "loc dùng cho số nguyên vị trí, iloc dùng cho tên nhãn",
+                    B: "loc dùng theo tên nhãn (label), iloc dùng theo vị trí số nguyên (integer position)",
+                    C: "Không có sự khác biệt nào",
+                    D: "iloc chỉ dùng cho Series, loc chỉ dùng cho DataFrame"
+                },
+                correct: "B",
+                explanation: "`loc` tìm kiếm dựa trên nhãn (label-based), còn `iloc` tìm kiếm dựa trên chỉ số vị trí số nguyên (integer-based)."
+            },
+            {
+                id: 6,
+                question: "Câu 6. Cho DataFrame df. Lệnh nào sau đây dùng để lọc các dòng mà cột 'age' lớn hơn 20?",
+                options: {
+                    A: "df.filter(age > 20)",
+                    B: "df.query_age(20)",
+                    C: "df[df['age'] > 20]",
+                    D: "df.loc(df['age'] > 20)"
+                },
+                correct: "C",
+                explanation: "Cú pháp lọc boolean chuẩn trong Pandas là `df[df['age'] > 20]`."
+            },
+            {
+                id: 7,
+                question: "Câu 7. Hàm nào trong Pandas dùng để loại bỏ các dòng chứa giá trị bị thiếu (NaN)?",
+                options: {
+                    A: "df.remove_na()",
+                    B: "df.dropna()",
+                    C: "df.fillna()",
+                    D: "df.delete_missing()"
+                },
+                correct: "B",
+                explanation: "`df.dropna()` dùng để loại bỏ các hàng (hoặc cột) có chứa giá trị NaN."
+            },
+            {
+                id: 8,
+                question: "Câu 8. Để điền tất cả các giá trị thiếu (NaN) trong DataFrame bằng số 0, ta dùng lệnh nào?",
+                options: {
+                    A: "df.fillna(0)",
+                    B: "df.replace_na(0)",
+                    C: "df.dropna(0)",
+                    D: "df[0]"
+                },
+                correct: "A",
+                explanation: "`df.fillna(0)` thay thế toàn bộ các ô NaN bằng giá trị 0."
+            },
+            {
+                id: 9,
+                question: "Câu 9. Phương thức `groupby()` trong Pandas thường được kết hợp với phương thức tổng hợp nào sau đây?",
+                options: {
+                    A: "mean(), sum(), count()",
+                    B: "head(), tail()",
+                    C: "loc, iloc",
+                    D: "read_csv()"
+                },
+                correct: "A",
+                explanation: "Sau `groupby()`, ta áp dụng các hàm tổng hợp như `.mean()`, `.sum()`, `.count()`, `.max()`, v.v."
+            },
+            {
+                id: 10,
+                question: "Câu 10. Thư viện nào được tích hợp để thực hiện câu lệnh SQL trực tiếp trên DataFrame trong Bài 6?",
+                options: {
+                    A: "sqlite3",
+                    B: "duckdb",
+                    C: "sqlalchemy",
+                    D: "pymysql"
+                },
+                correct: "B",
+                explanation: "Trong khóa học, `duckdb` (với cú pháp `duckdb.sql(...)`) được dùng để truy vấn dữ liệu DataFrame bằng SQL cực kỳ nhanh chóng."
+            },
+            {
+                id: 11,
+                question: "Câu 11 (Dựa theo ảnh câu 15): DataFrame df có cột id, khu với 4 hàng (001, A), (002, B), (003, C), (004, A). DataFrame khu_phi có cột khu, phi với 2 hàng (A, 20), (B, 5).\n\nkq = duckdb.sql('''\n  SELECT df.id, khu_phi.phi\n  FROM df LEFT JOIN khu_phi ON df.khu = khu_phi.khu\n  WHERE khu_phi.phi < 10\n''').df()\n\nBảng kq có bao nhiêu hàng?",
+                options: {
+                    A: "2 hàng",
+                    B: "1 hàng",
+                    C: "Báo lỗi",
+                    D: "4 hàng"
+                },
+                correct: "B",
+                explanation: "Giải thích chi tiết: \n1. Ban đầu LEFT JOIN tạo ra 4 dòng cho df (001->A(20), 002->B(5), 003->C(NULL), 004->A(20)).\n2. Sau đó mệnh đề WHERE khu_phi.phi < 10 được áp dụng. Với C (NULL < 10 là False/Unknown) và A (20 < 10 là False), chỉ còn dòng B (phi = 5 < 10) thỏa mãn.\n3. Điều kiện lọc WHERE trên cột của bảng phải trong LEFT JOIN biến nó thành INNER JOIN, do đó kết quả chỉ còn 1 hàng (id 002)."
+            },
+            {
+                id: 12,
+                question: "Câu 12. Trong SQL/DuckDB, phép nối (JOIN) nào trả về tất cả các hàng từ bảng bên trái và các hàng khớp từ bảng bên phải (nếu không khớp, bên phải mang giá trị NULL)?",
+                options: {
+                    A: "INNER JOIN",
+                    B: "LEFT JOIN",
+                    C: "RIGHT JOIN",
+                    D: "FULL OUTER JOIN"
+                },
+                correct: "B",
+                explanation: "LEFT JOIN bảo toàn toàn bộ bảng bên trái, các bản ghi không khớp bên phải sẽ có giá trị NULL."
+            },
+            {
+                id: 13,
+                question: "Câu 13. Để tạo một Series từ một danh sách Python `lst = [10, 20, 30]`, câu lệnh nào là đúng?",
+                options: {
+                    A: "pd.DataFrame([10, 20, 30])",
+                    B: "pd.Series([10, 20, 30])",
+                    C: "pd.CreateSeries([10, 20, 30])",
+                    D: "Series([10, 20, 30])"
+                },
+                correct: "B",
+                explanation: "`pd.Series([10, 20, 30])` khởi tạo một đối tượng Series 1 chiều trong Pandas."
+            },
+            {
+                id: 14,
+                question: "Câu 14. Thuộc tính `.shape` của một DataFrame trả về gì?",
+                options: {
+                    A: "Tổng số phần tử",
+                    B: "Một tuple (số_hàng, số_cột)",
+                    C: "Kiểu dữ liệu của các cột",
+                    D: "Danh sách tên các cột"
+                },
+                correct: "B",
+                explanation: "`df.shape` trả về tuple dạng `(so_hang, so_cot)` của DataFrame."
+            },
+            {
+                id: 15,
+                question: "Câu 15. Làm thế nào để đổi tên cột 'old_name' thành 'new_name' trong DataFrame df?",
+                options: {
+                    A: "df.rename(columns={'old_name': 'new_name'}, inplace=True)",
+                    B: "df.columns = ['new_name']",
+                    C: "df.change_name('old_name', 'new_name')",
+                    D: "df.update_column('old_name', 'new_name')"
+                },
+                correct: "A",
+                explanation: "Hàm `df.rename(columns={...}, inplace=True)` là cách chuẩn và an toàn nhất để đổi tên cột."
+            },
+            {
+                id: 16,
+                question: "Câu 16. Để sắp xếp các giá trị trong DataFrame theo cột 'score' từ cao xuống thấp (giảm dần), ta dùng:",
+                options: {
+                    A: "df.sort_values(by='score', ascending=False)",
+                    B: "df.sort(by='score', desc=True)",
+                    C: "df.order_by('score', descending=True)",
+                    D: "df.sort_values(by='score', ascending=True)"
+                },
+                correct: "A",
+                explanation: "`df.sort_values(by='score', ascending=False)` sắp xếp giảm dần theo cột score."
+            },
+            {
+                id: 17,
+                question: "Câu 17. Phương thức `df.duplicated()` dùng để làm gì?",
+                options: {
+                    A: "Xóa các dòng trùng lặp",
+                    B: "Kiểm tra các dòng bị trùng lặp (trả về Series dạng True/False)",
+                    C: "Nhân đôi số lượng dòng trong DataFrame",
+                    D: "Đếm số lượng cột trùng tên"
+                },
+                correct: "B",
+                explanation: "`df.duplicated()` trả về một Series boolean cho biết dòng nào là dòng trùng lặp (đã xuất hiện trước đó)."
+            },
+            {
+                id: 18,
+                question: "Câu 18. Khi sử dụng `df.drop_duplicates()`, kết quả trả về là gì?",
+                options: {
+                    A: "Một DataFrame mới đã được loại bỏ các dòng trùng lặp",
+                    B: "Số lượng dòng bị trùng",
+                    C: "Giá trị trung bình của các cột",
+                    D: "Danh sách các chỉ mục trùng"
+                },
+                correct: "A",
+                explanation: "`df.drop_duplicates()` loại bỏ các dòng trùng lặp và trả về DataFrame (nếu `inplace=True` thì thao tác trực tiếp trên bảng gốc)."
+            },
+            {
+                id: 19,
+                question: "Câu 19. Để áp dụng một hàm tự định nghĩa (ví dụ hàm `cube(x)`) lên từng phần tử của một cột trong DataFrame, ta dùng phương thức nào?",
+                options: {
+                    A: "df['col'].apply(cube)",
+                    B: "df['col'].map_function(cube)",
+                    C: "df.run(cube)",
+                    D: "df['col'].loop(cube)"
+                },
+                correct: "A",
+                explanation: "Phương thức `.apply()` dùng để áp dụng một hàm lên Series hoặc các trục của DataFrame."
+            },
+            {
+                id: 20,
+                question: "Câu 20. Trong DuckDB, nếu ta muốn đếm tổng số bản ghi trong bảng `df`, câu lệnh SQL nào là chính xác?",
+                options: {
+                    A: "SELECT COUNT(*) FROM df",
+                    B: "SELECT TOTAL FROM df",
+                    C: "SELECT SUM(df) FROM df",
+                    D: "SELECT COUNT(row) FROM df"
+                },
+                correct: "A",
+                explanation: "Cú pháp chuẩn SQL để đếm số dòng là `SELECT COUNT(*) FROM df`."
+            }
+        ];
+
+        // Render questions dynamically into the form
+        function renderQuiz() {
+            const container = document.getElementById('questions-container');
+            let html = '';
+
+            quizData.forEach((q, index) => {
+                html += `
+                    <div class="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4 question-card" data-id="${q.id}">
+                        <div class="font-bold text-slate-900 text-base sm:text-lg whitespace-pre-line">${q.question}</div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                `;
+
+                for (let key in q.options) {
+                    html += `
+                        <label class="flex items-center space-x-3 p-3 rounded-xl bg-white border border-slate-200 hover:border-indigo-400 cursor-pointer transition option-label">
+                            <input type="radio" name="q${q.id}" value="${key}" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500">
+                            <span class="text-sm font-medium text-slate-700"><strong class="text-indigo-600 mr-1">${key}.</strong> ${q.options[key]}</span>
+                        </label>
+                    `;
+                }
+
+                html += `
+                        </div>
+                        <!-- Hidden explanation box -->
+                        <div id="explanation-${q.id}" class="hidden mt-4 p-4 rounded-xl text-sm border explanation-box"></div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Handle Submit Quiz
+        document.getElementById('submit-btn').addEventListener('click', function() {
+            let score = 0;
+            let unanswered = 0;
+
+            quizData.forEach((q) => {
+                const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                const expBox = document.getElementById(`explanation-${q.id}`);
+                
+                // Remove previous styles
+                expBox.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-200', 'text-emerald-900', 'bg-rose-50', 'border-rose-200', 'text-rose-900', 'bg-amber-50', 'border-amber-200', 'text-amber-900');
+
+                if (!selected) {
+                    unanswered++;
+                    expBox.classList.add('bg-amber-50', 'border-amber-200', 'text-amber-900');
+                    expBox.innerHTML = `⚠️ <strong class="font-bold">Chưa trả lời!</strong> Đáp án đúng là: <strong class="underline">${q.correct}</strong>.<br><span class="mt-1 block">${q.explanation}</span>`;
+                } else {
+                    const userAnswer = selected.value;
+                    if (userAnswer === q.correct) {
+                        score++;
+                        expBox.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-900');
+                        expBox.innerHTML = `✅ <strong class="font-bold">Chính xác!</strong> Bạn đã chọn đúng (${userAnswer}).<br><span class="mt-1 block">${q.explanation}</span>`;
+                    } else {
+                        expBox.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-900');
+                        expBox.innerHTML = `❌ <strong class="font-bold">Chưa chính xác.</strong> Bạn chọn <span class="line-through">${userAnswer}</span>, đáp án đúng là: <strong class="text-indigo-700 font-bold">${q.correct}</strong>.<br><span class="mt-1 block">${q.explanation}</span>`;
+                    }
+                }
+            });
+
+            // Show Score Badge
+            const scoreBadge = document.getElementById('score-badge');
+            const scoreVal = document.getElementById('score-val');
+            scoreVal.textContent = score;
+            scoreBadge.classList.remove('hidden');
+
+            // Scroll to score or top of quiz smoothly
+            scoreBadge.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        // Handle Reset Quiz
+        document.getElementById('reset-btn').addEventListener('click', function() {
+            document.getElementById('quiz-form').reset();
+            quizData.forEach((q) => {
+                const expBox = document.getElementById(`explanation-${q.id}`);
+                expBox.classList.add('hidden');
+                expBox.innerHTML = '';
+            });
+            document.getElementById('score-badge').classList.add('hidden');
+            window.scrollTo({ top: document.getElementById('quiz').offsetTop - 50, behavior: 'smooth' });
+        });
+
+        // Initialize on load
+        window.onload = function() {
+            renderQuiz();
+        };
+    </script>
+</body>
+</html>

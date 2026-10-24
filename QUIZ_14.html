@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn Tập Lập Trình Xử Lý Dữ Liệu - Pandas (Lecture 4, 5, 6)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-full flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold">Lập Trình Xử Lý Dữ Liệu - Pandas</h1>
+                <p class="text-indigo-200 text-sm">Dành riêng cho sinh viên mất gốc (Lecture 4, 5, 6 + 20 Quiz Trắc Nghiệm Chuẩn Đề)</p>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="switchTab('theory')" id="btn-theory" class="px-4 py-2 bg-indigo-700 text-white font-medium rounded-lg shadow hover:bg-indigo-800 transition">📖 Tóm Tắt Lý Thuyết</button>
+                <button onclick="switchTab('quiz')" id="btn-quiz" class="px-4 py-2 bg-white text-indigo-700 font-medium rounded-lg shadow hover:bg-indigo-50 transition">📝 Làm 20 Câu Quiz</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-8">
+
+        <!-- THEORY SECTION -->
+        <section id="section-theory" class="space-y-8">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <span class="text-indigo-600">📌</span> Tóm Tắt Lý Thuyết Trọng Tâm (Lecture 4, 5, 6)
+                </h2>
+                <p class="text-slate-600 mb-6">Chào em, vì em mất gốc nên thầy đã cô đọng những kiến thức cốt lõi nhất cần nhớ để không bị "ngợp" khi code Pandas:</p>
+
+                <div class="space-y-6">
+                    <!-- Item 1 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <h3 class="font-bold text-lg text-indigo-700 mb-2">1. Khởi động với Pandas & Đọc file CSV (`read_csv`)</h3>
+                        <p class="text-sm text-slate-700 mb-2">Pandas là thư viện xử lý bảng dữ liệu dạng 2 chiều. Khi đọc file CSV:</p>
+                        <pre class="bg-slate-900 text-emerald-400 p-3 rounded-lg text-xs overflow-x-auto"><code>import pandas as pd
+df = pd.read_csv("diem.csv")</code></pre>
+                        <p class="text-xs text-slate-500 mt-2">💡 <strong>Cực kỳ quan trọng:</strong> Mặc định Pandas xem các chuỗi như <code>"NA"</code>, <code>"NaN"</code>, <code>""</code> là giá trị thiếu (Missing Value / NaN). Nếu trong file CSV của em, <code>"NA"</code> là dữ liệu chuẩn (ví dụ mã tỉnh NA), em phải dùng tham số <code>keep_default_na=False</code> hoặc <code>na_values=[]</code>.</p>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <h3 class="font-bold text-lg text-indigo-700 mb-2">2. Truy xuất dữ liệu: `iloc` và `loc`</h3>
+                        <ul class="list-disc list-inside text-sm text-slate-700 space-y-1">
+                            <li><strong>`df.iloc[row_index, col_index]`</strong>: Truy xuất dựa trên **vị trí số nguyên** (index từ 0, giống list trong python). Ví dụ: <code>df["ma"].iloc[0]</code> lấy phần tử đầu tiên của cột 'ma'.</li>
+                            <li><strong>`df.loc[row_label, col_label]`</strong>: Truy xuất dựa trên **nhãn (label)** của dòng/cột.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <h3 class="font-bold text-lg text-indigo-700 mb-2">3. Xử lý giá trị thiếu (Missing Values): `isna()`, `isnull()`, `sum()`</h3>
+                        <p class="text-sm text-slate-700 mb-2">Kiểm tra xem một cột có bao nhiêu ô bị thiếu giá trị:</p>
+                        <pre class="bg-slate-900 text-emerald-400 p-3 rounded-lg text-xs overflow-x-auto"><code>print(df["tinh"].isna().sum())</code></pre>
+                        <p class="text-xs text-slate-500 mt-2">Giải thích: <code>isna()</code> trả về True/False cho từng dòng, hàm <code>sum()</code> đếm tổng số lượng giá trị True (tức là tổng số ô bị NA).</p>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <h3 class="font-bold text-lg text-indigo-700 mb-2">4. Series và DataFrame chuyên sâu</h3>
+                        <p class="text-sm text-slate-700"><strong>Series</strong> giống như 1 cột đơn có gắn index. <strong>DataFrame</strong> là bảng gồm nhiều Series hợp lại. Các hàm thống kê phổ biến: <code>head()</code>, <code>tail()</code>, <code>info()</code>, <code>describe()</code>, <code>value_counts()</code>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ SECTION -->
+        <section id="section-quiz" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">📝 Trắc Nghiệm Ôn Tập (20 Câu Hỏi)</h2>
+                        <p class="text-sm text-slate-500">Mô phỏng sát đề thi thực tế. Hãy chọn đáp án cẩn thận!</p>
+                    </div>
+                    <div id="quiz-score-badge" class="hidden px-4 py-2 bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold rounded-xl text-lg">
+                        Điểm số: <span id="score-val">0</span> / 20
+                    </div>
+                </div>
+
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Questions will be injected here via JS -->
+                </div>
+
+                <div class="mt-8 flex justify-center">
+                    <button onclick="submitQuiz()" id="submit-quiz-btn" class="px-8 py-3 bg-indigo-600 text-white font-bold rounded-xl shadow-lg hover:bg-indigo-700 transition transform hover:-translate-y-0.5">
+                        Nộp Bài & Xem Giải Thích Chi Tiết
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-auto py-4 text-center text-xs text-slate-500">
+        <p>Bộ môn Lập Trình Xử Lý Dữ Liệu - Giảng viên hỗ trợ sinh viên mất gốc.</p>
+    </footer>
+
+    <!-- Script JavaScript xử lý Quiz và Giao diện -->
+    <script>
+        // Danh sách 20 câu hỏi chuẩn sát nội dung Lecture 4, 5, 6
+        const quizData = [
+            {
+                id: 1,
+                question: 'Cho tệp diem.csv:<br><code class="bg-slate-100 px-2 py-1 rounded text-xs block my-1">ma,tinh,diem<br>007,NA,8<br>012,HN,<br>015,NA,9</code><br>Lệnh: <code class="bg-slate-100 px-2 py-1 rounded text-xs">df = pd.read_csv("diem.csv")<br>print(df["ma"].iloc[0], df["tinh"].isna().sum())</code><br>Dòng cuối in ra gì?',
+                codeSnippet: true,
+                options: [
+                    "A. 7 2",
+                    "B. 007 2",
+                    "C. 007 0",
+                    "D. 7 0"
+                ],
+                correct: 1, // index B (007 2) vì NA mặc định bị hiểu là NaN, có 2 dòng NA ở cột tinh. df["ma"].iloc[0] giữ nguyên kiểu chuỗi hoặc in '007'
+                explanation: "Giải thích: Mặc định read_csv coi chuỗi 'NA' là giá trị thiếu (NaN). Cột 'tinh' có 2 dòng chứa 'NA' nên isna().sum() bằng 2. df['ma'].iloc[0] lấy giá trị ô đầu tiên của cột 'ma' là '007'."
+            },
+            {
+                id: 2,
+                question: 'Thư viện nào là nền tảng cốt lõi trong Python chuyên dùng để thao tác và phân tích dữ liệu dạng bảng (DataFrame)?',
+                codeSnippet: false,
+                options: [
+                    "A. NumPy",
+                    "B. Pandas",
+                    "C. Matplotlib",
+                    "D. Math"
+                ],
+                correct: 1,
+                explanation: "Giải thích: Pandas là thư viện chính cung cấp cấu trúc dữ liệu Series và DataFrame cho việc xử lý bảng dữ liệu."
+            },
+            {
+                id: 3,
+                question: 'Cấu trúc dữ liệu 1 chiều có gắn nhãn (labeled) trong Pandas được gọi là gì?',
+                codeSnippet: false,
+                options: [
+                    "A. DataFrame",
+                    "B. Matrix",
+                    "C. Series",
+                    "D. Vector"
+                ],
+                correct: 2,
+                explanation: "Giải thích: Series là mảng một chiều có gán nhãn (index), trong khi DataFrame là bảng 2 chiều."
+            },
+            {
+                id: 4,
+                question: 'Để xem 5 dòng đầu tiên của một DataFrame `df`, ta sử dụng hàm nào?',
+                codeSnippet: false,
+                options: [
+                    "A. df.first(5)",
+                    "B. df.top()",
+                    "C. df.head()",
+                    "D. df.begin()"
+                ],
+                correct: 2,
+                explanation: "Giải thích: Hàm `df.head()` mặc định trả về 5 dòng đầu tiên của DataFrame."
+            },
+            {
+                id: 5,
+                question: 'Phát biểu nào sau đây đúng về sự khác biệt cơ bản giữa `iloc` và `loc` trong Pandas?',
+                codeSnippet: false,
+                options: [
+                    "A. iloc dùng nhãn (label), loc dùng vị trí số nguyên (integer index).",
+                    "B. iloc dùng vị trí số nguyên (integer index), loc dùng nhãn (label).",
+                    "C. iloc dùng cho Series, loc dùng cho DataFrame.",
+                    "D. Cả hai hoàn toàn giống nhau."
+                ],
+                correct: 1,
+                explanation: "Giải thích: `iloc` định vị theo vị trí số nguyên (index từ 0), còn `loc` định vị dựa vào nhãn (tên cột, tên dòng)."
+            },
+            {
+                id: 6,
+                question: 'Cho `df` có cột `diem`. Lệnh nào sau đây dùng để đếm số lượng giá trị thiếu (NaN) trong cột `diem`?',
+                codeSnippet: false,
+                options: [
+                    "A. df['diem'].count()",
+                    "B. df['diem'].isna().sum()",
+                    "C. df['diem'].sum().isna()",
+                    "D. df['diem'].fillna()"
+                ],
+                correct: 1,
+                explanation: "Giải thích: `isna()` tạo mặt nạ Boolean True/False cho các giá trị thiếu, hàm `sum()` đếm tổng số lượng giá trị True."
+            },
+            {
+                id: 7,
+                question: 'Muốn đọc file dữ liệu định dạng phân cách bằng dấu chấm phẩy (;) thay vì dấu phẩy (, thì dùng tham số nào trong `read_csv`?',
+                codeSnippet: false,
+                options: [
+                    "A. sep=';'",
+                    "B. delimiter='comma'",
+                    "C. split=';'",
+                    "D. format=';'"
+                ],
+                correct: 0,
+                explanation: "Giải thích: Tham số `sep` hoặc `delimiter` trong `pd.read_csv()` dùng để định nghĩa ký tự phân cách cột."
+            },
+            {
+                id: 8,
+                question: 'Kết quả của biểu thức `pd.Series([10, 20, 30], index=[\'a\', \'b\', \'c\'])[\'b\']` là gì?',
+                codeSnippet: false,
+                options: [
+                    "A. 10",
+                    "B. 20",
+                    "C. 30",
+                    "D. Lỗi vì index không phải số"
+                ],
+                correct: 1,
+                explanation: "Giải thích: Khi gọi index nhãn 'b', Series trả về giá trị tương ứng là 20."
+            },
+            {
+                id: 9,
+                question: 'Để thay thế toàn bộ các giá trị thiếu (NaN) trong DataFrame bằng số 0, ta dùng hàm:',
+                codeSnippet: false,
+                options: [
+                    "A. df.replace_na(0)",
+                    "B. df.fillna(0)",
+                    "C. df.dropna(0)",
+                    "D. df.missing(0)"
+                ],
+                correct: 1,
+                explanation: "Giải thích: Hàm `fillna(value)` dùng để điền giá trị thay thế vào các ô bị trống (NaN)."
+            },
+            {
+                id: 10,
+                question: 'Lệnh nào dùng để kiểm tra kiểu dữ liệu (data type) của từng cột trong DataFrame?',
+                codeSnippet: false,
+                options: [
+                    "A. df.types",
+                    "B. df.dtypes",
+                    "C. df.info_type()",
+                    "D. df.datatype"
+                ],
+                correct: 1,
+                explanation: "Giải thích: Thuộc tính `dtypes` trả về kiểu dữ liệu của mỗi cột trong DataFrame."
+            },
+            {
+                id: 11,
+                question: 'Cho DataFrame `df`. Lệnh `df.dropna()` có tác dụng gì?',
+                codeSnippet: false,
+                options: [
+                    "A. Xóa tất cả các dòng chứa ít nhất một giá trị thiếu (NaN).",
+                    "B. Điền giá trị 0 vào các ô thiếu.",
+                    "C. Đảo ngược thứ tự các dòng.",
+                    "D. Xóa toàn bộ DataFrame."
+                ],
+                correct: 0,
+                explanation: "Giải thích: `dropna()` mặc định loại bỏ các dòng (axis=0) có chứa giá trị NaN."
+            },
+            {
+                id: 12,
+                question: 'Muốn biết kích thước của DataFrame (số dòng và số cột), ta xem thuộc tính nào?',
+                codeSnippet: false,
+                options: [
+                    "A. df.size()",
+                    "B. df.length",
+                    "C. df.shape",
+                    "D. df.dimension"
+                ],
+                correct: 2,
+                explanation: "Giải thích: Thuộc tính `df.shape` trả về một tuple dạng `(số_dòng, số_cột)`."
+            },
+            {
+                id: 13,
+                question: 'Lệnh `df[\'cot1\'].value_counts()` dùng để làm gì?',
+                codeSnippet: false,
+                options: [
+                    "A. Tính tổng giá trị của cột1.",
+                    "B. Đếm tần suất xuất hiện của từng giá trị khác nhau trong cột1.",
+                    "C. Tính trung bình cộng của cột1.",
+                    "D. Đếm tổng số lượng ô có dữ liệu trong cột1."
+                ],
+                correct: 1,
+                explanation: "Giải thích: `value_counts()` thống kê số lần xuất hiện của mỗi giá trị độc lập trong Series."
+            },
+            {
+                id: 14,
+                question: 'Khi sử dụng `pd.read_csv()`, nếu muốn ngăn chặn Pandas tự động hiểu các chuỗi như "NA", "null" là giá trị khuyết thiếu, ta dùng tham số:',
+                codeSnippet: false,
+                options: [
+                    "A. na_filter=False hoặc keep_default_na=False",
+                    "B. ignore_na=True",
+                    "C. parse_na=False",
+                    "D. skip_na=True"
+                ],
+                correct: 0,
+                explanation: "Giải thích: `keep_default_na=False` giúp Pandas giữ nguyên các chuỗi như 'NA' mà không convert thành NaN."
+            },
+            {
+                id: 15,
+                question: 'Lệnh `df.info()` cung cấp thông tin gì?',
+                codeSnippet: false,
+                options: [
+                    "A. Tổng số dòng, số cột, tên cột, kiểu dữ liệu từng cột và bộ nhớ sử dụng.",
+                    "B. Chỉ số trung bình (mean, min, max) của các cột số.",
+                    "C. Các giá trị xuất hiện nhiều nhất.",
+                    "D. Biểu đồ trực quan hóa dữ liệu."
+                ],
+                correct: 0,
+                explanation: "Giải thích: `df.info()` tóm tắt cấu trúc tổng quan của DataFrame."
+            },
+            {
+                id: 16,
+                question: 'Cho `df` có cột `tuoi`. Lệnh nào lọc ra các dòng có `tuoi > 18`?',
+                codeSnippet: false,
+                options: [
+                    "A. df.filter(tuoi > 18)",
+                    "B. df[df['tuoi'] > 18]",
+                    "C. df.query(tuoi > 18)",
+                    "D. Cả B và C đều đúng"
+                ],
+                correct: 3,
+                explanation: "Giải thích: Cả Boolean indexing `df[df['tuoi'] > 18]` lẫn phương thức `df.query('tuoi > 18')` đều lọc được chính xác."
+            },
+            {
+                id: 17,
+                question: 'Để chuyển đổi kiểu dữ liệu của một cột từ chuỗi sang số nguyên (integer), ta có thể dùng phương thức nào?',
+                codeSnippet: false,
+                options: [
+                    "A. df['cot'].astype(int)",
+                    "B. df['cot'].to_int()",
+                    "C. int(df['cot'])",
+                    "D. df['cot'].convert(int)"
+                ],
+                correct: 0,
+                explanation: "Giải thích: `astype()` là phương thức chuẩn trong Pandas để ép kiểu dữ liệu cột."
+            },
+            {
+                id: 18,
+                question: 'Khi đọc file Excel bằng Pandas, ta thường sử dụng hàm nào?',
+                codeSnippet: false,
+                options: [
+                    "A. pd.read_excel()",
+                    "B. pd.open_excel()",
+                    "C. pd.load_excel()",
+                    "D. pd.read_csv(..., excel=True)"
+                ],
+                correct: 0,
+                explanation: "Giải thích: `pd.read_excel()` là hàm chuyên dụng để đọc file `.xlsx`, `.xls`."
+            },
+            {
+                id: 19,
+                question: 'Lệnh `df.describe()` trả về kết quả thống kê gì cho các cột dữ liệu số?',
+                codeSnippet: false,
+                options: [
+                    "A. Count, mean, std, min, 25%, 50%, 75%, max",
+                    "B. Chỉ có tổng sum và trung bình mean",
+                    "C. Chỉ có giá trị lớn nhất và nhỏ nhất",
+                    "D. Danh sách các giá trị duy nhất"
+                ],
+                correct: 0,
+                explanation: "Giải thích: `describe()` tính toán các chỉ số thống kê mô tả cơ bản: số lượng, trung bình, độ lệch chuẩn, min, các phân vị và max."
+            },
+            {
+                id: 20,
+                question: 'Lệnh `df.drop(columns=[\'diem\'])` thực hiện công việc gì?',
+                codeSnippet: false,
+                options: [
+                    "A. Xóa cột 'diem' khỏi DataFrame.",
+                    "B. Xóa các dòng có điểm trống.",
+                    "C. Đổi tên cột 'diem'.",
+                    "D. Lọc các dòng có cột 'diem'."
+                ],
+                correct: 0,
+                explanation: "Giải thích: `drop(columns=['...'])` dùng để loại bỏ các cột được chỉ định."
+            }
+        ];
+
+        // Hàm chuyển tab
+        function switchTab(tab) {
+            const theorySec = document.getElementById('section-theory');
+            const quizSec = document.getElementById('section-quiz');
+            const btnTheory = document.getElementById('btn-theory');
+            const btnQuiz = document.getElementById('btn-quiz');
+
+            if (tab === 'theory') {
+                theorySec.classList.remove('hidden');
+                quizSec.classList.add('hidden');
+                btnTheory.className = "px-4 py-2 bg-indigo-700 text-white font-medium rounded-lg shadow hover:bg-indigo-800 transition";
+                btnQuiz.className = "px-4 py-2 bg-white text-indigo-700 font-medium rounded-lg shadow hover:bg-indigo-50 transition";
+            } else {
+                theorySec.classList.add('hidden');
+                quizSec.classList.remove('hidden');
+                btnQuiz.className = "px-4 py-2 bg-indigo-700 text-white font-medium rounded-lg shadow hover:bg-indigo-800 transition";
+                btnTheory.className = "px-4 py-2 bg-white text-indigo-700 font-medium rounded-lg shadow hover:bg-indigo-50 transition";
+                renderQuiz();
+            }
+        }
+
+        // Render các câu hỏi trắc nghiệm ra HTML
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            if (container.innerHTML.trim() !== "") return; // Render 1 lần tránh reset khi đang làm
+
+            let html = '';
+            quizData.forEach((q, index) => {
+                html += `
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 question-card" data-qid="${index}">
+                        <p class="font-semibold text-slate-900 mb-3 text-base">
+                            <span class="text-indigo-600 font-bold">Câu ${index + 1}:</span> ${q.question}
+                        </p>
+                        <div class="space-y-2 ml-2">
+                `;
+
+                q.options.forEach((opt, optIndex) => {
+                    html += `
+                        <label class="flex items-center gap-3 p-3 rounded-xl bg-white border border-slate-200 hover:border-indigo-300 cursor-pointer transition option-label-${index}-${optIndex}">
+                            <input type="radio" name="question-${index}" value="${optIndex}" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500">
+                            <span class="text-sm text-slate-700 font-medium">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                html += `
+                        </div>
+                        <div id="explanation-${index}" class="hidden mt-4 p-4 rounded-xl text-sm border"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // Chấm điểm và hiển thị kết quả
+        function submitQuiz() {
+            let score = 0;
+            quizData.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="question-${index}"]:checked`);
+                const expDiv = document.getElementById(`explanation-${index}`);
+                
+                // Xóa trạng thái cũ
+                expDiv.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-200', 'text-emerald-800', 'bg-rose-50', 'border-rose-200', 'text-rose-800');
+
+                if (selected) {
+                    const val = parseInt(selected.value);
+                    if (val === q.correct) {
+                        score++;
+                        expDiv.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-800');
+                        expDiv.innerHTML = `<strong>✅ Chính xác!</strong> ${q.explanation}`;
+                    } else {
+                        expDiv.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-800');
+                        expDiv.innerHTML = `<strong>❌ Chưa chính xác.</strong> Đáp án đúng là: <strong>${q.options[q.correct]}</strong>.<br>${q.explanation}`;
+                    }
+                } else {
+                    expDiv.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-800');
+                    expDiv.innerHTML = `<strong>⚠️ Em chưa chọn đáp án này!</strong> Đáp án đúng là: <strong>${q.options[q.correct]}</strong>.<br>${q.explanation}`;
+                }
+            });
+
+            // Hiển thị điểm số
+            const scoreBadge = document.getElementById('quiz-score-badge');
+            const scoreVal = document.getElementById('score-val');
+            scoreVal.innerText = score;
+            scoreBadge.classList.remove('hidden');
+
+            // Cuộn lên đầu phần quiz để thấy kết quả
+            window.scrollTo({ top: 300, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Làm quen với Pandas - Thầy hướng dẫn cho sinh viên mất gốc</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-indigo-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div>
+                <span class="bg-indigo-500 text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">Lập trình xử lý dữ liệu - Bài 4</span>
+                <h1 class="text-2xl font-bold mt-1">Làm quen với Pandas (Series & DataFrame)</h1>
+            </div>
+            <div class="mt-3 md:mt-0 flex gap-2">
+                <a href="#theory" class="bg-indigo-700 hover:bg-indigo-800 text-sm font-medium px-4 py-2 rounded-lg transition">Tóm tắt lý thuyết</a>
+                <a href="#quiz" class="bg-emerald-500 hover:bg-emerald-600 text-sm font-semibold px-4 py-2 rounded-lg shadow transition">Làm Quiz 20 Câu</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full space-y-12">
+
+        <!-- LỜI NHẮN TỪ GIẢNG VIÊN -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border border-indigo-100 flex items-start gap-4">
+            <div class="bg-indigo-100 text-indigo-700 p-3 rounded-xl font-bold text-xl flex-shrink-0">👨‍🏫</div>
+            <div>
+                <h2 class="text-lg font-bold text-indigo-900">Lời nhắn từ thầy dành cho em (Sinh viên mất gốc):</h2>
+                <p class="text-slate-600 mt-1 leading-relaxed">
+                    Đừng sợ Python hay Pandas! Pandas đơn giản là công cụ giúp ta quản lý bảng dữ liệu (giống Excel nhưng xịn hơn bằng code). Em hãy đọc kỹ phần tóm tắt lý thuyết bên dưới, chú ý cách tạo cấu trúc dữ liệu và cách các nhãn (<code class="bg-slate-100 text-indigo-600 px-1 py-0.5 rounded font-mono text-sm">index</code>) tự động căn chỉnh khi cộng trừ, sau đó hoàn thành 20 câu hỏi trắc nghiệm để nắm chắc điểm thi nhé!
+                </p>
+            </div>
+        </section>
+
+        <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT TRỌNG TÂM -->
+        <section id="theory" class="space-y-6">
+            <div class="border-b pb-3">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <span class="text-indigo-600">📘</span> Phần 1: Tóm tắt lý thuyết trọng tâm Pandas
+                </h2>
+                <p class="text-slate-500 text-sm mt-1">Nền tảng cốt lõi cần nhớ trước khi làm bài tập mã nguồn</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Series -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg font-bold text-sm">1</span>
+                        <h3 class="text-lg font-bold text-slate-900">Series (Mảng 1 chiều có nhãn)</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Giống như một cột trong bảng Excel hoặc một list Python nhưng có kèm theo nhãn dán (<code class="bg-slate-100 text-indigo-600 px-1 rounded font-mono text-xs">index</code>) cho từng phần tử.
+                    </p>
+                    <div class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto">
+                        <span class="text-indigo-400">import</span> pandas <span class="text-indigo-400">as</span> pd<br>
+                        s = pd.Series([9, 12, 6], index=[<span class="text-emerald-400">"K2"</span>, <span class="text-emerald-400">"K4"</span>, <span class="text-emerald-400">"K1"</span>])<br>
+                        print(s)
+                    </div>
+                </div>
+
+                <!-- DataFrame -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-lg font-bold text-sm">2</span>
+                        <h3 class="text-lg font-bold text-slate-900">DataFrame (Bảng 2 chiều)</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Tập hợp nhiều Series hợp lại thành bảng gồm các hàng (row/index) và cột (column). Tạo từ từ điển dictionary chứa các list.
+                    </p>
+                    <div class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto">
+                        ks = pd.DataFrame({<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-emerald-400">"gia"</span>: [120, 90, 75]<br>
+                        }, index=[<span class="text-emerald-400">"K1"</span>, <span class="text-emerald-400">"K2"</span>, <span class="text-emerald-400">"K3"</span>])
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important concepts -->
+            <div class="bg-indigo-50/50 p-6 rounded-2xl border border-indigo-100 space-y-4">
+                <h3 class="text-md font-bold text-indigo-900 flex items-center gap-2">
+                    <span>💡</span> Các quy tắc vàng cực kỳ hay bẫy trong đề thi:
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-indigo-100">
+                        <h4 class="font-bold text-indigo-700 mb-1">1. Căn chỉnh Index (Alignment)</h4>
+                        <p class="text-slate-600">Khi cộng DataFrame với Series, Pandas dựa vào <strong>nhãn Index</strong> để khớp giá trị với nhau chứ không cộng theo vị trí thứ tự! Nếu nhãn không khớp, kết quả trả về <code class="text-red-500 font-bold">NaN</code>.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-indigo-100">
+                        <h4 class="font-bold text-indigo-700 mb-1">2. Phương thức .to_numpy()</h4>
+                        <p class="text-slate-600">Chuyển dữ liệu Pandas Series/DataFrame thành mảng NumPy thuần túy, <strong>làm mất đi nhãn index và cấu trúc</strong>, biến dữ liệu về dạng giá trị thô.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-indigo-100">
+                        <h4 class="font-bold text-indigo-700 mb-1">3. Phương thức .tolist()</h4>
+                        <p class="text-slate-600">Chuyển đổi dữ liệu Series hoặc mảng thành danh sách (list) chuẩn của Python để dễ dàng in ra màn hình hoặc xử lý tiếp.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHẦN 2: QUIZ TƯƠNG TÁC 20 CÂU HỎI -->
+        <section id="quiz" class="space-y-6 pt-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-4 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                        <span class="text-emerald-600">🎯</span> Phần 2: Kiểm tra kiến thức - 20 Câu hỏi Quiz tương tác
+                    </h2>
+                    <p class="text-slate-500 text-sm mt-1">Chọn đáp án cho từng câu, sau đó bấm nút nộp bài để xem điểm số và giải thích chi tiết.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div id="score-box" class="hidden bg-emerald-100 text-emerald-800 font-bold px-4 py-2 rounded-xl text-sm">
+                        Điểm số: <span id="final-score">0</span>/20
+                    </div>
+                    <button onclick="submitQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-xl shadow transition text-sm">
+                        Nộp bài & Xem giải thích
+                    </button>
+                    <button onclick="resetQuiz()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-4 py-2.5 rounded-xl transition text-sm">
+                        Làm lại
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Container -->
+            <div id="quiz-container" class="space-y-6">
+                <!-- Javascript will inject 20 questions here -->
+            </div>
+
+            <!-- Bottom Submit Bar -->
+            <div class="flex justify-center pt-4">
+                <button onclick="submitQuiz(); window.location.hash='#quiz';" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-3 rounded-xl shadow-lg transition">
+                    Nộp bài kiểm tra toàn bộ 20 câu
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-16 py-6 text-center text-slate-500 text-sm">
+        <p>Hệ thống học tập môn Lập trình xử lý dữ liệu (Python) - Thầy chúc em ôn tập tốt và đạt điểm cao!</p>
+    </footer>
+
+    <!-- JavaScript Quiz Logic -->
+    <script>
+        // Danh sách 20 câu hỏi bám sát lý thuyết & câu hỏi mẫu
+        const questions = [
+            {
+                id: 1,
+                title: "Câu 1. Đoạn code sau in ra gì?",
+                code: `import pandas as pd\ns = pd.Series([10, 20, 30])\nprint(s.tolist())`,
+                options: [
+                    "A. [10, 20, 30]",
+                    "B. {0: 10, 1: 20, 2: 30}",
+                    "C. (10, 20, 30)",
+                    "D. Báo lỗi cú pháp"
+                ],
+                correct: 0,
+                explanation: "Khi tạo pd.Series mà không chỉ định index, Pandas tự động gán index mặc định là các số nguyên 0, 1, 2. Phương thức .tolist() chuyển Series thành Python list thông thường: [10, 20, 30]."
+            },
+            {
+                id: 2,
+                title: "Câu 2. Đoạn code sau in ra gì?",
+                code: `import pandas as pd\ns = pd.Series([5, 15], index=['a', 'b'])\nprint(s['a'])`,
+                options: [
+                    "A. 15",
+                    "B. 5",
+                    "C. Báo lỗi KeyError",
+                    "D. ['a', 5]"
+                ],
+                correct: 1,
+                explanation: "Series ánh xạ giá trị theo nhãn index. s['a'] sẽ tìm đến nhãn 'a' và trả về giá trị tương ứng là 5."
+            },
+            {
+                id: 3,
+                title: "Câu 3. Đoạn code sau in ra gì?",
+                code: `import pandas as pd\ndf = pd.DataFrame({'diem': [8, 9, 10]})\nprint(type(df))`,
+                options: [
+                    "A. <class 'pandas.core.series.Series'>",
+                    "B. <class 'pandas.core.frame.DataFrame'>",
+                    "C. <class 'dict'>",
+                    "D. <class 'numpy.ndarray'>"
+                ],
+                correct: 1,
+                explanation: "Hàm pd.DataFrame() khởi tạo một đối tượng bảng 2 chiều, kiểu dữ liệu trả về là pandas.core.frame.DataFrame."
+            },
+            {
+                id: 4,
+                title: "Câu 4. Đoạn code sau in ra gì?",
+                code: `import pandas as pd\ndf = pd.DataFrame({'A': [1, 2], 'B': [3, 4]})\nprint(df.shape)`,
+                options: [
+                    "A. (2, 2)",
+                    "B. (2,)",
+                    "C. (4,)",
+                    "D. (1, 4)"
+                ],
+                correct: 0,
+                explanation: "Thuộc tính .shape của DataFrame trả về kích thước (số hàng, số cột). Ở đây có 2 hàng và 2 cột nên kết quả là (2, 2)."
+            },
+            {
+                id: 5,
+                title: "Câu 5. Đoạn code sau in ra gì? (Câu hỏi trọng tâm căn chỉnh index)",
+                code: `ks = pd.DataFrame({"gia": [120, 90, 75]}, index=["K1", "K2", "K3"])\nthue = pd.Series([9, 12, 6], index=["K2", "K4", "K1"])\nks["tong"] = (ks["gia"] + thue).to_numpy()\nprint(ks["tong"].tolist())`,
+                options: [
+                    "A. [129, 102, 81]",
+                    "B. [126.0, 99.0, nan]",
+                    "C. Báo lỗi ValueError",
+                    "D. [126.0, 99.0, 75.0]"
+                ],
+                correct: 3,
+                explanation: "GIẢI THÍCH CHI TIẾT (Bẫy cực hay):\n1. Khi cộng ks['gia'] (index: K1, K2, K3) với thue (index: K2, K4, K1), Pandas căn chỉnh theo nhãn index:\n   - K1: 120 + 6 = 126.0\n   - K2: 90 + 9 = 99.0\n   - K3: 75 + NaN = nan\n   Tạo ra cột tạm có các giá trị [126.0, 99.0, nan].\n2. Hàm .to_numpy() biến cột đó thành mảng numpy, và ép kiểu float chứa nan.\n3. Khi gán vào ks['tong'], độ dài mảng numpy (3 phần tử) khớp với số hàng của ks, nên nó gán thẳng mảng [126.0, 99.0, 75.0] vào cột 'tong' (bỏ qua tên index cũ của kết quả phép cộng khi gán trực tiếp bằng numpy array).\n4. .tolist() in ra [126.0, 99.0, 75.0]."
+            },
+            {
+                id: 6,
+                title: "Câu 6. Để truy xuất một cột cụ thể trong DataFrame dưới dạng Series, ta dùng cú pháp nào?",
+                code: `df = pd.DataFrame({'ten': ['An', 'Binh'], 'tuoi': [20, 21]})`,
+                options: [
+                    "A. df.ten hoặc df['ten']",
+                    "B. df.row('ten')",
+                    "C. df.get_column('ten')",
+                    "D. df.select('ten')"
+                ],
+                correct: 0,
+                explanation: "Trong Pandas, có thể truy xuất cột bằng cách dùng tên thuộc tính (df.ten) hoặc cú pháp từ điển (df['ten'])."
+            },
+            {
+                id: 7,
+                title: "Câu 7. Phương thức nào dùng để xem 5 dòng đầu tiên của một DataFrame?",
+                code: `df = pd.DataFrame(...) # DataFrame lớn`,
+                options: [
+                    "A. df.start()",
+                    "B. df.head()",
+                    "C. df.first()",
+                    "D. df.top(5)"
+                ],
+                correct: 1,
+                explanation: "Phương thức .head() (mặc định lấy 5 dòng đầu) rất hay dùng để kiểm tra nhanh cấu trúc dữ liệu."
+            },
+            {
+                id: 8,
+                title: "Câu 8. Điều gì xảy ra khi thực hiện phép cộng giữa hai Series có nhãn index hoàn toàn khác nhau?",
+                code: `s1 = pd.Series([1, 2], index=['a', 'b'])\ns2 = pd.Series([3, 4], index=['c', 'd'])\nprint(s1 + s2)`,
+                options: [
+                    "A. Cộng các phần tử theo vị trí thứ tự [4, 6]",
+                    "B. Trả về toàn bộ giá trị NaN",
+                    "C. Báo lỗi ValueError do không cùng index",
+                    "D. Nối dài Series thành 4 phần tử"
+                ],
+                correct: 1,
+                explanation: "Vì không có nhãn index nào trùng khớp giữa s1 và s2, Pandas không thể gióng cặp nào với nhau, kết quả các dòng đều mang giá trị NaN."
+            },
+            {
+                id: 9,
+                title: "Câu 9. Để đổi tên các nhãn dòng (index) của DataFrame, ta dùng thuộc tính nào?",
+                code: `df = pd.DataFrame({'A': [1, 2]})`,
+                options: [
+                    "A. df.labels",
+                    "B. df.index",
+                    "C. df.rows",
+                    "D. df.keys"
+                ],
+                correct: 1,
+                explanation: "Thuộc tính .index lưu trữ và cho phép thay đổi các nhãn dòng của Series hoặc DataFrame."
+            },
+            {
+                id: 10,
+                title: "Câu 10. Đoạn code sau in ra kết quả gì?",
+                code: `s = pd.Series([10, 20, 30], index=['x', 'y', 'z'])\nprint(s.values)`,
+                options: [
+                    "A. ['x', 'y', 'z']",
+                    "B. [10, 20, 30]",
+                    "C. Mảng NumPy chứa các giá trị [10, 20, 30]",
+                    "D. Báo lỗi cú pháp"
+                ],
+                correct: 2,
+                explanation: "Thuộc tính .values (hoặc .to_numpy()) trích xuất phần giá trị dữ liệu bên trong Series dưới dạng mảng NumPy."
+            },
+            {
+                id: 11,
+                title: "Câu 11. Thư viện chuẩn thường được quy ước import kèm tên viết tắt nào cho Pandas?",
+                code: `# Lệnh import chuẩn`,
+                options: [
+                    "A. import pandas as p",
+                    "B. import pandas as pd",
+                    "C. import pandas as pan",
+                    "D. import pandas as data"
+                ],
+                correct: 1,
+                explanation: "Quy ước tiêu chuẩn trong cộng đồng khoa học dữ liệu Python là import pandas as pd."
+            },
+            {
+                id: 12,
+                title: "Câu 12. Hàm nào dùng để đọc dữ liệu từ tệp CSV vào DataFrame?",
+                code: `# Đọc file data.csv`,
+                options: [
+                    "A. pd.read_excel()",
+                    "B. pd.read_csv()",
+                    "C. pd.load_csv()",
+                    "D. pd.open_csv()"
+                ],
+                correct: 1,
+                explanation: "pd.read_csv() là hàm cốt lõi dùng để đọc các tập tin định dạng CSV."
+            },
+            {
+                id: 13,
+                title: "Câu 13. Đoạn code sau trả về gì khi truy xuất bằng .iloc?",
+                code: `s = pd.Series([100, 200, 300], index=['a', 'b', 'c'])\nprint(s.iloc[1])`,
+                options: [
+                    "A. 100",
+                    "B. 200",
+                    "C. 300",
+                    "D. Báo lỗi"
+                ],
+                correct: 1,
+                explanation: ".iloc định vị theo vị trí số nguyên thuần túy (index vị trí từ 0). Vị trí số 1 ứng với giá trị 200."
+            },
+            {
+                id: 14,
+                title: "Câu 14. Phương thức .info() của DataFrame cung cấp thông tin gì?",
+                code: `df.info()`,
+                options: [
+                    "A. Chỉ in ra các giá trị lớn nhất nhỏ nhất",
+                    "B. Cho biết tổng số dòng, tên cột, kiểu dữ liệu mỗi cột và số lượng giá trị không null",
+                    "C. Vẽ biểu đồ phân phối dữ liệu",
+                    "D. Xuất file báo cáo HTML"
+                ],
+                corrrect: 1,
+                explanation: "df.info() cung cấp cái nhìn tổng quan cấu trúc kỹ thuật của bảng dữ liệu (kiểu dữ liệu, memory usage, missing values)."
+            },
+            {
+                id: 15,
+                title: "Câu 15. Kết quả của phép toán thống kê mô tả cơ bản .describe() trên DataFrame chứa số là gì?",
+                code: `df.describe()`,
+                options: [
+                    "A. Các chỉ số thống kê: count, mean, std, min, các phân vị (25%, 50%, 75%), max",
+                    "B. Chỉ trả về giá trị trung bình (mean)",
+                    "C. Chỉ trả về tổng (sum)",
+                    "D. Báo lỗi nếu có số liệu thập phân"
+                ],
+                correct: 0,
+                explanation: ".describe() là hàm cực mạnh tổng hợp nhanh các chỉ số thống kê cơ bản cho các cột dạng số."
+            },
+            {
+                id: 16,
+                title: "Câu 16. Khi tạo DataFrame từ dictionary, nếu các list có độ dài khác nhau, điều gì xảy ra?",
+                code: `df = pd.DataFrame({'A': [1, 2], 'B': [3, 4, 5]})`,
+                options: [
+                    "A. Tự động thêm số 0 vào list ngắn",
+                    "B. Báo lỗi ValueError do độ dài các cột không khớp nhau",
+                    "C. Cắt bớt list dài cho bằng list ngắn",
+                    "D. Điền giá trị NaN vào chỗ thiếu"
+                ],
+                correct: 1,
+                explanation: "Khi khởi tạo DataFrame trực tiếp từ dict với các list lệch kích thước mà không qua xử lý, Python sẽ báo lỗi ValueError."
+            },
+            {
+                id: 17,
+                title: "Câu 17. Để lọc các dòng trong DataFrame thỏa điều kiện (ví dụ cột 'tuoi' > 20), ta viết thế nào?",
+                code: `df = pd.DataFrame({'ten': ['An', 'Binh'], 'tuoi': [19, 22]})`,
+                options: [
+                    "A. df[df['tuoi'] > 20]",
+                    "B. df.filter(tuoi > 20)",
+                    "C. df.where(tuoi > 20)",
+                    "D. select * from df where tuoi > 20"
+                ],
+                correct: 0,
+                explanation: "Cú pháp lọc dữ liệu chuẩn trong Pandas là truyền mặt nạ boolean (boolean indexing): df[df['tuoi'] > 20]."
+            },
+            {
+                id: 18,
+                title: "Câu 18. Thuộc tính .columns dùng để làm gì?",
+                code: `print(df.columns)`,
+                options: [
+                    "A. Lấy danh sách tên các cột của DataFrame",
+                    "B. Lấy danh sách các nhãn dòng",
+                    "C. Đếm tổng số cột",
+                    "D. Thay đổi kích thước bảng"
+                ],
+                correct: 0,
+                explanation: ".columns trả về một Index object chứa tên tất cả các cột có trong DataFrame."
+            },
+            {
+                id: 19,
+                title: "Câu 19. Phương thức .drop() mặc định xóa đối tượng nào nếu không truyền tham số trục (axis)?",
+                code: `df = pd.DataFrame({'A': [1, 2]}, index=['row1', 'row2'])`,
+                options: [
+                    "A. Xóa cột (axis=1)",
+                    "B. Xóa hàng / dòng (axis=0)",
+                    "C. Xóa toàn bộ bảng",
+                    "D. Báo lỗi bắt buộc chọn axis"
+                ],
+                correct: 1,
+                explanation: "Mặc định tham số axis của .drop() là 0, tức là tìm kiếm nhãn cần xóa theo chiều dọc (hàng/row)."
+            },
+            {
+                id: 20,
+                title: "Câu 20. Để kiểm tra các ô dữ liệu nào trong DataFrame đang bị thiếu (giá trị Null/NaN), ta dùng hàm nào?",
+                code: `df.isnull() # hoặc`,
+                options: [
+                    "A. df.has_null()",
+                    "B. df.isna()",
+                    "C. df.check_nan()",
+                    "D. df.find_empty()"
+                ],
+                correct: 1,
+                explanation: "Cả .isnull() và .isna() đều trả về một DataFrame cùng kích thước chứa các giá trị True/False kiểm tra xem ô đó có phải là NaN hay không."
+            }
+        ];
+
+        // Render Quiz ra HTML
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            let html = '';
+
+            questions.forEach((q, index) => {
+                html += `
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4 question-card" data-qid="${index}">
+                        <div class="flex items-start justify-between">
+                            <h3 class="font-bold text-slate-900 text-base">${q.title}</h3>
+                            <span class="bg-slate-100 text-slate-600 text-xs px-2.5 py-1 rounded-full font-semibold">Câu ${index + 1}/20</span>
+                        </div>
+                        ${q.code ? `<div class="bg-slate-900 text-slate-200 p-3.5 rounded-xl font-mono text-xs overflow-x-auto"><code>${q.code.replace(/\\n/g, '<br>')}</code></div>` : ''}
+                        
+                        <div class="space-y-2 pt-2">
+                `;
+
+                q.options.forEach((opt, optIdx) => {
+                    html += `
+                        <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition option-label">
+                            <input type="radio" name="question-${index}" value="${optIdx}" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500">
+                            <span class="text-sm text-slate-700 font-medium">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                html += `
+                        </div>
+                        <!-- Khu vực hiển thị kết quả & giải thích sau khi nộp -->
+                        <div id="explanation-${index}" class="hidden mt-4 p-4 rounded-xl text-sm border"></div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Xử lý nộp bài và chấm điểm
+        function submitQuiz() {
+            let score = 0;
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="question-${index}"]:checked`);
+                const expBox = document.getElementById(`explanation-${index}`);
+                expBox.classList.remove('hidden');
+
+                if (selected) {
+                    const userChoice = parseInt(selected.value);
+                    if (userChoice === q.correct) {
+                        score++;
+                        expBox.className = "mt-4 p-4 rounded-xl text-sm border bg-emerald-50 border-emerald-200 text-emerald-900";
+                        expBox.innerHTML = `<strong>✅ Chính xác!</strong><br><div class="mt-2 text-slate-700 whitespace-pre-line">${q.explanation}</div>`;
+                    } else {
+                        expBox.className = "mt-4 p-4 rounded-xl text-sm border bg-rose-50 border-rose-200 text-rose-900";
+                        expBox.innerHTML = `<strong>❌ Chưa chính xác.</strong> Đáp án đúng là: <strong>${q.options[q.correct]}</strong><br><div class="mt-2 text-slate-700 whitespace-pre-line">${q.explanation}</div>`;
+                    }
+                } else {
+                    expBox.className = "mt-4 p-4 rounded-xl text-sm border bg-amber-50 border-amber-200 text-amber-900";
+                    expBox.innerHTML = `<strong>⚠️ Em chưa chọn đáp án câu này!</strong> Đáp án đúng là: <strong>${q.options[q.correct]}</strong><br><div class="mt-2 text-slate-700 whitespace-pre-line">${q.explanation}</div>`;
+                }
+            });
+
+            // Hiển thị điểm số tổng kết
+            const scoreBox = document.getElementById('score-box');
+            const finalScore = document.getElementById('final-score');
+            finalScore.innerText = score;
+            scoreBox.classList.remove('hidden');
+
+            // Cuộn lên phần điểm số
+            scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Làm lại Quiz từ đầu
+        function resetQuiz() {
+            document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
+            questions.forEach((_, index) => {
+                const expBox = document.getElementById(`explanation-${index}`);
+                expBox.classList.add('hidden');
+                expBox.innerHTML = '';
+            });
+            document.getElementById('score-box').classList.add('hidden');
+            window.scrollTo({ top: document.getElementById('quiz').offsetTop - 60, behavior: 'smooth' });
+        }
+
+        // Khởi chạy render quiz khi trang được tải xong
+        window.onload = function() {
+            renderQuiz();
+        };
+    </script>
+
+</body>
+</html>

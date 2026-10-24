@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture 02: Python Cơ Bản & Xử Lý Dữ Liệu</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-3 mb-2 md:mb-0">
+                <div class="bg-white text-blue-700 font-bold p-2 rounded-lg text-xl shadow">Py</div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-bold">Lập Trình Xử Lý Dữ Liệu - Thầy hướng dẫn</h1>
+                    <p class="text-xs text-blue-200">Lecture 02: Python cơ bản, File CSV, Dictionary & Sắp xếp dữ liệu</p>
+                </div>
+            </div>
+            <!-- Navigation Tabs -->
+            <nav class="flex space-x-2 bg-blue-900/60 p-1.5 rounded-xl border border-blue-500/30">
+                <button onclick="switchTab('theory')" id="btn-theory" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all bg-white text-blue-800 shadow">📖 Tóm Tắt Lý Thuyết</button>
+                <button onclick="switchTab('quiz')" id="btn-quiz" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all text-white hover:bg-white/10">📝 Quiz Trắc Nghiệm (20 câu)</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8">
+
+        <!-- THEORY SECTION -->
+        <section id="section-theory" class="space-y-8">
+            <!-- Welcome Banner -->
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 md:p-8 custom-shadow">
+                <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Chào sinh viên mất gốc</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mt-3 mb-2">Ghi nhớ nhanh các điểm cốt lõi Lecture 02</h2>
+                <p class="text-slate-600 leading-relaxed">Đừng sợ Python! Hãy xem tóm tắt các cú pháp trọng tâm dưới đây trước khi làm bài tập trắc nghiệm. Thầy đã cô đọng những gì hay thi nhất vào đây cho em.</p>
+            </div>
+
+            <!-- Grid Theory Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Card 1: Đọc ghi file CSV -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 custom-shadow hover:border-blue-300 transition-all">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="p-3 bg-blue-100 text-blue-600 rounded-xl font-bold">📁</div>
+                        <h3 class="text-lg font-bold text-slate-900">1. Đọc tệp CSV với Module `csv`</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-4">Sử dụng `csv.DictReader` giúp đọc từng dòng dưới dạng Dictionary (tên cột là key, giá trị là value):</p>
+                    <div class="bg-slate-900 text-slate-200 p-4 rounded-xl text-xs font-mono overflow-x-auto">
+                        <span class="text-purple-400">import</span> csv<br>
+                        <span class="text-purple-400">with</span> <span class="text-yellow-400">open</span>(<span class="text-green-300">"data.csv"</span>, encoding=<span class="text-green-300">"utf-8"</span>) <span class="text-purple-400">as</span> f:<br>
+                        &nbsp;&nbsp;rows = <span class="text-yellow-400">list</span>(csv.DictReader(f))<br>
+                        &nbsp;&nbsp;<span class="text-purple-400">for</span> r <span class="text-purple-400">in</span> rows:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-blue-400">print</span>(r[<span class="text-green-300">"ma"</span>], r[<span class="text-green-300">"so_dem"</span>])
+                    </div>
+                    <p class="text-xs text-amber-600 mt-3 bg-amber-50 p-2 rounded border border-amber-200 font-medium">⚠️ <strong>Chú ý quan trọng:</strong> Dữ liệu đọc từ file CSV mặc định là kiểu chuỗi (string) dù trong file là số!</p>
+                </div>
+
+                <!-- Card 2: Hàm sorted và lambda -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 custom-shadow hover:border-blue-300 transition-all">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="p-3 bg-indigo-100 text-indigo-600 rounded-xl font-bold">⚡</div>
+                        <h3 class="text-lg font-bold text-slate-900">2. Sắp xếp với `sorted()` & `lambda`</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-4">Dùng tham số `key` kết hợp hàm ẩn `lambda` để chỉ định cột sắp xếp dữ liệu phức tạp:</p>
+                    <div class="bg-slate-900 text-slate-200 p-4 rounded-xl text-xs font-mono overflow-x-auto">
+                        <span class="text-gray-400"># Sắp xếp giảm dần (reverse=True) theo khóa "so_dem"</span><br>
+                        dai = <span class="text-yellow-400">sorted</span>(rows, key=<span class="text-purple-400">lambda</span> r: r[<span class="text-green-300">"so_dem"</span>], reverse=<span class="text-blue-400">True</span>)<br><br>
+                        <span class="text-gray-400"># Lấy phần tử đứng đầu tiên sau khi sắp xếp</span><br>
+                        <span class="text-blue-400">print</span>(dai[<span class="text-orange-400">0</span>][<span class="text-green-300">"ma"</span>])
+                    </div>
+                    <p class="text-xs text-rose-600 mt-3 bg-rose-50 p-2 rounded border border-rose-200 font-medium">🚨 <strong>Lỗi bẫy kinh điển:</strong> Nếu `so_dem` là chuỗi ("40", "5", "9"), Python sắp xếp theo bảng chữ cái ("9" > "40"). Phải ép kiểu `int(r["so_dem"])` nếu muốn so sánh số học!</p>
+                </div>
+
+                <!-- Card 3: Dictionary cơ bản -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 custom-shadow hover:border-blue-300 transition-all">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="p-3 bg-emerald-100 text-emerald-600 rounded-xl font-bold">📖</div>
+                        <h3 class="text-lg font-bold text-slate-900">3. Thao tác với Dictionary</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-4">Dictionary lưu trữ cặp khóa-giá trị (key-value):</p>
+                    <div class="bg-slate-900 text-slate-200 p-4 rounded-xl text-xs font-mono overflow-x-auto">
+                        di={ <span class="text-green-300">"ma"</span>: <span class="text-green-300">"L1"</span>, <span class="text-green-300">"so_dem"</span>: <span class="text-orange-400">40</span> }<br>
+                        <span class="text-blue-400">print</span>(di.keys())    <span class="text-gray-400"># dict_keys(['ma', 'so_dem'])</span><br>
+                        <span class="text-blue-400">print</span>(di.values())  <span class="text-gray-400"># dict_values(['L1', 40])</span><br>
+                        di.get(<span class="text-green-300">"sai"</span>, <span class="text-orange-400">0</span>)  <span class="text-gray-400"># Tránh lỗi KeyError, trả về 0 nếu không thấy</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: List comprehension & basic functions -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 custom-shadow hover:border-blue-300 transition-all">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="p-3 bg-amber-100 text-amber-600 rounded-xl font-bold">💡</div>
+                        <h3 class="text-lg font-bold text-slate-900">4. List, Vòng lặp & Ép kiểu</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-4">Các hàm toán học cơ bản áp dụng trên danh sách:</p>
+                    <div class="bg-slate-900 text-slate-200 p-4 rounded-xl text-xs font-mono overflow-x-auto">
+                        lst = [<span class="text-orange-400">10</span>, <span class="text-orange-400">20</span>, <span class="text-orange-400">30</span>]<br>
+                        <span class="text-blue-400">print</span>(<span class="text-yellow-400">sum</span>(lst)) <span class="text-gray-400"># 60</span><br>
+                        <span class="text-blue-400">print</span>(<span class="text-yellow-400">max</span>(lst)) <span class="text-gray-400"># 30</span><br>
+                        <span class="text-blue-400">print</span>(<span class="text-yellow-400">len</span>(lst)) <span class="text-gray-400"># 3</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to action switch to quiz -->
+            <div class="text-center pt-4 pb-8">
+                <button onclick="switchTab('quiz')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 text-base">
+                    🚀 Làm Bài Quiz 20 Câu Hỏi Thực Hành Ngay
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ SECTION -->
+        <section id="section-quiz" class="hidden space-y-6">
+            <!-- Quiz Header Bar -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 custom-shadow flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Bài Kiểm Tra Trắc Nghiệm: Lập Trình Python Cơ Bản (20 Câu)</h2>
+                    <p class="text-sm text-slate-500">Hãy chọn đáp án cho từng câu. Đáp án đúng và giải thích chi tiết sẽ hiện ra sau khi em bấm nút nộp bài hoặc xem đáp án.</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="bg-blue-50 text-blue-700 px-4 py-2 rounded-xl text-sm font-semibold border border-blue-200">
+                        Điểm số: <span id="score-display" class="font-bold text-lg">0</span> / 20
+                    </div>
+                    <button onclick="submitQuiz()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl shadow transition-all text-sm">
+                        Nộp Bài & Xem Giải Thích
+                    </button>
+                    <button onclick="resetQuiz()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-4 py-2.5 rounded-xl transition-all text-sm">
+                        Làm Lại
+                    </button>
+                </div>
+            </div>
+
+            <!-- Questions Container (Generated by JS) -->
+            <div id="quiz-container" class="space-y-6">
+                <!-- Javascript will inject 20 questions here -->
+            </div>
+
+            <!-- Bottom Submit Button -->
+            <div class="text-center py-6">
+                <button onclick="submitQuiz(); window.scrollTo({top: 0, behavior: 'smooth'});" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition-all text-base">
+                    🎯 Nộp Bài Kiểm Tra & Xem Kết Quả Toàn Bộ
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs mt-12 border-t border-slate-800">
+        <p>Môn học: Lập Trình Xử Lý Dữ Liệu - Trường Đại học Công nghệ, ĐHQGHN</p>
+        <p class="mt-1">Giảng viên hỗ trợ sinh viên mất gốc Python &copy; 2026</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Tab switching logic
+        function switchTab(tabName) {
+            const theorySec = document.getElementById('section-theory');
+            const quizSec = document.getElementById('section-quiz');
+            const btnTheory = document.getElementById('btn-theory');
+            const btnQuiz = document.getElementById('btn-quiz');
+
+            if (tabName === 'theory') {
+                theorySec.classList.remove('hidden');
+                quizSec.classList.add('hidden');
+                btnTheory.className = "px-4 py-2 text-sm font-semibold rounded-lg transition-all bg-white text-blue-800 shadow";
+                btnQuiz.className = "px-4 py-2 text-sm font-semibold rounded-lg transition-all text-white hover:bg-white/10";
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            } else {
+                quizSec.classList.remove('hidden');
+                theorySec.classList.add('hidden');
+                btnQuiz.className = "px-4 py-2 text-sm font-semibold rounded-lg transition-all bg-white text-blue-800 shadow";
+                btnTheory.className = "px-4 py-2 text-sm font-semibold rounded-lg transition-all text-white hover:bg-white/10";
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+        }
+
+        // 20 High-Quality Quiz Questions data
+        const quizData = [
+            {
+                id: 1,
+                question: "Cho tệp dữ liệu 'luot_o.csv':\nma,so_dem\nL1,40\nL2,5\nL3,9\nL4,6\nL5,15\n\nĐoạn code:\nimport csv\nwith open('luot_o.csv', encoding='utf-8') as f:\n    rows = list(csv.DictReader(f))\n    dai = sorted(rows, key=lambda r: r['so_dem'], reverse=True)\n    print(dai[0]['ma'])\n\nDòng cuối in ra gì?",
+                options: { A: "L5", B: "L3", C: "L1", D: "L2" },
+                correct: "C",
+                explanation: "Vì 'so_dem' trong DictReader được lưu dưới dạng chuỗi (string). Khi sắp xếp chuỗi giảm dần, '40' lớn hơn '9', '6', '5', '15' (vì ký tự '4' > '1', '5', '6', '9'). Do đó `dai[0]` ứng với dòng `L1` (giá trị '40'). Chú ý bẫy kiểu dữ liệu chuỗi so với số!"
+            },
+            {
+                id: 2,
+                question: "Cũng với tệp 'luot_o.csv' ở câu 1, nếu ta muốn sắp xếp theo số lượng thực sự (kiểu số nguyên từ lớn đến bé), đoạn code key trong hàm sorted nên viết thế nào là đúng chuẩn?",
+                options: {
+                    A: "key=lambda r: r['so_dem']",
+                    B: "key=lambda r: int(r['so_dem'])",
+                    C: "key=int(r['so_dem'])",
+                    D: "key=lambda r: float(r['so_dem'])"
+                },
+                correct: "B",
+                explanation: "Phải dùng `key=lambda r: int(r['so_dem'])` để ép kiểu chuỗi thành số nguyên (int) trước khi sắp xếp, tránh việc Python so sánh theo mã ASCII của chuỗi ký tự."
+            },
+            {
+                id: 3,
+                question: "Kết quả của đoạn lệnh sau là gì?\nd = {'a': 10, 'b': 20, 'c': 30}\nprint(d.get('b', 0))",
+                options: { A: "0", B: "None", C: "20", D: "Lỗi KeyError" },
+                correct: "C",
+                explanation: "Phương thức `.get(key, default)` tìm kiếm khóa 'b' trong dictionary. Vì khóa 'b' tồn tại với giá trị 20 nên hàm trả về 20."
+            },
+            {
+                id: 4,
+                question: "Cho dictionary `d = {'a': 10, 'b': 20}`. Lệnh nào sau đây sẽ trả về giá trị mặc định `5` và không gây lỗi khi khóa `'c'` không tồn tại?",
+                options: {
+                    A: "print(d['c'])",
+                    B: "print(d.get('c', 5))",
+                    C: "print(d.values('c', 5))",
+                    D: "print(d.setdefault('c'))"
+                },
+                correct: "B",
+                explanation: "`d.get('c', 5)` sẽ trả về 5 nếu khóa 'c' không có trong dictionary mà không làm chương trình bị sập (crash)."
+            },
+            {
+                id: 5,
+                question: "Trong Python, module nào được sử dụng chuẩn để đọc và ghi tệp định dạng CSV?",
+                options: { A: "txt", B: "excel", C: "csv", D: "fileio" },
+                correct: "C",
+                explanation: "Module `csv` là module chuẩn có sẵn trong thư viện Python dùng để xử lý các tệp định dạng CSV."
+            },
+            {
+                id: 6,
+                question: "Khi sử dụng `csv.DictReader(f)`, mỗi dòng được đọc lên sẽ có cấu trúc dữ liệu kiểu gì trong Python?",
+                options: { A: "List (Danh sách)", B: "Tuple (Bộ)", C: "Dictionary (Từ điển)", D: "Set (Tập hợp)" },
+                correct: "C",
+                explanation: "`DictReader` chuyển mỗi dòng trong file thành một `OrderedDict` (hoặc `dict`) với key là tên các cột tiêu đề (header)."
+            },
+            {
+                id: 7,
+                question: "Đoạn code sau in ra kết quả gì?\nvals = ['10', '20', '30']\nres = [int(x) for x in vals]\nprint(sum(res))",
+                options: { A: "102030", B: "60", C: "Lỗi kiểu dữ liệu", D: "30" },
+                correct: "B",
+                explanation: "List comprehension `[int(x) for x in vals]` chuyển danh sách chuỗi thành danh sách số nguyên `[10, 20, 30]`. Hàm `sum()` tính tổng ra 60."
+            },
+            {
+                id: 8,
+                question: "Cú pháp khai báo một hàm ẩn (anonymous function) trong Python là gì?",
+                options: { A: "def func(x):", B: "lambda x: x + 1", C: "function(x) => x + 1", D: "anon x: x + 1" },
+                correct: "B",
+                explanation: "Từ khóa `lambda` được dùng để định nghĩa hàm ẩn (không cần tên), cú pháp gồm từ khóa `lambda`, tham số, dấu hai chấm `:` và biểu thức trả về."
+            },
+            {
+                id: 9,
+                question: "Cho danh sách `ds = [('A', 5), ('B', 2), ('C', 9)]`. Lệnh nào sắp xếp danh sách này tăng dần theo phần tử số ở vị trí thứ 2?",
+                options: {
+                    A: "sorted(ds, key=lambda x: x[0])",
+                    B: "sorted(ds, key=lambda x: x[1])",
+                    C: "sorted(ds)",
+                    D: "sorted(ds, reverse=True)"
+                },
+                correct: "B",
+                explanation: "`key=lambda x: x[1]` chỉ định lấy phần tử ở chỉ số 1 (số nguyên 5, 2, 9) của mỗi tuple trong danh sách làm tiêu chí để sắp xếp."
+            },
+            {
+                id: 10,
+                question: "Đoạn code sau in ra màn hình cái gì?\ninfo = {'name': 'An', 'age': 20}\nprint('age' in info)",
+                options: { A: "True", B: "False", C: "Error", D: "An" },
+                correct: "A",
+                explanation: "Toán tử `in` kiểm tra xem một khóa có tồn tại trong dictionary hay không. Vì `'age'` là một key trong `info`, kết quả là `True`."
+            },
+            {
+                id: 11,
+                question: "Hàm nào dùng để lấy ra tất cả các khóa (keys) của một dictionary?",
+                options: { A: "info.get_keys()", B: "info.keys()", C: "info.all_keys()", D: "list(info)" },
+                correct: "B",
+                explanation: "Phương thức `.keys()` trả về một đối tượng chứa toàn bộ các khóa của dictionary."
+            },
+            {
+                id: 12,
+                question: "Khi mở tệp văn bản hoặc CSV trong Python, tại sao chúng ta thường phải thêm tham số `encoding='utf-8'`?",
+                options: {
+                    A: "Để tăng tốc độ đọc file",
+                    B: "Để tránh lỗi font tiếng Việt (UnicodeDecodeError)",
+                    C: "Để file tự động nén lại",
+                    D: "Bắt buộc mọi hệ điều hành đều phải có"
+                },
+                correct: "B",
+                explanation: "Mặc định trên Windows, hàm `open()` dùng mã hóa chuẩn cục bộ (cp1252), khi đọc file tiếng Việt có dấu sẽ gây lỗi font hoặc lỗi `UnicodeDecodeError`. Thêm `encoding='utf-8'` giúp hiển thị chuẩn xác tiếng Việt."
+            },
+            {
+                id: 13,
+                question: "Cho đoạn code:\ntext = 'Python Data Processing'\nprint(text.split())",
+                options: {
+                    A: "['Python', 'Data', 'Processing']",
+                    B: "('Python', 'Data', 'Processing')",
+                    C: "'Python Data Processing'",
+                    D: "['P', 'y', 't', 'h', 'o', 'n']"
+                },
+                correct: "A",
+                explanation: "Phương thức `.split()` mặc định cắt chuỗi theo khoảng trắng và trả về một danh sách (list) gồm các từ con."
+            },
+            {
+                id: 14,
+                question: "Đoạn code sau in ra kết quả gì?\nx = [1, 2, 3]\ny = x\ny.append(4)\nprint(len(x))",
+                options: { A: "3", B: "4", C: "Lỗi", D: "1" },
+                correct: "B",
+                explanation: "Trong Python, phép gán `y = x` sao chép tham chiếu vùng nhớ chứ không tạo bản sao độc lập. Do đó khi `y.append(4)` thì danh sách `x` cũng bị thay đổi thành `[1, 2, 3, 4]`, chiều dài `len(x)` là 4."
+            },
+            {
+                id: 15,
+                question: "Phương thức nào dùng để thêm một phần tử vào cuối một danh sách (list) trong Python?",
+                options: { A: "add()", B: "insert()", C: "append()", D: "push()" },
+                correct: "C",
+                explanation: "Phương thức `.append(val)` thêm phần tử mới vào cuối danh sách."
+            },
+            {
+                id: 16,
+                question: "Kết quả của biểu thức sau là gì?\nprint(type({1, 2, 3}))",
+                options: { A: "<class 'dict'>", B: "<class 'list'>", C: "<class 'set'>", D: "<class 'tuple'>" },
+                correct: "C",
+                explanation: "Cặp ngoặc nhọn `{}` chứa các phần tử đơn lẻ (không có dạng key: value) biểu diễn kiểu dữ liệu `set` (tập hợp các phần tử duy nhất)."
+            },
+            {
+                id: 17,
+                question: "Đoạn code sau thực hiện điều gì với tệp 'out.csv'?\nimport csv\nwith open('out.csv', 'w', encoding='utf-8', newline='') as f:\n    ...",
+                options: {
+                    A: "Chỉ đọc tệp ở chế độ an toàn",
+                    B: "Mở tệp để ghi dữ liệu, chống dòng trống thừa trên Windows",
+                    C: "Xóa tệp ngay lập tức",
+                    D: "Đọc file CSV dạng nhị phân"
+                },
+                correct: "B",
+                explanation: "Chế độ `'w'` là ghi file. Tham số `newline=''` rất quan trọng khi ghi file CSV trên Windows để ngăn chặn việc tự động chèn thêm dòng trống thừa giữa các hàng."
+            },
+            {
+                id: 18,
+                question: "Cho dictionary `di = {'ten': 'Nam', 'diem': 8.5}`. Cách truy cập giá trị của khóa `'diem'` nào là đúng?",
+                options: { A: "di.diem", B: "di[1]", C: "di['diem']", D: "di.value('diem')" },
+                correct: "C",
+                explanation: "Trong Python dictionary, ta truy cập giá trị thông qua khóa bằng cách dùng ngoặc vuông `di['diem']`."
+            },
+            {
+                id: 19,
+                question: "Kết quả của đoạn lệnh sau là gì?\nnums = [5, 2, 9, 1]\nnums.sort(reverse=True)\nprint(nums[0])",
+                options: { A: "1", B: "9", C: "5", D: "2" },
+                correct: "B",
+                explanation: "Phương thức `nums.sort(reverse=True)` sắp xếp danh sách giảm dần tại chỗ thành `[9, 5, 2, 1]`. Phần tử đầu tiên `nums[0]` lúc này là `9`."
+            },
+            {
+                id: 20,
+                question: "Phát biểu nào sau đây là **ĐÚNG NHẤT** khi nói về sự khác biệt giữa `sorted(iterable)` và phương thức `iterable.sort()`?",
+                options: {
+                    A: "Cả hai hoàn toàn giống nhau.",
+                    B: "`sorted()` tạo ra một danh sách mới đã sắp xếp và giữ nguyên danh sách ban đầu; còn `.sort()` sắp xếp trực tiếp trên danh sách gốc và trả về None.",
+                    C: "`.sort()` chỉ dùng cho số, `sorted()` chỉ dùng cho chữ.",
+                    D: "`sorted()` chạy chậm hơn `.sort()` 100 lần."
+                },
+                correct: "B",
+                explanation: "Hàm `sorted()` trả về bản sao danh sách mới được sắp xếp, trong khi `.sort()` thay đổi trực tiếp (in-place) danh sách hiện tại và không trả về danh sách mới."
+            }
+        ];
+
+        // Render questions into DOM
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            let html = '';
+
+            quizData.forEach((q, index) => {
+                const qNum = index + 1;
+                html += `
+                    <div class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 custom-shadow question-card" data-qid="${q.id}">
+                        <div class="flex items-start justify-between mb-4">
+                            <span class="bg-blue-100 text-blue-800 font-bold text-xs px-3 py-1 rounded-full">Câu ${qNum} / 20</span>
+                        </div>
+                        <div class="text-slate-900 font-medium whitespace-pre-line mb-6 font-mono text-sm md:text-base bg-slate-50 p-4 rounded-xl border border-slate-100">${q.question}</div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                            <label class="option-label flex items-center space-x-3 p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+                                <input type="radio" name="q${q.id}" value="A" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm font-semibold text-slate-700">A. ${q.options.A}</span>
+                            </label>
+                            <label class="option-label flex items-center space-x-3 p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+                                <input type="radio" name="q${q.id}" value="B" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm font-semibold text-slate-700">B. ${q.options.B}</span>
+                            </label>
+                            <label class="option-label flex items-center space-x-3 p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+                                <input type="radio" name="q${q.id}" value="C" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm font-semibold text-slate-700">C. ${q.options.C}</span>
+                            </label>
+                            <label class="option-label flex items-center space-x-3 p-3.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-all">
+                                <input type="radio" name="q${q.id}" value="D" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm font-semibold text-slate-700">D. ${q.options.D}</span>
+                            </label>
+                        </div>
+
+                        <!-- Explanation Box (Initially Hidden) -->
+                        <div id="explanation-${q.id}" class="hidden mt-4 p-4 rounded-xl text-sm border"></div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Submit and grade quiz
+        function submitQuiz() {
+            let score = 0;
+
+            quizData.forEach((q) => {
+                const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                const expBox = document.getElementById(`explanation-${q.id}`);
+                expBox.classList.remove('hidden');
+
+                if (selected) {
+                    if (selected.value === q.correct) {
+                        score++;
+                        expBox.className = "mt-4 p-4 rounded-xl text-sm bg-emerald-50 border border-emerald-200 text-emerald-900";
+                        expBox.innerHTML = `<strong>✅ Chính xác!</strong> Đáp án đúng là <strong>${q.correct}</strong>.<br><span class="text-xs mt-1 block text-emerald-800">💡 <em>Giải thích của thầy:</em> ${q.explanation}</span>`;
+                    } else {
+                        expBox.className = "mt-4 p-4 rounded-xl text-sm bg-rose-50 border border-rose-200 text-rose-900";
+                        expBox.innerHTML = `<strong>❌ Chưa chính xác.</strong> Bạn đã chọn ${selected.value}, đáp án đúng phải là <strong>${q.correct}</strong>.<br><span class="text-xs mt-1 block text-rose-800">💡 <em>Giải thích của thầy:</em> ${q.explanation}</span>`;
+                    }
+                } else {
+                    expBox.className = "mt-4 p-4 rounded-xl text-sm bg-amber-50 border border-amber-200 text-amber-900";
+                    expBox.innerHTML = `<strong>⚠️ Bạn chưa chọn câu này!</strong> Đáp án đúng là <strong>${q.correct}</strong>.<br><span class="text-xs mt-1 block text-amber-800">💡 <em>Giải thích của thầy:</em> ${q.explanation}</span>`;
+                }
+            });
+
+            // Update score display
+            document.getElementById('score-display').innerText = score;
+            window.scrollTo({top: 500, behavior: 'smooth'});
+        }
+
+        // Reset quiz
+        function resetQuiz() {
+            const radios = document.querySelectorAll('input[type="radio"]');
+            radios.forEach(r => r.checked = false);
+
+            quizData.forEach(q => {
+                const expBox = document.getElementById(`explanation-${q.id}`);
+                expBox.classList.add('hidden');
+                expBox.innerHTML = '';
+            });
+
+            document.getElementById('score-display').innerText = '0';
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        // Initialize quiz rendering on load
+        window.onload = function() {
+            renderQuiz();
+        };
+    </script>
+</body>
+</html>
