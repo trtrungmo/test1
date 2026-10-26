@@ -1,512 +1,916 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Học Lập Trình Xử Lý Dữ Liệu - Pandas & DuckDB (Bài 4, 5, 6)</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#eef2ff',
-                            100: '#e0e7ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            800: '#3730a3',
-                            900: '#312e81',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Font Inter -->
+    <title>Trắc nghiệm DuckDB & Python Data Processing - UET</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #22c55e;
+            --error-color: #ef4444;
+            --code-bg: #0f172a;
+            --code-text: #e2e8f0;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #3b82f6;
+            --primary-hover: #60a5fa;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --success-color: #4ade80;
+            --error-color: #f87171;
+            --code-bg: #090d16;
+            --code-text: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        header {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding: 16px 24px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        main {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            margin-bottom: 28px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+            line-height: 1.4;
+            border: 1px solid var(--border-color);
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .option-card {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            transition: all 0.2s ease;
+        }
+
+        .option-card:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.03);
+        }
+
+        .option-card input {
+            margin-right: 14px;
+            accent-color: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.08);
+        }
+
+        .option-card.correct {
+            border-color: var(--success-color) !important;
+            background-color: rgba(34, 197, 94, 0.12) !important;
+            color: var(--success-color);
+        }
+
+        .option-card.incorrect {
+            border-color: var(--error-color) !important;
+            background-color: rgba(239, 68, 68, 0.12) !important;
+            color: var(--error-color);
+        }
+
+        .explanation-box {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 8px;
+            background-color: rgba(37, 99, 235, 0.05);
+            border-left: 4px solid var(--primary-color);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .explanation-box.show {
+            display: block;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 32px;
+        }
+
+        .results-container {
+            text-align: center;
+            display: none;
+        }
+
+        .results-container h2 {
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+        }
+
+        .score-circle {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 20px 0;
+            color: var(--success-color);
+        }
+
+        .question-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+            gap: 8px;
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        .palette-item {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .palette-item.current {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .palette-item.correct {
+            background-color: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+
+        .palette-item.incorrect {
+            background-color: var(--error-color);
+            color: white;
+            border-color: var(--error-color);
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body>
 
-    <!-- Header / Navbar -->
-    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="flex items-center space-x-3">
-                <div class="bg-indigo-600 text-white p-2 rounded-xl font-bold text-xl shadow">🐼</div>
-                <div>
-                    <h1 class="text-lg font-bold tracking-tight">Lập Trình Xử Lý Dữ Liệu (Python)</h1>
-                    <p class="text-xs text-slate-400">Giảng viên đồng hành cùng sinh viên mất gốc (Bài 4, 5, 6)</p>
-                </div>
-            </div>
-            <nav class="flex space-x-2 sm:space-x-4 text-sm font-medium">
-                <a href="#theory" class="px-3 py-2 rounded-lg hover:bg-slate-800 transition">📚 Tóm tắt Lý thuyết</a>
-                <a href="#quiz" class="px-3 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition text-white shadow">✍️ Quiz 20 Câu Hỏi</a>
-            </nav>
+    <header>
+        <h1>Bộ môn: Lập trình xử lý dữ liệu - DuckDB & Python</h1>
+        <div class="header-controls">
+            <button class="btn btn-secondary" id="theme-toggle">🌙 Giao diện</button>
+            <button class="btn" onclick="resetQuiz làm-lại">Làm lại từ đầu</button>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 w-full space-y-12">
+    <main id="quiz-main">
+        <div class="quiz-info">
+            <span id="question-indicator">Câu hỏi 1 / 30</span>
+            <span id="score-indicator">Điểm: 0</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
 
-        <!-- Welcome Banner for Beginner -->
-        <section class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-blue-900 text-white rounded-2xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
-            <div class="absolute -right-10 -bottom-10 text-indigo-700/20 text-9xl font-extrabold select-none pointer-events-none">🐼</div>
-            <div class="max-w-3xl relative z-10 space-y-4">
-                <span class="bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full border border-indigo-400/30">Dành riêng cho bạn mất gốc Python</span>
-                <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Chinh phục Pandas & DuckDB từ con số 0</h2>
-                <p class="text-indigo-100 text-sm sm:text-base leading-relaxed">
-                    Chào em! Đừng lo lắng nếu em từng mất gốc lập trình. Trang này được thiết kế cực kỳ trực quan, tóm tắt trọng tâm từ <strong class="text-white">Bài 4 (Làm quen Pandas)</strong>, <strong class="text-white">Bài 5 (Series, DataFrame chuyên sâu)</strong> đến <strong class="text-white">Bài 6 (Kết nối & Truy xuất dữ liệu với DuckDB)</strong>, kèm theo bộ 20 câu hỏi sát đề thi thật giúp em luyện tập và giải thích cặn kẽ từng chi tiết!
-                </p>
-                <div class="pt-2 flex flex-wrap gap-3">
-                    <a href="#theory" class="bg-white text-indigo-900 font-semibold px-5 py-2.5 rounded-xl text-sm shadow hover:bg-indigo-50 transition">Xem Tóm Tắt Lý Thuyết</a>
-                    <a href="#quiz" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-5 py-2.5 rounded-xl text-sm shadow transition border border-indigo-400/40">Làm Quiz Ngay (20 câu)</a>
-                </div>
-            </div>
-        </section>
+        <div id="question-container">
+            <div class="question-title" id="q-title"></div>
+            <pre><code id="q-code"></code></pre>
+            <div class="options-grid" id="q-options"></div>
+            <button class="btn" id="submit-answer" onclick="checkAnswer()">Nộp bài</button>
+            <div class="explanation-box" id="q-explanation"></div>
+        </div>
 
-        <!-- Theory Section -->
-        <section id="theory" class="space-y-8">
-            <div class="border-b border-slate-200 pb-4">
-                <h2 class="text-2xl font-bold text-slate-900">📚 Tóm Tắt Lý Thuyết Trọng Tâm (Bài 4, 5, 6)</h2>
-                <p class="text-sm text-slate-500 mt-1">Nắm vững cốt lõi để giải quyết mọi câu hỏi trắc nghiệm và thực hành.</p>
-            </div>
+        <div class="navigation-buttons">
+            <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()">Câu trước</button>
+            <button class="btn" id="next-btn" onclick="nextQuestion()">Câu tiếp theo</button>
+        </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                <!-- Lecture 4 -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
-                    <div class="space-y-4">
-                        <div class="inline-block bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-lg">Bài 4</div>
-                        <h3 class="text-lg font-bold text-slate-900">Làm quen với Pandas</h3>
-                        <ul class="space-y-2 text-sm text-slate-600 list-disc list-inside">
-                            <li><strong class="text-slate-800">Series:</strong> Mảng 1 chiều có gắn nhãn (index).</li>
-                            <li><strong class="text-slate-800">DataFrame:</strong> Bảng 2 chiều gồm các cột (Series) và hàng.</li>
-                            <li><strong class="text-slate-800">Đọc/Ghi file:</strong> `pd.read_csv()`, `pd.read_excel()`.</li>
-                            <li><strong class="text-slate-800">Khám phá nhanh:</strong> `df.head()`, `df.tail()`, `df.info()`, `df.describe()`.</li>
-                        </ul>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-400">
-                        💡 Mẹo nhớ: Series giống cột trong Excel, DataFrame giống cả bảng Excel.
-                    </div>
-                </div>
-
-                <!-- Lecture 5 -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
-                    <div class="space-y-4">
-                        <div class="inline-block bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-lg">Bài 5</div>
-                        <h3 class="text-lg font-bold text-slate-900">Series & DataFrame Chuyên Sâu</h3>
-                        <ul class="space-y-2 text-sm text-slate-600 list-disc list-inside">
-                            <li><strong class="text-slate-800">Truy xuất vị trí:</strong> `iloc[]` theo số nguyên (vị trí dòng/cột).</li>
-                            <li><strong class="text-slate-800">Truy xuất nhãn:</strong> `loc[]` theo tên nhãn/chỉ mục index.</li>
-                            <li><strong class="text-slate-800">Lọc dữ liệu:</strong> Dùng điều kiện boolean (`df[df['col'] > 5]`).</li>
-                            <li><strong class="text-slate-800">Nhóm & Tổng hợp:</strong> `groupby()`, kết hợp `.mean()`, `.sum()`, `.agg()`.</li>
-                            <li><strong class="text-slate-800">Xử lý thiếu:</strong> `dropna()`, `fillna()`.</li>
-                        </ul>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-400">
-                        💡 Mẹo nhớ: <code class="bg-slate-100 px-1 rounded">iloc</code> = *integer location*, <code class="bg-slate-100 px-1 rounded">loc</code> = *label location*.
-                    </div>
-                </div>
-
-                <!-- Lecture 6 -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
-                    <div class="space-y-4">
-                        <div class="inline-block bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-lg">Bài 6</div>
-                        <h3 class="text-lg font-bold text-slate-900">Kết Nối & Truy Xuất (DuckDB & JOIN)</h3>
-                        <ul class="space-y-2 text-sm text-slate-600 list-disc list-inside">
-                            <li><strong class="text-slate-800">DuckDB SQL:</strong> Dùng `duckdb.sql("...").df()` để truy vấn DataFrame bằng SQL.</li>
-                            <li><strong class="text-slate-800">LEFT JOIN:</strong> Giữ toàn bộ bảng trái, khớp bảng phải. Giá trị không khớp thành `NULL`.</li>
-                            <li><strong class="text-slate-800">Cạm bẫy WHERE trên LEFT JOIN:</strong> Dùng `WHERE phi < 10` trên cột bảng phải có thể biến LEFT JOIN thành INNER JOIN (vì `NULL < 10` là sai).</li>
-                        </ul>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-400">
-                        💡 Chú ý tối quan trọng: Câu 15 trong ảnh của em chính là cái bẫy này!
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Quiz Section -->
-        <section id="quiz" class="space-y-8 bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 pb-6">
-                <div>
-                    <h2 class="text-2xl font-bold text-slate-900">✍️ Bài Tập Trắc Nghiệm Ôn Tập (20 Câu)</h2>
-                    <p class="text-sm text-slate-500 mt-1">Chọn đáp án cho từng câu. Đáp án đúng và giải thích chi tiết sẽ hiện ra sau khi em bấm nút nộp bài ở cuối trang.</p>
-                </div>
-                <div id="score-badge" class="hidden bg-indigo-50 border border-indigo-200 px-4 py-2 rounded-xl text-indigo-900 font-bold text-lg">
-                    Điểm số: <span id="score-val">0</span> / 20
-                </div>
-            </div>
-
-            <!-- Quiz Form -->
-            <form id="quiz-form" class="space-y-8">
-                <!-- Questions will be injected or listed via HTML structure -->
-                <div id="questions-container" class="space-y-8">
-                    <!-- Javascript will render 20 questions here for clean maintainability -->
-                </div>
-
-                <!-- Submit / Reset Buttons -->
-                <div class="pt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
-                    <button type="button" id="submit-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition duration-200 flex items-center space-x-2">
-                        <span>🚀 Nộp Bài & Xem Giải Thích</span>
-                    </button>
-                    <button type="button" id="reset-btn" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-6 py-3 rounded-xl transition duration-200">
-                        🔄 Làm Lại Từ Đầu
-                    </button>
-                </div>
-            </form>
-        </section>
-
+        <!-- Palette of questions -->
+        <div class="question-palette" id="question-palette"></div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 text-sm py-8 mt-16 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-            <p>Hệ thống hỗ trợ học tập Lập Trình Xử Lý Dữ Liệu - UET IAI Course.</p>
-            <p class="text-xs text-slate-500">Chúc em ôn tập thật tốt và đạt kết quả cao!</p>
-        </div>
-    </footer>
+    <div class="results-container" id="results-container" style="display:none; width:100%; max-width:900px; background:var(--card-bg); border-radius:16px; padding:32px; border:1px solid var(--border-color); box-shadow:0 10px 15px -3px rgba(0,0,0,0.05);">
+        <h2>Kết Quả Bài Trắc Nghiệm DuckDB</h2>
+        <div class="score-circle" id="final-score">0/30</div>
+        <p id="result-message" style="margin-bottom: 24px; font-size: 1.1rem; color: var(--text-muted);"></p>
+        <button class="btn" onclick="resetQuiz()">Làm lại bài trắc nghiệm</button>
+    </div>
 
-    <!-- Quiz Data & Logic Script -->
     <script>
-        // Array of 20 questions tailored to Lectures 4, 5, 6 and sample question 15
-        const quizData = [
+        const questions = [
             {
                 id: 1,
-                question: "Câu 1. Cấu trúc dữ liệu nào trong Pandas đại diện cho một bảng dữ liệu 2 chiều có các hàng và cột?",
-                options: {
-                    A: "Series",
-                    B: "DataFrame",
-                    C: "Index",
-                    D: "Panel"
-                },
-                correct: "B",
-                explanation: "DataFrame là cấu trúc dữ liệu 2 chiều dạng bảng gồm các hàng và cột (tương tự bảng Excel hoặc bảng SQL)."
+                title: "Câu 1. (1 điểm) DataFrame df có cột id, khu với bốn hàng (001, A), (002, B), (003, C), (004, A). DataFrame khu_phi có cột khu, phi với hai hàng (A, 20), (B, 5). Bảng kq có bao nhiêu hàng?",
+                code: `kq = duckdb.sql("""
+    SELECT df.id, khu_phi.phi
+    FROM df LEFT JOIN khu_phi ON df.khu = khu_phi.khu
+    WHERE khu_phi.phi < 10
+""").df()`,
+                options: ["A. 2", "B. 1", "C. Báo lỗi", "D. 4"],
+                correct: 1, // B. 1
+                explanation: "LEFT JOIN giữ lại tất cả hàng từ df (4 hàng). Cột khu_phi.phi tương ứng với các giá trị: A->20, B->5, C->NULL, A->20. Điều kiện WHERE khu_phi.phi < 10 loại bỏ các hàng có giá trị phi không thỏa mãn hoặc NULL (giữ lại hàng với B và phi = 5). Do đó kq chỉ có 1 hàng."
             },
             {
                 id: 2,
-                question: "Câu 2. Để đọc một tệp tin định dạng CSV vào trong Pandas DataFrame, ta dùng hàm nào?",
-                options: {
-                    A: "pd.read_excel()",
-                    B: "pd.load_csv()",
-                    C: "pd.read_csv()",
-                    D: "pd.open_csv()"
-                },
-                correct: "C",
-                explanation: "Hàm chuẩn trong Pandas để đọc file CSV là `pd.read_csv('filename.csv')`."
+                title: "Câu 2. (1 điểm) Cho bảng employees gồm cột id, name, salary. Câu lệnh nào dưới đây dùng DuckDB để lấy ra 3 nhân viên có lương cao nhất?",
+                code: `kq = duckdb.sql("""
+    SELECT * FROM employees ORDER BY salary DESC LIMIT 3
+""").df()`,
+                options: ["A. SELECT * FROM employees ORDER BY salary ASC LIMIT 3", "B. SELECT * FROM employees ORDER BY salary DESC LIMIT 3", "C. SELECT TOP 3 * FROM employees ORDER BY salary DESC", "D. SELECT * FROM employees WHERE LIMIT 3"],
+                correct: 1,
+                explanation: "DuckDB sử dụng cú pháp chuẩn SQL bao gồm ORDER BY ... DESC và LIMIT để giới hạn số lượng dòng trả về."
             },
             {
                 id: 3,
-                question: "Câu 3. Phương thức nào giúp hiển thị 5 dòng đầu tiên của một DataFrame df?",
-                options: {
-                    A: "df.tail()",
-                    B: "df.head()",
-                    C: "df.info()",
-                    D: "df.first()"
-                },
-                correct: "B",
-                explanation: "`df.head()` mặc định trả về 5 dòng đầu tiên của DataFrame."
+                title: "Câu 3. (1 điểm) Cho DataFrame df có cột score. Kết quả trả về của câu lệnh DuckDB sau là gì?",
+                code: `kq = duckdb.sql("SELECT AVG(score) AS avg_score FROM df").df()`,
+                options: [
+                    "A. Trả về tổng điểm tất cả các hàng",
+                    "B. Trả về giá trị trung bình cộng (average) của cột score",
+                    "C. Báo lỗi cú pháp SQL",
+                    "D. Trả về giá trị lớn nhất trong cột score"
+                ],
+                correct: 1,
+                explanation: "Hàm AVG() trong SQL dùng để tính giá trị trung bình cộng của một cột số."
             },
             {
                 id: 4,
-                question: "Câu 4. Phương thức `df.info()` dùng để làm gì?",
-                options: {
-                    A: "Xem kiểu dữ liệu của từng cột và số lượng giá trị không null",
-                    B: "Tính tổng giá trị các cột số",
-                    C: "Hiển thị 5 dòng cuối cùng",
-                    D: "Sắp xếp dữ liệu theo thứ tự tăng dần"
-                },
-                correct: "A",
-                explanation: "`df.info()` cung cấp thông tin tổng quan: số hàng, số cột, tên cột, kiểu dữ liệu (dtype) và số lượng non-null values."
+                title: "Câu 4. (1 điểm) Khi thực thi câu lệnh `.df()` sau một câu truy vấn `duckdb.sql(...)`, kết quả trả về có kiểu dữ liệu gì trong Python?",
+                code: `kq = duckdb.sql("SELECT * FROM df").df()`,
+                options: ["A. list", "B. dict", "C. pandas.DataFrame", "D. numpy.ndarray"],
+                correct: 2,
+                explanation: "Phương thức `.df()` của DuckDB chuyển kết quả truy vấn trực tiếp thành một `pandas.DataFrame`."
             },
             {
                 id: 5,
-                question: "Câu 5. Sự khác biệt cơ bản giữa `df.loc[]` và `df.iloc[]` là gì?",
-                options: {
-                    A: "loc dùng cho số nguyên vị trí, iloc dùng cho tên nhãn",
-                    B: "loc dùng theo tên nhãn (label), iloc dùng theo vị trí số nguyên (integer position)",
-                    C: "Không có sự khác biệt nào",
-                    D: "iloc chỉ dùng cho Series, loc chỉ dùng cho DataFrame"
-                },
-                correct: "B",
-                explanation: "`loc` tìm kiếm dựa trên nhãn (label-based), còn `iloc` tìm kiếm dựa trên chỉ số vị trí số nguyên (integer-based)."
+                title: "Câu 5. (1 điểm) Cho bảng orders với các cột customer_id, amount. Câu lệnh nào tính tổng amount theo từng customer_id?",
+                code: `kq = duckdb.sql("""
+    SELECT customer_id, SUM(amount) 
+    FROM orders 
+    GROUP BY customer_id
+""").df()`,
+                options: [
+                    "A. SELECT customer_id, SUM(amount) FROM orders GROUP BY customer_id",
+                    "B. SELECT customer_id, TOTAL(amount) FROM orders ORDER BY customer_id",
+                    "C. SELECT customer_id, SUM(amount) FROM orders",
+                    "D. SELECT SUM(amount) FROM orders BY customer_id"
+                ],
+                correct: 0,
+                explanation: "Để tính tổng theo nhóm, ta kết hợp hàm tổng hợp `SUM()` với mệnh đề `GROUP BY customer_id`."
             },
             {
                 id: 6,
-                question: "Câu 6. Cho DataFrame df. Lệnh nào sau đây dùng để lọc các dòng mà cột 'age' lớn hơn 20?",
-                options: {
-                    A: "df.filter(age > 20)",
-                    B: "df.query_age(20)",
-                    C: "df[df['age'] > 20]",
-                    D: "df.loc(df['age'] > 20)"
-                },
-                correct: "C",
-                explanation: "Cú pháp lọc boolean chuẩn trong Pandas là `df[df['age'] > 20]`."
+                title: "Câu 6. (1 điểm) Đoạn code sau thực hiện điều gì khi truyền một biến pandas DataFrame trực tiếp vào câu truy vấn DuckDB?",
+                code: `import duckdb
+import pandas as pd
+df = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
+kq = duckdb.sql("SELECT SUM(a) FROM df").df()`,
+                options: [
+                    "A. Báo lỗi do DuckDB không đọc được pandas DataFrame trực tiếp",
+                    "B. DuckDB tự động nhận diện biến df trong Python scope và truy vấn trực tiếp trên đó",
+                    "C. Chỉ chạy được nếu đăng ký DataFrame bằng lệnh register()",
+                    "D. Trả về DataFrame rỗng"
+                ],
+                correct: 1,
+                explanation: "DuckDB hỗ trợ tích hợp nguyên bản với pandas, cho phép truy vấn trực tiếp các biến DataFrame đang có trong môi trường Python mà không cần đăng ký thủ công."
             },
             {
                 id: 7,
-                question: "Câu 7. Hàm nào trong Pandas dùng để loại bỏ các dòng chứa giá trị bị thiếu (NaN)?",
-                options: {
-                    A: "df.remove_na()",
-                    B: "df.dropna()",
-                    C: "df.fillna()",
-                    D: "df.delete_missing()"
-                },
-                correct: "B",
-                explanation: "`df.dropna()` dùng để loại bỏ các hàng (hoặc cột) có chứa giá trị NaN."
+                title: "Câu 7. (1 điểm) Cho bảng data có cột category và price. Lệnh lọc ra các sản phẩm có price lớn hơn 100 và category là 'Electronics' là:",
+                code: `kq = duckdb.sql("""
+    SELECT * FROM data 
+    WHERE price > 100 AND category = 'Electronics'
+""").df()`,
+                options: [
+                    "A. WHERE price > 100 OR category = 'Electronics'",
+                    "B. WHERE price > 100 AND category = 'Electronics'",
+                    "C. HAVING price > 100 AND category = 'Electronics'",
+                    "D. FILTER price > 100 AND category = 'Electronics'"
+                ],
+                correct: 1,
+                explanation: "Mệnh đề WHERE kết hợp các điều kiện lọc theo dòng sử dụng toán tử AND."
             },
             {
                 id: 8,
-                question: "Câu 8. Để điền tất cả các giá trị thiếu (NaN) trong DataFrame bằng số 0, ta dùng lệnh nào?",
-                options: {
-                    A: "df.fillna(0)",
-                    B: "df.replace_na(0)",
-                    C: "df.dropna(0)",
-                    D: "df[0]"
-                },
-                correct: "A",
-                explanation: "`df.fillna(0)` thay thế toàn bộ các ô NaN bằng giá trị 0."
+                title: "Câu 8. (1 điểm) Sự khác biệt chính giữa WHERE và HAVING trong DuckDB/SQL là gì?",
+                code: `kq = duckdb.sql("""
+    SELECT category, SUM(price) 
+    FROM data 
+    GROUP BY category 
+    HAVING SUM(price) > 500
+""").df()`,
+                options: [
+                    "A. WHERE dùng để lọc dữ liệu trước khi GROUP BY, còn HAVING dùng để lọc sau khi GROUP BY (trên các hàm tổng hợp)",
+                    "B. HAVING dùng trước GROUP BY, WHERE dùng sau GROUP BY",
+                    "C. Không có sự khác biệt nào",
+                    "D. WHERE chỉ dùng cho số, HAVING chỉ dùng cho chuỗi"
+                ],
+                correct: 0,
+                explanation: "WHERE lọc các hàng đơn lẻ trước khi nhóm, trong khi HAVING dùng để lọc các kết quả sau khi đã GROUP BY và tính toán hàm tổng hợp."
             },
             {
                 id: 9,
-                question: "Câu 9. Phương thức `groupby()` trong Pandas thường được kết hợp với phương thức tổng hợp nào sau đây?",
-                options: {
-                    A: "mean(), sum(), count()",
-                    B: "head(), tail()",
-                    C: "loc, iloc",
-                    D: "read_csv()"
-                },
-                correct: "A",
-                explanation: "Sau `groupby()`, ta áp dụng các hàm tổng hợp như `.mean()`, `.sum()`, `.count()`, `.max()`, v.v."
+                title: "Câu 9. (1 điểm) Kết quả của hàm COUNT(*) trong câu lệnh SQL sau đếm cái gì?",
+                code: `kq = duckdb.sql("SELECT COUNT(*) FROM students").df()`,
+                options: [
+                    "A. Số lượng cột trong bảng students",
+                    "B. Tổng số dòng (hàng) trong bảng students",
+                    "C. Số lượng giá trị không trùng lặp",
+                    "D. Giá trị lớn nhất của cột id"
+                ],
+                correct: 1,
+                explanation: "COUNT(*) trả về tổng số bản ghi (số hàng) có trong bảng."
             },
             {
                 id: 10,
-                question: "Câu 10. Thư viện nào được tích hợp để thực hiện câu lệnh SQL trực tiếp trên DataFrame trong Bài 6?",
-                options: {
-                    A: "sqlite3",
-                    B: "duckdb",
-                    C: "sqlalchemy",
-                    D: "pymysql"
-                },
-                correct: "B",
-                explanation: "Trong khóa học, `duckdb` (với cú pháp `duckdb.sql(...)`) được dùng để truy vấn dữ liệu DataFrame bằng SQL cực kỳ nhanh chóng."
+                title: "Câu 10. (1 điểm) Để loại bỏ các dòng có giá trị trùng lặp hoàn toàn trong kết quả trả về của DuckDB, ta dùng từ khóa:",
+                code: `kq = duckdb.sql("SELECT DISTINCT city FROM customers").df()`,
+                options: [
+                    "A. UNIQUE",
+                    "B. DISTINCT",
+                    "C. DIFFERENT",
+                    "D. GROUP"
+                ],
+                correct: 1,
+                explanation: "Từ khóa DISTINCT được đặt sau SELECT để chỉ giữ lại các giá trị duy nhất (không trùng lặp)."
             },
             {
                 id: 11,
-                question: "Câu 11 (Dựa theo ảnh câu 15): DataFrame df có cột id, khu với 4 hàng (001, A), (002, B), (003, C), (004, A). DataFrame khu_phi có cột khu, phi với 2 hàng (A, 20), (B, 5).\n\nkq = duckdb.sql('''\n  SELECT df.id, khu_phi.phi\n  FROM df LEFT JOIN khu_phi ON df.khu = khu_phi.khu\n  WHERE khu_phi.phi < 10\n''').df()\n\nBảng kq có bao nhiêu hàng?",
-                options: {
-                    A: "2 hàng",
-                    B: "1 hàng",
-                    C: "Báo lỗi",
-                    D: "4 hàng"
-                },
-                correct: "B",
-                explanation: "Giải thích chi tiết: \n1. Ban đầu LEFT JOIN tạo ra 4 dòng cho df (001->A(20), 002->B(5), 003->C(NULL), 004->A(20)).\n2. Sau đó mệnh đề WHERE khu_phi.phi < 10 được áp dụng. Với C (NULL < 10 là False/Unknown) và A (20 < 10 là False), chỉ còn dòng B (phi = 5 < 10) thỏa mãn.\n3. Điều kiện lọc WHERE trên cột của bảng phải trong LEFT JOIN biến nó thành INNER JOIN, do đó kết quả chỉ còn 1 hàng (id 002)."
+                title: "Câu 11. (1 điểm) Cho bảng scores gồm các cột name và math. Câu lệnh nào sắp xếp danh sách theo điểm math tăng dần?",
+                code: `kq = duckdb.sql("SELECT * FROM scores ORDER BY math ASC").df()`,
+                options: [
+                    "A. ORDER BY math DESC",
+                    "B. ORDER BY math ASC",
+                    "C. SORT BY math",
+                    "D. ORDER math"
+                ],
+                correct: 1,
+                explanation: "ASC (Ascending) là thứ tự tăng dần (mặc định nếu không viết ASC hay DESC)."
             },
             {
                 id: 12,
-                question: "Câu 12. Trong SQL/DuckDB, phép nối (JOIN) nào trả về tất cả các hàng từ bảng bên trái và các hàng khớp từ bảng bên phải (nếu không khớp, bên phải mang giá trị NULL)?",
-                options: {
-                    A: "INNER JOIN",
-                    B: "LEFT JOIN",
-                    C: "RIGHT JOIN",
-                    D: "FULL OUTER JOIN"
-                },
-                correct: "B",
-                explanation: "LEFT JOIN bảo toàn toàn bộ bảng bên trái, các bản ghi không khớp bên phải sẽ có giá trị NULL."
+                title: "Câu 12. (1 điểm) Trong DuckDB, để giới hạn số lượng dòng trả về lấy 10 dòng đầu tiên, ta dùng:",
+                code: `kq = duckdb.sql("SELECT * FROM items LIMIT 10").df()`,
+                options: [
+                    "A. TOP 10",
+                    "B. FETCH FIRST 10 ROWS",
+                    "C. LIMIT 10",
+                    "D. HEAD(10)"
+                ],
+                correct: 2,
+                explanation: "DuckDB hỗ trợ mệnh đề chuẩn `LIMIT 10` để giới hạn số dòng."
             },
             {
                 id: 13,
-                question: "Câu 13. Để tạo một Series từ một danh sách Python `lst = [10, 20, 30]`, câu lệnh nào là đúng?",
-                options: {
-                    A: "pd.DataFrame([10, 20, 30])",
-                    B: "pd.Series([10, 20, 30])",
-                    C: "pd.CreateSeries([10, 20, 30])",
-                    D: "Series([10, 20, 30])"
-                },
-                correct: "B",
-                explanation: "`pd.Series([10, 20, 30])` khởi tạo một đối tượng Series 1 chiều trong Pandas."
+                title: "Câu 13. (1 điểm) Phép JOIN nào trả về tất cả các hàng từ bảng bên trái và các hàng khớp từ bảng bên phải?",
+                code: `kq = duckdb.sql("""
+    SELECT * FROM tableA LEFT JOIN tableB ON tableA.id = tableB.id
+""").df()`,
+                options: [
+                    "A. INNER JOIN",
+                    "B. LEFT JOIN",
+                    "C. RIGHT JOIN",
+                    "D. FULL OUTER JOIN"
+                ],
+                correct: 1,
+                explanation: "LEFT JOIN giữ toàn bộ dữ liệu bảng bên trái, bảng bên phải nếu không khớp sẽ trả về giá trị NULL."
             },
             {
                 id: 14,
-                question: "Câu 14. Thuộc tính `.shape` của một DataFrame trả về gì?",
-                options: {
-                    A: "Tổng số phần tử",
-                    B: "Một tuple (số_hàng, số_cột)",
-                    C: "Kiểu dữ liệu của các cột",
-                    D: "Danh sách tên các cột"
-                },
-                correct: "B",
-                explanation: "`df.shape` trả về tuple dạng `(so_hang, so_cot)` của DataFrame."
+                title: "Câu 14. (1 điểm) Khi thực hiện INNER JOIN giữa hai bảng A và B, kết quả sẽ chứa:",
+                code: `kq = duckdb.sql("""
+    SELECT * FROM A INNER JOIN B ON A.key = B.key
+""").df()`,
+                options: [
+                    "A. Tất cả các hàng của cả hai bảng",
+                    "B. Chỉ các hàng có giá trị key khớp nhau ở cả hai bảng",
+                    "C. Tất cả hàng của bảng A",
+                    "D. Các hàng không khớp nhau"
+                ],
+                correct: 1,
+                explanation: "INNER JOIN chỉ giữ lại các dòng có sự khớp giá trị (match) ở cả hai bảng."
             },
             {
                 id: 15,
-                question: "Câu 15. Làm thế nào để đổi tên cột 'old_name' thành 'new_name' trong DataFrame df?",
-                options: {
-                    A: "df.rename(columns={'old_name': 'new_name'}, inplace=True)",
-                    B: "df.columns = ['new_name']",
-                    C: "df.change_name('old_name', 'new_name')",
-                    D: "df.update_column('old_name', 'new_name')"
-                },
-                correct: "A",
-                explanation: "Hàm `df.rename(columns={...}, inplace=True)` là cách chuẩn và an toàn nhất để đổi tên cột."
+                title: "Câu 15. (1 điểm) Hàm nào trong DuckDB dùng để thay thế giá trị NULL bằng một giá trị mặc định (ví dụ thay NULL thành 0)?",
+                code: `kq = duckdb.sql("SELECT COALESCE(score, 0) FROM students").df()`,
+                options: [
+                    "A. IFNULL(score, 0) hoặc COALESCE(score, 0)",
+                    "B. REPLACE_NULL(score, 0)",
+                    "C. ISNULL(score, 0)",
+                    "D. FILLNA(score, 0)"
+                ],
+                correct: 0,
+                explanation: "COALESCE (và ISNULL/IFNULL tùy dialect) trả về giá trị đầu tiên không phải NULL trong danh sách tham số."
             },
             {
                 id: 16,
-                question: "Câu 16. Để sắp xếp các giá trị trong DataFrame theo cột 'score' từ cao xuống thấp (giảm dần), ta dùng:",
-                options: {
-                    A: "df.sort_values(by='score', ascending=False)",
-                    B: "df.sort(by='score', desc=True)",
-                    C: "df.order_by('score', descending=True)",
-                    D: "df.sort_values(by='score', ascending=True)"
-                },
-                correct: "A",
-                explanation: "`df.sort_values(by='score', ascending=False)` sắp xếp giảm dần theo cột score."
+                title: "Câu 16. (1 điểm) Câu lệnh SQL nào tính giá trị lớn nhất của cột salary trong bảng staff?",
+                code: `kq = duckdb.sql("SELECT MAX(salary) FROM staff").df()`,
+                options: [
+                    "A. SELECT HIGHEST(salary) FROM staff",
+                    "B. SELECT MAX(salary) FROM staff",
+                    "C. SELECT TOP(salary) FROM staff",
+                    "D. SELECT LIMIT 1 salary FROM staff"
+                ],
+                correct: 1,
+                explanation: "Hàm MAX() trả về giá trị lớn nhất trong một cột."
             },
             {
                 id: 17,
-                question: "Câu 17. Phương thức `df.duplicated()` dùng để làm gì?",
-                options: {
-                    A: "Xóa các dòng trùng lặp",
-                    B: "Kiểm tra các dòng bị trùng lặp (trả về Series dạng True/False)",
-                    C: "Nhân đôi số lượng dòng trong DataFrame",
-                    D: "Đếm số lượng cột trùng tên"
-                },
-                correct: "B",
-                explanation: "`df.duplicated()` trả về một Series boolean cho biết dòng nào là dòng trùng lặp (đã xuất hiện trước đó)."
+                title: "Câu 17. (1 điểm) Kết quả của câu lệnh DuckDB đọc trực tiếp file CSV hoặc Parquet vào DataFrame là:",
+                code: `kq = duckdb.sql("SELECT * FROM 'data.csv'").df()`,
+                options: [
+                    "A. Báo lỗi vì chưa dùng pandas đọc file trước",
+                    "B. DuckDB tự động đọc file 'data.csv' và trả về pandas DataFrame",
+                    "C. Chỉ đọc được file định dạng parquet",
+                    "D. Trả về đường dẫn chuỗi"
+                ],
+                correct: 1,
+                explanation: "DuckDB có khả năng đọc trực tiếp các tệp dữ liệu như CSV, Parquet, JSON mà không cần load thủ công vào pandas trước."
             },
             {
                 id: 18,
-                question: "Câu 18. Khi sử dụng `df.drop_duplicates()`, kết quả trả về là gì?",
-                options: {
-                    A: "Một DataFrame mới đã được loại bỏ các dòng trùng lặp",
-                    B: "Số lượng dòng bị trùng",
-                    C: "Giá trị trung bình của các cột",
-                    D: "Danh sách các chỉ mục trùng"
-                },
-                correct: "A",
-                explanation: "`df.drop_duplicates()` loại bỏ các dòng trùng lặp và trả về DataFrame (nếu `inplace=True` thì thao tác trực tiếp trên bảng gốc)."
+                title: "Câu 18. (1 điểm) Để tính số lượng giá trị khác nhau (unique count) của cột department trong bảng employees, ta dùng:",
+                code: `kq = duckdb.sql("SELECT COUNT(DISTINCT department) FROM employees").df()`,
+                options: [
+                    "A. COUNT(department)",
+                    "B. COUNT(DISTINCT department)",
+                    "C. UNIQUE_COUNT(department)",
+                    "D. SUM(DISTINCT department)"
+                ],
+                correct: 1,
+                explanation: "Kết hợp COUNT và DISTINCT cho phép đếm số lượng các giá trị duy nhất không trùng lặp."
             },
             {
                 id: 19,
-                question: "Câu 19. Để áp dụng một hàm tự định nghĩa (ví dụ hàm `cube(x)`) lên từng phần tử của một cột trong DataFrame, ta dùng phương thức nào?",
-                options: {
-                    A: "df['col'].apply(cube)",
-                    B: "df['col'].map_function(cube)",
-                    C: "df.run(cube)",
-                    D: "df['col'].loop(cube)"
-                },
-                correct: "A",
-                explanation: "Phương thức `.apply()` dùng để áp dụng một hàm lên Series hoặc các trục của DataFrame."
+                title: "Câu 19. (1 điểm) Khi sử dụng mệnh đề LIKE trong DuckDB, ký tự đại diện `%` biểu thị điều gì?",
+                code: `kq = duckdb.sql("SELECT * FROM users WHERE name LIKE 'A%'").df()`,
+                options: [
+                    "A. Đúng một ký tự bất kỳ",
+                    "B. Chuỗi gồm bất kỳ ký tự nào (bao gồm cả chuỗi rỗng)",
+                    "C. Dấu phần trăm chính nó",
+                    "D. Không có ý nghĩa đặc biệt"
+                ],
+                correct: 1,
+                explanation: "Trong SQL LIKE, `%` đại diện cho một chuỗi gồm 0 hoặc nhiều ký tự bất kỳ."
             },
             {
                 id: 20,
-                question: "Câu 20. Trong DuckDB, nếu ta muốn đếm tổng số bản ghi trong bảng `df`, câu lệnh SQL nào là chính xác?",
-                options: {
-                    A: "SELECT COUNT(*) FROM df",
-                    B: "SELECT TOTAL FROM df",
-                    C: "SELECT SUM(df) FROM df",
-                    D: "SELECT COUNT(row) FROM df"
-                },
-                correct: "A",
-                explanation: "Cú pháp chuẩn SQL để đếm số dòng là `SELECT COUNT(*) FROM df`."
+                title: "Câu 20. (1 điểm) Ký tự `_` trong biểu thức LIKE của DuckDB đại diện cho:",
+                code: `kq = duckdb.sql("SELECT * FROM codes WHERE code LIKE 'A_C'").df()`,
+                options: [
+                    "A. Đúng một ký tự đơn bất kỳ",
+                    "B. Nhiều ký tự",
+                    "C. Khoảng trắng",
+                    "D. Ký tự gạch dưới chữ cái"
+                ],
+                correct: 0,
+                explanation: "Ký tự `_` trong điều kiện LIKE đại diện cho đúng một ký tự đơn bất kỳ."
+            },
+            {
+                id: 21,
+                title: "Câu 21. (1 điểm) Cho bảng sales gồm cột quantity và price. Câu lệnh nào tính tổng doanh thu (quantity * price) cho toàn bộ bảng?",
+                code: `kq = duckdb.sql("SELECT SUM(quantity * price) AS total_revenue FROM sales").df()`,
+                options: [
+                    "A. SELECT SUM(quantity) * SUM(price) FROM sales",
+                    "B. SELECT SUM(quantity * price) AS total_revenue FROM sales",
+                    "C. SELECT TOTAL(quantity * price) FROM sales",
+                    "D. SELECT SUM(quantity) FROM sales WHERE price"
+                ],
+                correct: 1,
+                explanation: "Ta có thể thực hiện phép tính biểu thức trên từng dòng `quantity * price` bên trong hàm tổng hợp `SUM()`."
+            },
+            {
+                id: 22,
+                title: "Câu 22. (1 điểm) Để kiểm tra một giá trị có nằm trong một tập hợp cho trước hay không trong DuckDB, ta dùng toán tử:",
+                code: `kq = duckdb.sql("SELECT * FROM students WHERE grade IN ('A', 'B')").df()`,
+                options: [
+                    "A. CONTAIN",
+                    "B. IN",
+                    "C. INSIDE",
+                    "D. BETWEEN"
+                ],
+                correct: 1,
+                explanation: "Toán tử IN dùng để kiểm tra xem giá trị cột có thuộc danh sách các giá trị trong ngoặc hay không."
+            },
+            {
+                id: 23,
+                title: "Câu 23. (1 điểm) Toán tử nào dùng để lọc các giá trị nằm trong một khoảng (ví dụ từ 10 đến 20 tính cả biên)?",
+                code: `kq = duckdb.sql("SELECT * FROM products WHERE price BETWEEN 10 AND 20").df()`,
+                options: [
+                    "A. RANGE 10 AND 20",
+                    "B. BETWEEN 10 AND 20",
+                    "C. FROM 10 TO 20",
+                    "D. LIMIT 10 TO 20"
+                ],
+                correct: 1,
+                explanation: "Mệnh đề BETWEEN ... AND ... dùng để lọc khoảng giá trị bao gồm cả hai cận."
+            },
+            {
+                id: 24,
+                title: "Câu 24. (1 điểm) Câu lệnh nào sau đây đổi tên cột `id` thành `student_id` trong kết quả truy vấn?",
+                code: `kq = duckdb.sql("SELECT id AS student_id FROM students").df()`,
+                options: [
+                    "A. SELECT id RENAME student_id FROM students",
+                    "B. SELECT id AS student_id FROM students",
+                    "C. SELECT id TO student_id FROM students",
+                    "D. SELECT student_id = id FROM students"
+                ],
+                correct: 1,
+                explanation: "Từ khóa AS dùng để đặt tên bí danh (alias) cho cột hoặc bảng trong SQL."
+            },
+            {
+                id: 25,
+                title: "Câu 25. (1 điểm) Khi nào mệnh đề GROUP BY bắt buộc phải được sử dụng?",
+                code: `kq = duckdb.sql("SELECT dept, COUNT(*) FROM emp GROUP BY dept").df()`,
+                options: [
+                    "A. Khi trong câu SELECT có chứa các hàm tổng hợp (như SUM, AVG, COUNT) kết hợp với các cột không được tổng hợp",
+                    "B. Khi muốn sắp xếp dữ liệu",
+                    "C. Khi thực hiện JOIN hai bảng",
+                    "D. Khi muốn giới hạn số dòng"
+                ],
+                correct: 0,
+                explanation: "GROUP BY bắt buộc khi kết hợp cột thông thường và hàm tổng hợp (aggregate function) để nhóm các dòng có cùng giá trị."
+            },
+            {
+                id: 26,
+                title: "Câu 26. (1 điểm) Kết quả của câu lệnh DuckDB sau khi bảng không có dòng nào thỏa mãn điều kiện WHERE là gì?",
+                code: `kq = duckdb.sql("SELECT * FROM students WHERE score > 100").df()`,
+                options: [
+                    "A. Trả về lỗi thực thi",
+                    "B. Trả về một DataFrame rỗng (0 hàng, nhưng vẫn giữ nguyên cấu trúc cột)",
+                    "C. Trả về giá trị NULL",
+                    "D. Trả về toàn bộ bảng"
+                ],
+                correct: 1,
+                explanation: "Khi không có dòng nào thỏa mãn điều kiện, truy vấn trả về DataFrame rỗng với schema đầy đủ."
+            },
+            {
+                id: 27,
+                title: "Câu 27. (1 điểm) Để kết hợp kết quả của 2 câu truy vấn SQL loại bỏ các dòng trùng lặp, ta dùng toán tử tập hợp nào?",
+                code: `kq = duckdb.sql("SELECT city FROM branchA UNION SELECT city FROM branchB").df()`,
+                options: [
+                    "A. UNION ALL",
+                    "B. UNION",
+                    "C. MERGE",
+                    "D. JOIN"
+                ],
+                correct: 1,
+                explanation: "UNION kết hợp kết quả và tự động loại bỏ các dòng trùng lặp (khác với UNION ALL giữ lại tất cả)."
+            },
+            {
+                id: 28,
+                title: "Câu 28. (1 điểm) Toán tử UNION ALL khác với UNION ở điểm nào?",
+                code: `kq = duckdb.sql("SELECT city FROM branchA UNION ALL SELECT city FROM branchB").df()`,
+                options: [
+                    "A. UNION ALL giữ lại tất cả các dòng kể cả trùng lặp và chạy nhanh hơn do không tốn công lọc trùng",
+                    "B. UNION ALL loại bỏ dòng trùng lặp",
+                    "C. UNION ALL chỉ dùng cho số",
+                    "D. UNION ALL báo lỗi khi có trùng lặp"
+                ],
+                correct: 0,
+                explanation: "UNION ALL không lọc trùng lặp nên hiệu năng cao hơn UNION."
+            },
+            {
+                id: 29,
+                title: "Câu 29. (1 điểm) Trong DuckDB, hàm nào dùng để lấy giá trị nhỏ nhất của một cột số?",
+                code: `kq = duckdb.sql("SELECT MIN(price) FROM products").df()`,
+                options: [
+                    "A. LOWEST(price)",
+                    "B. MIN(price)",
+                    "C. SMALL(price)",
+                    "D. BOTTOM(price)"
+                ],
+                correct: 1,
+                explanation: "Hàm MIN() trả về giá trị nhỏ nhất trong cột."
+            },
+            {
+                id: 30,
+                title: "Câu 30. (1 điểm) Đoạn code Python sau kết nối và thực hiện truy vấn DuckDB in ra kết quả định dạng gì?",
+                code: `import duckdb
+res = duckdb.sql("SELECT 40 + 2 AS ans").fetchall()
+print(res)`,
+                options: [
+                    "A. [(42,)] dưới dạng danh sách các tuple",
+                    "B. 42 dưới dạng số nguyên đơn thuần",
+                    "C. DataFrame",
+                    "D. Dictionary"
+                ],
+                correct: 0,
+                explanation: "Phương thức `.fetchall()` trả về kết quả dưới dạng danh sách các tuple (list of tuples)."
             }
         ];
 
-        // Render questions dynamically into the form
-        function renderQuiz() {
-            const container = document.getElementById('questions-container');
-            let html = '';
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let score = 0;
+        let isSubmitted = new Array(questions.length).fill(false);
 
-            quizData.forEach((q, index) => {
-                html += `
-                    <div class="p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4 question-card" data-id="${q.id}">
-                        <div class="font-bold text-slate-900 text-base sm:text-lg whitespace-pre-line">${q.question}</div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                `;
-
-                for (let key in q.options) {
-                    html += `
-                        <label class="flex items-center space-x-3 p-3 rounded-xl bg-white border border-slate-200 hover:border-indigo-400 cursor-pointer transition option-label">
-                            <input type="radio" name="q${q.id}" value="${key}" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500">
-                            <span class="text-sm font-medium text-slate-700"><strong class="text-indigo-600 mr-1">${key}.</strong> ${q.options[key]}</span>
-                        </label>
-                    `;
-                }
-
-                html += `
-                        </div>
-                        <!-- Hidden explanation box -->
-                        <div id="explanation-${q.id}" class="hidden mt-4 p-4 rounded-xl text-sm border explanation-box"></div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
+        function initQuiz() {
+            renderPalette();
+            loadQuestion(currentQuestion);
         }
 
-        // Handle Submit Quiz
-        document.getElementById('submit-btn').addEventListener('click', function() {
-            let score = 0;
-            let unanswered = 0;
+        function loadQuestion(index) {
+            currentQuestion = index;
+            const q = questions[index];
+            
+            document.getElementById('question-indicator').innerText = `Câu hỏi ${index + 1} / ${questions.length}`;
+            document.getElementById('score-indicator').innerText = `Điểm: ${score}`;
+            document.getElementById('progress-bar').style.width = `${((index + 1) / questions.length) * 100}%`;
 
-            quizData.forEach((q) => {
-                const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
-                const expBox = document.getElementById(`explanation-${q.id}`);
-                
-                // Remove previous styles
-                expBox.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-200', 'text-emerald-900', 'bg-rose-50', 'border-rose-200', 'text-rose-900', 'bg-amber-50', 'border-amber-200', 'text-amber-900');
+            document.getElementById('q-title').innerText = q.title;
+            document.getElementById('q-code').innerText = q.code;
 
-                if (!selected) {
-                    unanswered++;
-                    expBox.classList.add('bg-amber-50', 'border-amber-200', 'text-amber-900');
-                    expBox.innerHTML = `⚠️ <strong class="font-bold">Chưa trả lời!</strong> Đáp án đúng là: <strong class="underline">${q.correct}</strong>.<br><span class="mt-1 block">${q.explanation}</span>`;
-                } else {
-                    const userAnswer = selected.value;
-                    if (userAnswer === q.correct) {
-                        score++;
-                        expBox.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-900');
-                        expBox.innerHTML = `✅ <strong class="font-bold">Chính xác!</strong> Bạn đã chọn đúng (${userAnswer}).<br><span class="mt-1 block">${q.explanation}</span>`;
-                    } else {
-                        expBox.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-900');
-                        expBox.innerHTML = `❌ <strong class="font-bold">Chưa chính xác.</strong> Bạn chọn <span class="line-through">${userAnswer}</span>, đáp án đúng là: <strong class="text-indigo-700 font-bold">${q.correct}</strong>.<br><span class="mt-1 block">${q.explanation}</span>`;
+            const optionsContainer = document.getElementById('q-options');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, i) => {
+                const card = document.createElement('label');
+                card.className = 'option-card';
+                if (userAnswers[index] === i) {
+                    card.classList.add('selected');
+                }
+
+                if (isSubmitted[index]) {
+                    if (i === q.correct) {
+                        card.classList.add('correct');
+                    } else if (userAnswers[index] === i && i !== q.correct) {
+                        card.classList.add('incorrect');
                     }
                 }
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `question-${index}`;
+                radio.value = i;
+                radio.checked = userAnswers[index] === i;
+                radio.disabled = isSubmitted[index];
+                
+                radio.onchange = () => {
+                    if (!isSubmitted[index]) {
+                        userAnswers[index] = i;
+                        updatePaletteItem(index, 'selected');
+                        // highlight selected card UI
+                        Array.from(optionsContainer.children).forEach(c => c.classList.remove('selected'));
+                        card.classList.add('selected');
+                    }
+                };
+
+                card.appendChild(radio);
+                card.appendChild(document.createTextNode(opt));
+                optionsContainer.appendChild(card);
             });
 
-            // Show Score Badge
-            const scoreBadge = document.getElementById('score-badge');
-            const scoreVal = document.getElementById('score-val');
-            scoreVal.textContent = score;
-            scoreBadge.classList.remove('hidden');
+            const expBox = document.getElementById('q-explanation');
+            if (isSubmitted[index]) {
+                expBox.innerText = `💡 Giải thích: ${q.explanation}`;
+                expBox.classList.add('show');
+                document.getElementById('submit-answer').style.display = 'none';
+            } else {
+                expBox.classList.remove('show');
+                document.getElementById('submit-answer').style.display = 'block';
+            }
 
-            // Scroll to score or top of quiz smoothly
-            scoreBadge.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
+            document.getElementById('prev-btn').style.display = index === 0 ? 'none' : 'block';
+            document.getElementById('next-btn').innerText = index === questions.length - 1 ? 'Xem kết quả' : 'Câu tiếp theo';
+            updatePalette();
+        }
 
-        // Handle Reset Quiz
-        document.getElementById('reset-btn').addEventListener('click', function() {
-            document.getElementById('quiz-form').reset();
-            quizData.forEach((q) => {
-                const expBox = document.getElementById(`explanation-${q.id}`);
-                expBox.classList.add('hidden');
-                expBox.innerHTML = '';
+        function checkAnswer() {
+            if (userAnswers[currentQuestion] === null) {
+                alert('Vui lòng chọn một đáp án trước khi nộp bài!');
+                return;
+            }
+
+            if (!isSubmitted[currentQuestion]) {
+                isSubmitted[currentQuestion] = true;
+                if (userAnswers[currentQuestion] === questions[currentQuestion].correct) {
+                    score += 1;
+                }
+                loadQuestion(currentQuestion);
+                updatePaletteItem(currentQuestion, userAnswers[currentQuestion] === questions[currentQuestion].correct ? 'correct' : 'incorrect');
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                loadQuestion(currentQuestion + 1);
+            } else {
+                showResults();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function renderPalette() {
+            const palette = document.getElementById('question-palette');
+            palette.innerHTML = '';
+            questions.forEach((_, i) => {
+                const item = document.createElement('div');
+                item.className = 'palette-item';
+                item.innerText = i + 1;
+                if (i === currentQuestion) item.classList.add('current');
+                if (isSubmitted[i]) {
+                    item.classList.add(userAnswers[i] === questions[i].correct ? 'correct' : 'incorrect');
+                }
+                item.onclick = () => loadQuestion(i);
+                palette.appendChild(item);
             });
-            document.getElementById('score-badge').classList.add('hidden');
-            window.scrollTo({ top: document.getElementById('quiz').offsetTop - 50, behavior: 'smooth' });
-        });
+        }
 
-        // Initialize on load
-        window.onload = function() {
-            renderQuiz();
+        function updatePalette() {
+            const palette = document.getElementById('question-palette');
+            Array.from(palette.children).forEach((item, i) => {
+                item.className = 'palette-item';
+                if (i === currentQuestion) item.classList.add('current');
+                if (isSubmitted[i]) {
+                    item.classList.add(userAnswers[i] === questions[i].correct ? 'correct' : 'incorrect');
+                }
+            });
+        }
+
+        function updatePaletteItem(index, status) {
+            updatePalette();
+        }
+
+        function showResults() {
+            document.getElementById('quiz-main').style.display = 'none';
+            const resContainer = document.getElementById('results-container');
+            resContainer.style.display = 'block';
+            document.getElementById('final-score').innerText = `${score} / ${questions.length}`;
+            
+            let msg = "";
+            const pct = (score / questions.length) * 100;
+            if (pct >= 90) msg = "Xuất sắc! Thầy đánh giá rất cao tư duy xử lý dữ liệu và DuckDB của em.";
+            else if (pct >= 70) msg = "Khá tốt! Em đã nắm vững phần lớn kiến thức về DuckDB và cú pháp SQL trong Python.";
+            else msg = "Cần cố gắng ôn tập thêm các câu lệnh SQL và các phép JOIN trong DuckDB nhé!";
+            document.getElementById('result-message').innerText = msg;
+        }
+
+        function resetQuiz() {
+            currentQuestion = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            score = 0;
+            isSubmitted = new Array(questions.length).fill(false);
+            document.getElementById('quiz-main').style.display = 'block';
+            document.getElementById('results-container').style.display = 'none';
+            initQuiz();
+        }
+
+        // Theme toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.onclick = () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggleBtn.innerText = '🌙 Giao diện';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggleBtn.innerText = '☀️ Giao diện';
+            }
         };
+
+        window.onload = initQuiz;
     </script>
 </body>
 </html>
