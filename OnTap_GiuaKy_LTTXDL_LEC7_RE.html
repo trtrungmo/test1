@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture 07 & Lab 07: Regular Expressions (Regex) - UET Programming for Data Processing</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        code, pre { font-family: 'Fira Code', monospace; }
+        .gradient-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Top Navigation Bar -->
+    <header class="gradient-header text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-3 mb-3 md:mb-0">
+                <div class="bg-white text-blue-900 p-2.5 rounded-xl font-bold text-xl shadow">
+                    <i class="fa-solid fa-code"></i> UET
+                </div>
+                <div>
+                    <span class="text-xs uppercase tracking-wider text-blue-200 font-semibold">Programming for Data Processing</span>
+                    <h1 class="text-xl font-bold">Lecture & Lab 07: Regular Expressions (Regex)</h1>
+                </div>
+            </div>
+            <nav class="flex items-center space-x-4 text-sm">
+                <a href="#overview" class="hover:text-blue-200 transition">Tổng quan</a>
+                <a href="#syntax" class="hover:text-blue-200 transition">Cú pháp Regex</a>
+                <a href="#re-module" class="hover:text-blue-200 transition">Thư viện re</a>
+                <a href="#best-practices" class="hover:text-blue-200 transition">Phong cách Code</a>
+                <a href="#examples" class="hover:text-blue-200 transition">Ví dụ thực tế</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- Sidebar Table of Contents -->
+        <aside class="lg:col-span-1 hidden lg:block">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sticky top-24">
+                <h3 class="font-bold text-slate-900 mb-3 text-sm uppercase tracking-wider border-b pb-2 flex items-center">
+                    <i class="fa-solid fa-list-ul mr-2 text-blue-600"></i> Mục lục bài giảng
+                </h3>
+                <ul class="space-y-2 text-sm text-slate-600">
+                    <li><a href="#overview" class="hover:text-blue-600 block py-1 transition">1. Giới thiệu chung</a></li>
+                    <li><a href="#syntax" class="hover:text-blue-600 block py-1 transition">2. Bảng cú pháp Regex cơ bản</a></li>
+                    <li><a href="#anchors" class="hover:text-blue-600 block py-1 transition">3. Neo và Ranh giới (Anchors)</a></li>
+                    <li><a href="#quantifiers" class="hover:text-blue-600 block py-1 transition">4. Bộ định lượng (Quantifiers)</a></li>
+                    <li><a href="#re-module" class="hover:text-blue-600 block py-1 transition">5. Thư viện Python <code>re</code> và các hàm</a></li>
+                    <li><a href="#flags" class="hover:text-blue-600 block py-1 transition">6. Các Flags quan trọng</a></li>
+                    <li><a href="#best-practices" class="hover:text-blue-600 block py-1 transition">7. Phong cách Code & Lưu ý</a></li>
+                    <li><a href="#examples" class="hover:text-blue-600 block py-1 transition">8. Bài tập & Ví dụ thực tế</a></li>
+                </ul>
+                <div class="mt-6 pt-4 border-t border-slate-100">
+                    <div class="bg-blue-50 text-blue-800 p-3 rounded-xl text-xs">
+                        <p class="font-semibold mb-1"><i class="fa-solid fa-circle-info mr-1"></i> Gợi ý học tập:</p>
+                        Thực hành trực tiếp trên Google Colab / Jupyter Notebook bằng cách sao chép các đoạn mã mẫu dưới đây.
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content Body -->
+        <main class="lg:col-span-3 space-y-8">
+
+            <!-- Section 1: Overview -->
+            <section id="overview" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="bg-blue-100 text-blue-600 p-3 rounded-xl text-lg font-bold">01</div>
+                    <h2 class="text-2xl font-bold text-slate-900">Giới thiệu về Biểu thức Chính quy (Regular Expressions - Regex)</h2>
+                </div>
+                <p class="text-slate-600 leading-relaxed mb-4">
+                    Biểu thức chính quy (<strong>Regex</strong>) là một công cụ cực kỳ mạnh mẽ trong xử lý dữ liệu dạng chuỗi (Text Processing & Data Cleaning). Trong Khoa học Dữ liệu và Lập trình xử lý dữ liệu, dữ liệu thô (raw text) thường cực kỳ hỗn loạn: log hệ thống, bình luận mạng xã hội, email, số điện thoại, HTML tags... Regex giúp chúng ta định nghĩa các mẫu (patterns) để tìm kiếm (search), trích xuất (extract), kiểm tra định dạng (validation) và thay thế (replace) chuỗi một cách tự động và tối ưu.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div class="text-blue-600 font-bold mb-1"><i class="fa-solid fa-magnifying-glass mr-2"></i>Tìm kiếm & Khớp</div>
+                        <p class="text-xs text-slate-600">Phát hiện sự tồn tại của một mẫu chuỗi phức tạp trong văn bản lớn.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div class="text-blue-600 font-bold mb-1"><i class="fa-solid fa-scissors mr-2"></i>Trích xuất dữ liệu</div>
+                        <p class="text-xs text-slate-600">Lấy ra các giá trị cụ thể như mã sinh viên, tiền tệ, ngày tháng năm từ log.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div class="text-blue-600 font-bold mb-1"><i class="fa-solid fa-broom mr-2"></i>Làm sạch dữ liệu</div>
+                        <p class="text-xs text-slate-600">Loại bỏ ký tự rác, chuẩn hóa định dạng trước khi đưa vào mô hình học máy.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Syntax Table -->
+            <section id="syntax" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="bg-blue-100 text-blue-600 p-3 rounded-xl text-lg font-bold">02</div>
+                    <h2 class="text-2xl font-bold text-slate-900">Bảng Cú pháp Regex Cơ bản & Ký tự đặc biệt</h2>
+                </div>
+                <p class="text-slate-600 mb-6">Dưới đây là các ký tự đại diện (metacharacters) và lớp ký tự cốt lõi bạn bắt buộc phải nắm vững khi thao tác với Regex trong Python.</p>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
+                                <th class="p-3 font-semibold">Ký tự / Mẫu</th>
+                                <th class="p-3 font-semibold">Ý nghĩa mô tả</th>
+                                <th class="p-3 font-semibold">Ví dụ khớp (Match)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 text-slate-600">
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 font-bold">.</td>
+                                <td class="p-3">Khớp với bất kỳ ký tự nào ngoại trừ ký tự xuống dòng xuống dòng (<code class="text-xs bg-slate-100 px-1 py-0.5 rounded">
+</code>).</td>
+                                <td class="p-3 font-mono text-xs">h.t -> "hot", "hat", "h@t"</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 font-bold">\d</td>
+                                <td class="p-3">Khớp với bất kỳ chữ số nào (tương đương với <code class="text-xs bg-slate-100 px-1 py-0.5 rounded">[0-9]</code>).</td>
+                                <td class="p-3 font-mono text-xs">\d\d -> "25", "07"</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 font-bold">\D</td>
+                                <td class="p-3">Khớp với bất kỳ ký tự nào <strong>không phải</strong> chữ số (<code class="text-xs bg-slate-100 px-1 py-0.5 rounded">[^0-9]</code>).</td>
+                                <td class="p-3 font-mono text-xs">\D -> "A", "@", " "</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 font-bold">\w</td>
+                                <td class="p-3">Khớp với ký tự chữ cái, chữ số hoặc dấu gạch dưới (<code class="text-xs bg-slate-100 px-1 py-0.5 rounded">[a-zA-Z0-9_]</code>).</td>
+                                <td class="p-3 font-mono text-xs">\w+ -> "UET_K70", "Data2026"</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 font-bold">\W</td>
+                                <td class="p-3">Khớp với bất kỳ ký tự nào <strong>không phải</strong> từ (<code class="text-xs bg-slate-100 px-1 py-0.5 rounded">[^a-zA-Z0-9_]</code>).</td>
+                                <td class="p-3 font-mono text-xs">\W -> "!", " ", "@"</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 font-bold">\s</td>
+                                <td class="p-3">Khớp với bất kỳ khoảng trắng nào (space, tab <code class="text-xs bg-slate-100 px-1 py-0.5 rounded">	</code>, xuống dòng <code class="text-xs bg-slate-100 px-1 py-0.5 rounded">
+</code>).</td>
+                                <td class="p-3 font-mono text-xs">a\sb -> "a b", "a	b"</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 font-bold">\S</td>
+                                <td class="p-3">Khớp với bất kỳ ký tự nào không phải khoảng trắng.</td>
+                                <td class="p-3 font-mono text-xs">\S+ -> "K70-UET"</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 font-bold">[abc]</td>
+                                <td class="p-3">Khớp với bất kỳ ký tự nào nằm trong ngoặc vuông (a, b hoặc c).</td>
+                                <td class="p-3 font-mono text-xs">[aeiou] -> nguyên âm</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 font-bold">[^abc]</td>
+                                <td class="p-3">Phủ định: Khớp với bất kỳ ký tự nào <strong>không nằm trong</strong> ngoặc vuông.</td>
+                                <td class="p-3 font-mono text-xs">[^0-9] -> chữ cái hoặc ký tự đặc biệt</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-mono text-blue-600 font-bold">[a-z]</td>
+                                <td class="p-3">Khoảng giá trị: Khớp với bất kỳ ký tự nào từ a đến z (hoặc [0-9], [A-Z]).</td>
+                                <td class="p-3 font-mono text-xs">[A-Z] -> chữ cái viết hoa</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section 3 & 4: Anchors and Quantifiers -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Section 3: Anchors -->
+                <section id="anchors" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="bg-blue-100 text-blue-600 p-2.5 rounded-xl text-base font-bold">03</div>
+                        <h2 class="text-xl font-bold text-slate-900">Neo & Ranh giới (Anchors)</h2>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-4">Neo không khớp với ký tự nào mà khớp với vị trí xuất hiện của chuỗi.</p>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <code class="text-blue-600 font-bold font-mono">^</code> : Bắt đầu chuỗi (hoặc đầu dòng nếu dùng cờ <code class="text-xs bg-slate-200 px-1 rounded">re.M</code>).
+                            <div class="text-xs text-slate-500 mt-1">Ví dụ: <code class="text-slate-700">^UET</code> khớp với chuỗi bắt đầu bằng "UET".</div>
+                        </li>
+                        <li class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <code class="text-blue-600 font-bold font-mono">$</code> : Kết thúc chuỗi (hoặc cuối dòng).
+                            <div class="text-xs text-slate-500 mt-1">Ví dụ: <code class="text-slate-700">.ipynb$</code> khớp với tên file kết thúc bằng đuôi notebook.</div>
+                        </li>
+                        <li class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <code class="text-blue-600 font-bold font-mono"></code> : Ranh giới từ (Word boundary - vị trí giữa chữ cái/số và ký tự phi từ).
+                            <div class="text-xs text-slate-500 mt-1">Ví dụ: <code class="text-slate-700">data</code> khớp từ độc lập "data", không khớp "database".</div>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Section 4: Quantifiers -->
+                <section id="quantifiers" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="bg-blue-100 text-blue-600 p-2.5 rounded-xl text-base font-bold">04</div>
+                        <h2 class="text-xl font-bold text-slate-900">Bộ định lượng (Quantifiers)</h2>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-4">Xác định số lần lặp lại của ký tự hoặc nhóm ký tự đứng trước.</p>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <code class="text-blue-600 font-bold font-mono">*</code> : Lặp lại từ 0 lần trở lên.
+                        </li>
+                        <li class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <code class="text-blue-600 font-bold font-mono">+</code> : Lặp lại từ 1 lần trở lên (Rất hay dùng).
+                        </li>
+                        <li class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <code class="text-blue-600 font-bold font-mono">?</code> : Xuất hiện 0 hoặc 1 lần (Tùy chọn / Optional).
+                        </li>
+                        <li class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <code class="text-blue-600 font-bold font-mono">{n}</code> / <code class="text-blue-600 font-bold font-mono">{n,m}</code> : Đúng <code class="text-slate-700">n</code> lần, hoặc từ <code class="text-slate-700">n</code> đến <code class="text-slate-700">m</code> lần.
+                        </li>
+                    </ul>
+                </section>
+            </div>
+
+            <!-- Section 5: Python Re Module & Functions -->
+            <section id="re-module" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="bg-blue-100 text-blue-600 p-3 rounded-xl text-lg font-bold">05</div>
+                    <h2 class="text-2xl font-bold text-slate-900">Thư viện Python <code class="text-blue-600">re</code> và Các Hàm Cốt Lõi</h2>
+                </div>
+                <p class="text-slate-600 mb-6">Để sử dụng regex trong Python, bạn cần import module tích hợp sẵn:</p>
+                <pre><code class="language-python rounded-xl">import re</code></pre>
+
+                <div class="mt-6 space-y-6">
+                    <!-- re.match -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50">
+                        <h3 class="font-bold text-slate-900 text-base mb-2 flex items-center">
+                            <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded mr-2 font-mono">re.match()</span>
+                            Khớp từ điểm đầu tiên của chuỗi
+                        </h3>
+                        <p class="text-sm text-slate-600 mb-3">Kiểm tra xem mẫu regex có khớp ngay ở ký tự đầu tiên của chuỗi hay không. Trả về đối tượng match hoặc <code class="text-xs bg-slate-200 px-1 rounded">None</code>.</p>
+                        <pre><code class="language-python">import re
+
+text = "UET Data Science K70"
+match = re.match(r"UET", text)
+if match:
+    print("Khớp thành công ở đầu chuỗi:", match.group())
+# Output: Khớp thành công ở đầu chuỗi: UET</code></pre>
+                    </div>
+
+                    <!-- re.search -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50">
+                        <h3 class="font-bold text-slate-900 text-base mb-2 flex items-center">
+                            <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded mr-2 font-mono">re.search()</span>
+                            Tìm kiếm sự xuất hiện đầu tiên
+                        </h3>
+                        <p class="text-sm text-slate-600 mb-3">Quét toàn bộ chuỗi để tìm vị trí đầu tiên khớp với mẫu regex.</p>
+                        <pre><code class="language-python">text = "Mã sinh viên của tôi là 25024119"
+match = re.search(r"\d+", text)
+if match:
+    print("Tìm thấy số:", match.group())
+# Output: Tìm thấy số: 25024119</code></pre>
+                    </div>
+
+                    <!-- re.findall -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50">
+                        <h3 class="font-bold text-slate-900 text-base mb-2 flex items-center">
+                            <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded mr-2 font-mono">re.findall()</span>
+                            Trích xuất tất cả các kết quả khớp
+                        </h3>
+                        <p class="text-sm text-slate-600 mb-3">Trả về một danh sách (list) chứa tất cả các chuỗi con khớp với mẫu.</p>
+                        <pre><code class="language-python">text = "Điểm số các môn: Toán 8.5, Lý 9.0, Tin 9.5"
+scores = re.findall(r"\d+\.\d+", text)
+print("Danh sách điểm:", scores)
+# Output: Danh sách điểm: ['8.5', '9.0', '9.5']</code></pre>
+                    </div>
+
+                    <!-- re.finditer -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50">
+                        <h3 class="font-bold text-slate-900 text-base mb-2 flex items-center">
+                            <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded mr-2 font-mono">re.finditer()</span>
+                            Lặp qua các đối tượng Match (chứa vị trí span)
+                        </h3>
+                        <p class="text-sm text-slate-600 mb-3">Trả về một iterator chứa các đối tượng match chi tiết (bao gồm cả vị trí bắt đầu và kết thúc).</p>
+                        <pre><code class="language-python">text = "Python 3.10 và Python 3.12"
+for match in re.finditer(r"Python \d+\.\d+", text):
+    print(f"Tìm thấy '{match.group()}' tại vị trí {match.span()}")
+# Output:
+# Tìm thấy 'Python 3.10' tại vị trí (0, 11)
+# Tìm thấy 'Python 3.12' tại vị trí (16, 27)</code></pre>
+                    </div>
+
+                    <!-- re.sub -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50">
+                        <h3 class="font-bold text-slate-900 text-base mb-2 flex items-center">
+                            <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded mr-2 font-mono">re.sub()</span>
+                            Thay thế chuỗi
+                        </h3>
+                        <p class="text-sm text-slate-600 mb-3">Tìm các phần tử khớp với mẫu và thay thế bằng chuỗi mới.</p>
+                        <pre><code class="language-python">text = "Liên hệ qua email: support@uet.vnu.edu.vn hoặc admin@vnu.edu.vn"
+# Ẩn tên miền email thành [HIDDEN]
+clean_text = re.sub(r"@[\w\.]+", "@[HIDDEN]", text)
+print(clean_text)
+# Output: Liên hệ qua email: support@[HIDDEN] hoặc admin@[HIDDEN]</code></pre>
+                    </div>
+
+                    <!-- re.split -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50">
+                        <h3 class="font-bold text-slate-900 text-base mb-2 flex items-center">
+                            <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded mr-2 font-mono">re.split()</span>
+                            Tách chuỗi dựa theo mẫu regex
+                        </h3>
+                        <p class="text-sm text-slate-600 mb-3">Tách chuỗi thành danh sách dựa trên các điểm khớp regex phức tạp (hơn hàm <code class="text-xs bg-slate-200 px-1 rounded">str.split()</code> thông thường).</p>
+                        <pre><code class="language-python">text = "Apple, Banana; Orange: Grapefruit"
+# Tách bởi dấu phẩy, dấu chấm phẩy hoặc dấu hai chấm kèm khoảng trắng tùy ý
+fruits = re.split(r"[,;:]\s*", text)
+print(fruits)
+# Output: ['Apple', 'Banana', 'Orange', 'Grapefruit']</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 6: Flags -->
+            <section id="flags" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="bg-blue-100 text-blue-600 p-3 rounded-xl text-lg font-bold">06</div>
+                    <h2 class="text-2xl font-bold text-slate-900">Các Flags (Cờ) Quan trọng trong Regex</h2>
+                </div>
+                <p class="text-slate-600 mb-4">Các cờ cấu hình giúp thay đổi hành vi tìm kiếm của hàm regex:</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <code class="text-blue-600 font-bold block mb-1">re.IGNORECASE (re.I)</code>
+                        <p class="text-xs text-slate-600">Bỏ qua phân biệt chữ hoa và chữ thường (case-insensitive). Ví dụ <code class="text-slate-700">re.I</code> khớp cả "UET" và "uet".</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <code class="text-blue-600 font-bold block mb-1">re.MULTILINE (re.M)</code>
+                        <p class="text-xs text-slate-600">Thay đổi hành vi của <code class="text-slate-700">^</code> và <code class="text-slate-700">$</code> để khớp với đầu và cuối của mỗi dòng trong văn bản nhiều dòng.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <code class="text-blue-600 font-bold block mb-1">re.DOTALL (re.S)</code>
+                        <p class="text-xs text-slate-600">Cho phép ký tự chấm (<code class="text-slate-700">.</code>) khớp với cả ký tự xuống dòng <code class="text-slate-700">
+</code>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 7: Best Practices & Notes -->
+            <section id="best-practices" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="bg-blue-100 text-blue-600 p-3 rounded-xl text-lg font-bold">07</div>
+                    <h2 class="text-2xl font-bold text-slate-900">Phong cách Code Chuẩn (Best Practices) & Lưu ý Quan trọng</h2>
+                </div>
+                <div class="space-y-4 text-sm text-slate-600">
+                    <div class="flex items-start space-x-3 bg-emerald-50 border border-emerald-200 p-4 rounded-xl">
+                        <i class="fa-solid fa-check-circle text-emerald-600 mt-0.5 text-base"></i>
+                        <div>
+                            <strong class="text-emerald-900 block mb-1">Luôn sử dụng Raw Strings (chuỗi thô <code class="font-mono">r"..."</code>)</strong>
+                            <p class="text-xs text-emerald-800">Trong Python, ký tự gạch chéo ngược <code class="bg-emerald-100 px-1 rounded">\</code> là ký tự escape (ví dụ <code class="bg-emerald-100 px-1 rounded">
+</code> là xuống dòng). Dùng tiền tố <code class="font-mono">r""</code> giúp Python hiểu đây là biểu thức thô, tránh việc hiểu nhầm escape sequence.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3 bg-blue-50 border border-blue-200 p-4 rounded-xl">
+                        <i class="fa-solid fa-lightbulb text-blue-600 mt-0.5 text-base"></i>
+                        <div>
+                            <strong class="text-blue-900 block mb-1">Biên dịch mẫu bằng <code class="font-mono">re.compile()</code> cho vòng lặp lớn</strong>
+                            <p class="text-xs text-blue-800">Nếu bạn phải áp dụng một mẫu regex lặp đi lặp lại hàng nghìn lần (ví dụ trong xử lý file CSV/DataFrame lớn), hãy biên dịch trước để tăng hiệu năng:</p>
+                            <pre class="mt-2"><code class="language-python">pattern = re.compile(r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}", re.I)
+# Sử dụng lại pattern
+results = pattern.findall(large_text)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-3 bg-amber-50 border border-amber-200 p-4 rounded-xl">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 text-base"></i>
+                        <div>
+                            <strong class="text-amber-900 block mb-1">Cẩn thận với lỗi "Catastrophic Backtracking"</strong>
+                            <p class="text-xs text-amber-800">Tránh lồng các bộ định lượng lặp lồng nhau dạng <code class="font-mono">(a+)+</code> với chuỗi đầu vào không khớp, vì nó có thể làm treo chương trình Python do tính toán quá tải.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 8: Practical Examples / Lab Exercises -->
+            <section id="examples" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="bg-blue-100 text-blue-600 p-3 rounded-xl text-lg font-bold">08</div>
+                    <h2 class="text-2xl font-bold text-slate-900">Bài tập Thực hành & Ví dụ Ứng dụng Thực tế</h2>
+                </div>
+                <p class="text-slate-600 mb-6">Các mẫu Regex tiêu chuẩn ứng dụng trong xử lý dữ liệu và làm sạch văn bản:</p>
+
+                <div class="space-y-6">
+                    <!-- Example 1 -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                        <h3 class="font-bold text-slate-900 mb-2">Ví dụ 1: Trích xuất và kiểm tra Mã Sinh Viên UET (Ví dụ: 25024119)</h3>
+                        <pre><code class="language-python">import re
+
+# Mã sinh viên gồm đúng 8 chữ số
+student_ids = ["25024119", "2401001", "ABC12345", "25029999"]
+pattern = re.compile(r"^\d{8}$")
+
+for sid in student_ids:
+    if pattern.match(sid):
+        print(f"Mã sinh viên hợp lệ: {sid}")
+    else:
+        print(f"Mã không hợp lệ: {sid}")</code></pre>
+                    </div>
+
+                    <!-- Example 2 -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                        <h3 class="font-bold text-slate-900 mb-2">Ví dụ 2: Trích xuất Số điện thoại di động Việt Nam</h3>
+                        <pre><code class="language-python">import re
+
+text = "Hotline hỗ trợ: 0912345678 hoặc (+84) 987 654 321 hoặc 0355123456."
+# Mẫu khớp SĐT VN: bắt đầu bằng 0 hoặc +84, theo sau bởi 9 chữ số
+phone_pattern = r"(?:\+84|0)\d{9}"
+phones = re.findall(phone_pattern, text)
+print("Danh sách số điện thoại tìm thấy:", phones)</code></pre>
+                    </div>
+
+                    <!-- Example 3 -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5">
+                        <h3 class="font-bold text-slate-900 mb-2">Ví dụ 3: Làm sạch văn bản (Xóa bỏ HTML Tags và ký tự đặc biệt thừa)</h3>
+                        <pre><code class="language-python">import re
+
+html_content = "<div class='content'><h1>Bài giảng Lab 07</h1><p>Học lập trình xử lý dữ liệu tại UET.</p></div>"
+
+# Xóa các thẻ HTML tag
+clean_text = re.sub(r"<[^>]+>", "", html_content)
+print("Văn bản sau khi lọc HTML:", clean_text)
+# Output: Bài giảng Lab 07Học lập trình xử lý dữ liệu tại UET.</code></pre>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-slate-400">
+            <p class="mb-2">Bộ môn Khoa học và Kỹ thuật Dữ liệu - Trường Đại học Công nghệ, ĐHQGHN (UET-VNU)</p>
+            <p>Học phần: Programming for Data Processing (Lập trình xử lý dữ liệu) - Khóa học 2026</p>
+        </div>
+    </footer>
+
+    <!-- Initialize Highlight.js -->
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html>
